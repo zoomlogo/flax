@@ -1,5 +1,6 @@
 import sys
 import math as M
+import random as R
 
 from flax.utils import *
 
@@ -48,6 +49,12 @@ def falsey_indices(x):
         i += 1
     return indices
 
+def random(x):
+    if not isinstance(x, list):
+        return R.choice(range(1, x + 1))
+
+    return R.choice(x)
+
 commands = {
     # Single byte nilads
     'Ŧ': atom(0, lambda: 10),
@@ -78,4 +85,10 @@ commands = {
     '⊤': atom(1, truthy_indices),
     '⊥': atom(1, falsey_indices),
     'R': atom(1, lambda x: x[::-1]),
+    'W': atom(1, lambda x: [x]),
+    'Ŕ': atom(1, random),
+    'T': atom(1, lambda x: zip(*x)),
+    '¹': atom(1, lambda x: x),
+    '²': atom(1, lambda x: vectorise(lambda a: a ** 2, x)),
+    '√': atom(1, lambda x: vectorise(lambda a: a ** (1 / 2), x)),
 }

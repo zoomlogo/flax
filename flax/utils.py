@@ -76,3 +76,23 @@ def dyadic_vectorise(fn, x, y):
             return [dyadic_vectorise(fn, x, b) for b in y]
         else:
             return [dyadic_vectorise(fn, a, y) for a in x]
+
+def pp(x):
+    x = repr(x)
+    i = 0
+    indent = 0
+
+    while i < len(x):
+        if x[i] == '[':
+            if x[i - 1] == ' ':
+                print(end='\n' + ' ' * indent + '[')
+            else:
+                print(end='[')
+            indent += 1
+        elif x[i] == ']':
+            print(end=']')
+            indent -= 1
+        elif x[i] != ' ':
+            print(end=x[i])
+        i += 1
+    print()
