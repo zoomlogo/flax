@@ -55,6 +55,33 @@ def random(x):
 
     return R.choice(x)
 
+def from_bin(x):
+    sign = -1 if sum(x) < 0 else 1
+    num = 0
+    i = 0
+    for b in x[::-1]:
+        num += abs(b) * 2 ** i
+        i += 1
+    return num * sign
+
+def contains_false(l):
+    if not isinstance(l, list):
+        return 1 if l else 0
+
+    if len(l) == 0:
+        return 1   
+
+    return 1 if 1 in [contains_false(x) for x in l] else 0
+
+def from_digits(x):
+    sign = -1 if sum(x) < 0 else 1
+    num = 0
+    i = 0
+    for b in x[::-1]:
+        num += abs(b) * 10 ** i
+        i += 1
+    return num * sign
+
 commands = {
     # Single byte nilads
     'Ŧ': atom(0, lambda: 10),
@@ -91,4 +118,15 @@ commands = {
     '¹': atom(1, lambda x: x),
     '²': atom(1, lambda x: U.vectorise(lambda a: a ** 2, x)),
     '√': atom(1, lambda x: U.vectorise(lambda a: a ** (1 / 2), x)),
+    'Ḃ': atom(1, from_bin),
+    'Ă': atom(1, contains_false),
+    'Ḋ': atom(1, from_digits),
+    'Ð': atom(1, lambda x: U.vectorise(lambda a: a * 2, x)),
+    '₃': atom(1, lambda x: U.vectorise(lambda a: a * 3, x)),
+    'E': atom(1, lambda x: [*range(x)]),
+    '∇': atom(1, lambda x: min(x)),
+    '∆': atom(1, lambda x: max(x)),
+    'S': atom(1, lambda x: [*sorted(x)]),
+    'Ṡ': atom(1, lambda x: [*sorted(x)][::-1]),
+    'ᵇ': atom(1, lambda x: U.vectorise(lambda a: a % 2, x)),
 }
