@@ -2,7 +2,7 @@ import sys
 import math as M
 import random as R
 
-from flax.utils import *
+import flax.utils as U
 
 class state:
     reg = 0
@@ -68,27 +68,27 @@ commands = {
     'д': atom(0, lambda: input()),
 
     # Single byte monads
-    '!': atom(1, lambda x: vectorise(M.factorial, x)),
-    '¬': atom(1, lambda x: vectorise(lambda a: 1 if not a else 0, x)),
-    '~': atom(1, lambda x: vectorise(lambda a: ~a, x)),
-    'B': atom(1, lambda x: vectorise(to_bin, x)),
-    'D': atom(1, lambda x: vectorise(to_digits, x)),
-    'C': atom(1, lambda x: vectorise(lambda a: 1 - a, x)),
-    'F': atom(1, flatten),
-    'H': atom(1, lambda x: vectorise(lambda a: a / 2, x)),
+    '!': atom(1, lambda x: U.vectorise(M.factorial, x)),
+    '¬': atom(1, lambda x: U.vectorise(lambda a: 1 if not a else 0, x)),
+    '~': atom(1, lambda x: U.vectorise(lambda a: ~a, x)),
+    'B': atom(1, lambda x: U.vectorise(to_bin, x)),
+    'D': atom(1, lambda x: U.vectorise(to_digits, x)),
+    'C': atom(1, lambda x: U.vectorise(lambda a: 1 - a, x)),
+    'F': atom(1, U.flatten),
+    'H': atom(1, lambda x: U.vectorise(lambda a: a / 2, x)),
     'L': atom(1, len),
-    'N': atom(1, lambda x: vectorise(lambda a: -a, x)),
+    'N': atom(1, lambda x: U.vectorise(lambda a: -a, x)),
     'Ř': atom(1, lambda x: [*range(len(x))]),
-    'Π': atom(1, lambda x: reduce(lambda a, b: a * b, flatten(x))),
-    'Σ': atom(1, lambda x: sum(flatten(x))),
+    'Π': atom(1, lambda x: U.reduce(lambda a, b: a * b, U.flatten(x))),
+    'Σ': atom(1, lambda x: sum(U.flatten(x))),
     '⍳': atom(1, lambda x: [*range(1, x + 1)]),
     '⊤': atom(1, truthy_indices),
     '⊥': atom(1, falsey_indices),
     'R': atom(1, lambda x: x[::-1]),
     'W': atom(1, lambda x: [x]),
     'Ŕ': atom(1, random),
-    'T': atom(1, lambda x: zip(*x)),
+    'T': atom(1, lambda x: U.zip(*x)),
     '¹': atom(1, lambda x: x),
-    '²': atom(1, lambda x: vectorise(lambda a: a ** 2, x)),
-    '√': atom(1, lambda x: vectorise(lambda a: a ** (1 / 2), x)),
+    '²': atom(1, lambda x: U.vectorise(lambda a: a ** 2, x)),
+    '√': atom(1, lambda x: U.vectorise(lambda a: a ** (1 / 2), x)),
 }
