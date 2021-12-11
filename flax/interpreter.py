@@ -129,4 +129,10 @@ commands = {
     'S': atom(1, lambda x: [*sorted(x)]),
     'Ṡ': atom(1, lambda x: [*sorted(x)][::-1]),
     'ᵇ': atom(1, lambda x: U.vectorise(lambda a: a % 2, x)),
+    'Ḣ': atom(1, lambda x: x[1:]),
+    'Ṫ': atom(1, lambda x: x[:-2]),
+    'Ḥ': atom(1, lambda x: x[0]),
+    'Ṭ': atom(1, lambda x: x[-1]),
+    '±': atom(1, lambda x: U.vectorise(lambda a: -1 if a < 0 else (0 if a == 0 else 1), x)),
+    'Θ': atom(1, lambda x: x.insert(0, 0)),
 }
