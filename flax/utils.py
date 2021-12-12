@@ -77,6 +77,13 @@ def dyadic_vectorise(fn, x, y):
         else:
             return [dyadic_vectorise(fn, a, y) for a in x]
 
+def iterable(x, make_range=False):
+    if not isinstance(x, list):
+        if make_range:
+            return [*range(1, x+1)]
+        return [x]
+    return x
+
 def pp(x):
     x = repr(x)
     i = 0
