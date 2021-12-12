@@ -77,10 +77,14 @@ def dyadic_vectorise(fn, x, y):
         else:
             return [dyadic_vectorise(fn, a, y) for a in x]
 
-def iterable(x, make_range=False):
+def iterable(x, make_range=False, make_digits=False):
     if not isinstance(x, list):
         if make_range:
             return [*range(1, x+1)]
+        if make_digits:
+            return [-int(i) if x < 0 else int(i)
+                        for i in str(x)[
+                            1 if x < 0 else 0:]]
         return [x]
     return x
 
