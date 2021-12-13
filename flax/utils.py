@@ -107,3 +107,5 @@ def pp(x):
             print(end=x[i])
         i += 1
     print()
+
+    return x

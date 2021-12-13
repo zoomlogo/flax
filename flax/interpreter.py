@@ -1,6 +1,7 @@
 import sys
 import math as M
 import random as R
+import itertools
 
 import flax.utils as U
 from flax.utils import vectorise, flatten, iterable
@@ -77,6 +78,63 @@ def from_digits(x):
         i += 1
     return num * sign
 
+def split(x, c):
+    if not isinstance(x, list):
+        return x
+
+    res = []
+    tmp = []
+
+    for i in range(len(x)):
+        if not (i % c) and tmp:
+            res.append(tmp)
+            tmp = []
+        tmp.append(x[i])
+
+    if tmp:
+        res.append(tmp)
+    return res
+
+def sub_lists(l):
+    lists = [[]]
+    for i in range(len(l) + 1):
+        for j in range(i):
+            lists.append(l[j:i])
+    return lists
+
+def reverse_every_other(x):
+    x = iterable(x)
+
+    for i in range(len(x)):
+        if i % 2 == 0:
+            x[i] = iterable(x[i])[::-1]
+    return x
+
+def grade_up(x):
+    x = iterable(x, make_digits=True)
+
+    grades = []
+    for a in list(sorted(x)):
+        grades.append(find_all_indices(a, x))
+    return flatten(grades)
+
+def grade_down(x):
+    x = iterable(x, make_digits=True)
+
+    grades = []
+    for a in list(sorted(x))[::-1]:
+        grades.append(find_all_indices(a, x))
+    return flatten(grades)
+
+def find_all_indices(x, y):
+    res = []
+    i = 0
+    while i < len(y):
+        if y[i] == x:
+            res.append(i)
+        i += 1
+    return res
+
 commands = {
     # Single byte nilads
     'Ŧ': atom(0, lambda: 10),
@@ -133,4 +191,19 @@ commands = {
     'U': atom(1, lambda x: list(set(iterable(x)))),
     '⤒': atom(1, lambda x: vectorise(lambda a: a + 1, x)),
     '⤓': atom(1, lambda x: vectorise(lambda a: a - 1, x)),
+    'P': atom(1, lambda x: U.pp(x)),
+    'Ċ': atom(1, lambda x: print(end=''.join(chr(c) for c in x)) or x),
+    'Ç': atom(1, lambda x: split(x, 2)),
+    'X': atom(1, lambda x: split(x, int(len(x) / 2))),
+    'Ƥ': atom(1, lambda x: [*itertools.permutations(x)]),
+    'ε': atom(1, lambda x: sub_lists(iterable(x, make_range=True))),
+    'σ': atom(1, reverse_every_other),
+    'Ḅ': atom(1, lambda x: vectorise(lambda a: 2 ** a, x)),
+    'Ď': atom(1, U.depth),
+    '⍋': atom(1, grade_up),
+    '⍒': atom(1, grade_down),
+    '⅟': atom(1, lambda x: vectorise(lambda a: 1 / a, x)),
+    '⌈': atom(1, lambda x: vectorise(lambda a: M.ceil(a), x)),
+    '⌊': atom(1, lambda x: vectorise(lambda a: M.floor(a), x)),
+    'A': atom(1, lambda x: vectorise(lambda a: abs(a), x)),
 }
