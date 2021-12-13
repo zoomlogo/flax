@@ -4,7 +4,7 @@ import random as R
 import itertools
 
 import flax.utils as U
-from flax.utils import vectorise, flatten, iterable
+from flax.utils import dyadic_vectorise, vectorise, flatten, iterable
 
 class atom:
     def __init__(self, arity, call):
@@ -126,6 +126,38 @@ def grade_down(x):
         grades.append(find_all_indices(a, x))
     return flatten(grades)
 
+def divisors(x):
+    res = []
+
+    i = 1
+    while i <= x:
+        if x % i == 0:
+            res.append(i)
+        i += 1
+
+def join_spaces(x):
+    return laminate(x, 32)
+
+def join_newlines(x):
+    return laminate(x, 10)
+
+def prefixes(x):
+    res = []
+    for i in range(len(x)):
+        res.append(x[:i + 1])
+    return res
+
+def suffixes(x):
+    res = []
+    for i in range(len(x)):
+        res.append(x[i:])
+    return res
+
+def laminate(x, y):
+    res = [y] * (len(x) * 2 - 1)
+    res[0::2] = iterable(x)
+    return x
+
 def find_all_indices(x, y):
     res = []
     i = 0
@@ -206,4 +238,34 @@ commands = {
     '⌈': atom(1, lambda x: vectorise(lambda a: M.ceil(a), x)),
     '⌊': atom(1, lambda x: vectorise(lambda a: M.floor(a), x)),
     'A': atom(1, lambda x: vectorise(lambda a: abs(a), x)),
+    'Ḍ': atom(1, lambda x: vectorise(divisors, x)),
+    'J': atom(1, join_spaces),
+    'Ĵ': atom(1, join_newlines),
+    '⊢': atom(1, prefixes),
+    '⊣': atom(1, suffixes),
+    '∀': atom(1, lambda x: [sum(r) for r in iterable(x)]),
+
+    # Single byte dyads
+    '+': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a + b, x, y)),
+    '-': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a - b, x, y)),
+    '×': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a * b, x, y)),
+    '÷': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a / b, x, y)),
+    '%': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a % b, x, y)),
+    '*': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a ** b, x, y)),
+    '"': atom(2, lambda x, y: [x, y]),
+    ',': atom(2, lambda x, y: laminate(x, y)),
+    '<': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a < b, x, y)),
+    '>': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a > b, x, y)),
+    '=': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a == b, x, y)),
+    '≠': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a != b, x, y)),
+    '≥': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a >= b, x, y)),
+    '≤': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a <= b, x, y)),
+    '≡': atom(2, lambda x, y: x == y),
+    '≢': atom(2, lambda x, y: x != y),
+    '∧': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: 1 if a and b else 0, x, y)),
+    '∨': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: 1 if a or b else 0, x, y)),
+    '&': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a & b, x, y)),
+    '|': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a | b, x, y)),
+    '^': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a ^ b, x, y)),
+    '∊': atom(2, lambda x, y: x in y),
 }
