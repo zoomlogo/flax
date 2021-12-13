@@ -167,6 +167,14 @@ def find_all_indices(x, y):
         i += 1
     return res
 
+def index(x, y):
+    if not isinstance(x, list):
+        return x
+
+    if isinstance(y, int):
+        return x[(y - 1) % len(x)]
+    return [index(x, M.floor(y)), index(x, M.ceil(y))]
+
 commands = {
     # Single byte nilads
     'Ŧ': atom(0, lambda: 10),
@@ -268,4 +276,14 @@ commands = {
     '|': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a | b, x, y)),
     '^': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a ^ b, x, y)),
     '∊': atom(2, lambda x, y: x in y),
+    'f': atom(2, lambda x, y: [a for a in x if a not in y]),
+    'ḟ': atom(2, lambda x, y: [a for a in x if a in y]),
+    '⊂': atom(2, lambda x, y: x.find(y) + 1),
+    '⊆': atom(2, lambda x, y: vectorise(lambda a: a + 1, find_all_indices(x, y))),
+    '⊏': atom(2, lambda x, y: [x[i] for i in range(len(x)) if i % y == 0]),
+    '·': atom(2, lambda x, y: [*itertools.product(x, y)]),
+    'r': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: [*range(a, b + 1)], x, y)),
+    's': atom(2, split),
+    '\\': atom(2, lambda x, y: [iterable(x) for _ in range(y)]),
+    'i': atom(2, lambda x, y: index),
 }
