@@ -366,4 +366,10 @@ commands = {
     'Œn': atom(1, lambda x: vectorise(M.sinh, x)),
     'Œo': atom(1, lambda x: vectorise(M.cosh, x)),
     'Œh': atom(1, lambda x: vectorise(M.tanh, x)),
+
+    # Dyadic diagraphs
+    'œl': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a << b, x, y)),
+    'œr': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a >> b, x, y)),
+    'œ*': atom(2, lambda x, y: [*itertools.product(x, repeat=y)])
+    'œ·': atom(2, lambda x, y: sum(x[i][0] * y[i] for i in range(len(y)))),
 }
