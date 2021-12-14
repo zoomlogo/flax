@@ -15,6 +15,11 @@ from flax.utils import (
     depth
 )
 
+# ==============================
+#         Implementation
+#            of Atoms
+# ==============================
+
 class atom:
     def __init__(self, arity, call):
         self.arity = arity
@@ -219,7 +224,7 @@ def diagonals(x):
             d[i - j - min_d].append(x[j][i])
     return d
 
-commands = {
+atoms = {
     # Single byte nilads
     'Ŧ': atom(0, lambda: 10),
     '³': atom(0, lambda: sys.argv[1] if len(sys.argv) > 1 else 16),
@@ -230,6 +235,8 @@ commands = {
     '®': atom(0, lambda: 0),
     'я': atom(0, lambda: sys.stdin.read(1)),
     'д': atom(0, lambda: input()),
+    '⍺': atom(0, lambda: 0),
+    '⍵': atom(0, lambda: 0),
 
     # Single byte monads
     '!': atom(1, lambda x: vectorise(M.factorial, x)),
@@ -372,4 +379,122 @@ commands = {
     'œr': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a >> b, x, y)),
     'œ*': atom(2, lambda x, y: [*itertools.product(x, repeat=y)]),
     'œ·': atom(2, lambda x, y: sum(x[i][0] * y[i] for i in range(len(y)))),
+}
+
+# =====================
+#     Implementation
+#       of Chains
+# =====================
+
+def arities(links):
+    return [link.arity for link in links]
+
+def leading_nilad(chain):
+    return chain and arities(chain) + [1] < [0, 2] * len(chain)
+
+def niladic_chain(chain):
+    if not chain or chain[0].arity > 0:
+        return monadic_chain(chain, 0)
+    return monadic_chain(chain[1:], chain[0].call())
+
+def monadic_chain(chain, x):
+    atoms['⍺'].call = lambda: x
+
+    init = False
+
+    accumulator = x
+    left_arg_S = atoms['⍺'].call
+
+    while 1:
+        if init:
+            for link in chain:
+                if link.arity < 0:
+                    link.arity = 1
+
+            if leading_nilad(chain):
+                accumulator = chain[0].call()
+                chain = chain[1:]
+
+        if not chain:
+            break
+
+        if arities(chain[0:2]) == [2, 1]:
+            accumulator = chain[0].call(accumulator, chain[1].call(x))
+            chain = chain[2:]
+        elif arities(chain[0:2]) == [2, 0]:
+            accumulator = chain[0].call(accumulator, chain[1].call())
+            chain = chain[2:]
+        elif arities(chain[0:2]) == [0, 2]:
+            accumulator = chain[1].call(chain[0].call(), accumulator)
+            chain = chain[2:]
+        elif chain[0].arity == 2:
+            accumulator = chain[0].call(accumulator, x)
+            chain = chain[1:]
+        elif chain[0].arity == 1:
+            if not chain[1:] and hasattr(chain[0], 'chain'):
+                x = accumulator
+                chain = chain[0].chain
+                init = True
+            else:
+                accumulator = chain[0].call(accumulator)
+                chain = chain[1:]
+        else:
+            pp(accumulator)
+            accumulator = chain[0].call()
+            chain = chain[1:]
+
+    return accumulator
+
+def dyadic_chain(chain, x, y):
+    atoms['⍺'].call = lambda: x
+    atoms['⍵'].call = lambda: y
+
+    for link in chain:
+        if link.arity < 0:
+            link.arity = 2
+
+    if chain and arities(chain[0:3]) == [2, 2, 2]:
+        accumulator = chain[0].call(x, y)
+        chain = chain[1:]
+    elif leading_nilad(chain):
+        accumulator = chain[0].call()
+        chain = chain[1:]
+    else:
+        accumulator = x
+
+    while chain:
+        if arities(chain[0:3]) == [2, 2, 0] and leading_nilad(chain[2:]):
+            accumulator = chain[1].call(chain[0].call(accumulator, y), chain[2].call())
+            chain = chain[3:]
+        elif arities(chain[0:2]) == [2, 2]:
+            accumulator = chain[0].call(accumulator, chain[1].call(x, y))
+        elif arities(chain[0:2]) == [2, 0]:
+            accumulator = chain[0].call(accumulator, chain[1].call())
+            chain = chain[2:]
+        elif arities(chain[0:2]) == [0, 2]:
+            accumulator = chain[1].call(chain[0].call(), accumulator)
+            chain = chain[2:]
+        elif chain[0].arity == 2:
+            accumulator = chain[0].call(accumulator, y)
+            chain = chain[1:]
+        elif chain[0].arity == 1:
+            accumulator = chain[0].call(accumulator)
+            chain = chain[1:]
+        else:
+            pp(accumulator)
+            accumulator = chain[0].call()
+            chain = chain[1:]
+
+    return accumulator
+
+# =====================
+#        Parser
+# =====================
+
+class quick:
+    def __init__(self, condition, qlink):
+        self.condition = condition
+        self.qlink = qlink
+
+quicks = {
 }
