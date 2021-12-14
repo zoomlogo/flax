@@ -468,6 +468,7 @@ def dyadic_chain(chain, x, y):
             chain = chain[3:]
         elif arities(chain[0:2]) == [2, 2]:
             accumulator = chain[0].call(accumulator, chain[1].call(x, y))
+            chain = chain[2:]
         elif arities(chain[0:2]) == [2, 0]:
             accumulator = chain[0].call(accumulator, chain[1].call())
             chain = chain[2:]
