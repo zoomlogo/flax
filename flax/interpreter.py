@@ -3,8 +3,17 @@ import math as M
 import random as R
 import itertools
 
-import flax.utils as U
-from flax.utils import dyadic_vectorise, vectorise, flatten, iterable
+from flax.utils import (
+    dyadic_vectorise,
+    reshape,
+    vectorise,
+    flatten,
+    iterable,
+    reduce,
+    pp,
+    zip,
+    depth
+)
 
 class atom:
     def __init__(self, arity, call):
@@ -175,6 +184,41 @@ def index(x, y):
         return x[(y - 1) % len(x)]
     return [index(x, M.floor(y)), index(x, M.ceil(y))]
 
+def split_at_occurences(x, y):
+    res = []
+    tmp = []
+
+    for e in x:
+        if e == y:
+            res.append(tmp)
+            tmp = []
+        else:
+            tmp.append(e)
+
+    if tmp:
+        res.append(tmp)
+
+    return res
+
+def mold(x, y):
+    for i in range(len(y)):
+        if isinstance(y[i], list):
+            mold(x, y[i])
+        else:
+            item = x.pop(0)
+            y[i] = item
+            x.append(item)
+    return y
+
+def diagonals(x):
+    d = [[] for _ in range(len(x) + len(x[0]) - 1)]
+    min_d = -len(x) + 1
+
+    for i in range(len(x[0])):
+        for j in range(len(x)):
+            d[i - j - min_d].append(x[j][i])
+    return d
+
 commands = {
     # Single byte nilads
     'Ŧ': atom(0, lambda: 10),
@@ -199,7 +243,7 @@ commands = {
     'L': atom(1, len),
     'N': atom(1, lambda x: vectorise(lambda a: -a, x)),
     'Ř': atom(1, lambda x: [*range(len(x))]),
-    'Π': atom(1, lambda x: U.reduce(lambda a, b: a * b, flatten(x))),
+    'Π': atom(1, lambda x: reduce(lambda a, b: a * b, flatten(x))),
     'Σ': atom(1, lambda x: sum(flatten(x))),
     '⍳': atom(1, lambda x: vectorise(lambda a: [*range(1, a + 1)], x)),
     '⊤': atom(1, truthy_indices),
@@ -207,7 +251,7 @@ commands = {
     'R': atom(1, lambda x: iterable(x, make_range=True)[::-1]),
     'W': atom(1, lambda x: [x]),
     'Ŕ': atom(1, random),
-    'T': atom(1, lambda x: U.zip(*x)),
+    'T': atom(1, lambda x: zip(*x)),
     '¹': atom(1, lambda x: x),
     '²': atom(1, lambda x: vectorise(lambda a: a ** 2, x)),
     '√': atom(1, lambda x: vectorise(lambda a: a ** (1 / 2), x)),
@@ -231,7 +275,7 @@ commands = {
     'U': atom(1, lambda x: list(set(iterable(x)))),
     '⤒': atom(1, lambda x: vectorise(lambda a: a + 1, x)),
     '⤓': atom(1, lambda x: vectorise(lambda a: a - 1, x)),
-    'P': atom(1, lambda x: U.pp(x)),
+    'P': atom(1, lambda x: pp(x)),
     'Ċ': atom(1, lambda x: print(end=''.join(chr(c) for c in x)) or x),
     'Ç': atom(1, lambda x: split(x, 2)),
     'X': atom(1, lambda x: split(x, int(len(x) / 2))),
@@ -239,7 +283,7 @@ commands = {
     'ε': atom(1, lambda x: sub_lists(iterable(x, make_range=True))),
     'σ': atom(1, reverse_every_other),
     'Ḅ': atom(1, lambda x: vectorise(lambda a: 2 ** a, x)),
-    'Ď': atom(1, U.depth),
+    'Ď': atom(1, depth),
     '⍋': atom(1, grade_up),
     '⍒': atom(1, grade_down),
     '⅟': atom(1, lambda x: vectorise(lambda a: 1 / a, x)),
@@ -262,14 +306,14 @@ commands = {
     '*': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a ** b, x, y)),
     '"': atom(2, lambda x, y: [x, y]),
     ',': atom(2, lambda x, y: laminate(x, y)),
-    '<': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a < b, x, y)),
-    '>': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a > b, x, y)),
-    '=': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a == b, x, y)),
-    '≠': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a != b, x, y)),
-    '≥': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a >= b, x, y)),
-    '≤': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a <= b, x, y)),
-    '≡': atom(2, lambda x, y: x == y),
-    '≢': atom(2, lambda x, y: x != y),
+    '<': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: 1 if a < b else 0, x, y)),
+    '>': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: 1 if a > b else 0, x, y)),
+    '=': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: 1 if a == b else 0, x, y)),
+    '≠': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: 1 if a != b else 0, x, y)),
+    '≥': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: 1 if a >= b else 0, x, y)),
+    '≤': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: 1 if a <= b else 0, x, y)),
+    '≡': atom(2, lambda x, y: 1 if x == y else 0),
+    '≢': atom(2, lambda x, y: 1 if x != y else 0),
     '∧': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: 1 if a and b else 0, x, y)),
     '∨': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: 1 if a or b else 0, x, y)),
     '&': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: a & b, x, y)),
@@ -285,5 +329,41 @@ commands = {
     'r': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: [*range(a, b + 1)], x, y)),
     's': atom(2, split),
     '\\': atom(2, lambda x, y: [iterable(x) for _ in range(y)]),
-    'i': atom(2, lambda x, y: index),
+    'i': atom(2, index),
+    'o': atom(2, split_at_occurences),
+    'a': atom(2, lambda x, y: iterable(x) + iterable(y)),
+    'p': atom(2, lambda x, y: iterable(y) + iterable(x)),
+    'c': atom(2, lambda x, y: iterable(x, make_digits=True).count(y)),
+    'm': atom(2, lambda x, y: mold(iterable(x), iterable(y))),
+    'h': atom(2, lambda x, y: iterable(x, make_digits=True)[:y]),
+    't': atom(2, lambda x, y: iterable(x, make_digits=True)[y - 1:]),
+    'z': atom(2, zip),
+    'u': atom(2, lambda x, y: [y.find(v) + 1 for v in x]),
+    '#': atom(2, reshape),
+    'ḍ': atom(2, lambda x, y: dyadic_vectorise(lambda a, b: 1 if a % b == 0 else 0, x, y)),
+
+    # Niladic diagraphs
+    'Øp': atom(0, lambda: M.pi),
+    'Øe': atom(0, lambda: M.e),
+    'ØP': atom(0, lambda: 1.618033988749895),
+    'Ø∞': atom(0, lambda: float('inf')),
+    'ØA': atom(0, lambda: 26),
+    'Ø₁': atom(0, lambda: 128),
+    'Ø₂': atom(0, lambda: 256),
+    'Ø₀': atom(0, lambda: 1000),
+
+    # Monadic diagraphs
+    'ŒD': atom(1, diagonals),
+    'ŒS': atom(1, lambda x: vectorise(M.sin, x)),
+    'ŒC': atom(1, lambda x: vectorise(M.cos, x)),
+    'ŒT': atom(1, lambda x: vectorise(M.tan, x)),
+    'ŒṠ': atom(1, lambda x: vectorise(M.asin, x)),
+    'ŒĊ': atom(1, lambda x: vectorise(M.acos, x)),
+    'ŒṪ': atom(1, lambda x: vectorise(M.atan, x)),
+    'Œc': atom(1, lambda x: vectorise(lambda a: 1 / M.sin(a), x)),
+    'Œs': atom(1, lambda x: vectorise(lambda a: 1 / M.cos(a), x)),
+    'Œt': atom(1, lambda x: vectorise(lambda a: 1 / M.tan(a), x)),
+    'Œn': atom(1, lambda x: vectorise(M.sinh, x)),
+    'Œo': atom(1, lambda x: vectorise(M.cosh, x)),
+    'Œh': atom(1, lambda x: vectorise(M.tanh, x)),
 }
