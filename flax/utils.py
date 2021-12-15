@@ -113,3 +113,5 @@ def pp(x):
     print()
 
     return x
+
+tpp = lambda x:print(repr(x).replace(', ',' ').replace('[]','⍬').replace('-','¯').replace('j','i'))
