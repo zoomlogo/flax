@@ -21,9 +21,10 @@ from flax.utils import (
 # ==============================
 
 class atom:
-    def __init__(self, arity, call):
+    def __init__(self, arity, call, chain = None):
         self.arity = arity
         self.call = call
+        self.chain = chain
 
 def to_bin(x):
     return [-i if x < 0 else i
@@ -139,6 +140,26 @@ def grade_down(x):
     for a in list(sorted(x))[::-1]:
         grades.append(find_all_indices(a, x))
     return flatten(grades)
+
+def group_equal(x):
+    res = []
+    for e in x:
+        if res and res[-1][0] == e:
+            res[-1].append(e)
+        else:
+            res.append([e])
+    return res
+
+def group(x):
+    res = {}
+    for i, it in enumerate(x):
+        it = repr(it)
+        if it in res:
+            res[it].append(i + 1)
+        else:
+            res[it] = [i + 1]
+    return [res[k] for k in sorted(res, key=eval)]
+
 
 def divisors(x):
     res = []
@@ -268,6 +289,7 @@ atoms = {
     'Ð': atom(1, lambda x: vectorise(lambda a: a * 2, x)),
     '₃': atom(1, lambda x: vectorise(lambda a: a * 3, x)),
     'E': atom(1, lambda x: vectorise(lambda a: [*range(a)], x)),
+    'G': atom(1, lambda x: group_equal(iterable(x, make_digits=True))),
     '∇': atom(1, lambda x: min(iterable(x))),
     '∆': atom(1, lambda x: max(iterable(x))),
     'S': atom(1, lambda x: [*sorted(x)]),
@@ -300,6 +322,7 @@ atoms = {
     'Ḍ': atom(1, lambda x: vectorise(divisors, x)),
     'J': atom(1, join_spaces),
     'Ĵ': atom(1, join_newlines),
+    'V': atom(1, lambda x: group(iterable(x, make_digits=True))),
     '⊢': atom(1, prefixes),
     '⊣': atom(1, suffixes),
     '∀': atom(1, lambda x: [sum(r) for r in iterable(x)]),
@@ -403,7 +426,6 @@ def monadic_chain(chain, x):
     init = False
 
     accumulator = x
-    left_arg_S = atoms['⍺'].call
 
     while 1:
         if init:
@@ -488,6 +510,20 @@ def dyadic_chain(chain, x, y):
 
     return accumulator
 
+def variadic_link(link, *args):
+    if link.arity < 0:
+        args = [*filter(None.__ne__, args)]
+        link.arity = len(args)
+    
+    if link.arity == 0:
+        return link.call()
+    else:
+        return link.call(*args)
+
+def copy_to(atom, value):
+    atom.call = lambda: value
+    return value
+
 # =====================
 #        Parser
 # =====================
@@ -498,4 +534,6 @@ class quick:
         self.qlink = qlink
 
 quicks = {
+    '©': quick(lambda L: L,
+        lambda L, O, i: [atom(L[0].arity, lambda x=None, y=None: copy_to(atoms['®'], variadic_link(L[0], x, y)))]),
 }
