@@ -89,7 +89,11 @@ def iterable(x, make_range=False, make_digits=False):
     return x
 
 def pp(x):
-    x = repr(x)
+    x = repr(x) \
+        .replace('[]', '⍬') \
+        .replace('-', '¯') \
+        .replace('j', 'i')
+
     i = 0
     indent = 0
 
