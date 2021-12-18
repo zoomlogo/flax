@@ -4,9 +4,7 @@ import random as R
 import itertools
 from collections import deque
 
-# ---------
-#   Atoms
-# ---------
+# ===== Functions =====
 
 class attrdict:
     def __init__(self, *args, **kwargs):
@@ -22,56 +20,6 @@ def depth(x):
 
     return max(map(depth, x)) + 1
 
-def reduce_first(fn, L):
-    if not isinstance(L, list):
-        return L
-
-    res = L[0]
-    for x in L[1:]:
-        res = fn(res, x)
-    return res
-
-def reduce(fn, L):
-    if not isinstance(fn, L):
-        return L
-
-    if isinstance(L[0], list):
-        return [reduce(fn, x) for x in L]
-
-    return reduce_first(fn, L)
-
-def flatten(L):
-    def gen(l):
-        if not isinstance(l, list):
-            yield l
-        else:
-            for i in l:
-                yield from flatten(i)
-    return [*gen(L)]
-
-def reshape(shape, L):
-    if not isinstance(L, list):
-        return L
-
-    if not isinstance(L, deque):
-        L = deque(L)
-
-    def nxt(dq):
-        x = dq.popleft()
-        dq.append(x)
-        return x
-
-    if len(shape) == 1:
-        return [nxt(L) for _ in range(shape[0])]
-    else:
-        return [reshape(shape[1:], L) for _ in range(shape[0])]
-
-def vectorise(fn, x):
-    if depth(x) != 0:
-        return [vectorise(fn, a) for a in x]
-    else:
-        return fn(x)
-
 def dyadic_vectorise(fn, x, y):
     dx = depth(x)
     dy = depth(y)
@@ -86,6 +34,27 @@ def dyadic_vectorise(fn, x, y):
             return [dyadic_vectorise(fn, x, b) for b in y]
         else:
             return [dyadic_vectorise(fn, a, y) for a in x]
+
+def falsey_indices(x):
+    if not isinstance(x, list):
+        return []
+
+    i = 0
+    indices = []
+    while i < len(x):
+        if not x[i]:
+            indices.append(i)
+        i += 1
+    return indices
+
+def flatten(L):
+    def gen(l):
+        if not isinstance(l, list):
+            yield l
+        else:
+            for i in l:
+                yield from flatten(i)
+    return [*gen(L)]
 
 def iterable(x, make_range=False, make_digits=False):
     if not isinstance(x, list):
@@ -124,9 +93,45 @@ def pp(x):
 
     return x
 
-tpp = lambda x:print(repr(x).replace(', ',' ').replace('[]','⍬').replace('-','¯').replace('j','i'))
+def random(x):
+    x = iterable(x)
+    return R.choice(x)
 
-zip = lambda *x: [[*x] for x in itertools.zip_longest(*x, fillvalue=0)]
+def reduce(fn, L):
+    if not isinstance(fn, L):
+        return L
+
+    if isinstance(L[0], list):
+        return [reduce(fn, x) for x in L]
+
+    return reduce_first(fn, L)
+
+def reduce_first(fn, L):
+    if not isinstance(L, list):
+        return L
+
+    res = L[0]
+    for x in L[1:]:
+        res = fn(res, x)
+    return res
+
+
+def reshape(shape, L):
+    if not isinstance(L, list):
+        return L
+
+    if not isinstance(L, deque):
+        L = deque(L)
+
+    def nxt(dq):
+        x = dq.popleft()
+        dq.append(x)
+        return x
+
+    if len(shape) == 1:
+        return [nxt(L) for _ in range(shape[0])]
+    else:
+        return [reshape(shape[1:], L) for _ in range(shape[0])]
 
 def to_bin(x):
     return [-i if x < 0 else i
@@ -137,6 +142,8 @@ def to_digits(x):
     return [-int(i) if x < 0 else int(i)
         for i in str(x)[
             1 if x < 0 else 0:]]
+
+tpp = lambda x:print(repr(x).replace(', ',' ').replace('[]','⍬').replace('-','¯').replace('j','i'))
 
 def truthy_indices(x):
     if not isinstance(x, list):
@@ -150,21 +157,15 @@ def truthy_indices(x):
         i += 1
     return indices
 
-def falsey_indices(x):
-    if not isinstance(x, list):
-        return []
+def vectorise(fn, x):
+    if depth(x) != 0:
+        return [vectorise(fn, a) for a in x]
+    else:
+        return fn(x)
 
-    i = 0
-    indices = []
-    while i < len(x):
-        if not x[i]:
-            indices.append(i)
-        i += 1
-    return indices
+zip = lambda *x: [[*x] for x in itertools.zip_longest(*x, fillvalue=0)]
 
-def random(x):
-    x = iterable(x)
-    return R.choice(x)
+# ====== Atoms ========
 
 def from_bin(x):
     x = iterable(x)
