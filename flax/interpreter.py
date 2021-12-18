@@ -1,15 +1,25 @@
+# ======== Imports =======
 import sys
 import math as M
 import random as R
 import itertools
 from collections import deque
 
-# ===== Functions =====
+# ===== Functions and classes =====
 
 class attrdict:
     def __init__(self, *args, **kwargs):
         dict.__init__(self, *args, **kwargs)
         self.__dict__ = self
+
+def contains_false(l):
+    if not isinstance(l, list):
+        return 1 if l else 0
+
+    if len(l) == 0:
+        return 1   
+
+    return 1 if 1 in [contains_false(x) for x in l] else 0
 
 def depth(x):
     if not isinstance(x, list):
@@ -35,6 +45,15 @@ def dyadic_vectorise(fn, x, y):
         else:
             return [dyadic_vectorise(fn, a, y) for a in x]
 
+def flatten(L):
+    def gen(l):
+        if not isinstance(l, list):
+            yield l
+        else:
+            for i in l:
+                yield from flatten(i)
+    return [*gen(L)]
+
 def falsey_indices(x):
     if not isinstance(x, list):
         return []
@@ -47,14 +66,41 @@ def falsey_indices(x):
         i += 1
     return indices
 
-def flatten(L):
-    def gen(l):
-        if not isinstance(l, list):
-            yield l
-        else:
-            for i in l:
-                yield from flatten(i)
-    return [*gen(L)]
+def from_bin(x):
+    x = iterable(x)
+    sign = -1 if sum(x) < 0 else 1
+    num = 0
+    i = 0
+    for b in x[::-1]:
+        num += abs(b) * 2 ** i
+        i += 1
+    return num * sign
+
+def from_digits(x):
+    x = iterable(x)
+    sign = -1 if sum(x) < 0 else 1
+    num = 0
+    i = 0
+    for b in x[::-1]:
+        num += abs(b) * 10 ** i
+        i += 1
+    return num * sign
+
+def grade_down(x):
+    x = iterable(x, make_digits=True)
+
+    grades = []
+    for a in list(sorted(x))[::-1]:
+        grades.append(find_all_indices(a, x))
+    return flatten(grades)
+
+def grade_up(x):
+    x = iterable(x, make_digits=True)
+
+    grades = []
+    for a in list(sorted(x)):
+        grades.append(find_all_indices(a, x))
+    return flatten(grades)
 
 def iterable(x, make_range=False, make_digits=False):
     if not isinstance(x, list):
@@ -133,6 +179,38 @@ def reshape(shape, L):
     else:
         return [reshape(shape[1:], L) for _ in range(shape[0])]
 
+def reverse_every_other(x):
+    x = iterable(x)
+
+    for i in range(len(x)):
+        if i % 2 == 0:
+            x[i] = iterable(x[i])[::-1]
+    return x
+
+def split(x, c):
+    if not isinstance(x, list):
+        return x
+
+    res = []
+    tmp = []
+
+    for i in range(len(x)):
+        if not (i % c) and tmp:
+            res.append(tmp)
+            tmp = []
+        tmp.append(x[i])
+
+    if tmp:
+        res.append(tmp)
+    return res
+
+def sub_lists(l):
+    lists = [[]]
+    for i in range(len(l) + 1):
+        for j in range(i):
+            lists.append(l[j:i])
+    return lists
+
 def to_bin(x):
     return [-i if x < 0 else i
         for i in map(int, bin(x)[
@@ -167,82 +245,6 @@ zip = lambda *x: [[*x] for x in itertools.zip_longest(*x, fillvalue=0)]
 
 # ====== Atoms ========
 
-def from_bin(x):
-    x = iterable(x)
-    sign = -1 if sum(x) < 0 else 1
-    num = 0
-    i = 0
-    for b in x[::-1]:
-        num += abs(b) * 2 ** i
-        i += 1
-    return num * sign
-
-def contains_false(l):
-    if not isinstance(l, list):
-        return 1 if l else 0
-
-    if len(l) == 0:
-        return 1   
-
-    return 1 if 1 in [contains_false(x) for x in l] else 0
-
-def from_digits(x):
-    x = iterable(x)
-    sign = -1 if sum(x) < 0 else 1
-    num = 0
-    i = 0
-    for b in x[::-1]:
-        num += abs(b) * 10 ** i
-        i += 1
-    return num * sign
-
-def split(x, c):
-    if not isinstance(x, list):
-        return x
-
-    res = []
-    tmp = []
-
-    for i in range(len(x)):
-        if not (i % c) and tmp:
-            res.append(tmp)
-            tmp = []
-        tmp.append(x[i])
-
-    if tmp:
-        res.append(tmp)
-    return res
-
-def sub_lists(l):
-    lists = [[]]
-    for i in range(len(l) + 1):
-        for j in range(i):
-            lists.append(l[j:i])
-    return lists
-
-def reverse_every_other(x):
-    x = iterable(x)
-
-    for i in range(len(x)):
-        if i % 2 == 0:
-            x[i] = iterable(x[i])[::-1]
-    return x
-
-def grade_up(x):
-    x = iterable(x, make_digits=True)
-
-    grades = []
-    for a in list(sorted(x)):
-        grades.append(find_all_indices(a, x))
-    return flatten(grades)
-
-def grade_down(x):
-    x = iterable(x, make_digits=True)
-
-    grades = []
-    for a in list(sorted(x))[::-1]:
-        grades.append(find_all_indices(a, x))
-    return flatten(grades)
 
 def group_equal(x):
     res = []
