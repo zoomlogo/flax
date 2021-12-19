@@ -5,13 +5,13 @@ import random as R
 import itertools
 from collections import deque
 
-# ===== Functions and classes =====
-
+# Attrdict class
 class attrdict:
     def __init__(self, *args, **kwargs):
         dict.__init__(self, *args, **kwargs)
         self.__dict__ = self
 
+# ===== Atom's functions =====
 def contains_false(l):
     if not isinstance(l, list):
         return 1 if l else 0
@@ -29,6 +29,24 @@ def depth(x):
         return 1
 
     return max(map(depth, x)) + 1
+
+def diagonals(x):
+    d = [[] for _ in range(len(x) + len(x[0]) - 1)]
+    min_d = -len(x) + 1
+
+    for i in range(len(x[0])):
+        for j in range(len(x)):
+            d[i - j - min_d].append(x[j][i])
+    return d
+
+def divisors(x):
+    res = []
+
+    i = 1
+    while i <= x:
+        if x % i == 0:
+            res.append(i)
+        i += 1
 
 def dyadic_vectorise(fn, x, y):
     dx = depth(x)
@@ -66,6 +84,15 @@ def falsey_indices(x):
         i += 1
     return indices
 
+def find_all_indices(x, y):
+    res = []
+    i = 0
+    while i < len(y):
+        if y[i] == x:
+            res.append(i)
+        i += 1
+    return res
+
 def from_bin(x):
     x = iterable(x)
     sign = -1 if sum(x) < 0 else 1
@@ -102,6 +129,33 @@ def grade_up(x):
         grades.append(find_all_indices(a, x))
     return flatten(grades)
 
+def group(x):
+    res = {}
+    for i, it in enumerate(x):
+        it = repr(it)
+        if it in res:
+            res[it].append(i + 1)
+        else:
+            res[it] = [i + 1]
+    return [res[k] for k in sorted(res, key=eval)]
+
+def group_equal(x):
+    res = []
+    for e in x:
+        if res and res[-1][0] == e:
+            res[-1].append(e)
+        else:
+            res.append([e])
+    return res
+
+def index(x, y):
+    if not isinstance(x, list):
+        return x
+
+    if isinstance(y, int):
+        return x[(y - 1) % len(x)]
+    return [index(x, M.floor(y)), index(x, M.ceil(y))]
+
 def iterable(x, make_range=False, make_digits=False):
     if not isinstance(x, list):
         if make_range:
@@ -112,6 +166,27 @@ def iterable(x, make_range=False, make_digits=False):
                             1 if x < 0 else 0:]]
         return [x]
     return x
+
+def join_newlines(x):
+    return laminate(x, 10)
+
+def join_spaces(x):
+    return laminate(x, 32)
+
+def laminate(x, y):
+    res = [y] * (len(x) * 2 - 1)
+    res[0::2] = iterable(x)
+    return x
+
+def mold(x, y):
+    for i in range(len(y)):
+        if isinstance(y[i], list):
+            mold(x, y[i])
+        else:
+            item = x.pop(0)
+            y[i] = item
+            x.append(item)
+    return y
 
 def pp(x):
     x = repr(x) \
@@ -139,6 +214,12 @@ def pp(x):
 
     return x
 
+def prefixes(x):
+    res = []
+    for i in range(len(x)):
+        res.append(x[:i + 1])
+    return res
+
 def random(x):
     x = iterable(x)
     return R.choice(x)
@@ -160,7 +241,6 @@ def reduce_first(fn, L):
     for x in L[1:]:
         res = fn(res, x)
     return res
-
 
 def reshape(shape, L):
     if not isinstance(L, list):
@@ -204,12 +284,34 @@ def split(x, c):
         res.append(tmp)
     return res
 
+def split_at_occurences(x, y):
+    res = []
+    tmp = []
+
+    for e in x:
+        if e == y:
+            res.append(tmp)
+            tmp = []
+        else:
+            tmp.append(e)
+
+    if tmp:
+        res.append(tmp)
+
+    return res
+
 def sub_lists(l):
     lists = [[]]
     for i in range(len(l) + 1):
         for j in range(i):
             lists.append(l[j:i])
     return lists
+
+def suffixes(x):
+    res = []
+    for i in range(len(x)):
+        res.append(x[i:])
+    return res
 
 def to_bin(x):
     return [-i if x < 0 else i
@@ -244,112 +346,6 @@ def vectorise(fn, x):
 zip = lambda *x: [[*x] for x in itertools.zip_longest(*x, fillvalue=0)]
 
 # ====== Atoms ========
-
-
-def group_equal(x):
-    res = []
-    for e in x:
-        if res and res[-1][0] == e:
-            res[-1].append(e)
-        else:
-            res.append([e])
-    return res
-
-def group(x):
-    res = {}
-    for i, it in enumerate(x):
-        it = repr(it)
-        if it in res:
-            res[it].append(i + 1)
-        else:
-            res[it] = [i + 1]
-    return [res[k] for k in sorted(res, key=eval)]
-
-
-def divisors(x):
-    res = []
-
-    i = 1
-    while i <= x:
-        if x % i == 0:
-            res.append(i)
-        i += 1
-
-def join_spaces(x):
-    return laminate(x, 32)
-
-def join_newlines(x):
-    return laminate(x, 10)
-
-def prefixes(x):
-    res = []
-    for i in range(len(x)):
-        res.append(x[:i + 1])
-    return res
-
-def suffixes(x):
-    res = []
-    for i in range(len(x)):
-        res.append(x[i:])
-    return res
-
-def laminate(x, y):
-    res = [y] * (len(x) * 2 - 1)
-    res[0::2] = iterable(x)
-    return x
-
-def find_all_indices(x, y):
-    res = []
-    i = 0
-    while i < len(y):
-        if y[i] == x:
-            res.append(i)
-        i += 1
-    return res
-
-def index(x, y):
-    if not isinstance(x, list):
-        return x
-
-    if isinstance(y, int):
-        return x[(y - 1) % len(x)]
-    return [index(x, M.floor(y)), index(x, M.ceil(y))]
-
-def split_at_occurences(x, y):
-    res = []
-    tmp = []
-
-    for e in x:
-        if e == y:
-            res.append(tmp)
-            tmp = []
-        else:
-            tmp.append(e)
-
-    if tmp:
-        res.append(tmp)
-
-    return res
-
-def mold(x, y):
-    for i in range(len(y)):
-        if isinstance(y[i], list):
-            mold(x, y[i])
-        else:
-            item = x.pop(0)
-            y[i] = item
-            x.append(item)
-    return y
-
-def diagonals(x):
-    d = [[] for _ in range(len(x) + len(x[0]) - 1)]
-    min_d = -len(x) + 1
-
-    for i in range(len(x[0])):
-        for j in range(len(x)):
-            d[i - j - min_d].append(x[j][i])
-    return d
-
 atoms = {
     # Single byte nilads
     'Ŧ': attrdict(arity=0, call=lambda: 10),
@@ -509,21 +505,59 @@ atoms = {
     'œ·': attrdict(arity=2, call=lambda x, y: sum(x[i][0] * y[i] for i in range(len(y)))),
 }
 
-# =====================
-#     Implementation
-#       of Chains
-# =====================
-
+# ===== Chain functions ====
 def arities(links):
     return [link.arity for link in links]
 
+def copy_to(atom, value):
+    atom.call = lambda: value
+    return value
+
+def dyadic_chain(chain, x, y):
+    atoms['⍺'].call = lambda: x
+    atoms['⍵'].call = lambda: y
+
+    for link in chain:
+        if link.arity < 0:
+            link.arity = 2
+
+    if chain and arities(chain[0:3]) == [2, 2, 2]:
+        accumulator = chain[0].call(x, y)
+        chain = chain[1:]
+    elif leading_nilad(chain):
+        accumulator = chain[0].call()
+        chain = chain[1:]
+    else:
+        accumulator = x
+
+    while chain:
+        if arities(chain[0:3]) == [2, 2, 0] and leading_nilad(chain[2:]):
+            accumulator = chain[1].call(chain[0].call(accumulator, y), chain[2].call())
+            chain = chain[3:]
+        elif arities(chain[0:2]) == [2, 2]:
+            accumulator = chain[0].call(accumulator, chain[1].call(x, y))
+            chain = chain[2:]
+        elif arities(chain[0:2]) == [2, 0]:
+            accumulator = chain[0].call(accumulator, chain[1].call())
+            chain = chain[2:]
+        elif arities(chain[0:2]) == [0, 2]:
+            accumulator = chain[1].call(chain[0].call(), accumulator)
+            chain = chain[2:]
+        elif chain[0].arity == 2:
+            accumulator = chain[0].call(accumulator, y)
+            chain = chain[1:]
+        elif chain[0].arity == 1:
+            accumulator = chain[0].call(accumulator)
+            chain = chain[1:]
+        else:
+            pp(accumulator)
+            accumulator = chain[0].call()
+            chain = chain[1:]
+
+    return accumulator
+
 def leading_nilad(chain):
     return chain and arities(chain) + [1] < [0, 2] * len(chain)
-
-def niladic_chain(chain):
-    if not chain or chain[0].arity > 0:
-        return monadic_chain(chain, 0)
-    return monadic_chain(chain[1:], chain[0].call())
 
 def monadic_chain(chain, x):
     atoms['⍺'].call = lambda: x
@@ -572,48 +606,10 @@ def monadic_chain(chain, x):
 
     return accumulator
 
-def dyadic_chain(chain, x, y):
-    atoms['⍺'].call = lambda: x
-    atoms['⍵'].call = lambda: y
-
-    for link in chain:
-        if link.arity < 0:
-            link.arity = 2
-
-    if chain and arities(chain[0:3]) == [2, 2, 2]:
-        accumulator = chain[0].call(x, y)
-        chain = chain[1:]
-    elif leading_nilad(chain):
-        accumulator = chain[0].call()
-        chain = chain[1:]
-    else:
-        accumulator = x
-
-    while chain:
-        if arities(chain[0:3]) == [2, 2, 0] and leading_nilad(chain[2:]):
-            accumulator = chain[1].call(chain[0].call(accumulator, y), chain[2].call())
-            chain = chain[3:]
-        elif arities(chain[0:2]) == [2, 2]:
-            accumulator = chain[0].call(accumulator, chain[1].call(x, y))
-            chain = chain[2:]
-        elif arities(chain[0:2]) == [2, 0]:
-            accumulator = chain[0].call(accumulator, chain[1].call())
-            chain = chain[2:]
-        elif arities(chain[0:2]) == [0, 2]:
-            accumulator = chain[1].call(chain[0].call(), accumulator)
-            chain = chain[2:]
-        elif chain[0].arity == 2:
-            accumulator = chain[0].call(accumulator, y)
-            chain = chain[1:]
-        elif chain[0].arity == 1:
-            accumulator = chain[0].call(accumulator)
-            chain = chain[1:]
-        else:
-            pp(accumulator)
-            accumulator = chain[0].call()
-            chain = chain[1:]
-
-    return accumulator
+def niladic_chain(chain):
+    if not chain or chain[0].arity > 0:
+        return monadic_chain(chain, 0)
+    return monadic_chain(chain[1:], chain[0].call())
 
 def variadic_link(link, *args):
     if link.arity < 0:
@@ -624,11 +620,3 @@ def variadic_link(link, *args):
         return link.call()
     else:
         return link.call(*args)
-
-def copy_to(atom, value):
-    atom.call = lambda: value
-    return value
-
-# =====================
-#        Parser
-# =====================
