@@ -611,6 +611,15 @@ def niladic_chain(chain):
         return monadic_chain(chain, 0)
     return monadic_chain(chain[1:], chain[0].call())
 
+def variadic_chain(chain, *args):
+    args = [*filter(None.__ne__, args)]
+    if len(args) == 0:
+        return niladic_chain(chain)
+    elif len(args) == 1:
+        return monadic_chain(chain, *args)
+    else:
+        return dyadic_chain(chain, *args)
+
 def variadic_link(link, *args):
     if link.arity < 0:
         args = [*filter(None.__ne__, args)]
