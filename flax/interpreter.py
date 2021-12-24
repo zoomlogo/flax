@@ -48,6 +48,8 @@ def divisors(x):
             res.append(i)
         i += 1
 
+    return res
+
 def dyadic_vectorise(fn, x, y):
     dx = depth(x)
     dy = depth(y)
@@ -155,6 +157,15 @@ def index(x, y):
     if isinstance(y, int):
         return x[(y - 1) % len(x)]
     return [index(x, M.floor(y)), index(x, M.ceil(y))]
+
+def indices_multidimensional(x, up_lvl = []):
+    a_in = []
+    for i, item in enumerate(x):
+        if not isinstance(item, list):
+            a_in.append(up_lvl + [i + 1])
+        else:
+            a_in.extend(indices_multidimensional(item, up_lvl = up_lvl + [i + 1]))
+    return a_in
 
 def iterable(x, make_range=False, make_digits=False):
     if not isinstance(x, list):
@@ -497,6 +508,7 @@ atoms = {
     'Œn': attrdict(arity=1, call=lambda x: vectorise(M.sinh, x)),
     'Œo': attrdict(arity=1, call=lambda x: vectorise(M.cosh, x)),
     'Œh': attrdict(arity=1, call=lambda x: vectorise(M.tanh, x)),
+    'Œi': attrdict(arity=1, call=indices_multidimensional),
 
     # Dyadic diagraphs
     'œl': attrdict(arity=2, call=lambda x, y: dyadic_vectorise(lambda a, b: a << b, x, y)),
