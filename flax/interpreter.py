@@ -525,6 +525,9 @@ def copy_to(atom, value):
     atom.call = lambda: value
     return value
 
+def create_chain(chain, arity=-1, isF=True):
+    return attrdict(arity=arity, chain=chain, call=lambda x=None, y=None: variadic_chain(chain, *(isF and (x, y) or (y, x))))
+
 def dyadic_chain(chain, x, y):
     atoms['⍺'].call = lambda: x
     atoms['⍵'].call = lambda: y
@@ -641,3 +644,37 @@ def variadic_link(link, *args):
         return link.call()
     else:
         return link.call(*args)
+
+# ========= Quicks ==========
+def qreduce(links, outer_links, i, arity=1):
+    ret = [attrdict(arity=arity)]
+    if len(links) == 1:
+        ret[0].call = lambda x, y=None: reduce(links[0].call, x)
+    else:
+        ret[0].call = lambda x, y=None: [reduce(links[0].call, t) for t in split(iterable(x), links[1].call())]
+    return ret
+
+def qreduce_first(links, outer_links, i, arity=1):
+    ret = [attrdict(arity=arity)]
+    if len(links) == 1:
+        ret[0].call = lambda x, y=None: reduce_first(links[0].call, x)
+    else:
+        ret[0].call = lambda x, y=None: [reduce_first(links[0].call, t) for t in split(iterable(x), links[1].call())]
+    return ret
+
+quicks = {
+    '©': attrdict(condition=lambda links: links,
+        qlink=lambda links, outer_links, i: [attrdict(arity=links[0].arity, call=lambda x=None,y=None: copy_to(atoms['®'], variadic_link(links[0], x, y)))]),
+    'ß': attrdict(condition=lambda links: True,
+        qlink=lambda links, outer_links, i: [create_chain(outer_links[i])]),
+    '₀': attrdict(condition=lambda links: True,
+        qlink=lambda links, outer_links, i: [create_chain(outer_links[i], 0)]),
+    '₁': attrdict(condition=lambda links: True,
+        qlink=lambda links, outer_links, i: [create_chain(outer_links[i], 1)]),
+    '₂': attrdict(condition=lambda links: True,
+        qlink=lambda links, outer_links, i: [create_chain(outer_links[i], 1)]),
+    '/': attrdict(condition=lambda links: links and links[0].arity,
+        qlink=qreduce),
+    '⌿': attrdict(condition=lambda links: links and links[0].arity,
+        qlink=qreduce_first)
+}
