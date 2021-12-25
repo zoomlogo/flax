@@ -664,9 +664,11 @@ def qreduce_first(links, outer_links, i, arity=1):
 
 quicks = {
     '©': attrdict(condition=lambda links: links,
-        qlink=lambda links, outer_links, i: [attrdict(arity=links[0].arity, call=lambda x=None,y=None: copy_to(atoms['®'], variadic_link(links[0], x, y)))]),
+        qlink=lambda links, outer_links, i: [attrdict(arity=links[0].arity, call=lambda x=None, y=None: copy_to(atoms['®'], variadic_link(links[0], x, y)))]),
     'ß': attrdict(condition=lambda links: True,
         qlink=lambda links, outer_links, i: [create_chain(outer_links[i])]),
+    '¨': attrdict(condition=lambda links: links and links[0].arity == 1,
+        qlink=lambda links, outer_links, i: [attrdict(arity=links[0].arity, call=lambda x, y=None:[*map(links[0].call, x)])]),
     '₀': attrdict(condition=lambda links: True,
         qlink=lambda links, outer_links, i: [create_chain(outer_links[i], 0)]),
     '₁': attrdict(condition=lambda links: True,
@@ -676,5 +678,5 @@ quicks = {
     '/': attrdict(condition=lambda links: links and links[0].arity,
         qlink=qreduce),
     '⌿': attrdict(condition=lambda links: links and links[0].arity,
-        qlink=qreduce_first)
+        qlink=qreduce_first),
 }
