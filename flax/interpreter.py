@@ -635,15 +635,23 @@ def variadic_chain(chain, *args):
     else:
         return dyadic_chain(chain, *args)
 
-def variadic_link(link, *args):
+def variadic_link(link, *args, reverself=False):
     if link.arity < 0:
         args = [*filter(None.__ne__, args)]
         link.arity = len(args)
     
     if link.arity == 0:
         return link.call()
-    else:
-        return link.call(*args)
+    elif link.arity == 1:
+        return link.call(args[0])
+    elif link.arity == 2:
+        if reverself:
+            if len(args) == 1:
+                return link.call(args[0], args[0])
+            else:
+                return link.call(args[1], args[0])
+        else:
+            return link.call(args[0], args[1])
 
 # ========= Quicks ==========
 def qreduce(links, outer_links, i, arity=1):
@@ -668,7 +676,7 @@ quicks = {
     'ß': attrdict(condition=lambda links: True,
         qlink=lambda links, outer_links, i: [create_chain(outer_links[i])]),
     '¨': attrdict(condition=lambda links: links and links[0].arity == 1,
-        qlink=lambda links, outer_links, i: [attrdict(arity=links[0].arity, call=lambda x, y=None:[*map(links[0].call, x)])]),
+        qlink=lambda links, outer_links, i: [attrdict(arity=links[0].arity, call=lambda x, y=None:[variadic_link(links[0], a, reverself=True) for a in x])]),
     '₀': attrdict(condition=lambda links: True,
         qlink=lambda links, outer_links, i: [create_chain(outer_links[i], 0)]),
     '₁': attrdict(condition=lambda links: True,
