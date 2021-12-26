@@ -6,7 +6,7 @@ import itertools
 from collections import deque
 
 # Attrdict class
-class attrdict:
+class attrdict(dict):
     def __init__(self, *args, **kwargs):
         dict.__init__(self, *args, **kwargs)
         self.__dict__ = self
