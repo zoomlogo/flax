@@ -6,7 +6,7 @@ import itertools
 from collections import deque
 
 # Attrdict class
-class attrdict:
+class attrdict(dict):
     def __init__(self, *args, **kwargs):
         dict.__init__(self, *args, **kwargs)
         self.__dict__ = self
@@ -47,6 +47,8 @@ def divisors(x):
         if x % i == 0:
             res.append(i)
         i += 1
+
+    return res
 
 def dyadic_vectorise(fn, x, y):
     dx = depth(x)
@@ -155,6 +157,15 @@ def index(x, y):
     if isinstance(y, int):
         return x[(y - 1) % len(x)]
     return [index(x, M.floor(y)), index(x, M.ceil(y))]
+
+def indices_multidimensional(x, up_lvl = []):
+    a_in = []
+    for i, item in enumerate(x):
+        if not isinstance(item, list):
+            a_in.append(up_lvl + [i + 1])
+        else:
+            a_in.extend(indices_multidimensional(item, up_lvl = up_lvl + [i + 1]))
+    return a_in
 
 def iterable(x, make_range=False, make_digits=False):
     if not isinstance(x, list):
@@ -427,6 +438,7 @@ atoms = {
     '⊢': attrdict(arity=1, call=prefixes),
     '⊣': attrdict(arity=1, call=suffixes),
     '∀': attrdict(arity=1, call=lambda x: [sum(r) for r in iterable(x)]),
+    'K': attrdict(arity=1, call=lambda x: [*itertools.accumulate(iterable(x))]),
 
     # Single byte dyads
     '+': attrdict(arity=2, call=lambda x, y: dyadic_vectorise(lambda a, b: a + b, x, y)),
@@ -497,6 +509,7 @@ atoms = {
     'Œn': attrdict(arity=1, call=lambda x: vectorise(M.sinh, x)),
     'Œo': attrdict(arity=1, call=lambda x: vectorise(M.cosh, x)),
     'Œh': attrdict(arity=1, call=lambda x: vectorise(M.tanh, x)),
+    'Œi': attrdict(arity=1, call=indices_multidimensional),
 
     # Dyadic diagraphs
     'œl': attrdict(arity=2, call=lambda x, y: dyadic_vectorise(lambda a, b: a << b, x, y)),
@@ -512,6 +525,9 @@ def arities(links):
 def copy_to(atom, value):
     atom.call = lambda: value
     return value
+
+def create_chain(chain, arity=-1, isF=True):
+    return attrdict(arity=arity, chain=chain, call=lambda x=None, y=None: variadic_chain(chain, *(isF and (x, y) or (y, x))))
 
 def dyadic_chain(chain, x, y):
     atoms['⍺'].call = lambda: x
@@ -620,12 +636,56 @@ def variadic_chain(chain, *args):
     else:
         return dyadic_chain(chain, *args)
 
-def variadic_link(link, *args):
+def variadic_link(link, *args, reverself=False):
     if link.arity < 0:
         args = [*filter(None.__ne__, args)]
         link.arity = len(args)
     
     if link.arity == 0:
         return link.call()
+    elif link.arity == 1:
+        return link.call(args[0])
+    elif link.arity == 2:
+        if reverself:
+            if len(args) == 1:
+                return link.call(args[0], args[0])
+            else:
+                return link.call(args[1], args[0])
+        else:
+            return link.call(args[0], args[1])
+
+# ========= Quicks ==========
+def qreduce(links, outer_links, i, arity=1):
+    ret = [attrdict(arity=arity)]
+    if len(links) == 1:
+        ret[0].call = lambda x, y=None: reduce(links[0].call, x)
     else:
-        return link.call(*args)
+        ret[0].call = lambda x, y=None: [reduce(links[0].call, t) for t in split(iterable(x), links[1].call())]
+    return ret
+
+def qreduce_first(links, outer_links, i, arity=1):
+    ret = [attrdict(arity=arity)]
+    if len(links) == 1:
+        ret[0].call = lambda x, y=None: reduce_first(links[0].call, x)
+    else:
+        ret[0].call = lambda x, y=None: [reduce_first(links[0].call, t) for t in split(iterable(x), links[1].call())]
+    return ret
+
+quicks = {
+    '©': attrdict(condition=lambda links: links,
+        qlink=lambda links, outer_links, i: [attrdict(arity=links[0].arity, call=lambda x=None, y=None: copy_to(atoms['®'], variadic_link(links[0], x, y)))]),
+    'ß': attrdict(condition=lambda links: True,
+        qlink=lambda links, outer_links, i: [create_chain(outer_links[i])]),
+    '¨': attrdict(condition=lambda links: links and links[0].arity == 1,
+        qlink=lambda links, outer_links, i: [attrdict(arity=links[0].arity, call=lambda x, y=None:[variadic_link(links[0], a, reverself=True) for a in x])]),
+    '₀': attrdict(condition=lambda links: True,
+        qlink=lambda links, outer_links, i: [create_chain(outer_links[i], 0)]),
+    '₁': attrdict(condition=lambda links: True,
+        qlink=lambda links, outer_links, i: [create_chain(outer_links[i], 1)]),
+    '₂': attrdict(condition=lambda links: True,
+        qlink=lambda links, outer_links, i: [create_chain(outer_links[i], 2)]),
+    '/': attrdict(condition=lambda links: links and links[0].arity,
+        qlink=qreduce),
+    '⌿': attrdict(condition=lambda links: links and links[0].arity,
+        qlink=qreduce_first),
+}
