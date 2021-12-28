@@ -17,9 +17,6 @@ class TOKEN_TYPE(enum.Enum):
 
 
 def tokenise(program):
-    """
-    Tokenise the program.
-    """
 
     tokens = []
     program = collections.deque(program)
