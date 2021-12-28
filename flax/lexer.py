@@ -2,8 +2,8 @@ import collections
 import enum
 import string
 
-from interpreter import atoms
-from interpreter import quicks
+from flax.interpreter import atoms
+from flax.interpreter import quicks
 
 
 class TOKEN_TYPE(enum.Enum):
@@ -17,13 +17,12 @@ class TOKEN_TYPE(enum.Enum):
 
 
 def tokenise(program):
-
     tokens = []
     program = collections.deque(program)
 
     while program:
-        head_character = program.popleft()
-        if head_character == "'":
+        head = program.popleft()
+        if head == "'":
             string_contents = ""
             while program:
                 top = program.popleft()
@@ -34,43 +33,49 @@ def tokenise(program):
                 else:
                     string_contents += top
             tokens.append([TOKEN_TYPE.STRING, string_contents])
-        elif head_character in string.digits + ".j":
-            contextual_token_value = head_character
-            if head_character == "0" and not (program and program[0] in ".j"):
+        elif head in string.digits + "¯.j":
+            contextual_token_value = head
+            if head == "0" and not (program and program[0] in "¯.j"):
                 # Handle the special case of 0.
                 tokens.append([TOKEN_TYPE.NUMBER, contextual_token_value])
             else:
                 while (
                     program
-                    and program[0] in string.digits + ".j"
+                    and program[0] in string.digits + "¯.j"
                     and (contextual_token_value + program[0]).count("j") < 2
                     and all(
-                        x.count(".") < 2
-                        for x in (contextual_token_value + program[0]).split(
-                            "j"
-                        )
+                        (x.count(".") < 2 and x.count("¯") < 2)
+                        for x in (contextual_token_value + program[0]).split("j")
                     )
                 ):
                     contextual_token_value += program.popleft()
                 tokens.append([TOKEN_TYPE.NUMBER, contextual_token_value])
-        elif head_character == "⍝":
+        elif head == "⍝":
+            # Just ignore comments
             while program.popleft() != "\n":
                 pass
-            # Just ignore comments
-        elif head_character == "\n":
+        elif head == "\n":
             tokens.append([TOKEN_TYPE.NEWLINE, "\n"])
-        elif head_character in "øµðɓг":
-            tokens.append([TOKEN_TYPE.TRAIN_SEPARATOR, head_character])
-        elif head_character in atoms:
-            tokens.append([TOKEN_TYPE.ATOM, head_character])
-        elif head_character in quicks:
-            tokens.append([TOKEN_TYPE.QUICK, head_character])
-        elif head_character == "[":
+        elif head in "øµðɓг":  # Is г really a train separator or a quick?
+            tokens.append([TOKEN_TYPE.TRAIN_SEPARATOR, head])
+        elif head in atoms:
+            tokens.append([TOKEN_TYPE.ATOM, head])
+        elif head in quicks:
+            tokens.append([TOKEN_TYPE.QUICK, head])
+        elif head == "[":
             contents = ""
-            while head_character != "]":
-                head_character = program.popleft()
-                if head_character == "]":
-                    tokens.append([TOKEN_TYPE.LIST, contents])
+            k = 1
+            while True:
+                head = program.popleft()
+                if head == "]":
+                    k -= 1
+                    if k == 0:
+                        tokens.append([TOKEN_TYPE.LIST, tokenise(contents)])
+                        break
+                    else:
+                        contents += head
                 else:
-                    contents += head_character
+                    if head == "[":
+                        k += 1
+                    contents += head
     return tokens
