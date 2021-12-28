@@ -2,8 +2,8 @@ import collections
 import enum
 import string
 
-from flax.interpreter import atoms
-from flax.interpreter import quicks
+from interpreter import atoms
+from interpreter import quicks
 
 
 class TOKEN_TYPE(enum.Enum):
@@ -45,7 +45,9 @@ def tokenise(program):
                     and (contextual_token_value + program[0]).count("j") < 2
                     and all(
                         (x.count(".") < 2 and x.count("¯") < 2)
-                        for x in (contextual_token_value + program[0]).split("j")
+                        for x in (contextual_token_value + program[0]).split(
+                            "j"
+                        )
                     )
                 ):
                     contextual_token_value += program.popleft()
@@ -57,11 +59,21 @@ def tokenise(program):
         elif head == "\n":
             tokens.append([TOKEN_TYPE.NEWLINE, "\n"])
         elif head in "øµðɓг":  # Is г really a train separator or a quick?
+            # according to the specs, yes.
             tokens.append([TOKEN_TYPE.TRAIN_SEPARATOR, head])
         elif head in atoms:
             tokens.append([TOKEN_TYPE.ATOM, head])
         elif head in quicks:
             tokens.append([TOKEN_TYPE.QUICK, head])
+        elif head in "ØŒœ" and program:
+            digraph = head + program.popleft()
+            if digraph in atoms:
+                tokens.append([TOKEN_TYPE.ATOM, digraph])
+            elif digraph in quicks:
+                tokens.append([TOKEN_TYPE.QUICK, digraph])
+            else:
+                raise NameError("Digraph not defined.")
+
         elif head == "[":
             contents = ""
             k = 1
