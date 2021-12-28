@@ -2,8 +2,8 @@ import collections
 import enum
 import string
 
-from interpreter import atoms
-from interpreter import quicks
+from flax.interpreter import atoms
+from flax.interpreter import quicks
 
 
 class TOKEN_TYPE(enum.Enum):
