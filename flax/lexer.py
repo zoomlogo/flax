@@ -16,7 +16,7 @@ class TOKEN_TYPE(enum.Enum):
     LIST = 7
 
 
-def tokenise(program: str) -> list[TOKEN_TYPE, str]:
+def tokenise(program):
     """
     Tokenise the program.
     """
