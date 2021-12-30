@@ -7,6 +7,20 @@ from flax.interpreter import create_chain
 from flax.lexer import *
 
 
+def arrayify(arr_list):
+    array = []
+    for x in arr_list:
+        if x[0] == TOKEN_TYPE.NUMBER:
+            array.append(numberify(x[1]))
+        elif x[0] == TOKEN_TYPE.LIST:
+            array.append(arrayify(x[1]))
+        elif x[0] == TOKEN_TYPE.STRING:
+            array.append(
+                [ord(c) for c in x[1].replace("\\n", "\n").replace("\\'", "'")]
+            )
+    return array
+
+
 def numberify(x):
     number = x.replace("¯", "-")
     if "j" in number:
@@ -56,9 +70,7 @@ def parse(tokens):
                 subtrain = subtrain[1:]
             for token in subtrain:
                 if token[0] == TOKEN_TYPE.NUMBER:
-                    stack.append(
-                        attrdict(arity=0, call=lambda: numberify(token[1]))
-                    )
+                    stack.append(attrdict(arity=0, call=lambda: numberify(token[1])))
                 elif token[0] == TOKEN_TYPE.STRING:
                     stack.append(
                         attrdict(
@@ -71,13 +83,13 @@ def parse(tokens):
                             ],
                         )
                     )
+                elif token[0] == TOKEN_TYPE.LIST:
+                    stack.append(attrdict(arity=0, call=lambda: arrayify(token[1])))
                 elif token[0] == TOKEN_TYPE.ATOM:
                     stack.append(atoms[token[1]])
                 elif token[0] == TOKEN_TYPE.QUICK:
                     popped = []
-                    while not quicks[token[1]].condition(popped) and (
-                        stack or trains
-                    ):
+                    while not quicks[token[1]].condition(popped) and (stack or trains):
                         popped.insert(0, (stack or chains).pop())
                     stack += quicks[token[1]].qlink(popped, trains, index)
             chains.append(create_chain(stack, arity, is_forward))
