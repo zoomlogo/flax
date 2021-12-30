@@ -45,9 +45,7 @@ def tokenise(program):
                     and (contextual_token_value + program[0]).count("j") < 2
                     and all(
                         (x.count(".") < 2 and x.count("¯") < 2)
-                        for x in (contextual_token_value + program[0]).split(
-                            "j"
-                        )
+                        for x in (contextual_token_value + program[0]).split("j")
                     )
                 ):
                     contextual_token_value += program.popleft()
