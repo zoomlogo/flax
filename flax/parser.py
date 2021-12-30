@@ -2,7 +2,7 @@ from flax.interpreter import attrdict
 from flax.interpreter import atoms
 from flax.interpreter import quicks
 
-from flax.lexer import TOKEN_TYPE
+from flax.lexer import *
 
 
 def numberify(x):
@@ -38,11 +38,15 @@ def numberify(x):
 
 
 def parse(tokens):
+    trains = []
     stack = []
 
     while tokens:
         token = tokens[0]
-        if token[0] == TOKEN_TYPE.NUMBER:
+        if token[0] == TOKEN_TYPE.NEWLINE:
+            trains.append(stack[::])
+            stack = []
+        elif token[0] == TOKEN_TYPE.NUMBER:
             stack.append(attrdict(arity=0, call=lambda: numberify(token[1])))
         elif token[0] == TOKEN_TYPE.STRING:
             stack.append(
@@ -50,11 +54,25 @@ def parse(tokens):
                     arity=0,
                     call=lambda: [
                         ord(x)
-                        for x in token[1].replace("\\n", "\n").replace("\\'", "'")
+                        for x in token[1]
+                        .replace("\\n", "\n")
+                        .replace("\\'", "'")
                     ],
                 )
             )
         elif token[0] == TOKEN_TYPE.ATOM:
             stack.append(atoms[token[1]])
+        elif token[0] == TOKEN_TYPE.QUICK:
+            popped = []
+            while not quicks[token[1]].condition(popped) and (stack or trains):
+                popped.insert(0, (stack or trains).pop())
+            stack += quicks[token[1]].qlink(popped, trains, index)
         tokens = tokens[1:]
-    return stack
+    if stack:
+        trains.append(stack[::])
+    return trains
+
+
+x = tokenise("1+1ð2+2\n3+3")
+y = parse(x)
+print(y)
