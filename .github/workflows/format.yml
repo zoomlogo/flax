@@ -20,4 +20,4 @@ jobs:
         pip install black
     - name: Black Format
       run: |
-        black --line-length=88
+        black --line-length=88 .
