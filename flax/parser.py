@@ -1,6 +1,8 @@
 from flax.interpreter import attrdict
 from flax.interpreter import atoms
 from flax.interpreter import quicks
+from flax.interpreter import train_separators
+from flax.interpreter import create_chain
 
 from flax.lexer import *
 
@@ -38,41 +40,69 @@ def numberify(x):
 
 
 def parse(tokens):
-    trains = []
-    stack = []
 
-    while tokens:
-        token = tokens[0]
-        if token[0] == TOKEN_TYPE.NEWLINE:
-            trains.append(stack[::])
+    tokens = split_on_newlines(tokens)
+    trains = [[] for _ in tokens]
+
+    for index, train in enumerate(tokens):
+        chains = trains[index]
+        subtrains = split_on_separators(train)
+        for subtrain in subtrains:
             stack = []
-        elif token[0] == TOKEN_TYPE.NUMBER:
-            stack.append(attrdict(arity=0, call=lambda: numberify(token[1])))
-        elif token[0] == TOKEN_TYPE.STRING:
-            stack.append(
-                attrdict(
-                    arity=0,
-                    call=lambda: [
-                        ord(x)
-                        for x in token[1]
-                        .replace("\\n", "\n")
-                        .replace("\\'", "'")
-                    ],
-                )
-            )
-        elif token[0] == TOKEN_TYPE.ATOM:
-            stack.append(atoms[token[1]])
-        elif token[0] == TOKEN_TYPE.QUICK:
-            popped = []
-            while not quicks[token[1]].condition(popped) and (stack or trains):
-                popped.insert(0, (stack or trains).pop())
-            stack += quicks[token[1]].qlink(popped, trains, index)
-        tokens = tokens[1:]
-    if stack:
-        trains.append(stack[::])
+            arity, is_forward = train_separators.get(subtrain[0][1], (-1, True))
+            if arity != -1:
+                subtrain = subtrain[1:]
+            for token in subtrain:
+                if token[0] == TOKEN_TYPE.NUMBER:
+                    stack.append(
+                        attrdict(arity=0, call=lambda: numberify(token[1]))
+                    )
+                elif token[0] == TOKEN_TYPE.STRING:
+                    stack.append(
+                        attrdict(
+                            arity=0,
+                            call=lambda: [
+                                ord(x)
+                                for x in token[1]
+                                .replace("\\n", "\n")
+                                .replace("\\'", "'")
+                            ],
+                        )
+                    )
+                elif token[0] == TOKEN_TYPE.ATOM:
+                    stack.append(atoms[token[1]])
+                elif token[0] == TOKEN_TYPE.QUICK:
+                    popped = []
+                    while not quicks[token[1]].condition(popped) and (
+                        stack or trains
+                    ):
+                        popped.insert(0, (stack or chains).pop())
+                    stack += quicks[token[1]].qlink(popped, trains, index)
+            chains.append(create_chain(stack, arity, is_forward))
     return trains
 
 
-x = tokenise("1+1ð2+2\n3+3")
-y = parse(x)
-print(y)
+def split_on_newlines(tokens):
+    lines = []
+    current = []
+    for token in tokens:
+        if token[0] == TOKEN_TYPE.NEWLINE:
+            lines.append(current)
+            current = []
+        else:
+            current.append(token)
+    lines.append(current)
+    return lines
+
+
+def split_on_separators(tokens):
+    separators = []
+    current = []
+    for token in tokens:
+        if token[0] == TOKEN_TYPE.TRAIN_SEPARATOR:
+            separators.append(current)
+            current = [token]
+        else:
+            current.append(token)
+    separators.append(current)
+    return separators

@@ -892,3 +892,13 @@ quicks = {
         condition=lambda links: links and links[0].arity, qlink=qreduce_first
     ),
 }
+
+# == Train Separators ==
+
+train_separators = {
+    "ø": (0, True),
+    "µ": (1, True),
+    "г": (1, True),
+    "ð": (2, True),
+    "ɓ": (2, False),
+}
