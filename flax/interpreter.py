@@ -220,28 +220,32 @@ def mold(x, y):
     return y
 
 
-def pp(x):
-    x = repr(x).replace("[]", "⍬").replace("-", "¯").replace("j", "i")
-
-    i = 0
-    indent = 0
-
-    while i < len(x):
-        if x[i] == "[":
-            if x[i - 1] == " ":
-                print(end="\n" + " " * indent + "[")
+def pp(obj):
+    def rsb(x):
+        def sss(a):
+            if isinstance(a, complex):
+                return "j".join(map(sss, [a.real, a.imag]))
+            elif a < 0:
+                return f"¯{-a}"
+            elif int(a) == a:
+                return str(int(a))
             else:
-                print(end="[")
-            indent += 1
-        elif x[i] == "]":
-            print(end="]")
-            indent -= 1
-        elif x[i] != " ":
-            print(end=x[i])
-        i += 1
-    print()
+                return str(a)
 
-    return x
+        if not isinstance(x, list):
+            return sss(x)
+
+        string = "["
+        for e in x:
+            if e == []:
+                string += "⍬"
+            else:
+                string += rsb(e)
+            string += " "
+        return string[:-1] + "]"
+
+    print(rsb(obj))
+    return obj
 
 
 def prefixes(x):
@@ -359,11 +363,6 @@ def to_bin(x):
 
 def to_digits(x):
     return [-int(i) if x < 0 else int(i) for i in str(x)[1 if x < 0 else 0 :]]
-
-
-tpp = lambda x: print(
-    repr(x).replace(", ", " ").replace("[]", "⍬").replace("-", "¯").replace("j", "i")
-)
 
 
 def truthy_indices(x):
