@@ -6,7 +6,7 @@ from flax.main import run
 argv = argv[1:]
 
 if argv:
-    code = open(argv[0]).read()
+    code = open(argv[0], encoding="utf-8").read()
     argv = argv[1:]
     run(code, *map(eval, argv))
 else:

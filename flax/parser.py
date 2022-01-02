@@ -56,6 +56,7 @@ def numberify(x):
 def parse(tokens):
 
     tokens = split_on_newlines(tokens)
+    tokens = [*filter([].__ne__, tokens)]
     trains = [[] for _ in tokens]
 
     for index, train in enumerate(tokens):
