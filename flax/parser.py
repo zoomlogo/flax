@@ -95,16 +95,12 @@ def parse(tokens):
                         )
                     )
                 elif token[0] == TOKEN_TYPE.LIST:
-                    stack.append(
-                        attrdict(arity=0, call=lambda: arrayify(token[1]))
-                    )
+                    stack.append(attrdict(arity=0, call=lambda: arrayify(token[1])))
                 elif token[0] == TOKEN_TYPE.ATOM:
                     stack.append(atoms[token[1]])
                 elif token[0] == TOKEN_TYPE.QUICK:
                     popped = []
-                    while not quicks[token[1]].condition(popped) and (
-                        stack or trains
-                    ):
+                    while not quicks[token[1]].condition(popped) and (stack or trains):
                         popped.insert(0, (stack or chains).pop())
                     stack += quicks[token[1]].qlink(popped, trains, index)
             chains.append(create_chain(stack, arity, is_forward))
