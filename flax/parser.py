@@ -71,7 +71,6 @@ def parse(tokens):
                 subtrain = subtrain[1:]
             for token in subtrain:
                 if token[0] == TOKEN_TYPE.NUMBER:
-
                     stack.append(
                         attrdict(
                             arity=0,
@@ -82,16 +81,14 @@ def parse(tokens):
                     stack.append(
                         attrdict(
                             arity=0,
-                            call=lambda: [
+                            call=lambda s=token[1]: [
                                 ord(x)
-                                for x in token[1]
-                                .replace("\\n", "\n")
-                                .replace("\\'", "'")
+                                for x in s.replace("\\n", "\n").replace("\\'", "'")
                             ],
                         )
                     )
                 elif token[0] == TOKEN_TYPE.LIST:
-                    stack.append(attrdict(arity=0, call=lambda: arrayify(token[1])))
+                    stack.append(attrdict(arity=0, call=lambda x=token[1]: arrayify(x)))
                 elif token[0] == TOKEN_TYPE.ATOM:
                     stack.append(atoms[token[1]])
                 elif token[0] == TOKEN_TYPE.QUICK:
@@ -127,13 +124,3 @@ def split_on_separators(tokens):
             current.append(token)
     separators.append(current)
     return separators
-
-
-"""
-import pprint
-
-pp = pprint.PrettyPrinter(indent=4)
-v = parse(tokenise("3+1"))
-pp.pprint(v)
-print(v[0][0].chain[0].call())
-"""
