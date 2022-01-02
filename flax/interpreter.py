@@ -474,7 +474,8 @@ atoms = {
     "K": attrdict(arity=1, call=lambda x: [*itertools.accumulate(iterable(x))]),
     # Single byte dyads
     "+": attrdict(
-        arity=2, call=lambda x, y: dyadic_vectorise(lambda a, b: a + b, x, y)
+        arity=2,
+        call=lambda x, y: dyadic_vectorise(lambda a, b: a + b, x, y),
     ),
     "-": attrdict(
         arity=2, call=lambda x, y: dyadic_vectorise(lambda a, b: a - b, x, y)
