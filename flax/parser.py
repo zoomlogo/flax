@@ -71,7 +71,17 @@ def parse(tokens):
                 subtrain = subtrain[1:]
             for token in subtrain:
                 if token[0] == TOKEN_TYPE.NUMBER:
-                    stack.append(attrdict(arity=0, call=lambda: numberify(token[1])))
+
+                    def helper(x=token[1]):
+                        return numberify(x)
+
+                    stack.append(
+                        attrdict(
+                            arity=0,
+                            call=helper,
+                            n=numberify(token[1]),
+                        )
+                    )
                 elif token[0] == TOKEN_TYPE.STRING:
                     stack.append(
                         attrdict(
@@ -85,12 +95,16 @@ def parse(tokens):
                         )
                     )
                 elif token[0] == TOKEN_TYPE.LIST:
-                    stack.append(attrdict(arity=0, call=lambda: arrayify(token[1])))
+                    stack.append(
+                        attrdict(arity=0, call=lambda: arrayify(token[1]))
+                    )
                 elif token[0] == TOKEN_TYPE.ATOM:
                     stack.append(atoms[token[1]])
                 elif token[0] == TOKEN_TYPE.QUICK:
                     popped = []
-                    while not quicks[token[1]].condition(popped) and (stack or trains):
+                    while not quicks[token[1]].condition(popped) and (
+                        stack or trains
+                    ):
                         popped.insert(0, (stack or chains).pop())
                     stack += quicks[token[1]].qlink(popped, trains, index)
             chains.append(create_chain(stack, arity, is_forward))
@@ -121,3 +135,13 @@ def split_on_separators(tokens):
             current.append(token)
     separators.append(current)
     return separators
+
+
+"""
+import pprint
+
+pp = pprint.PrettyPrinter(indent=4)
+v = parse(tokenise("3+1"))
+pp.pprint(v)
+print(v[0][0].chain[0].call())
+"""
