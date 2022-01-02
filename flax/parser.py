@@ -72,14 +72,10 @@ def parse(tokens):
             for token in subtrain:
                 if token[0] == TOKEN_TYPE.NUMBER:
 
-                    def helper(x=token[1]):
-                        return numberify(x)
-
                     stack.append(
                         attrdict(
                             arity=0,
-                            call=helper,
-                            n=numberify(token[1]),
+                            call=lambda x=token[1]: numberify(x),
                         )
                     )
                 elif token[0] == TOKEN_TYPE.STRING:
@@ -95,12 +91,16 @@ def parse(tokens):
                         )
                     )
                 elif token[0] == TOKEN_TYPE.LIST:
-                    stack.append(attrdict(arity=0, call=lambda: arrayify(token[1])))
+                    stack.append(
+                        attrdict(arity=0, call=lambda: arrayify(token[1]))
+                    )
                 elif token[0] == TOKEN_TYPE.ATOM:
                     stack.append(atoms[token[1]])
                 elif token[0] == TOKEN_TYPE.QUICK:
                     popped = []
-                    while not quicks[token[1]].condition(popped) and (stack or trains):
+                    while not quicks[token[1]].condition(popped) and (
+                        stack or trains
+                    ):
                         popped.insert(0, (stack or chains).pop())
                     stack += quicks[token[1]].qlink(popped, trains, index)
             chains.append(create_chain(stack, arity, is_forward))
