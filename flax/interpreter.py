@@ -232,7 +232,7 @@ def pp(obj):
                 return "j".join(map(sss, [a.real, a.imag]))
             elif a < 0:
                 return f"¯{-a}"
-            elif int(a) == a:
+            elif a != M.inf and int(a) == a:
                 return str(int(a))
             else:
                 return str(a)
@@ -483,7 +483,9 @@ atoms = {
     "Ď": attrdict(arity=1, call=depth),
     "⍋": attrdict(arity=1, call=grade_up),
     "⍒": attrdict(arity=1, call=grade_down),
-    "⅟": attrdict(arity=1, call=lambda x: vectorise(lambda a: 1 / a, x)),
+    "⅟": attrdict(
+        arity=1, call=lambda x: vectorise(lambda a: 1 / a if a else M.inf, x)
+    ),
     "⌈": attrdict(arity=1, call=lambda x: vectorise(lambda a: M.ceil(a), x)),
     "⌊": attrdict(arity=1, call=lambda x: vectorise(lambda a: M.floor(a), x)),
     "A": attrdict(arity=1, call=lambda x: vectorise(lambda a: abs(a), x)),
@@ -507,7 +509,10 @@ atoms = {
         arity=2, call=lambda x, y: dyadic_vectorise(lambda a, b: a * b, x, y)
     ),
     "÷": attrdict(
-        arity=2, call=lambda x, y: dyadic_vectorise(lambda a, b: a / b, x, y)
+        arity=2,
+        call=lambda x, y: dyadic_vectorise(
+            lambda a, b: a / b if b else (M.inf if a else 1), x, y
+        ),
     ),
     "%": attrdict(
         arity=2, call=lambda x, y: dyadic_vectorise(lambda a, b: a % b, x, y)
@@ -606,7 +611,7 @@ atoms = {
     "Øp": attrdict(arity=0, call=lambda: M.pi),
     "Øe": attrdict(arity=0, call=lambda: M.e),
     "ØP": attrdict(arity=0, call=lambda: 1.618033988749895),
-    "Ø∞": attrdict(arity=0, call=lambda: float("inf")),
+    "Ø∞": attrdict(arity=0, call=lambda: M.inf),
     "ØA": attrdict(arity=0, call=lambda: 26),
     "Ø₁": attrdict(arity=0, call=lambda: 128),
     "Ø₂": attrdict(arity=0, call=lambda: 256),
@@ -704,13 +709,8 @@ def dyadic_chain(chain, x, y):
                 pp(accumulator)
                 accumulator = chain[0].call()
                 chain = chain[1:]
-    except ZeroDivisionError:
-        pft(
-            HTML(
-                f"<ansired>ERROR: Division by 0. Currently at: {html_escape(chain[0].glyph)}.</ansired>"
-            )
-        )
-        exit(1)
+    except FileNotFoundError:
+        ...
 
     return accumulator
 
@@ -764,13 +764,8 @@ def monadic_chain(chain, x):
                 pp(accumulator)
                 accumulator = chain[0].call()
                 chain = chain[1:]
-    except ZeroDivisionError:
-        pft(
-            HTML(
-                f"<ansired>ERROR: Division by 0. Currently at: {html_escape(chain[0].glyph)}.</ansired>"
-            )
-        )
-        exit(1)
+    except FileNotFoundError:
+        ...
 
     return accumulator
 
