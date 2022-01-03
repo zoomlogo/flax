@@ -221,6 +221,9 @@ def mold(x, y):
 
 
 def pp(obj):
+    if obj is None:
+        return
+
     def rsb(x):
         def sss(a):
             if isinstance(a, complex):
@@ -245,7 +248,6 @@ def pp(obj):
         return string[:-1] + "]"
 
     print(rsb(obj))
-    return obj
 
 
 def prefixes(x):
@@ -469,7 +471,7 @@ atoms = {
     "⤒": attrdict(arity=1, call=lambda x: vectorise(lambda a: a + 1, x)),
     "⤓": attrdict(arity=1, call=lambda x: vectorise(lambda a: a - 1, x)),
     "P": attrdict(arity=1, call=lambda x: pp(x)),
-    "Ċ": attrdict(arity=1, call=lambda x: print(end="".join(chr(c) for c in x)) or x),
+    "Ċ": attrdict(arity=1, call=lambda x: print(end="".join(chr(c) for c in x))),
     "Ç": attrdict(arity=1, call=lambda x: split(x, 2)),
     "X": attrdict(arity=1, call=lambda x: split(x, int(len(x) / 2))),
     "Ƥ": attrdict(arity=1, call=lambda x: [*itertools.permutations(x)]),
