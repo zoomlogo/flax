@@ -1,14 +1,13 @@
 # Main entry point
 from sys import argv
 
-from flax.main import run
+from flax.main import flax_eval, cli_repl
 
 argv = argv[1:]
 
 if argv:
     code = open(argv[0], encoding="utf-8").read()
     argv = argv[1:]
-    run(code, *map(eval, argv))
+    flax_eval(code, *map(eval, argv))
 else:
-    # TODO: CLI REPL
-    exit(10)
+    cli_repl()
