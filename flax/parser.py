@@ -75,6 +75,7 @@ def parse(tokens):
                         attrdict(
                             arity=0,
                             call=lambda x=token[1]: numberify(x),
+                            glyph=token[1],
                         )
                     )
                 elif token[0] == TOKEN_TYPE.STRING:
@@ -85,10 +86,15 @@ def parse(tokens):
                                 ord(x)
                                 for x in s.replace("\\n", "\n").replace("\\'", "'")
                             ],
+                            glyph=token[1],
                         )
                     )
                 elif token[0] == TOKEN_TYPE.LIST:
-                    stack.append(attrdict(arity=0, call=lambda x=token[1]: arrayify(x)))
+                    stack.append(
+                        attrdict(
+                            arity=0, call=lambda x=token[1]: arrayify(x), glyph=token[1]
+                        )
+                    )
                 elif token[0] == TOKEN_TYPE.ATOM:
                     stack.append(atoms[token[1]])
                 elif token[0] == TOKEN_TYPE.QUICK:

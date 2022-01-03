@@ -4,6 +4,8 @@ import math as M
 import random as R
 import itertools
 from collections import deque
+from prompt_toolkit import print_formatted_text as pft, HTML
+from prompt_toolkit.formatted_text.html import html_escape
 
 # Attrdict class
 class attrdict(dict):
@@ -637,6 +639,10 @@ atoms = {
     ),
 }
 
+for k in atoms:
+    # This is for better error messages
+    atoms[k].glyph = k
+
 # ===== Chain functions ====
 def arities(links):
     return [link.arity for link in links]
@@ -710,43 +716,50 @@ def monadic_chain(chain, x):
 
     accumulator = x
 
-    while 1:
-        if init:
-            for link in chain:
-                if link.arity < 0:
-                    link.arity = 1
+    try:
+        while 1:
+            if init:
+                for link in chain:
+                    if link.arity < 0:
+                        link.arity = 1
 
-            if leading_nilad(chain):
+                if leading_nilad(chain):
+                    accumulator = chain[0].call()
+                    chain = chain[1:]
+
+            if not chain:
+                break
+
+            if arities(chain[0:2]) == [2, 1]:
+                accumulator = chain[0].call(accumulator, chain[1].call(x))
+                chain = chain[2:]
+            elif arities(chain[0:2]) == [2, 0]:
+                accumulator = chain[0].call(accumulator, chain[1].call())
+                chain = chain[2:]
+            elif arities(chain[0:2]) == [0, 2]:
+                accumulator = chain[1].call(chain[0].call(), accumulator)
+                chain = chain[2:]
+            elif chain[0].arity == 2:
+                accumulator = chain[0].call(accumulator, x)
+                chain = chain[1:]
+            elif chain[0].arity == 1:
+                if not chain[1:] and hasattr(chain[0], "chain"):
+                    x = accumulator
+                    chain = chain[0].chain
+                    init = True
+                else:
+                    accumulator = chain[0].call(accumulator)
+                    chain = chain[1:]
+            else:
+                pp(accumulator)
                 accumulator = chain[0].call()
                 chain = chain[1:]
-
-        if not chain:
-            break
-
-        if arities(chain[0:2]) == [2, 1]:
-            accumulator = chain[0].call(accumulator, chain[1].call(x))
-            chain = chain[2:]
-        elif arities(chain[0:2]) == [2, 0]:
-            accumulator = chain[0].call(accumulator, chain[1].call())
-            chain = chain[2:]
-        elif arities(chain[0:2]) == [0, 2]:
-            accumulator = chain[1].call(chain[0].call(), accumulator)
-            chain = chain[2:]
-        elif chain[0].arity == 2:
-            accumulator = chain[0].call(accumulator, x)
-            chain = chain[1:]
-        elif chain[0].arity == 1:
-            if not chain[1:] and hasattr(chain[0], "chain"):
-                x = accumulator
-                chain = chain[0].chain
-                init = True
-            else:
-                accumulator = chain[0].call(accumulator)
-                chain = chain[1:]
-        else:
-            pp(accumulator)
-            accumulator = chain[0].call()
-            chain = chain[1:]
+    except ZeroDivisionError:
+        pft(
+            HTML(
+                f"<ansired>ERROR: Division by 0. Currently at: {html_escape(chain[0].glyph)}.</ansired>"
+            )
+        )
 
     return accumulator
 
