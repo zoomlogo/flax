@@ -511,7 +511,7 @@ atoms = {
     "÷": attrdict(
         arity=2,
         call=lambda x, y: dyadic_vectorise(
-            lambda a, b: a / b if b else (M.inf if a else 1), x, y
+            lambda a, b: a / b if b else (M.inf if a else 0), x, y
         ),
     ),
     "%": attrdict(
