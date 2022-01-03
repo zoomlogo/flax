@@ -13,14 +13,15 @@ class attrdict(dict):
 
 
 # ===== Atom functions =====
-def contains_false(l):
-    if not isinstance(l, list):
-        return 1 if l else 0
+def contains_false(x):
+    x = iterable(x, make_digits=True)
+    if not isinstance(x, list):
+        return 1 if x else 0
 
-    if len(l) == 0:
+    if len(x) == 0:
         return 1
 
-    return 1 if 1 in [contains_false(x) for x in l] else 0
+    return 1 if 1 in [contains_false(c) for c in x] else 0
 
 
 def depth(x):
@@ -83,6 +84,7 @@ def flatten(L):
 
 
 def falsey_indices(x):
+    x = iterable(x, make_digits=True)
     if not isinstance(x, list):
         return []
 
@@ -102,7 +104,7 @@ def find_all_indices(x, y):
         if y[i] == x:
             res.append(i)
         i += 1
-    return res
+    return res if res else [-1]
 
 
 def from_bin(x):
@@ -166,13 +168,11 @@ def group_equal(x):
     return res
 
 
-def index(x, y):
-    if not isinstance(x, list):
-        return x
-
+def index_into(x, y):
+    x = iterable(x, make_digits=True)
     if isinstance(y, int):
         return x[(y - 1) % len(x)]
-    return [index(x, M.floor(y)), index(x, M.ceil(y))]
+    return [index_into(x, M.floor(y)), index_into(x, M.ceil(y))]
 
 
 def indices_multidimensional(x, up_lvl=[]):
@@ -195,18 +195,18 @@ def iterable(x, make_range=False, make_digits=False):
     return x
 
 
-def join_newlines(x):
-    return laminate(x, 10)
-
-
-def join_spaces(x):
-    return laminate(x, 32)
-
-
-def laminate(x, y):
+def join(x, y):
     res = [y] * (len(x) * 2 - 1)
     res[0::2] = iterable(x)
     return x
+
+
+def join_newlines(x):
+    return join(x, 10)
+
+
+def join_spaces(x):
+    return join(x, 32)
 
 
 def mold(x, y):
@@ -342,6 +342,18 @@ def split_at_occurences(x, y):
     return res
 
 
+def split_rolling(x, y):
+    if y < 0:
+        return split_rolling_out(x, -y)
+    x = iterable(x)
+    return [x[i : i + y] for i in range(len(x) - y + 1)]
+
+
+def split_rolling_out(x, y):
+    x = iterable(x)
+    return [x[:i] + x[i + y :] for i in range(len(x) - y + 1)]
+
+
 def sub_lists(l):
     lists = [[]]
     for i in range(len(l) + 1):
@@ -366,6 +378,7 @@ def to_digits(x):
 
 
 def truthy_indices(x):
+    x = iterable(x, make_digits=True)
     if not isinstance(x, list):
         return []
 
@@ -412,7 +425,7 @@ atoms = {
     "H": attrdict(arity=1, call=lambda x: vectorise(lambda a: a / 2, x)),
     "L": attrdict(arity=1, call=len),
     "N": attrdict(arity=1, call=lambda x: vectorise(lambda a: -a, x)),
-    "Ř": attrdict(arity=1, call=lambda x: [*range(len(x))]),
+    "Ř": attrdict(arity=1, call=lambda x: [*range(len(iterable(x, make_digits=True)))]),
     "Π": attrdict(arity=1, call=lambda x: reduce(lambda a, b: a * b, flatten(x))),
     "Σ": attrdict(arity=1, call=lambda x: sum(flatten(x))),
     "⍳": attrdict(arity=1, call=lambda x: vectorise(lambda a: [*range(1, a + 1)], x)),
@@ -425,6 +438,12 @@ atoms = {
     "¹": attrdict(arity=1, call=lambda x: x),
     "²": attrdict(arity=1, call=lambda x: vectorise(lambda a: a ** 2, x)),
     "√": attrdict(arity=1, call=lambda x: vectorise(lambda a: a ** (1 / 2), x)),
+    "≈": attrdict(
+        arity=1,
+        call=lambda x: reduce(
+            lambda a, b: 1 if a == b else 0, iterable(x, make_digits=True)
+        ),
+    ),
     "Ḃ": attrdict(arity=1, call=from_bin),
     "Ă": attrdict(arity=1, call=contains_false),
     "Ḋ": attrdict(arity=1, call=from_digits),
@@ -432,8 +451,8 @@ atoms = {
     "₃": attrdict(arity=1, call=lambda x: vectorise(lambda a: a * 3, x)),
     "E": attrdict(arity=1, call=lambda x: vectorise(lambda a: [*range(a)], x)),
     "G": attrdict(arity=1, call=lambda x: group_equal(iterable(x, make_digits=True))),
-    "∇": attrdict(arity=1, call=lambda x: min(iterable(x))),
-    "∆": attrdict(arity=1, call=lambda x: max(iterable(x))),
+    "∇": attrdict(arity=1, call=lambda x: min(iterable(x, make_digits=True))),
+    "∆": attrdict(arity=1, call=lambda x: max(iterable(x, make_digits=True))),
     "S": attrdict(arity=1, call=lambda x: [*sorted(x)]),
     "Ṡ": attrdict(arity=1, call=lambda x: [*sorted(x)][::-1]),
     "ᵇ": attrdict(arity=1, call=lambda x: vectorise(lambda a: a % 2, x)),
@@ -493,7 +512,7 @@ atoms = {
         arity=2, call=lambda x, y: dyadic_vectorise(lambda a, b: a ** b, x, y)
     ),
     '"': attrdict(arity=2, call=lambda x, y: [x, y]),
-    ",": attrdict(arity=2, call=lambda x, y: laminate(x, y)),
+    ",": attrdict(arity=2, call=lambda x, y: join(x, y)),
     "<": attrdict(
         arity=2,
         call=lambda x, y: dyadic_vectorise(lambda a, b: 1 if a < b else 0, x, y),
@@ -538,9 +557,17 @@ atoms = {
         arity=2, call=lambda x, y: dyadic_vectorise(lambda a, b: a ^ b, x, y)
     ),
     "∊": attrdict(arity=2, call=lambda x, y: x in y),
-    "f": attrdict(arity=2, call=lambda x, y: [a for a in x if a not in y]),
-    "ḟ": attrdict(arity=2, call=lambda x, y: [a for a in x if a in y]),
-    "⊂": attrdict(arity=2, call=lambda x, y: x.find(y) + 1),
+    "f": attrdict(
+        arity=2,
+        call=lambda x, y: [a for a in iterable(x, make_digits=True) if a not in y],
+    ),
+    "ḟ": attrdict(
+        arity=2, call=lambda x, y: [a for a in iterable(x, make_digits=True) if a in y]
+    ),
+    "⊂": attrdict(
+        arity=2,
+        call=lambda x, y: find_all_indices(iterable(x, make_digits=True), y)[0] + 1,
+    ),
     "⊆": attrdict(
         arity=2,
         call=lambda x, y: vectorise(lambda a: a + 1, find_all_indices(x, y)),
@@ -554,8 +581,9 @@ atoms = {
         call=lambda x, y: dyadic_vectorise(lambda a, b: [*range(a, b + 1)], x, y),
     ),
     "s": attrdict(arity=2, call=split),
+    "ṡ": attrdict(arity=2, call=split_rolling),
     "\\": attrdict(arity=2, call=lambda x, y: [iterable(x) for _ in range(y)]),
-    "i": attrdict(arity=2, call=index),
+    "i": attrdict(arity=2, call=index_into),
     "o": attrdict(arity=2, call=split_at_occurences),
     "a": attrdict(arity=2, call=lambda x, y: iterable(x) + iterable(y)),
     "p": attrdict(arity=2, call=lambda x, y: iterable(y) + iterable(x)),
@@ -763,7 +791,8 @@ def qreduce(links, outer_links, i, arity=1):
         ret[0].call = lambda x, y=None: reduce(links[0].call, x)
     else:
         ret[0].call = lambda x, y=None: [
-            reduce(links[0].call, t) for t in split(iterable(x), links[1].call())
+            reduce(links[0].call, t)
+            for t in split_rolling(iterable(x), links[1].call())
         ]
     return ret
 
@@ -774,7 +803,8 @@ def qreduce_first(links, outer_links, i, arity=1):
         ret[0].call = lambda x, y=None: reduce_first(links[0].call, x)
     else:
         ret[0].call = lambda x, y=None: [
-            reduce_first(links[0].call, t) for t in split(iterable(x), links[1].call())
+            reduce_first(links[0].call, t)
+            for t in split_rolling(iterable(x), links[1].call())
         ]
     return ret
 
