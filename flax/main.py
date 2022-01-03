@@ -18,7 +18,7 @@ def cli_repl(prompt="      ", inp_prompt="> "):
             chain = parse(tokenise(input(prompt)))[-1]
             chain = chain if chain else ""
             args = [input(inp_prompt), input(inp_prompt)]
-            args = filter("".__ne__, args)
+            args = map(eval, filter("".__ne__, args))
             pp(variadic_chain(chain, *args))
     except KeyboardInterrupt:
         print()
