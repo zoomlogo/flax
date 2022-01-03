@@ -678,29 +678,39 @@ def dyadic_chain(chain, x, y):
     else:
         accumulator = x
 
-    while chain:
-        if arities(chain[0:3]) == [2, 2, 0] and leading_nilad(chain[2:]):
-            accumulator = chain[1].call(chain[0].call(accumulator, y), chain[2].call())
-            chain = chain[3:]
-        elif arities(chain[0:2]) == [2, 2]:
-            accumulator = chain[0].call(accumulator, chain[1].call(x, y))
-            chain = chain[2:]
-        elif arities(chain[0:2]) == [2, 0]:
-            accumulator = chain[0].call(accumulator, chain[1].call())
-            chain = chain[2:]
-        elif arities(chain[0:2]) == [0, 2]:
-            accumulator = chain[1].call(chain[0].call(), accumulator)
-            chain = chain[2:]
-        elif chain[0].arity == 2:
-            accumulator = chain[0].call(accumulator, y)
-            chain = chain[1:]
-        elif chain[0].arity == 1:
-            accumulator = chain[0].call(accumulator)
-            chain = chain[1:]
-        else:
-            pp(accumulator)
-            accumulator = chain[0].call()
-            chain = chain[1:]
+    try:
+        while chain:
+            if arities(chain[0:3]) == [2, 2, 0] and leading_nilad(chain[2:]):
+                accumulator = chain[1].call(
+                    chain[0].call(accumulator, y), chain[2].call()
+                )
+                chain = chain[3:]
+            elif arities(chain[0:2]) == [2, 2]:
+                accumulator = chain[0].call(accumulator, chain[1].call(x, y))
+                chain = chain[2:]
+            elif arities(chain[0:2]) == [2, 0]:
+                accumulator = chain[0].call(accumulator, chain[1].call())
+                chain = chain[2:]
+            elif arities(chain[0:2]) == [0, 2]:
+                accumulator = chain[1].call(chain[0].call(), accumulator)
+                chain = chain[2:]
+            elif chain[0].arity == 2:
+                accumulator = chain[0].call(accumulator, y)
+                chain = chain[1:]
+            elif chain[0].arity == 1:
+                accumulator = chain[0].call(accumulator)
+                chain = chain[1:]
+            else:
+                pp(accumulator)
+                accumulator = chain[0].call()
+                chain = chain[1:]
+    except ZeroDivisionError:
+        pft(
+            HTML(
+                f"<ansired>ERROR: Division by 0. Currently at: {html_escape(chain[0].glyph)}.</ansired>"
+            )
+        )
+        exit(1)
 
     return accumulator
 
@@ -760,6 +770,7 @@ def monadic_chain(chain, x):
                 f"<ansired>ERROR: Division by 0. Currently at: {html_escape(chain[0].glyph)}.</ansired>"
             )
         )
+        exit(1)
 
     return accumulator
 
