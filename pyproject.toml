@@ -10,6 +10,9 @@ flax = "flax.main:run"
 
 [tool.poetry.dependencies]
 python = ">3.9"
+# Probably need this
+more_itertools = "*"
+prompt_toolkit = "*"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"

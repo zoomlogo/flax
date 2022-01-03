@@ -263,7 +263,7 @@ def random(x):
 
 
 def reduce(fn, L):
-    if not isinstance(fn, L):
+    if not isinstance(fn, list):
         return L
 
     if isinstance(L[0], list):
