@@ -1,11 +1,15 @@
 # ======== Imports =======
 import sys
-import math as M
 import random as R
-import itertools
+
 from collections import deque
-from prompt_toolkit import print_formatted_text as pft, HTML
-from prompt_toolkit.formatted_text.html import html_escape
+
+from math import *
+from pyhof import *
+import itertools as it
+import functools as ft
+import more_itertools as mit
+import operator as op
 
 # Attrdict class
 class attrdict(dict):
@@ -174,7 +178,7 @@ def index_into(x, y):
     x = iterable(x, make_digits=True)
     if isinstance(y, int):
         return x[(y - 1) % len(x)]
-    return [index_into(x, M.floor(y)), index_into(x, M.ceil(y))]
+    return [index_into(x, floor(y)), index_into(x, ceil(y))]
 
 
 def indices_multidimensional(x, up_lvl=[]):
@@ -232,7 +236,7 @@ def pp(obj):
                 return "j".join(map(sss, [a.real, a.imag]))
             elif a < 0:
                 return f"¯{-a}"
-            elif a != M.inf and int(a) == a:
+            elif a != inf and int(a) == a:
                 return str(int(a))
             else:
                 return str(a)
@@ -402,7 +406,7 @@ def vectorise(fn, x):
         return fn(x)
 
 
-zip = lambda *x: [[*x] for x in itertools.zip_longest(*x, fillvalue=0)]
+zip = lambda *x: [[*x] for x in it.zip_longest(*x, fillvalue=0)]
 
 # ====== Atoms ========
 atoms = {
@@ -419,7 +423,7 @@ atoms = {
     "⍺": attrdict(arity=0, call=lambda: 0),
     "⍵": attrdict(arity=0, call=lambda: 0),
     # Single byte monads
-    "!": attrdict(arity=1, call=lambda x: vectorise(M.factorial, x)),
+    "!": attrdict(arity=1, call=lambda x: vectorise(factorial, x)),
     "¬": attrdict(arity=1, call=lambda x: vectorise(lambda a: 1 if not a else 0, x)),
     "~": attrdict(arity=1, call=lambda x: vectorise(lambda a: ~a, x)),
     "B": attrdict(arity=1, call=lambda x: vectorise(to_bin, x)),
@@ -476,18 +480,16 @@ atoms = {
     "Ċ": attrdict(arity=1, call=lambda x: print(end="".join(chr(c) for c in x))),
     "Ç": attrdict(arity=1, call=lambda x: split(x, 2)),
     "X": attrdict(arity=1, call=lambda x: split(x, int(len(x) / 2))),
-    "Ƥ": attrdict(arity=1, call=lambda x: [*itertools.permutations(x)]),
+    "Ƥ": attrdict(arity=1, call=lambda x: [*it.permutations(x)]),
     "ε": attrdict(arity=1, call=lambda x: sub_lists(iterable(x, make_range=True))),
     "σ": attrdict(arity=1, call=reverse_every_other),
     "Ḅ": attrdict(arity=1, call=lambda x: vectorise(lambda a: 2 ** a, x)),
     "Ď": attrdict(arity=1, call=depth),
     "⍋": attrdict(arity=1, call=grade_up),
     "⍒": attrdict(arity=1, call=grade_down),
-    "⅟": attrdict(
-        arity=1, call=lambda x: vectorise(lambda a: 1 / a if a else M.inf, x)
-    ),
-    "⌈": attrdict(arity=1, call=lambda x: vectorise(lambda a: M.ceil(a), x)),
-    "⌊": attrdict(arity=1, call=lambda x: vectorise(lambda a: M.floor(a), x)),
+    "⅟": attrdict(arity=1, call=lambda x: vectorise(lambda a: 1 / a if a else inf, x)),
+    "⌈": attrdict(arity=1, call=lambda x: vectorise(lambda a: ceil(a), x)),
+    "⌊": attrdict(arity=1, call=lambda x: vectorise(lambda a: floor(a), x)),
     "A": attrdict(arity=1, call=lambda x: vectorise(lambda a: abs(a), x)),
     "Ḍ": attrdict(arity=1, call=lambda x: vectorise(divisors, x)),
     "J": attrdict(arity=1, call=join_spaces),
@@ -495,8 +497,8 @@ atoms = {
     "V": attrdict(arity=1, call=lambda x: group(iterable(x, make_digits=True))),
     "⊢": attrdict(arity=1, call=prefixes),
     "⊣": attrdict(arity=1, call=suffixes),
-    "∀": attrdict(arity=1, call=lambda x: [sum(r) for r in iterable(x)]),
-    "K": attrdict(arity=1, call=lambda x: [*itertools.accumulate(iterable(x))]),
+    "∀": attrdict(arity=1, call=lambda x: [*map(sum, x)]),
+    "K": attrdict(arity=1, call=lambda x: [*scanl1(op.add, iterable(x))]),
     # Single byte dyads
     "+": attrdict(
         arity=2,
@@ -511,7 +513,7 @@ atoms = {
     "÷": attrdict(
         arity=2,
         call=lambda x, y: dyadic_vectorise(
-            lambda a, b: a / b if b else (M.inf if a else 0), x, y
+            lambda a, b: a / b if b else (inf if a else 0), x, y
         ),
     ),
     "%": attrdict(
@@ -584,7 +586,7 @@ atoms = {
     "⊏": attrdict(
         arity=2, call=lambda x, y: [x[i] for i in range(len(x)) if i % y == 0]
     ),
-    "·": attrdict(arity=2, call=lambda x, y: [*itertools.product(x, y)]),
+    "·": attrdict(arity=2, call=lambda x, y: [*it.product(x, y)]),
     "r": attrdict(
         arity=2,
         call=lambda x, y: dyadic_vectorise(lambda a, b: [*range(a, b + 1)], x, y),
@@ -608,28 +610,28 @@ atoms = {
         call=lambda x, y: dyadic_vectorise(lambda a, b: 1 if a % b == 0 else 0, x, y),
     ),
     # Niladic diagraphs
-    "Øp": attrdict(arity=0, call=lambda: M.pi),
-    "Øe": attrdict(arity=0, call=lambda: M.e),
+    "Øp": attrdict(arity=0, call=lambda: pi),
+    "Øe": attrdict(arity=0, call=lambda: e),
     "ØP": attrdict(arity=0, call=lambda: 1.618033988749895),
-    "Ø∞": attrdict(arity=0, call=lambda: M.inf),
+    "Ø∞": attrdict(arity=0, call=lambda: inf),
     "ØA": attrdict(arity=0, call=lambda: 26),
     "Ø₁": attrdict(arity=0, call=lambda: 128),
     "Ø₂": attrdict(arity=0, call=lambda: 256),
     "Ø₀": attrdict(arity=0, call=lambda: 1000),
     # Monadic diagraphs
     "ŒD": attrdict(arity=1, call=diagonals),
-    "ŒS": attrdict(arity=1, call=lambda x: vectorise(M.sin, x)),
-    "ŒC": attrdict(arity=1, call=lambda x: vectorise(M.cos, x)),
-    "ŒT": attrdict(arity=1, call=lambda x: vectorise(M.tan, x)),
-    "ŒṠ": attrdict(arity=1, call=lambda x: vectorise(M.asin, x)),
-    "ŒĊ": attrdict(arity=1, call=lambda x: vectorise(M.acos, x)),
-    "ŒṪ": attrdict(arity=1, call=lambda x: vectorise(M.atan, x)),
-    "Œc": attrdict(arity=1, call=lambda x: vectorise(lambda a: 1 / M.sin(a), x)),
-    "Œs": attrdict(arity=1, call=lambda x: vectorise(lambda a: 1 / M.cos(a), x)),
-    "Œt": attrdict(arity=1, call=lambda x: vectorise(lambda a: 1 / M.tan(a), x)),
-    "Œn": attrdict(arity=1, call=lambda x: vectorise(M.sinh, x)),
-    "Œo": attrdict(arity=1, call=lambda x: vectorise(M.cosh, x)),
-    "Œh": attrdict(arity=1, call=lambda x: vectorise(M.tanh, x)),
+    "ŒS": attrdict(arity=1, call=lambda x: vectorise(sin, x)),
+    "ŒC": attrdict(arity=1, call=lambda x: vectorise(cos, x)),
+    "ŒT": attrdict(arity=1, call=lambda x: vectorise(tan, x)),
+    "ŒṠ": attrdict(arity=1, call=lambda x: vectorise(asin, x)),
+    "ŒĊ": attrdict(arity=1, call=lambda x: vectorise(acos, x)),
+    "ŒṪ": attrdict(arity=1, call=lambda x: vectorise(atan, x)),
+    "Œc": attrdict(arity=1, call=lambda x: vectorise(lambda a: 1 / sin(a), x)),
+    "Œs": attrdict(arity=1, call=lambda x: vectorise(lambda a: 1 / cos(a), x)),
+    "Œt": attrdict(arity=1, call=lambda x: vectorise(lambda a: 1 / tan(a), x)),
+    "Œn": attrdict(arity=1, call=lambda x: vectorise(sinh, x)),
+    "Œo": attrdict(arity=1, call=lambda x: vectorise(cosh, x)),
+    "Œh": attrdict(arity=1, call=lambda x: vectorise(tanh, x)),
     "Œi": attrdict(arity=1, call=indices_multidimensional),
     # Dyadic diagraphs
     "œl": attrdict(
@@ -638,7 +640,7 @@ atoms = {
     "œr": attrdict(
         arity=2, call=lambda x, y: dyadic_vectorise(lambda a, b: a >> b, x, y)
     ),
-    "œ*": attrdict(arity=2, call=lambda x, y: [*itertools.product(x, repeat=y)]),
+    "œ*": attrdict(arity=2, call=lambda x, y: [*it.product(x, repeat=y)]),
     "œ·": attrdict(
         arity=2, call=lambda x, y: sum(x[i][0] * y[i] for i in range(len(y)))
     ),
