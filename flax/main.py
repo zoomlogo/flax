@@ -19,7 +19,12 @@ def cli_repl(prompt="      ", inp_prompt="> "):
         session = PromptSession()
         print("flax REPL version 0.1.0")
         while True:
-            chain = parse(tokenise(session.prompt(prompt)))[-1]
+            inp = session.prompt(prompt)
+            if inp == "":
+                continue
+            elif inp == "exit":
+                break
+            chain = parse(tokenise(inp))[-1]
             chain = chain if chain else ""
             args = [input(inp_prompt), input(inp_prompt)]
             args = map(eval, filter("".__ne__, args))
