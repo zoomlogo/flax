@@ -268,26 +268,6 @@ def random(x):
     return R.choice(x)
 
 
-def reduce(fn, L):
-    if not isinstance(fn, list):
-        return L
-
-    if isinstance(L[0], list):
-        return [reduce(fn, x) for x in L]
-
-    return reduce_first(fn, L)
-
-
-def reduce_first(fn, L):
-    if not isinstance(L, list):
-        return L
-
-    res = L[0]
-    for x in L[1:]:
-        res = fn(res, x)
-    return res
-
-
 def reshape(shape, L):
     if not isinstance(L, list):
         return L
@@ -348,18 +328,6 @@ def split_at_occurences(x, y):
         res.append(tmp)
 
     return res
-
-
-def split_rolling(x, y):
-    if y < 0:
-        return split_rolling_out(x, -y)
-    x = iterable(x)
-    return [x[i : i + y] for i in range(len(x) - y + 1)]
-
-
-def split_rolling_out(x, y):
-    x = iterable(x)
-    return [x[:i] + x[i + y :] for i in range(len(x) - y + 1)]
 
 
 def sub_lists(l):
@@ -434,7 +402,7 @@ atoms = {
     "L": attrdict(arity=1, call=len),
     "N": attrdict(arity=1, call=lambda x: vectorise(lambda a: -a, x)),
     "Ř": attrdict(arity=1, call=lambda x: [*range(len(iterable(x, make_digits=True)))]),
-    "Π": attrdict(arity=1, call=lambda x: reduce(lambda a, b: a * b, flatten(x))),
+    "Π": attrdict(arity=1, call=lambda x: foldl1(lambda a, b: a * b, flatten(x))),
     "Σ": attrdict(arity=1, call=lambda x: sum(flatten(x))),
     "⍳": attrdict(arity=1, call=lambda x: vectorise(lambda a: [*range(1, a + 1)], x)),
     "⊤": attrdict(arity=1, call=truthy_indices),
@@ -448,7 +416,7 @@ atoms = {
     "√": attrdict(arity=1, call=lambda x: vectorise(lambda a: a ** (1 / 2), x)),
     "≈": attrdict(
         arity=1,
-        call=lambda x: reduce(
+        call=lambda x: foldl1(
             lambda a, b: 1 if a == b else 0, iterable(x, make_digits=True)
         ),
     ),
@@ -592,7 +560,7 @@ atoms = {
         call=lambda x, y: dyadic_vectorise(lambda a, b: [*range(a, b + 1)], x, y),
     ),
     "s": attrdict(arity=2, call=split),
-    "ṡ": attrdict(arity=2, call=split_rolling),
+    "ṡ": attrdict(arity=2, call=compose(list, mit.sliding_window)),
     "\\": attrdict(arity=2, call=lambda x, y: [iterable(x) for _ in range(y)]),
     "i": attrdict(arity=2, call=index_into),
     "o": attrdict(arity=2, call=split_at_occurences),
@@ -811,23 +779,23 @@ def variadic_link(link, *args, reverself=False):
 def qreduce(links, outer_links, i, arity=1):
     ret = [attrdict(arity=arity)]
     if len(links) == 1:
-        ret[0].call = lambda x, y=None: reduce(links[0].call, x)
+        ret[0].call = lambda x, y=None: foldl1(links[0].call, x)
     else:
         ret[0].call = lambda x, y=None: [
-            reduce(links[0].call, t)
-            for t in split_rolling(iterable(x), links[1].call())
+            foldl1(links[0].call, t)
+            for t in mit.sliding_window(iterable(x), links[1].call())
         ]
     return ret
 
 
-def qreduce_first(links, outer_links, i, arity=1):
+def qreducer(links, outer_links, i, arity=1):
     ret = [attrdict(arity=arity)]
     if len(links) == 1:
-        ret[0].call = lambda x, y=None: reduce_first(links[0].call, x)
+        ret[0].call = lambda x, y=None: foldr1(links[0].call, x)
     else:
         ret[0].call = lambda x, y=None: [
-            reduce_first(links[0].call, t)
-            for t in split_rolling(iterable(x), links[1].call())
+            foldr1(links[0].call, t)
+            for t in mit.sliding_window(iterable(x), links[1].call())
         ]
     return ret
 
@@ -872,9 +840,7 @@ quicks = {
         qlink=lambda links, outer_links, i: [create_chain(outer_links[i], 2)],
     ),
     "/": attrdict(condition=lambda links: links and links[0].arity, qlink=qreduce),
-    "⌿": attrdict(
-        condition=lambda links: links and links[0].arity, qlink=qreduce_first
-    ),
+    "⌿": attrdict(condition=lambda links: links and links[0].arity, qlink=qreducer),
 }
 
 # == Train Separators ==
