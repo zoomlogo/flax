@@ -27,21 +27,16 @@ def contains_false(x):
     if len(x) == 0:
         return 1
 
-    return 1 if 1 in [contains_false(c) for c in x] else 0
+    return 1 if 1 in [*map(contains_false, x)] else 0
 
 
-def depth(x):
-    if not isinstance(x, list):
-        return 0
-
-    if not x:
-        return 1
-
-    return max(map(depth, x)) + 1
+depth = (
+    lambda x: 0 if not isinstance(x, list) else (1 if not x else max(map(depth, x)) + 1)
+)
 
 
 def diagonals(x):
-    d = [[] for _ in range(len(x) + len(x[0]) - 1)]
+    d = [*map(curry(constantly)([]), range(len(x) + len(x[0]) - 1))]
     min_d = -len(x) + 1
 
     for i in range(len(x[0])):
