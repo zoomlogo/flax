@@ -6,6 +6,8 @@ from flax.interpreter import create_chain
 
 from flax.lexer import *
 
+import sympy
+
 
 def arrayify(arr_list):
     array = []
@@ -25,14 +27,16 @@ def numberify(x):
     number = x.replace("¯", "-")
     if "j" in number:
         if len(number) == 1:
-            return complex(0, 1)
+            return sympy.nsimplify(complex(0, 1), rational=True)
         else:
             parts = number.split("j")
             if parts[0] == "":
                 parts[0] = "0"
             if parts[1] == "":
                 parts[1] = "1"
-            return complex(numberify(parts[0]), numberify(parts[1]))
+            return sympy.nsimplify(
+                complex(numberify(parts[0]), numberify(parts[1])), rational=True
+            )
     elif "." in number:
         if len(number) == 1:
             return 0.5
@@ -42,15 +46,15 @@ def numberify(x):
                 parts[0] = "0"
             if parts[1] == "":
                 parts[1] = "5"
-            return float(".".join(parts))
+            return sympy.nsimplify(".".join(parts), rational=True)
     else:
         if "-" in number:
             if len(number) == 1:
-                return -1
+                return sympy.nsimplify(-1, rational=True)
             else:
-                return int(number[1:]) * -1
+                return sympy.nsimplify(number, rational=True)
         else:
-            return int(number)
+            return sympy.nsimplify(number, rational=True)
 
 
 def parse(tokens):
