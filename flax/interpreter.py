@@ -391,8 +391,8 @@ atoms = {
     "⁰": attrdict(arity=0, call=lambda: 100),
     "ƀ": attrdict(arity=0, call=lambda: [0, 1]),
     "®": attrdict(arity=0, call=lambda: 0),
-    "я": attrdict(arity=0, call=lambda: sys.stdin.read(1)),
-    "д": attrdict(arity=0, call=lambda: input()),
+    "я": attrdict(arity=0, call=lambda: ord(sys.stdin.read(1))),
+    "д": attrdict(arity=0, call=lambda: [ord(c) for c in input()]),
     "⍺": attrdict(arity=0, call=lambda: 0),
     "⍵": attrdict(arity=0, call=lambda: 0),
     # Single byte monads
