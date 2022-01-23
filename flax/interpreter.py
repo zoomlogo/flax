@@ -10,6 +10,7 @@ import itertools as it
 import functools as ft
 import more_itertools as mit
 import operator as op
+import sympy
 
 # Attrdict class
 class attrdict(dict):
@@ -340,6 +341,11 @@ def suffixes(x):
     return res
 
 
+rationalised = lambda func: compose(
+    vectorised(lambda x: sympy.nsimplify(x, rational=True)), func
+)
+
+
 def to_bin(x):
     return [-i if x < 0 else i for i in map(int, bin(x)[3 if x < 0 else 2 :])]
 
@@ -367,6 +373,10 @@ def vectorise(fn, x):
         return [vectorise(fn, a) for a in x]
     else:
         return fn(x)
+
+
+vectorised = lambda func: lambda x: vectorise(func, x)
+vectorised_dyadic = lambda func: lambda x, y: dyadic_vectorise(func, x, y)
 
 
 zip = lambda *x: [[*x] for x in it.zip_longest(*x, fillvalue=0)]
