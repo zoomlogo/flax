@@ -109,6 +109,9 @@ def find_all_indices(x, y):
     return res if res else [-1]
 
 
+flax_boolify = lambda func: compose(vectorised(lambda x: 1 if x else 0), func)
+
+
 def from_bin(x):
     x = iterable(x)
     sign = -1 if sum(x) < 0 else 1
@@ -473,73 +476,30 @@ atoms = {
     "∀": attrdict(arity=1, call=lambda x: [*map(sum, x)]),
     "K": attrdict(arity=1, call=lambda x: [*scanl1(op.add, iterable(x))]),
     # Single byte dyads
-    "+": attrdict(
-        arity=2,
-        call=lambda x, y: dyadic_vectorise(lambda a, b: a + b, x, y),
-    ),
-    "-": attrdict(
-        arity=2, call=lambda x, y: dyadic_vectorise(lambda a, b: a - b, x, y)
-    ),
-    "×": attrdict(
-        arity=2, call=lambda x, y: dyadic_vectorise(lambda a, b: a * b, x, y)
-    ),
+    "+": attrdict(arity=2, call=vectorised_dyadic(op.add)),
+    "-": attrdict(arity=2, call=vectorised_dyadic(op.sub)),
+    "×": attrdict(arity=2, call=vectorised_dyadic(op.mul)),
     "÷": attrdict(
         arity=2,
-        call=lambda x, y: dyadic_vectorise(
-            lambda a, b: a / b if b else (inf if a else 0), x, y
-        ),
+        call=vectorised_dyadic(lambda a, b: a / b if b else (inf if a else 0)),
     ),
-    "%": attrdict(
-        arity=2, call=lambda x, y: dyadic_vectorise(lambda a, b: a % b, x, y)
-    ),
-    "*": attrdict(
-        arity=2, call=lambda x, y: dyadic_vectorise(lambda a, b: a ** b, x, y)
-    ),
+    "%": attrdict(arity=2, call=vectorised_dyadic(op.mod)),
+    "*": attrdict(arity=2, call=vectorised_dyadic(op.pow)),
     '"': attrdict(arity=2, call=lambda x, y: [x, y]),
     ",": attrdict(arity=2, call=lambda x, y: join(x, y)),
-    "<": attrdict(
-        arity=2,
-        call=lambda x, y: dyadic_vectorise(lambda a, b: 1 if a < b else 0, x, y),
-    ),
-    ">": attrdict(
-        arity=2,
-        call=lambda x, y: dyadic_vectorise(lambda a, b: 1 if a > b else 0, x, y),
-    ),
-    "=": attrdict(
-        arity=2,
-        call=lambda x, y: dyadic_vectorise(lambda a, b: 1 if a == b else 0, x, y),
-    ),
-    "≠": attrdict(
-        arity=2,
-        call=lambda x, y: dyadic_vectorise(lambda a, b: 1 if a != b else 0, x, y),
-    ),
-    "≥": attrdict(
-        arity=2,
-        call=lambda x, y: dyadic_vectorise(lambda a, b: 1 if a >= b else 0, x, y),
-    ),
-    "≤": attrdict(
-        arity=2,
-        call=lambda x, y: dyadic_vectorise(lambda a, b: 1 if a <= b else 0, x, y),
-    ),
-    "≡": attrdict(arity=2, call=lambda x, y: 1 if x == y else 0),
-    "≢": attrdict(arity=2, call=lambda x, y: 1 if x != y else 0),
-    "∧": attrdict(
-        arity=2,
-        call=lambda x, y: dyadic_vectorise(lambda a, b: 1 if a and b else 0, x, y),
-    ),
-    "∨": attrdict(
-        arity=2,
-        call=lambda x, y: dyadic_vectorise(lambda a, b: 1 if a or b else 0, x, y),
-    ),
-    "&": attrdict(
-        arity=2, call=lambda x, y: dyadic_vectorise(lambda a, b: a & b, x, y)
-    ),
-    "|": attrdict(
-        arity=2, call=lambda x, y: dyadic_vectorise(lambda a, b: a | b, x, y)
-    ),
-    "^": attrdict(
-        arity=2, call=lambda x, y: dyadic_vectorise(lambda a, b: a ^ b, x, y)
-    ),
+    "<": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(op.lt))),
+    ">": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(op.gt))),
+    "=": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(op.eq))),
+    "≠": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(op.ne))),
+    "≥": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(op.ge))),
+    "≤": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(op.le))),
+    "≡": attrdict(arity=2, call=flax_boolify(op.eq)),
+    "≢": attrdict(arity=2, call=flax_boolify(op.ne)),
+    "∧": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(lambda a, b: a and b))),
+    "∨": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(lambda a, b: a or b))),
+    "&": attrdict(arity=2, call=vectorised_dyadic(op.and_)),
+    "|": attrdict(arity=2, call=vectorised_dyadic(op.or_)),
+    "^": attrdict(arity=2, call=vectorised_dyadic(op.xor)),
     "∊": attrdict(arity=2, call=lambda x, y: x in y),
     "f": attrdict(
         arity=2,
@@ -622,6 +582,8 @@ atoms = {
 for k in atoms:
     # This is for better error messages
     atoms[k].glyph = k
+    # Rationalise all outputs (aka sympy.nsimplify)
+    atoms[k].call = rationalised(atoms[k].call)
 
 # ===== Chain functions ====
 def arities(links):
