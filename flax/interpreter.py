@@ -3,8 +3,8 @@ import sys
 import random as R
 
 from collections import deque
+from math import factorial, floor, ceil
 
-from math import *
 from pyhof import *
 import itertools as it
 import functools as ft
@@ -235,7 +235,7 @@ def pp(obj):
                 return "j".join(map(sss, [a.real, a.imag]))
             elif a < 0:
                 return f"¯{-a}"
-            elif a != inf and int(a) == a:
+            elif a != sympy.oo and int(a) == a:
                 return str(int(a))
             else:
                 return str(a)
@@ -463,7 +463,7 @@ atoms = {
     "Ď": attrdict(arity=1, call=depth),
     "⍋": attrdict(arity=1, call=grade_up),
     "⍒": attrdict(arity=1, call=grade_down),
-    "⅟": attrdict(arity=1, call=vectorised(lambda a: 1 / a if a else inf)),
+    "⅟": attrdict(arity=1, call=vectorised(lambda a: 1 / a if a else sympy.oo)),
     "⌈": attrdict(arity=1, call=vectorised(lambda a: ceil(a))),
     "⌊": attrdict(arity=1, call=vectorised(lambda a: floor(a))),
     "A": attrdict(arity=1, call=vectorised(lambda a: abs(a))),
@@ -481,7 +481,7 @@ atoms = {
     "×": attrdict(arity=2, call=vectorised_dyadic(op.mul)),
     "÷": attrdict(
         arity=2,
-        call=vectorised_dyadic(lambda a, b: a / b if b else (inf if a else 0)),
+        call=vectorised_dyadic(lambda a, b: a / b if b else (sympy.oo if a else 0)),
     ),
     "%": attrdict(arity=2, call=vectorised_dyadic(op.mod)),
     "*": attrdict(arity=2, call=vectorised_dyadic(op.pow)),
@@ -519,10 +519,10 @@ atoms = {
     "⊏": attrdict(
         arity=2, call=lambda x, y: [x[i] for i in range(len(x)) if i % y == 0]
     ),
-    "·": attrdict(arity=2, call=lambda x, y: [*it.product(x, y)]),
+    "·": attrdict(arity=2, call=compose(list, it.product)),
     "r": attrdict(
         arity=2,
-        call=lambda x, y: dyadic_vectorise(lambda a, b: [*range(a, b + 1)], x, y),
+        call=vectorised_dyadic(lambda a, b: [*range(a, b + 1)]),
     ),
     "s": attrdict(arity=2, call=split),
     "ṡ": attrdict(arity=2, call=compose(list, mit.sliding_window)),
@@ -540,43 +540,40 @@ atoms = {
     "#": attrdict(arity=2, call=reshape),
     "ḍ": attrdict(
         arity=2,
-        call=lambda x, y: dyadic_vectorise(lambda a, b: 1 if a % b == 0 else 0, x, y),
+        call=vectorised_dyadic(lambda a, b: 1 if a % b == 0 else 0),
     ),
     # Niladic diagraphs
-    "Øp": attrdict(arity=0, call=lambda: pi),
-    "Øe": attrdict(arity=0, call=lambda: e),
+    "Øp": attrdict(arity=0, call=lambda: sympy.pi),
+    "Øe": attrdict(arity=0, call=lambda: sympy.E),
     "ØP": attrdict(arity=0, call=lambda: 1.618033988749895),
-    "Ø∞": attrdict(arity=0, call=lambda: inf),
+    "Ø∞": attrdict(arity=0, call=lambda: sympy.oo),
     "ØA": attrdict(arity=0, call=lambda: 26),
     "Ø₁": attrdict(arity=0, call=lambda: 128),
     "Ø₂": attrdict(arity=0, call=lambda: 256),
     "Ø₀": attrdict(arity=0, call=lambda: 1000),
     # Monadic diagraphs
     "ŒD": attrdict(arity=1, call=diagonals),
-    "ŒS": attrdict(arity=1, call=lambda x: vectorise(sin, x)),
-    "ŒC": attrdict(arity=1, call=lambda x: vectorise(cos, x)),
-    "ŒT": attrdict(arity=1, call=lambda x: vectorise(tan, x)),
-    "ŒṠ": attrdict(arity=1, call=lambda x: vectorise(asin, x)),
-    "ŒĊ": attrdict(arity=1, call=lambda x: vectorise(acos, x)),
-    "ŒṪ": attrdict(arity=1, call=lambda x: vectorise(atan, x)),
-    "Œc": attrdict(arity=1, call=lambda x: vectorise(lambda a: 1 / sin(a), x)),
-    "Œs": attrdict(arity=1, call=lambda x: vectorise(lambda a: 1 / cos(a), x)),
-    "Œt": attrdict(arity=1, call=lambda x: vectorise(lambda a: 1 / tan(a), x)),
-    "Œn": attrdict(arity=1, call=lambda x: vectorise(sinh, x)),
-    "Œo": attrdict(arity=1, call=lambda x: vectorise(cosh, x)),
-    "Œh": attrdict(arity=1, call=lambda x: vectorise(tanh, x)),
+    "ŒS": attrdict(arity=1, call=vectorised(sympy.sin)),
+    "ŒC": attrdict(arity=1, call=vectorised(sympy.cos)),
+    "ŒT": attrdict(arity=1, call=vectorised(sympy.tan)),
+    "ŒṠ": attrdict(arity=1, call=vectorised(sympy.asin)),
+    "ŒĊ": attrdict(arity=1, call=vectorised(sympy.acos)),
+    "ŒṪ": attrdict(arity=1, call=vectorised(sympy.atan)),
+    "Œc": attrdict(arity=1, call=lambda x: vectorise(lambda a: 1 / sympy.sin(a), x)),
+    "Œs": attrdict(arity=1, call=lambda x: vectorise(lambda a: 1 / sympy.cos(a), x)),
+    "Œt": attrdict(arity=1, call=lambda x: vectorise(lambda a: 1 / sympy.tan(a), x)),
+    "Œn": attrdict(arity=1, call=vectorised(sympy.sinh)),
+    "Œo": attrdict(arity=1, call=vectorised(sympy.cosh)),
+    "Œh": attrdict(arity=1, call=vectorised(sympy.tanh)),
     "Œi": attrdict(arity=1, call=indices_multidimensional),
     # Dyadic diagraphs
-    "œl": attrdict(
-        arity=2, call=lambda x, y: dyadic_vectorise(lambda a, b: a << b, x, y)
-    ),
-    "œr": attrdict(
-        arity=2, call=lambda x, y: dyadic_vectorise(lambda a, b: a >> b, x, y)
-    ),
+    "œl": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: a << b)),
+    "œr": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: a >> b)),
     "œ*": attrdict(arity=2, call=lambda x, y: [*it.product(x, repeat=y)]),
     "œ·": attrdict(
         arity=2, call=lambda x, y: sum(x[i][0] * y[i] for i in range(len(y)))
     ),
+    "œṪ": attrdict(arity=2, call=vectorised_dyadic(sympy.atan2)),
 }
 
 for k in atoms:
