@@ -12,6 +12,9 @@ import more_itertools as mit
 import operator as op
 import sympy
 
+# Flags
+DEBUG = 0
+
 # Attrdict class
 class attrdict(dict):
     def __init__(self, *args, **kwargs):
@@ -595,6 +598,8 @@ def dyadic_chain(chain, x, y):
 
     try:
         while chain:
+            if DEBUG:
+                print(f"DEBUG: λ:{accumulator}, chain: {chain}")
             if arities(chain[0:3]) == [2, 2, 0] and leading_nilad(chain[2:]):
                 accumulator = chain[1].call(
                     chain[0].call(accumulator, y), chain[2].call()
@@ -636,6 +641,8 @@ def monadic_chain(chain, x):
 
     try:
         while 1:
+            if DEBUG:
+                print(f"DEBUG: λ:{accumulator}, chain: {chain}")
             if init:
                 for link in chain:
                     if link.arity < 0:
