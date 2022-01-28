@@ -368,17 +368,15 @@ zip = lambda *x: [[*x] for x in it.zip_longest(*x, fillvalue=0)]
 # ====== Atoms ========
 atoms = {
     # Single byte nilads
-    "Ŧ": attrdict(arity=0, call=lambda: 10),
-    "³": attrdict(arity=0, call=lambda: sys.argv[1] if len(sys.argv) > 1 else 16),
-    "⁴": attrdict(arity=0, call=lambda: sys.argv[2] if len(sys.argv) > 2 else 32),
-    "⁵": attrdict(arity=0, call=lambda: sys.argv[3] if len(sys.argv) > 3 else 64),
-    "⁰": attrdict(arity=0, call=lambda: 100),
-    "ƀ": attrdict(arity=0, call=lambda: [0, 1]),
-    "®": attrdict(arity=0, call=lambda: 0),
-    "я": attrdict(arity=0, call=lambda: ord(sys.stdin.read(1))),
-    "д": attrdict(arity=0, call=lambda: [ord(c) for c in input()]),
-    "⍺": attrdict(arity=0, call=lambda: 0),
-    "⍵": attrdict(arity=0, call=lambda: 0),
+    "₀": attrdict(arity=0, call=lambda: 100),
+    "₁": attrdict(arity=0, call=lambda: [0, 1]),
+    "₂": attrdict(arity=0, call=lambda: 10),
+    "₃": attrdict(arity=0, call=lambda: 16),
+    "₄": attrdict(arity=0, call=lambda: 32),
+    "₅": attrdict(arity=0, call=lambda: 64),
+    "₆": attrdict(arity=0, call=lambda: 0),
+    "₈": attrdict(arity=0, call=lambda: ord(sys.stdin.read(1))),
+    "₉": attrdict(arity=0, call=lambda: [ord(c) for c in input()]),
     # Single byte monads
     "!": attrdict(arity=1, call=vectorised(factorial)),
     "¬": attrdict(arity=1, call=vectorised(lambda a: 1 if not a else 0)),
@@ -582,9 +580,6 @@ def create_chain(chain, arity=-1, isF=True):
 
 
 def dyadic_chain(chain, x, y):
-    atoms["⍺"].call = lambda: x
-    atoms["⍵"].call = lambda: y
-
     for link in chain:
         if link.arity < 0:
             link.arity = 2
@@ -635,8 +630,6 @@ def leading_nilad(chain):
 
 
 def monadic_chain(chain, x):
-    atoms["⍺"].call = lambda: x
-
     init = False
 
     accumulator = x
