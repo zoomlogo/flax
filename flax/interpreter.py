@@ -401,7 +401,7 @@ atoms = {
     "H": attrdict(arity=1, call=vectorised(lambda a: a / 2)),
     "Ḣ": attrdict(arity=1, call=lambda x: iterable(x, make_digits=True)[1:]),
     "Ḥ": attrdict(arity=1, call=lambda x: iterable(x, make_digits=True)[0]),
-    "I": attrdict(arity=1, call=vectorised(compose(list, range))),
+    "I": attrdict(arity=1, call=vectorised(lambda x: [*range(x)])),
     "J": attrdict(arity=1, call=join_spaces),
     "Ĵ": attrdict(arity=1, call=join_newlines),
     "K": attrdict(arity=1, call=lambda x: [*scanl1(op.add, iterable(x))]),
