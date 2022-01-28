@@ -112,6 +112,17 @@ def find_all_indices(x, y):
 flax_boolify = lambda func: compose(vectorised(lambda x: 1 if x else 0), func)
 
 
+def flax_print(x):
+    print(
+        str(x)
+        .replace(", ", " ")
+        .replace("oo", "∞")
+        .replace(" + ", "+")
+        .replace(" - ", "-")
+    )
+    return x
+
+
 def from_bin(x):
     x = iterable(x)
     sign = -1 if sum(x) < 0 else 1
@@ -223,36 +234,6 @@ def mold(x, y):
             y[i] = item
             x.append(item)
     return y
-
-
-def pp(obj):
-    if obj is None:
-        return
-
-    def rsb(x):
-        def sss(a):
-            if isinstance(a, complex):
-                return "j".join(map(sss, [a.real, a.imag]))
-            elif a < 0:
-                return f"¯{-a}"
-            elif a != sympy.oo and int(a) == a:
-                return str(int(a))
-            else:
-                return str(a)
-
-        if not isinstance(x, list):
-            return sss(x)
-
-        string = "["
-        for e in x:
-            if e == []:
-                string += "⍬"
-            else:
-                string += rsb(e)
-            string += " "
-        return string[:-1] + "]"
-
-    print(rsb(obj))
 
 
 def prefixes(x):
@@ -390,7 +371,7 @@ atoms = {
     "Ŧ": attrdict(arity=0, call=lambda: 10),
     "³": attrdict(arity=0, call=lambda: sys.argv[1] if len(sys.argv) > 1 else 16),
     "⁴": attrdict(arity=0, call=lambda: sys.argv[2] if len(sys.argv) > 2 else 32),
-    "⁵": attrdict(arity=0, call=lambda: sys.argv[2] if len(sys.argv) > 3 else 64),
+    "⁵": attrdict(arity=0, call=lambda: sys.argv[3] if len(sys.argv) > 3 else 64),
     "⁰": attrdict(arity=0, call=lambda: 100),
     "ƀ": attrdict(arity=0, call=lambda: [0, 1]),
     "®": attrdict(arity=0, call=lambda: 0),
@@ -452,7 +433,7 @@ atoms = {
     "U": attrdict(arity=1, call=lambda x: list(set(iterable(x)))),
     "⤒": attrdict(arity=1, call=vectorised(lambda a: a + 1)),
     "⤓": attrdict(arity=1, call=vectorised(lambda a: a - 1)),
-    "P": attrdict(arity=1, call=lambda x: pp(x)),
+    "P": attrdict(arity=1, call=lambda x: flax_print(x)),
     "Ċ": attrdict(arity=1, call=lambda x: print(end="".join(chr(c) for c in x))),
     "Ç": attrdict(arity=1, call=lambda x: split(x, 2)),
     "X": attrdict(arity=1, call=lambda x: split(x, int(len(x) / 2))),
@@ -640,7 +621,7 @@ def dyadic_chain(chain, x, y):
                 accumulator = chain[0].call(accumulator)
                 chain = chain[1:]
             else:
-                pp(accumulator)
+                flax_print(accumulator)
                 accumulator = chain[0].call()
                 chain = chain[1:]
     except FileNotFoundError:
@@ -695,7 +676,7 @@ def monadic_chain(chain, x):
                     accumulator = chain[0].call(accumulator)
                     chain = chain[1:]
             else:
-                pp(accumulator)
+                flax_print(accumulator)
                 accumulator = chain[0].call()
                 chain = chain[1:]
     except FileNotFoundError:
