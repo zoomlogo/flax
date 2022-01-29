@@ -219,9 +219,9 @@ def iterable(x, make_range=False, make_digits=False):
 
 
 def join(x, y):
-    res = [y] * (len(x) * 2 - 1)
-    res[0::2] = iterable(x)
-    return x
+    x = iterable(x)
+    y = iterable(y)
+    # TODO: Implement
 
 
 def join_newlines(x):
@@ -370,7 +370,7 @@ vectorised = lambda func: lambda x: vectorise(func, x)
 vectorised_dyadic = lambda func: lambda x, y: dyadic_vectorise(func, x, y)
 
 
-zip = lambda *x: [[*x] for x in it.zip_longest(*x, fillvalue=0)]
+lzip = lambda *x: [[*x] for x in it.zip_longest(*x, fillvalue=0)]
 
 # ====== Atoms ========
 atoms = {
@@ -419,7 +419,7 @@ atoms = {
     "Ř": attrdict(arity=1, call=lambda x: [*range(len(iterable(x, make_digits=True)))]),
     "S": attrdict(arity=1, call=lambda x: [*sorted(x)]),
     "Ṡ": attrdict(arity=1, call=lambda x: [*sorted(x)][::-1]),
-    "T": attrdict(arity=1, call=lambda x: zip(*x)),
+    "T": attrdict(arity=1, call=lambda x: lzip(*x)),
     "Ṫ": attrdict(arity=1, call=lambda x: iterable(x, make_digits=True)[:-2]),
     "Ṭ": attrdict(arity=1, call=lambda x: iterable(x, make_digits=True)[-1]),
     "U": attrdict(arity=1, call=lambda x: list(set(iterable(x)))),
@@ -462,6 +462,33 @@ atoms = {
     "⊣": attrdict(arity=1, call=suffixes),
     "∀": attrdict(arity=1, call=lambda x: [*map(sum, x)]),
     # Single byte dyads
+    "c": attrdict(arity=2, call=lambda x, y: iterable(x, make_digits=True).count(y)),
+    "d": attrdict(
+        arity=2,
+        call=flax_boolify(vectorised_dyadic(lambda a, b: a % b == 0)),
+    ),
+    "f": attrdict(
+        arity=2,
+        call=lambda x, y: [a for a in iterable(x, make_digits=True) if a not in y],
+    ),
+    "ḟ": attrdict(
+        arity=2, call=lambda x, y: [a for a in iterable(x, make_digits=True) if a in y]
+    ),
+    "h": attrdict(arity=2, call=lambda x, y: iterable(x, make_digits=True)[:y]),
+    "i": attrdict(arity=2, call=index_into),
+    "m": attrdict(arity=2, call=lambda x, y: mold(iterable(x), iterable(y))),
+    "o": attrdict(arity=2, call=split_at_occurences),
+    "p": attrdict(arity=2, call=lambda x, y: iterable(y) + iterable(x)),
+    "r": attrdict(
+        arity=2,
+        call=vectorised_dyadic(lambda a, b: [*range(a, b + 1)]),
+    ),
+    "s": attrdict(arity=2, call=split),
+    "ṡ": attrdict(arity=2, call=compose(list, mit.sliding_window)),
+    "t": attrdict(arity=2, call=lambda x, y: iterable(x, make_digits=True)[y - 1 :]),
+    "u": attrdict(arity=2, call=lambda x, y: [y.find(v) + 1 for v in x]),
+    "y": attrdict(arity=2, call=join),
+    "z": attrdict(arity=2, call=lzip),
     "+": attrdict(arity=2, call=vectorised_dyadic(op.add)),
     "-": attrdict(arity=2, call=vectorised_dyadic(op.sub)),
     "×": attrdict(arity=2, call=vectorised_dyadic(op.mul)),
@@ -471,8 +498,6 @@ atoms = {
     ),
     "%": attrdict(arity=2, call=vectorised_dyadic(op.mod)),
     "*": attrdict(arity=2, call=vectorised_dyadic(op.pow)),
-    '"': attrdict(arity=2, call=lambda x, y: [x, y]),
-    ",": attrdict(arity=2, call=lambda x, y: join(x, y)),
     "<": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(op.lt))),
     ">": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(op.gt))),
     "=": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(op.eq))),
@@ -481,53 +506,25 @@ atoms = {
     "≤": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(op.le))),
     "≡": attrdict(arity=2, call=flax_boolify(op.eq)),
     "≢": attrdict(arity=2, call=flax_boolify(op.ne)),
+    ",": attrdict(arity=2, call=lambda x, y: iterable(x) + iterable(y)),
+    "⋈": attrdict(arity=2, call=lambda x, y: [x, y]),
     "∧": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(lambda a, b: a and b))),
     "∨": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(lambda a, b: a or b))),
     "&": attrdict(arity=2, call=vectorised_dyadic(op.and_)),
     "|": attrdict(arity=2, call=vectorised_dyadic(op.or_)),
     "^": attrdict(arity=2, call=vectorised_dyadic(op.xor)),
     "∊": attrdict(arity=2, call=lambda x, y: x in y),
-    "f": attrdict(
-        arity=2,
-        call=lambda x, y: [a for a in iterable(x, make_digits=True) if a not in y],
-    ),
-    "ḟ": attrdict(
-        arity=2, call=lambda x, y: [a for a in iterable(x, make_digits=True) if a in y]
-    ),
     "⊂": attrdict(
         arity=2,
-        call=lambda x, y: find_all_indices(iterable(x, make_digits=True), y)[0] + 1,
+        call=lambda x, y: find_all_indices(iterable(x, make_digits=True), y)[0],
     ),
-    "⊆": attrdict(
-        arity=2,
-        call=lambda x, y: vectorise(lambda a: a + 1, find_all_indices(x, y)),
-    ),
+    "⊆": attrdict(arity=2, call=find_all_indices),
     "⊏": attrdict(
         arity=2, call=lambda x, y: [x[i] for i in range(len(x)) if i % y == 0]
     ),
     "·": attrdict(arity=2, call=compose(list, it.product)),
-    "r": attrdict(
-        arity=2,
-        call=vectorised_dyadic(lambda a, b: [*range(a, b + 1)]),
-    ),
-    "s": attrdict(arity=2, call=split),
-    "ṡ": attrdict(arity=2, call=compose(list, mit.sliding_window)),
     "\\": attrdict(arity=2, call=lambda x, y: [iterable(x) for _ in range(y)]),
-    "i": attrdict(arity=2, call=index_into),
-    "o": attrdict(arity=2, call=split_at_occurences),
-    "a": attrdict(arity=2, call=lambda x, y: iterable(x) + iterable(y)),
-    "p": attrdict(arity=2, call=lambda x, y: iterable(y) + iterable(x)),
-    "c": attrdict(arity=2, call=lambda x, y: iterable(x, make_digits=True).count(y)),
-    "m": attrdict(arity=2, call=lambda x, y: mold(iterable(x), iterable(y))),
-    "h": attrdict(arity=2, call=lambda x, y: iterable(x, make_digits=True)[:y]),
-    "t": attrdict(arity=2, call=lambda x, y: iterable(x, make_digits=True)[y - 1 :]),
-    "z": attrdict(arity=2, call=zip),
-    "u": attrdict(arity=2, call=lambda x, y: [y.find(v) + 1 for v in x]),
     "#": attrdict(arity=2, call=reshape),
-    "ḍ": attrdict(
-        arity=2,
-        call=vectorised_dyadic(lambda a, b: 1 if a % b == 0 else 0),
-    ),
     # Niladic diagraphs
     "Øp": attrdict(arity=0, call=lambda: sympy.pi),
     "Øe": attrdict(arity=0, call=lambda: sympy.E),
