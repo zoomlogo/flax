@@ -115,14 +115,18 @@ def find_all_indices(x, y):
 flax_boolify = lambda func: compose(vectorised(lambda x: 1 if x else 0), func)
 
 
-def flax_print(x):
-    print(
+def flax_string(x):
+    return (
         str(x)
         .replace(", ", " ")
         .replace("oo", "∞")
         .replace(" + ", "+")
         .replace(" - ", "-")
     )
+
+
+def flax_print(x):
+    print(flax_string(x))
     return x
 
 
@@ -251,12 +255,12 @@ def random(x):
     return R.choice(x)
 
 
-def reshape(shape, L):
-    if not isinstance(L, list):
-        return L
+def reshape(x, shape):
+    if not isinstance(x, list):
+        return x
 
-    if not isinstance(L, deque):
-        L = deque(L)
+    if not isinstance(x, deque):
+        x = deque(x)
 
     def nxt(dq):
         x = dq.popleft()
@@ -264,9 +268,9 @@ def reshape(shape, L):
         return x
 
     if len(shape) == 1:
-        return [nxt(L) for _ in range(shape[0])]
+        return [nxt(x) for _ in range(shape[0])]
     else:
-        return [reshape(shape[1:], L) for _ in range(shape[0])]
+        return [reshape(x, shape[1:]) for _ in range(shape[0])]
 
 
 def reverse_every_other(x):
@@ -599,7 +603,9 @@ def dyadic_chain(chain, x, y):
     try:
         while chain:
             if DEBUG:
-                print(f"DEBUG: λ:{accumulator}, chain: {chain}")
+                print(
+                    f"DEBUG: λ: {flax_string(accumulator)}, chain: {flax_string(list(map(lambda x: x.glyph, chain)))}"
+                )
             if arities(chain[0:3]) == [2, 2, 0] and leading_nilad(chain[2:]):
                 accumulator = chain[1].call(
                     chain[0].call(accumulator, y), chain[2].call()
@@ -642,7 +648,9 @@ def monadic_chain(chain, x):
     try:
         while 1:
             if DEBUG:
-                print(f"DEBUG: λ:{accumulator}, chain: {chain}")
+                print(
+                    f"DEBUG: λ: {flax_string(accumulator)}, chain: {flax_string(list(map(lambda x: x.glyph, chain)))}"
+                )
             if init:
                 for link in chain:
                     if link.arity < 0:
