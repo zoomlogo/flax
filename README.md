@@ -7,4 +7,3 @@ flax is a tacit language designed for code golfing.
 You can chat at [SE chat](https://chat.stackexchange.com/rooms/132561/flax).
 
 **NOTE:** You have to have above 20 reputation on any SE site.
-test.
