@@ -77,15 +77,7 @@ def dyadic_vectorise(fn, x, y):
             return [dyadic_vectorise(fn, a, y) for a in x]
 
 
-def flatten(L):
-    def gen(l):
-        if not isinstance(l, list):
-            yield l
-        else:
-            for i in l:
-                yield from flatten(i)
-
-    return [*gen(L)]
+flatten = compose(list, mit.collapse)
 
 
 def falsey_indices(x):
@@ -220,8 +212,8 @@ def iterable(x, make_range=False, make_digits=False):
 
 def join(x, y):
     x = iterable(x)
-    y = iterable(y)
-    # TODO: Implement
+    y = it.cycle(iterable(y))
+    return flatten(zip(x, y))
 
 
 def join_newlines(x):
