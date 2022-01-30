@@ -3,8 +3,14 @@ from sys import argv
 from prompt_toolkit import print_formatted_text as pft, HTML
 
 from flax.main import flax_eval, cli_repl
+import flax.interpreter
 
 argv = argv[1:]
+
+if argv:
+    if argv[0] == "d":
+        flax.interpreter.DEBUG = 1
+        argv = argv[1:]
 
 if argv:
     try:

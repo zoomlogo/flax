@@ -1,4 +1,4 @@
-from flax.interpreter import variadic_chain, pp
+from flax.interpreter import variadic_chain, flax_print
 from flax.lexer import tokenise
 from flax.parser import parse
 
@@ -28,7 +28,7 @@ def cli_repl(prompt="      ", inp_prompt="> "):
             chain = chain if chain else ""
             args = [input(inp_prompt), input(inp_prompt)]
             args = map(eval, filter("".__ne__, args))
-            pp(variadic_chain(chain, *args))
+            flax_print(variadic_chain(chain, *args))
     except KeyboardInterrupt:
         pft(HTML("<ansired>ERROR: KeyboardInterrupt Recieved.</ansired>"))
         exit(130)
