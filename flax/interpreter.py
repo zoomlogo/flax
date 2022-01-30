@@ -274,39 +274,9 @@ def reverse_every_other(x):
     return x
 
 
-def split(x, c):
-    if not isinstance(x, list):
-        return x
+split = compose(list, mit.chunked)
 
-    res = []
-    tmp = []
-
-    for i in range(len(x)):
-        if not (i % c) and tmp:
-            res.append(tmp)
-            tmp = []
-        tmp.append(x[i])
-
-    if tmp:
-        res.append(tmp)
-    return res
-
-
-def split_at_occurences(x, y):
-    res = []
-    tmp = []
-
-    for e in x:
-        if e == y:
-            res.append(tmp)
-            tmp = []
-        else:
-            tmp.append(e)
-
-    if tmp:
-        res.append(tmp)
-
-    return res
+split_at = lambda x, y: list(mit.split_at(x, lambda a: a == y))
 
 
 def sub_lists(l):
@@ -433,7 +403,8 @@ atoms = {
     "≈": attrdict(
         arity=1,
         call=flax_boolify(
-            lambda x: next(g := it.groupby(x), True) and not next(g, False)
+            lambda x: next(g := it.groupby(iterable(x, make_digits=True)), True)
+            and not next(g, False)
         ),
     ),
     "∇": attrdict(arity=1, call=lambda x: min(iterable(x, make_digits=True))),
@@ -471,7 +442,7 @@ atoms = {
     "h": attrdict(arity=2, call=lambda x, y: iterable(x, make_digits=True)[:y]),
     "i": attrdict(arity=2, call=index_into),
     "m": attrdict(arity=2, call=lambda x, y: mold(iterable(x), iterable(y))),
-    "o": attrdict(arity=2, call=split_at_occurences),
+    "o": attrdict(arity=2, call=split_at),
     "p": attrdict(arity=2, call=lambda x, y: iterable(y) + iterable(x)),
     "r": attrdict(
         arity=2,
@@ -536,9 +507,9 @@ atoms = {
     "ŒṠ": attrdict(arity=1, call=vectorised(sympy.asin)),
     "ŒĊ": attrdict(arity=1, call=vectorised(sympy.acos)),
     "ŒṪ": attrdict(arity=1, call=vectorised(sympy.atan)),
-    "Œc": attrdict(arity=1, call=lambda x: vectorise(lambda a: 1 / sympy.sin(a), x)),
-    "Œs": attrdict(arity=1, call=lambda x: vectorise(lambda a: 1 / sympy.cos(a), x)),
-    "Œt": attrdict(arity=1, call=lambda x: vectorise(lambda a: 1 / sympy.tan(a), x)),
+    "Œc": attrdict(arity=1, call=vectorised(lambda a: 1 / sympy.sin(a))),
+    "Œs": attrdict(arity=1, call=vectorised(lambda a: 1 / sympy.cos(a))),
+    "Œt": attrdict(arity=1, call=vectorised(lambda a: 1 / sympy.tan(a))),
     "Œn": attrdict(arity=1, call=vectorised(sympy.sinh)),
     "Œo": attrdict(arity=1, call=vectorised(sympy.cosh)),
     "Œh": attrdict(arity=1, call=vectorised(sympy.tanh)),
@@ -720,43 +691,19 @@ def variadic_link(link, *args, reverself=False):
 
 
 # ========= Quicks ==========
-def qreduce(links, outer_links, i, arity=1):
-    ret = [attrdict(arity=arity)]
-    if len(links) == 1:
-        ret[0].call = lambda x, y=None: foldl1(links[0].call, x)
-    else:
-        ret[0].call = lambda x, y=None: [
-            foldl1(links[0].call, t)
-            for t in mit.sliding_window(iterable(x), links[1].call())
-        ]
-    return ret
-
-
-def qreducer(links, outer_links, i, arity=1):
-    ret = [attrdict(arity=arity)]
-    if len(links) == 1:
-        ret[0].call = lambda x, y=None: foldr1(links[0].call, x)
-    else:
-        ret[0].call = lambda x, y=None: [
-            foldr1(links[0].call, t)
-            for t in mit.sliding_window(iterable(x), links[1].call())
-        ]
-    return ret
-
-
 quicks = {
-    "©": attrdict(
+    "⁶": attrdict(
         condition=lambda links: links,
         qlink=lambda links, outer_links, i: [
             attrdict(
                 arity=links[0].arity,
                 call=lambda x=None, y=None: copy_to(
-                    atoms["®"], variadic_link(links[0], x, y)
+                    atoms["₆"], variadic_link(links[0], x, y)
                 ),
             )
         ],
     ),
-    "ß": attrdict(
+    "ᵝ": attrdict(
         condition=lambda links: True,
         qlink=lambda links, outer_links, i: [create_chain(outer_links[i])],
     ),
@@ -771,20 +718,18 @@ quicks = {
             )
         ],
     ),
-    "₀": attrdict(
+    "⁰": attrdict(
         condition=lambda links: True,
         qlink=lambda links, outer_links, i: [create_chain(outer_links[i], 0)],
     ),
-    "₁": attrdict(
+    "¹": attrdict(
         condition=lambda links: True,
         qlink=lambda links, outer_links, i: [create_chain(outer_links[i], 1)],
     ),
-    "₂": attrdict(
+    "²": attrdict(
         condition=lambda links: True,
         qlink=lambda links, outer_links, i: [create_chain(outer_links[i], 2)],
     ),
-    "/": attrdict(condition=lambda links: links and links[0].arity, qlink=qreduce),
-    "⌿": attrdict(condition=lambda links: links and links[0].arity, qlink=qreducer),
 }
 
 # == Train Separators ==
