@@ -437,7 +437,8 @@ atoms = {
         call=lambda x, y: [a for a in iterable(x, make_digits=True) if a not in y],
     ),
     "ḟ": attrdict(
-        arity=2, call=lambda x, y: [a for a in iterable(x, make_digits=True) if a in y]
+        arity=2,
+        call=lambda x, y: [a for a in iterable(x, make_digits=True) if a in y],
     ),
     "h": attrdict(arity=2, call=lambda x, y: iterable(x, make_digits=True)[:y]),
     "i": attrdict(arity=2, call=index_into),
@@ -603,16 +604,14 @@ def leading_nilad(chain):
 
 
 def monadic_chain(chain, x):
-    init = False
+    init = True
 
     accumulator = x
 
     try:
         while 1:
             if DEBUG:
-                print(
-                    f"DEBUG: λ: {flax_string(accumulator)}, chain: {flax_string(list(map(lambda x: x.glyph, chain)))}"
-                )
+                print(f"DEBUG: λ: {flax_string(accumulator)}, chain: {chain}")
             if init:
                 for link in chain:
                     if link.arity < 0:
@@ -621,7 +620,7 @@ def monadic_chain(chain, x):
                 if leading_nilad(chain):
                     accumulator = chain[0].call()
                     chain = chain[1:]
-
+                init = False
             if not chain:
                 break
 
