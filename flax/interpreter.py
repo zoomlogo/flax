@@ -35,7 +35,9 @@ def contains_false(x):
 
 
 depth = (
-    lambda x: 0 if not isinstance(x, list) else (1 if not x else max(map(depth, x)) + 1)
+    lambda x: 0
+    if not isinstance(x, list)
+    else (1 if not x else max(map(depth, x)) + 1)
 )
 
 
@@ -205,7 +207,10 @@ def iterable(x, make_range=False, make_digits=False):
         if make_range:
             return [*range(x)]
         if make_digits:
-            return [-int(i) if x < 0 else int(i) for i in str(x)[1 if x < 0 else 0 :]]
+            return [
+                -int(i) if x < 0 else int(i)
+                for i in str(x)[1 if x < 0 else 0 :]
+            ]
         return [x]
     return x
 
@@ -363,7 +368,9 @@ atoms = {
     "Ď": attrdict(arity=1, call=depth),
     "E": attrdict(arity=1, call=vectorised(lambda a: [*range(a)])),
     "F": attrdict(arity=1, call=flatten),
-    "G": attrdict(arity=1, call=lambda x: group_equal(iterable(x, make_digits=True))),
+    "G": attrdict(
+        arity=1, call=lambda x: group_equal(iterable(x, make_digits=True))
+    ),
     "H": attrdict(arity=1, call=lambda x: iterable(x, make_digits=True)[0]),
     "Ḣ": attrdict(arity=1, call=lambda x: iterable(x, make_digits=True)[1:]),
     "I": attrdict(arity=1, call=vectorised(compose(list, range))),
@@ -375,12 +382,16 @@ atoms = {
     "N": attrdict(arity=1, call=vectorised(lambda a: -a)),
     "O": attrdict(arity=1, call=lambda x: x),
     "P": attrdict(arity=1, call=lambda x: flax_print(x)),
-    "Ṗ": attrdict(arity=1, call=lambda x: print(end="".join(chr(c) for c in x))),
+    "Ṗ": attrdict(
+        arity=1, call=lambda x: print(end="".join(chr(c) for c in x))
+    ),
     "Ƥ": attrdict(arity=1, call=lambda x: [*it.permutations(x)]),
     "Q": attrdict(arity=1, call=vectorised(lambda a: a / 2)),
     "R": attrdict(arity=1, call=lambda x: iterable(x, make_range=True)[::-1]),
     "Ŕ": attrdict(arity=1, call=random),
-    "Ř": attrdict(arity=1, call=lambda x: [*range(len(iterable(x, make_digits=True)))]),
+    "Ř": attrdict(
+        arity=1, call=lambda x: [*range(len(iterable(x, make_digits=True)))]
+    ),
     "S": attrdict(arity=1, call=lambda x: [*sorted(x)]),
     "Ṡ": attrdict(arity=1, call=lambda x: [*sorted(x)][::-1]),
     "T": attrdict(arity=1, call=lambda x: iterable(x, make_digits=True)[-1]),
@@ -389,8 +400,12 @@ atoms = {
     "V": attrdict(arity=1, call=lambda x: group(iterable(x, make_digits=True))),
     "W": attrdict(arity=1, call=lambda x: [x]),
     "X": attrdict(arity=1, call=lambda x: split(x, int(len(x) / 2))),
-    "Y": attrdict(arity=1, call=lambda x: [x[i] for i in range(len(x)) if i % 2 == 0]),
-    "Ẏ": attrdict(arity=1, call=lambda x: [x[i] for i in range(len(x)) if i % 2]),
+    "Y": attrdict(
+        arity=1, call=lambda x: [x[i] for i in range(len(x)) if i % 2 == 0]
+    ),
+    "Ẏ": attrdict(
+        arity=1, call=lambda x: [x[i] for i in range(len(x)) if i % 2]
+    ),
     "Z": attrdict(arity=1, call=lambda x: lzip(*x)),
     "Π": attrdict(arity=1, call=lambda x: foldl1(op.mul, flatten(x))),
     "Σ": attrdict(arity=1, call=lambda x: sum(flatten(x))),
@@ -413,10 +428,14 @@ atoms = {
         arity=1,
         call=vectorised(lambda a: -1 if a < 0 else (0 if a == 0 else 1)),
     ),
-    "Θ": attrdict(arity=1, call=lambda x: iterable(x, make_range=True).insert(0, 0)),
+    "Θ": attrdict(
+        arity=1, call=lambda x: iterable(x, make_range=True).insert(0, 0)
+    ),
     "⤒": attrdict(arity=1, call=vectorised(lambda a: a + 1)),
     "⤓": attrdict(arity=1, call=vectorised(lambda a: a - 1)),
-    "ε": attrdict(arity=1, call=lambda x: sub_lists(iterable(x, make_range=True))),
+    "ε": attrdict(
+        arity=1, call=lambda x: sub_lists(iterable(x, make_range=True))
+    ),
     "σ": attrdict(arity=1, call=reverse_every_other),
     "⍋": attrdict(arity=1, call=grade_up),
     "⍒": attrdict(arity=1, call=grade_down),
@@ -427,17 +446,22 @@ atoms = {
     "⊣": attrdict(arity=1, call=suffixes),
     "∀": attrdict(arity=1, call=lambda x: [*map(sum, x)]),
     # Single byte dyads
-    "c": attrdict(arity=2, call=lambda x, y: iterable(x, make_digits=True).count(y)),
+    "c": attrdict(
+        arity=2, call=lambda x, y: iterable(x, make_digits=True).count(y)
+    ),
     "d": attrdict(
         arity=2,
         call=flax_boolify(vectorised_dyadic(lambda a, b: a % b == 0)),
     ),
     "f": attrdict(
         arity=2,
-        call=lambda x, y: [a for a in iterable(x, make_digits=True) if a not in y],
+        call=lambda x, y: [
+            a for a in iterable(x, make_digits=True) if a not in y
+        ],
     ),
     "ḟ": attrdict(
-        arity=2, call=lambda x, y: [a for a in iterable(x, make_digits=True) if a in y]
+        arity=2,
+        call=lambda x, y: [a for a in iterable(x, make_digits=True) if a in y],
     ),
     "h": attrdict(arity=2, call=lambda x, y: iterable(x, make_digits=True)[:y]),
     "i": attrdict(arity=2, call=index_into),
@@ -450,7 +474,9 @@ atoms = {
     ),
     "s": attrdict(arity=2, call=split),
     "ṡ": attrdict(arity=2, call=compose(list, mit.sliding_window)),
-    "t": attrdict(arity=2, call=lambda x, y: iterable(x, make_digits=True)[y - 1 :]),
+    "t": attrdict(
+        arity=2, call=lambda x, y: iterable(x, make_digits=True)[y - 1 :]
+    ),
     "u": attrdict(arity=2, call=lambda x, y: [y.find(v) + 1 for v in x]),
     "y": attrdict(arity=2, call=join),
     "z": attrdict(arity=2, call=lzip),
@@ -459,7 +485,9 @@ atoms = {
     "×": attrdict(arity=2, call=vectorised_dyadic(op.mul)),
     "÷": attrdict(
         arity=2,
-        call=vectorised_dyadic(lambda a, b: a / b if b else (sympy.oo if a else 0)),
+        call=vectorised_dyadic(
+            lambda a, b: a / b if b else (sympy.oo if a else 0)
+        ),
     ),
     "%": attrdict(arity=2, call=vectorised_dyadic(op.mod)),
     "*": attrdict(arity=2, call=vectorised_dyadic(op.pow)),
@@ -473,8 +501,12 @@ atoms = {
     "≢": attrdict(arity=2, call=flax_boolify(op.ne)),
     ",": attrdict(arity=2, call=lambda x, y: iterable(x) + iterable(y)),
     "⋈": attrdict(arity=2, call=lambda x, y: [x, y]),
-    "∧": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(lambda a, b: a and b))),
-    "∨": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(lambda a, b: a or b))),
+    "∧": attrdict(
+        arity=2, call=flax_boolify(vectorised_dyadic(lambda a, b: a and b))
+    ),
+    "∨": attrdict(
+        arity=2, call=flax_boolify(vectorised_dyadic(lambda a, b: a or b))
+    ),
     "&": attrdict(arity=2, call=vectorised_dyadic(op.and_)),
     "|": attrdict(arity=2, call=vectorised_dyadic(op.or_)),
     "^": attrdict(arity=2, call=vectorised_dyadic(op.xor)),
@@ -544,7 +576,9 @@ def create_chain(chain, arity=-1, isF=True):
     return attrdict(
         arity=arity,
         chain=chain,
-        call=lambda x=None, y=None: variadic_chain(chain, *(isF and (x, y) or (y, x))),
+        call=lambda x=None, y=None: variadic_chain(
+            chain, *(isF and (x, y) or (y, x))
+        ),
     )
 
 
@@ -603,16 +637,14 @@ def leading_nilad(chain):
 
 
 def monadic_chain(chain, x):
-    init = False
+    init = True
 
     accumulator = x
 
     try:
         while 1:
             if DEBUG:
-                print(
-                    f"DEBUG: λ: {flax_string(accumulator)}, chain: {flax_string(list(map(lambda x: x.glyph, chain)))}"
-                )
+                print(f"DEBUG: λ: {flax_string(accumulator)}, chain: {chain}")
             if init:
                 for link in chain:
                     if link.arity < 0:
@@ -621,7 +653,7 @@ def monadic_chain(chain, x):
                 if leading_nilad(chain):
                     accumulator = chain[0].call()
                     chain = chain[1:]
-
+                init = False
             if not chain:
                 break
 

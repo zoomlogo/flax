@@ -8,7 +8,9 @@ from prompt_toolkit import print_formatted_text as pft, HTML
 
 def flax_eval(code, *args):
     try:
-        pp(variadic_chain(parse(tokenise(code))[-1] if code else "", *args))
+        flax_print(
+            variadic_chain(parse(tokenise(code))[-1] if code else "", *args)
+        )
     except KeyboardInterrupt:
         pft(HTML("<ansired>ERROR: KeyboardInterrupt Recieved.</ansired>"))
         exit(130)
