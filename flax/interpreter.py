@@ -128,7 +128,7 @@ def from_bin(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 2**i
+        num += abs(b) * 2 ** i
         i += 1
     return num * sign
 
@@ -139,7 +139,7 @@ def from_digits(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 10**i
+        num += abs(b) * 10 ** i
         i += 1
     return num * sign
 
@@ -269,8 +269,8 @@ def reverse_every_other(x):
     x = iterable(x)
 
     for i in range(len(x)):
-        if i % 2 == 0:
-            x[i] = iterable(x[i])[::-1]
+        if i % 2:
+            x[i] = list(reversed(iterable(x[i])))
     return x
 
 
@@ -351,7 +351,7 @@ atoms = {
     "Ă": attrdict(arity=1, call=contains_false),
     "B": attrdict(arity=1, call=vectorised(to_bin)),
     "Ḃ": attrdict(arity=1, call=from_bin),
-    "Ḅ": attrdict(arity=1, call=vectorised(lambda a: 2**a)),
+    "Ḅ": attrdict(arity=1, call=vectorised(lambda a: 2 ** a)),
     "Ƀ": attrdict(arity=1, call=vectorised(lambda a: a % 2)),
     "C": attrdict(arity=1, call=vectorised(lambda a: 1 - a)),
     "Ċ": attrdict(arity=1, call=vectorised(lambda a: a * 3)),
@@ -361,7 +361,7 @@ atoms = {
     "Ḍ": attrdict(arity=1, call=vectorised(divisors)),
     "Ð": attrdict(arity=1, call=vectorised(lambda a: a * 2)),
     "Ď": attrdict(arity=1, call=depth),
-    "E": attrdict(arity=1, call=vectorised(lambda a: [*range(a)])),
+    "E": attrdict(arity=1, call=vectorised(lambda a: list(range(1, a + 1)))),
     "F": attrdict(arity=1, call=flatten),
     "G": attrdict(arity=1, call=lambda x: group_equal(iterable(x, make_digits=True))),
     "H": attrdict(arity=1, call=lambda x: iterable(x, make_digits=True)[0]),
@@ -369,23 +369,25 @@ atoms = {
     "I": attrdict(arity=1, call=vectorised(compose(list, range))),
     "J": attrdict(arity=1, call=join_spaces),
     "Ĵ": attrdict(arity=1, call=join_newlines),
-    "K": attrdict(arity=1, call=lambda x: [*scanl1(op.add, iterable(x))]),
+    "K": attrdict(arity=1, call=lambda x: scanl1(op.add, iterable(x))),
     "L": attrdict(arity=1, call=len),
-    "M": attrdict(arity=1, call=vectorised(lambda a: a**2)),
+    "M": attrdict(arity=1, call=vectorised(lambda a: a ** 2)),
     "N": attrdict(arity=1, call=vectorised(lambda a: -a)),
     "O": attrdict(arity=1, call=lambda x: x),
     "P": attrdict(arity=1, call=lambda x: flax_print(x)),
     "Ṗ": attrdict(arity=1, call=lambda x: print(end="".join(chr(c) for c in x))),
-    "Ƥ": attrdict(arity=1, call=lambda x: [*it.permutations(x)]),
+    "Ƥ": attrdict(arity=1, call=compose(list, it.permutations)),
     "Q": attrdict(arity=1, call=vectorised(lambda a: a / 2)),
     "R": attrdict(arity=1, call=lambda x: iterable(x, make_range=True)[::-1]),
     "Ŕ": attrdict(arity=1, call=random),
-    "Ř": attrdict(arity=1, call=lambda x: [*range(len(iterable(x, make_digits=True)))]),
-    "S": attrdict(arity=1, call=lambda x: [*sorted(x)]),
-    "Ṡ": attrdict(arity=1, call=lambda x: [*sorted(x)][::-1]),
+    "Ř": attrdict(
+        arity=1, call=lambda x: list(range(len(iterable(x, make_digits=True))))
+    ),
+    "S": attrdict(arity=1, call=compose(list, sorted, iterable)),
+    "Ṡ": attrdict(arity=1, call=compose(list, reversed, sorted, iterable)),
     "T": attrdict(arity=1, call=lambda x: iterable(x, make_digits=True)[-1]),
     "Ṫ": attrdict(arity=1, call=lambda x: iterable(x, make_digits=True)[:-2]),
-    "U": attrdict(arity=1, call=lambda x: list(set(iterable(x)))),
+    "U": attrdict(arity=1, call=compose(list, set, iterable)),
     "V": attrdict(arity=1, call=lambda x: group(iterable(x, make_digits=True))),
     "W": attrdict(arity=1, call=lambda x: [x]),
     "X": attrdict(arity=1, call=lambda x: split(x, int(len(x) / 2))),
@@ -393,13 +395,13 @@ atoms = {
     "Ẏ": attrdict(arity=1, call=lambda x: [x[i] for i in range(len(x)) if i % 2]),
     "Z": attrdict(arity=1, call=lambda x: lzip(*x)),
     "Π": attrdict(arity=1, call=lambda x: foldl1(op.mul, flatten(x))),
-    "Σ": attrdict(arity=1, call=lambda x: sum(flatten(x))),
+    "Σ": attrdict(arity=1, call=compose(sum, flatten)),
     "⊤": attrdict(arity=1, call=truthy_indices),
     "⊥": attrdict(arity=1, call=falsey_indices),
     "!": attrdict(arity=1, call=vectorised(factorial)),
     "~": attrdict(arity=1, call=vectorised(lambda a: ~a)),
-    "¬": attrdict(arity=1, call=vectorised(lambda a: 1 if not a else 0)),
-    "√": attrdict(arity=1, call=vectorised(lambda a: a ** (1 / 2))),
+    "¬": attrdict(arity=1, call=flax_boolify(vectorised(op.not_))),
+    "√": attrdict(arity=1, call=vectorised(sympy.sqrt)),
     "≈": attrdict(
         arity=1,
         call=flax_boolify(
@@ -478,7 +480,7 @@ atoms = {
     "∨": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(lambda a, b: a or b))),
     "&": attrdict(arity=2, call=vectorised_dyadic(op.and_)),
     "|": attrdict(arity=2, call=vectorised_dyadic(op.or_)),
-    "^": attrdict(arity=2, call=vectorised_dyadic(op.xor)),
+    "꘍": attrdict(arity=2, call=vectorised_dyadic(op.xor)),
     "∊": attrdict(arity=2, call=lambda x, y: x in y),
     "⊂": attrdict(
         arity=2,
