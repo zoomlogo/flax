@@ -480,7 +480,7 @@ atoms = {
     "∨": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(lambda a, b: a or b))),
     "&": attrdict(arity=2, call=vectorised_dyadic(op.and_)),
     "|": attrdict(arity=2, call=vectorised_dyadic(op.or_)),
-    "꘍": attrdict(arity=2, call=vectorised_dyadic(op.xor)),
+    "^": attrdict(arity=2, call=vectorised_dyadic(op.xor)),
     "∊": attrdict(arity=2, call=lambda x, y: x in y),
     "⊂": attrdict(
         arity=2,
@@ -662,6 +662,26 @@ def niladic_chain(chain):
     return monadic_chain(chain[1:], chain[0].call())
 
 
+def quick_chain(arity, min_length):
+    return attrdict(
+        condition=(lambda links: len(links) >= min_length and links[0].arity == 0)
+        if arity == 0
+        else lambda links: len(links)
+        - sum(map(leading_nilad, split_suffix(links)[:-1]))
+        >= min_length,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=arity, call=lambda x=None, y=None: variadic_chain(links, (x, y))
+            )
+        ],
+    )
+
+
+def split_suffix(array):
+    array = iterable(array)
+    return [array[i:] for i in range(len(array))]
+
+
 def variadic_chain(chain, *args):
     args = [*filter(None.__ne__, args)]
     if len(args) == 0:
@@ -731,6 +751,13 @@ quicks = {
         condition=lambda links: True,
         qlink=lambda links, outer_links, i: [create_chain(outer_links[i], 2)],
     ),
+    "˙": quick_chain(0, 2),
+    "ᴹ": quick_chain(1, 2),
+    "ᵐ": quick_chain(1, 3),
+    "ᶲ": quick_chain(1, 4),
+    "ᴰ": quick_chain(2, 2),
+    "ᵈ": quick_chain(2, 3),
+    "ᵠ": quick_chain(2, 4),
 }
 
 # == Train Separators ==
