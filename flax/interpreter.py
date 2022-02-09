@@ -128,7 +128,7 @@ def from_bin(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 2**i
+        num += abs(b) * 2 ** i
         i += 1
     return num * sign
 
@@ -139,7 +139,7 @@ def from_digits(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 10**i
+        num += abs(b) * 10 ** i
         i += 1
     return num * sign
 
@@ -274,6 +274,14 @@ def reverse_every_other(x):
     return x
 
 
+def sliding_window(x, y):
+    x = iterable(x)
+    if y < 0:
+        return vectorised(compose(list, reversed))(list(mit.sliding_window(x, -y)))
+    else:
+        return vectorised(list)(list(mit.sliding_window(x, y)))
+
+
 split = compose(list, mit.chunked)
 
 split_at = lambda x, y: list(mit.split_at(x, lambda a: a == y))
@@ -351,7 +359,7 @@ atoms = {
     "Ă": attrdict(arity=1, call=contains_false),
     "B": attrdict(arity=1, call=vectorised(to_bin)),
     "Ḃ": attrdict(arity=1, call=from_bin),
-    "Ḅ": attrdict(arity=1, call=vectorised(lambda a: 2**a)),
+    "Ḅ": attrdict(arity=1, call=vectorised(lambda a: 2 ** a)),
     "Ƀ": attrdict(arity=1, call=vectorised(lambda a: a % 2)),
     "C": attrdict(arity=1, call=vectorised(lambda a: 1 - a)),
     "Ċ": attrdict(arity=1, call=vectorised(lambda a: a * 3)),
@@ -371,7 +379,7 @@ atoms = {
     "Ĵ": attrdict(arity=1, call=join_newlines),
     "K": attrdict(arity=1, call=lambda x: scanl1(op.add, iterable(x))),
     "L": attrdict(arity=1, call=len),
-    "M": attrdict(arity=1, call=vectorised(lambda a: a**2)),
+    "M": attrdict(arity=1, call=vectorised(lambda a: a ** 2)),
     "N": attrdict(arity=1, call=vectorised(lambda a: -a)),
     "O": attrdict(arity=1, call=lambda x: x),
     "P": attrdict(arity=1, call=lambda x: flax_print(x)),
@@ -451,7 +459,7 @@ atoms = {
         call=vectorised_dyadic(lambda a, b: [*range(a, b + 1)]),
     ),
     "s": attrdict(arity=2, call=split),
-    "ṡ": attrdict(arity=2, call=compose(list, mit.sliding_window)),
+    "ṡ": attrdict(arity=2, call=sliding_window),
     "t": attrdict(arity=2, call=lambda x, y: iterable(x, make_digits=True)[y - 1 :]),
     "u": attrdict(arity=2, call=lambda x, y: [y.find(v) + 1 for v in x]),
     "y": attrdict(arity=2, call=join),
@@ -712,6 +720,17 @@ def variadic_link(link, *args, commute=False):
 
 
 # ========= Quicks ==========
+def qfold(links, outer_links, i):
+    res = [attrdict(arity=1)]
+    if len(links) == 1:
+        res[0].call = lambda x, y=None: foldl1(links[0].call, x)
+    else:
+        res[0].call = lambda x, y=None: [
+            foldl1(links[0].call, z) for z in sliding_window(x, links[1].call())
+        ]
+    return res
+
+
 quicks = {
     "⁶": attrdict(
         condition=lambda links: links,
@@ -767,6 +786,7 @@ quicks = {
             )
         ],
     ),
+    "´": attrdict(condition=lambda links: links and links[0].arity, qlink=qfold),
 }
 
 # == Train Separators ==
