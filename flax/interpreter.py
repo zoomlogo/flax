@@ -7,7 +7,6 @@ from math import factorial, floor, ceil
 
 from pyhof import *
 import itertools as it
-import functools as ft
 import more_itertools as mit
 import operator as op
 import sympy
@@ -185,6 +184,7 @@ def group_equal(x):
 
 def index_into(x, y):
     x = iterable(x, make_digits=True)
+    y = int(sympy.N(y)) if int(sympy.N(y)) == sympy.N(y) else float(sympy.N(y))
     if isinstance(y, int):
         return x[y % len(x)]
     return [index_into(x, floor(y)), index_into(x, ceil(y))]
@@ -276,6 +276,7 @@ def reverse_every_other(x):
 
 def sliding_window(x, y):
     x = iterable(x)
+    y = int(y)
     if y < 0:
         return vectorised(compose(list, reversed))(list(mit.sliding_window(x, -y)))
     else:
@@ -406,7 +407,7 @@ atoms = {
     "Σ": attrdict(arity=1, call=compose(sum, flatten)),
     "⊤": attrdict(arity=1, call=truthy_indices),
     "⊥": attrdict(arity=1, call=falsey_indices),
-    "!": attrdict(arity=1, call=vectorised(factorial)),
+    "!": attrdict(arity=1, call=vectorised(compose(factorial, int))),
     "~": attrdict(arity=1, call=vectorised(lambda a: ~a)),
     "¬": attrdict(arity=1, call=flax_boolify(vectorised(op.not_))),
     "√": attrdict(arity=1, call=vectorised(sympy.sqrt)),
@@ -726,7 +727,7 @@ def qfold(links, outer_links, i):
         res[0].call = lambda x, y=None: foldl1(links[0].call, x)
     else:
         res[0].call = lambda x, y=None: [
-            foldl1(links[0].call, z) for z in sliding_window(x, int(links[1].call()))
+            foldl1(links[0].call, z) for z in sliding_window(x, links[1].call())
         ]
     return res
 
