@@ -692,7 +692,7 @@ def variadic_chain(chain, *args):
         return dyadic_chain(chain, *args)
 
 
-def variadic_link(link, *args, reverself=False):
+def variadic_link(link, *args, commute=False):
     if link.arity < 0:
         args = [*filter(None.__ne__, args)]
         link.arity = len(args)
@@ -702,7 +702,7 @@ def variadic_link(link, *args, reverself=False):
     elif link.arity == 1:
         return link.call(args[0])
     elif link.arity == 2:
-        if reverself:
+        if commute:
             if len(args) == 1:
                 return link.call(args[0], args[0])
             else:
@@ -734,7 +734,7 @@ quicks = {
             attrdict(
                 arity=links[0].arity,
                 call=lambda x, y=None: [
-                    variadic_link(links[0], a, reverself=True) for a in x
+                    variadic_link(links[0], a, commute=True) for a in x
                 ],
             )
         ],
@@ -758,6 +758,15 @@ quicks = {
     "ᴰ": quick_chain(2, 2),
     "ᵈ": quick_chain(2, 3),
     "ᵠ": quick_chain(2, 4),
+    "˜": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=links[0].arity,
+                call=lambda x=None, y=None: variadic_link(links[0], x, y, commute=True),
+            )
+        ],
+    ),
 }
 
 # == Train Separators ==
