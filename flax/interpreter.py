@@ -614,6 +614,14 @@ def leading_nilad(chain):
     return chain and arities(chain) + [1] < [0, 2] * len(chain)
 
 
+def max_arity(links):
+    return (
+        max(arities(links))
+        if min(arities(links)) > -1
+        else (~max(arities(links))) or -1
+    )
+
+
 def monadic_chain(chain, x):
     init = True
 
@@ -669,6 +677,17 @@ def niladic_chain(chain):
     if not chain or chain[0].arity > 0:
         return monadic_chain(chain, 0)
     return monadic_chain(chain[1:], chain[0].call())
+
+
+def ntimes(links, args):
+    times = int(links[1].call())
+    if links[0].arity == 1:
+        return power(links[0].call, times)(args[0])
+    elif links[0].arity == 2:
+        res = links[0].call(*args)
+        for _ in range(times):
+            res = links[0].call(res, args[0])
+        return res
 
 
 def quick_chain(arity, min_length):
@@ -800,6 +819,18 @@ quicks = {
     ),
     "´": attrdict(condition=lambda links: links and links[0].arity, qlink=qfold),
     "`": attrdict(condition=lambda links: links and links[0].arity, qlink=qscan),
+    "ⁿ": attrdict(
+        condition=lambda links: len(links) == 2,
+        qlink=lambda links, outer_links, i: (
+            [links.pop(0)] if len(links) == 2 and links[0].arity == 0 else []
+        )
+        + [
+            attrdict(
+                arity=max_arity(links),
+                call=lambda x=None, y=None: ntimes(links, (x, y)),
+            )
+        ],
+    ),
 }
 
 # == Train Separators ==
