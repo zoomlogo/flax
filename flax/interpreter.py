@@ -127,7 +127,7 @@ def from_bin(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 2**i
+        num += abs(b) * 2 ** i
         i += 1
     return num * sign
 
@@ -138,7 +138,7 @@ def from_digits(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 10**i
+        num += abs(b) * 10 ** i
         i += 1
     return num * sign
 
@@ -198,6 +198,10 @@ def indices_multidimensional(x, up_lvl=[]):
         else:
             a_in.extend(indices_multidimensional(item, up_lvl=up_lvl + [i + 1]))
     return a_in
+
+
+def isprime(x):
+    return 1 if not contains_false([x % i == 0 for i in range(2, x)]) else 0
 
 
 def iterable(x, make_range=False, make_digits=False):
@@ -360,7 +364,7 @@ atoms = {
     "Ă": attrdict(arity=1, call=contains_false),
     "B": attrdict(arity=1, call=vectorised(to_bin)),
     "Ḃ": attrdict(arity=1, call=from_bin),
-    "Ḅ": attrdict(arity=1, call=vectorised(lambda a: 2**a)),
+    "Ḅ": attrdict(arity=1, call=vectorised(lambda a: 2 ** a)),
     "Ƀ": attrdict(arity=1, call=vectorised(lambda a: a % 2)),
     "C": attrdict(arity=1, call=vectorised(lambda a: 1 - a)),
     "Ċ": attrdict(arity=1, call=vectorised(lambda a: a * 3)),
@@ -380,7 +384,7 @@ atoms = {
     "Ĵ": attrdict(arity=1, call=join_newlines),
     "K": attrdict(arity=1, call=lambda x: scanl1(op.add, iterable(x))),
     "L": attrdict(arity=1, call=len),
-    "M": attrdict(arity=1, call=vectorised(lambda a: a**2)),
+    "M": attrdict(arity=1, call=vectorised(lambda a: a ** 2)),
     "N": attrdict(arity=1, call=vectorised(lambda a: -a)),
     "O": attrdict(arity=1, call=lambda x: x),
     "P": attrdict(arity=1, call=lambda x: flax_print(x)),
@@ -413,10 +417,7 @@ atoms = {
     "√": attrdict(arity=1, call=vectorised(sympy.sqrt)),
     "≈": attrdict(
         arity=1,
-        call=flax_boolify(
-            lambda x: next(g := it.groupby(iterable(x, make_digits=True)), True)
-            and not next(g, False)
-        ),
+        call=flax_boolify(mit.all_equal),
     ),
     "∇": attrdict(arity=1, call=lambda x: min(iterable(x, make_digits=True))),
     "∆": attrdict(arity=1, call=lambda x: max(iterable(x, make_digits=True))),
