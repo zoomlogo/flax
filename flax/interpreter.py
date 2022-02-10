@@ -7,7 +7,6 @@ from math import factorial, floor, ceil
 
 from pyhof import *
 import itertools as it
-import functools as ft
 import more_itertools as mit
 import operator as op
 import sympy
@@ -185,6 +184,7 @@ def group_equal(x):
 
 def index_into(x, y):
     x = iterable(x, make_digits=True)
+    y = int(sympy.N(y)) if int(sympy.N(y)) == sympy.N(y) else float(sympy.N(y))
     if isinstance(y, int):
         return x[y % len(x)]
     return [index_into(x, floor(y)), index_into(x, ceil(y))]
@@ -272,6 +272,15 @@ def reverse_every_other(x):
         if i % 2:
             x[i] = list(reversed(iterable(x[i])))
     return x
+
+
+def sliding_window(x, y):
+    x = iterable(x)
+    y = int(y)
+    if y < 0:
+        return vectorised(compose(list, reversed))(list(mit.sliding_window(x, -y)))
+    else:
+        return vectorised(list)(list(mit.sliding_window(x, y)))
 
 
 split = compose(list, mit.chunked)
@@ -398,7 +407,7 @@ atoms = {
     "Σ": attrdict(arity=1, call=compose(sum, flatten)),
     "⊤": attrdict(arity=1, call=truthy_indices),
     "⊥": attrdict(arity=1, call=falsey_indices),
-    "!": attrdict(arity=1, call=vectorised(factorial)),
+    "!": attrdict(arity=1, call=vectorised(compose(factorial, int))),
     "~": attrdict(arity=1, call=vectorised(lambda a: ~a)),
     "¬": attrdict(arity=1, call=flax_boolify(vectorised(op.not_))),
     "√": attrdict(arity=1, call=vectorised(sympy.sqrt)),
@@ -451,7 +460,7 @@ atoms = {
         call=vectorised_dyadic(lambda a, b: [*range(a, b + 1)]),
     ),
     "s": attrdict(arity=2, call=split),
-    "ṡ": attrdict(arity=2, call=compose(list, mit.sliding_window)),
+    "ṡ": attrdict(arity=2, call=sliding_window),
     "t": attrdict(arity=2, call=lambda x, y: iterable(x, make_digits=True)[y - 1 :]),
     "u": attrdict(arity=2, call=lambda x, y: [y.find(v) + 1 for v in x]),
     "y": attrdict(arity=2, call=join),
@@ -480,7 +489,7 @@ atoms = {
     "∨": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(lambda a, b: a or b))),
     "&": attrdict(arity=2, call=vectorised_dyadic(op.and_)),
     "|": attrdict(arity=2, call=vectorised_dyadic(op.or_)),
-    "꘍": attrdict(arity=2, call=vectorised_dyadic(op.xor)),
+    "^": attrdict(arity=2, call=vectorised_dyadic(op.xor)),
     "∊": attrdict(arity=2, call=lambda x, y: x in y),
     "⊂": attrdict(
         arity=2,
@@ -605,6 +614,14 @@ def leading_nilad(chain):
     return chain and arities(chain) + [1] < [0, 2] * len(chain)
 
 
+def max_arity(links):
+    return (
+        max(arities(links))
+        if min(arities(links)) > -1
+        else (~max(arities(links))) or -1
+    )
+
+
 def monadic_chain(chain, x):
     init = True
 
@@ -662,6 +679,39 @@ def niladic_chain(chain):
     return monadic_chain(chain[1:], chain[0].call())
 
 
+def ntimes(links, args):
+    times = int(links[1].call())
+    if links[0].arity == 1:
+        return power(links[0].call, times)(args[0])
+    elif links[0].arity == 2:
+        res, y = args
+        for _ in range(times):
+            x = res
+            res = links[0].call(x, y)
+            y = x
+        return res
+
+
+def quick_chain(arity, min_length):
+    return attrdict(
+        condition=(lambda links: len(links) >= min_length and links[0].arity == 0)
+        if arity == 0
+        else lambda links: len(links)
+        - sum(map(leading_nilad, split_suffix(links)[:-1]))
+        >= min_length,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=arity, call=lambda x=None, y=None: variadic_chain(links, (x, y))
+            )
+        ],
+    )
+
+
+def split_suffix(array):
+    array = iterable(array)
+    return [array[i:] for i in range(len(array))]
+
+
 def variadic_chain(chain, *args):
     args = [*filter(None.__ne__, args)]
     if len(args) == 0:
@@ -672,7 +722,7 @@ def variadic_chain(chain, *args):
         return dyadic_chain(chain, *args)
 
 
-def variadic_link(link, *args, reverself=False):
+def variadic_link(link, *args, commute=False):
     if link.arity < 0:
         args = [*filter(None.__ne__, args)]
         link.arity = len(args)
@@ -682,7 +732,7 @@ def variadic_link(link, *args, reverself=False):
     elif link.arity == 1:
         return link.call(args[0])
     elif link.arity == 2:
-        if reverself:
+        if commute:
             if len(args) == 1:
                 return link.call(args[0], args[0])
             else:
@@ -691,7 +741,38 @@ def variadic_link(link, *args, reverself=False):
             return link.call(args[0], args[1])
 
 
+def while_loop(link, cond, args):
+    res, y = args
+    while variadic_link(cond, res, y):
+        x = res
+        res = variadic_link(link, x, y)
+        y = x
+    return res
+
+
 # ========= Quicks ==========
+def qfold(links, outer_links, i):
+    res = [attrdict(arity=1)]
+    if len(links) == 1:
+        res[0].call = lambda x, y=None: foldl1(links[0].call, x)
+    else:
+        res[0].call = lambda x, y=None: [
+            foldl1(links[0].call, z) for z in sliding_window(x, links[1].call())
+        ]
+    return res
+
+
+def qscan(links, outer_links, i):
+    res = [attrdict(arity=1)]
+    if len(links) == 1:
+        res[0].call = lambda x, y=None: scanl1(links[0].call, x)
+    else:
+        res[0].call = lambda x, y=None: [
+            scanl1(links[0].call, z) for z in sliding_window(x, links[1].call())
+        ]
+    return res
+
+
 quicks = {
     "⁶": attrdict(
         condition=lambda links: links,
@@ -714,7 +795,7 @@ quicks = {
             attrdict(
                 arity=links[0].arity,
                 call=lambda x, y=None: [
-                    variadic_link(links[0], a, reverself=True) for a in x
+                    variadic_link(links[0], a, commute=True) for a in x
                 ],
             )
         ],
@@ -730,6 +811,71 @@ quicks = {
     "²": attrdict(
         condition=lambda links: True,
         qlink=lambda links, outer_links, i: [create_chain(outer_links[i], 2)],
+    ),
+    "˙": quick_chain(0, 2),
+    "ᴹ": quick_chain(1, 2),
+    "ᵐ": quick_chain(1, 3),
+    "ᶲ": quick_chain(1, 4),
+    "ᴰ": quick_chain(2, 2),
+    "ᵈ": quick_chain(2, 3),
+    "ᵠ": quick_chain(2, 4),
+    "˜": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=links[0].arity,
+                call=lambda x=None, y=None: variadic_link(links[0], x, y, commute=True),
+            )
+        ],
+    ),
+    "´": attrdict(condition=lambda links: links and links[0].arity, qlink=qfold),
+    "`": attrdict(condition=lambda links: links and links[0].arity, qlink=qscan),
+    "⌜": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=2,
+                call=lambda x, y: outer_product(
+                    links[0].call,
+                    iterable(x, make_range=True),
+                    iterable(y, make_range=True),
+                ),
+            )
+        ],
+    ),
+    "ⁿ": attrdict(
+        condition=lambda links: len(links) == 2,
+        qlink=lambda links, outer_links, i: (
+            [links.pop(0)] if len(links) == 2 and links[0].arity == 0 else []
+        )
+        + [
+            attrdict(
+                arity=max_arity(links),
+                call=lambda x=None, y=None: ntimes(links, (x, y)),
+            )
+        ],
+    ),
+    "ˀ": attrdict(
+        condition=lambda links: len(links) == 3,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=max(arities(links)),
+                call=lambda x=None, y=None: (
+                    variadic_link(links[0], x, y)
+                    if variadic_link(links[2], x, y)
+                    else variadic_link(links[1], x, y)
+                ),
+            )
+        ],
+    ),
+    "ᵂ": attrdict(
+        condition=lambda links: len(links) == 2,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=max(arities(links)),
+                call=lambda x=None, y=None: while_loop(links[0], links[1], (x, y)),
+            )
+        ],
     ),
 }
 
