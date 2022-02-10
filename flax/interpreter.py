@@ -831,6 +831,19 @@ quicks = {
             )
         ],
     ),
+    "ˀ": attrdict(
+        condition=lambda links: len(links) == 3,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=max(arities(links)),
+                call=lambda x=None, y=None: (
+                    variadic_link(links[0], x, y)
+                    if variadic_link(links[2], x, y)
+                    else variadic_link(links[1], x, y)
+                ),
+            )
+        ],
+    ),
 }
 
 # == Train Separators ==
