@@ -739,6 +739,15 @@ def variadic_link(link, *args, commute=False):
             return link.call(args[0], args[1])
 
 
+def while_loop(link, cond, args):
+    res, y = args
+    while variadic_link(cond, res, y):
+        x = res
+        res = variadic_link(link, x, y)
+        y = x
+    return res
+
+
 # ========= Quicks ==========
 def qfold(links, outer_links, i):
     res = [attrdict(arity=1)]
@@ -841,6 +850,15 @@ quicks = {
                     if variadic_link(links[2], x, y)
                     else variadic_link(links[1], x, y)
                 ),
+            )
+        ],
+    ),
+    "ᵂ": attrdict(
+        condition=lambda links: len(links) == 2,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=max(arities(links)),
+                call=lambda x=None, y=None: while_loop(links[0], links[1], (x, y)),
             )
         ],
     ),
