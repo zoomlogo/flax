@@ -127,7 +127,7 @@ def from_bin(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 2**i
+        num += abs(b) * 2 ** i
         i += 1
     return num * sign
 
@@ -138,7 +138,7 @@ def from_digits(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 10**i
+        num += abs(b) * 10 ** i
         i += 1
     return num * sign
 
@@ -360,7 +360,7 @@ atoms = {
     "Ă": attrdict(arity=1, call=contains_false),
     "B": attrdict(arity=1, call=vectorised(to_bin)),
     "Ḃ": attrdict(arity=1, call=from_bin),
-    "Ḅ": attrdict(arity=1, call=vectorised(lambda a: 2**a)),
+    "Ḅ": attrdict(arity=1, call=vectorised(lambda a: 2 ** a)),
     "Ƀ": attrdict(arity=1, call=vectorised(lambda a: a % 2)),
     "C": attrdict(arity=1, call=vectorised(lambda a: 1 - a)),
     "Ċ": attrdict(arity=1, call=vectorised(lambda a: a * 3)),
@@ -380,7 +380,7 @@ atoms = {
     "Ĵ": attrdict(arity=1, call=join_newlines),
     "K": attrdict(arity=1, call=lambda x: scanl1(op.add, iterable(x))),
     "L": attrdict(arity=1, call=len),
-    "M": attrdict(arity=1, call=vectorised(lambda a: a**2)),
+    "M": attrdict(arity=1, call=vectorised(lambda a: a ** 2)),
     "N": attrdict(arity=1, call=vectorised(lambda a: -a)),
     "O": attrdict(arity=1, call=lambda x: x),
     "P": attrdict(arity=1, call=lambda x: flax_print(x)),
@@ -732,6 +732,17 @@ def qfold(links, outer_links, i):
     return res
 
 
+def qscan(links, outer_links, i):
+    res = [attrdict(arity=1)]
+    if len(links) == 1:
+        res[0].call = lambda x, y=None: scanl1(links[0].call, x)
+    else:
+        res[0].call = lambda x, y=None: [
+            scanl1(links[0].call, z) for z in sliding_window(x, links[1].call())
+        ]
+    return res
+
+
 quicks = {
     "⁶": attrdict(
         condition=lambda links: links,
@@ -788,6 +799,7 @@ quicks = {
         ],
     ),
     "´": attrdict(condition=lambda links: links and links[0].arity, qlink=qfold),
+    "`": attrdict(condition=lambda links: links and links[0].arity, qlink=qscan),
 }
 
 # == Train Separators ==
