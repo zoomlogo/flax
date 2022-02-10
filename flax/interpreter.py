@@ -684,9 +684,11 @@ def ntimes(links, args):
     if links[0].arity == 1:
         return power(links[0].call, times)(args[0])
     elif links[0].arity == 2:
-        res = links[0].call(*args)
+        res, y = args
         for _ in range(times):
-            res = links[0].call(res, args[0])
+            x = res
+            res = links[0].call(x, y)
+            y = x
         return res
 
 
