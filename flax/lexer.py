@@ -5,6 +5,8 @@ import string
 from flax.interpreter import atoms
 from flax.interpreter import quicks
 
+__all__ = ["TOKEN_TYPE", "tokenise"]
+
 
 class TOKEN_TYPE(enum.Enum):
     NUMBER = 1
