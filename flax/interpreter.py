@@ -103,9 +103,6 @@ def find_all_indices(x, y):
     return res if res else [-1]
 
 
-flax_boolify = lambda func: compose(vectorised(lambda x: 1 if x else 0), func)
-
-
 def flax_string(x):
     return (
         str(x)
@@ -200,10 +197,6 @@ def indices_multidimensional(x, up_lvl=[]):
     return a_in
 
 
-def isprime(x):
-    return 1 if not contains_false([x % i == 0 for i in range(2, x)]) else 0
-
-
 def iterable(x, make_range=False, make_digits=False):
     if not isinstance(x, list):
         if make_range:
@@ -237,6 +230,16 @@ def mold(x, y):
             y[i] = item
             x.append(item)
     return y
+
+
+def nprimes(x):
+    res = []
+    i = 2
+    while len(res) != x:
+        if sympy.isprime(i):
+            res.append(i)
+        i += 1
+    return res
 
 
 def prefixes(x):
@@ -362,6 +365,7 @@ atoms = {
     # Single byte monads
     "A": attrdict(arity=1, call=vectorised(lambda a: abs(a))),
     "Ă": attrdict(arity=1, call=contains_false),
+    "Æ": attrdict(arity=1, call=vectorised(compose(int, sympy.isprime))),
     "B": attrdict(arity=1, call=vectorised(to_bin)),
     "Ḃ": attrdict(arity=1, call=from_bin),
     "Ḅ": attrdict(arity=1, call=vectorised(lambda a: 2 ** a)),
@@ -413,11 +417,11 @@ atoms = {
     "⊥": attrdict(arity=1, call=falsey_indices),
     "!": attrdict(arity=1, call=vectorised(compose(factorial, int))),
     "~": attrdict(arity=1, call=vectorised(lambda a: ~a)),
-    "¬": attrdict(arity=1, call=flax_boolify(vectorised(op.not_))),
+    "¬": attrdict(arity=1, call=(vectorised(compose(int, op.not_)))),
     "√": attrdict(arity=1, call=vectorised(sympy.sqrt)),
     "≈": attrdict(
         arity=1,
-        call=flax_boolify(mit.all_equal),
+        call=compose(int, mit.all_equal),
     ),
     "∇": attrdict(arity=1, call=lambda x: min(iterable(x, make_digits=True))),
     "∆": attrdict(arity=1, call=lambda x: max(iterable(x, make_digits=True))),
@@ -442,7 +446,7 @@ atoms = {
     "c": attrdict(arity=2, call=lambda x, y: iterable(x, make_digits=True).count(y)),
     "d": attrdict(
         arity=2,
-        call=flax_boolify(vectorised_dyadic(lambda a, b: a % b == 0)),
+        call=vectorised_dyadic(compose(int, lambda a, b: a % b == 0)),
     ),
     "f": attrdict(
         arity=2,
@@ -475,19 +479,19 @@ atoms = {
     ),
     "%": attrdict(arity=2, call=vectorised_dyadic(op.mod)),
     "*": attrdict(arity=2, call=vectorised_dyadic(op.pow)),
-    "<": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(op.lt))),
-    ">": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(op.gt))),
-    "=": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(op.eq))),
-    "≠": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(op.ne))),
-    "≥": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(op.ge))),
-    "≤": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(op.le))),
-    "≡": attrdict(arity=2, call=flax_boolify(op.eq)),
-    "≢": attrdict(arity=2, call=flax_boolify(op.ne)),
+    "<": attrdict(arity=2, call=vectorised_dyadic(compose(int, op.lt))),
+    ">": attrdict(arity=2, call=vectorised_dyadic(compose(int, op.gt))),
+    "=": attrdict(arity=2, call=vectorised_dyadic(compose(int, op.eq))),
+    "≠": attrdict(arity=2, call=vectorised_dyadic(compose(int, op.ne))),
+    "≥": attrdict(arity=2, call=vectorised_dyadic(compose(int, op.ge))),
+    "≤": attrdict(arity=2, call=vectorised_dyadic(compose(int, op.le))),
+    "≡": attrdict(arity=2, call=compose(int, op.eq)),
+    "≢": attrdict(arity=2, call=compose(int, op.ne)),
     ",": attrdict(arity=2, call=lambda x, y: iterable(x) + iterable(y)),
     "⍪": attrdict(arity=2, call=lambda x, y: iterable(y) + iterable(x)),
     "⋈": attrdict(arity=2, call=lambda x, y: [x, y]),
-    "∧": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(lambda a, b: a and b))),
-    "∨": attrdict(arity=2, call=flax_boolify(vectorised_dyadic(lambda a, b: a or b))),
+    "∧": attrdict(arity=2, call=vectorised_dyadic(compose(int, lambda a, b: a and b))),
+    "∨": attrdict(arity=2, call=vectorised_dyadic(compose(int, lambda a, b: a or b))),
     "&": attrdict(arity=2, call=vectorised_dyadic(op.and_)),
     "|": attrdict(arity=2, call=vectorised_dyadic(op.or_)),
     "^": attrdict(arity=2, call=vectorised_dyadic(op.xor)),
