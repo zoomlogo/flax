@@ -423,6 +423,9 @@ atoms = {
     "U": attrdict(arity=1, call=compose(list, set, iterable)),
     "V": attrdict(arity=1, call=lambda x: group(iterable(x, make_digits=True))),
     "W": attrdict(arity=1, call=lambda x: [x]),
+    "Ẇ": attrdict(
+        arity=1, call=lambda x: [x] if not isinstance(x, list) or len(x) != 1 else x
+    ),
     "X": attrdict(arity=1, call=lambda x: split(x, int(len(x) / 2))),
     "Y": attrdict(arity=1, call=lambda x: [x[i] for i in range(len(x)) if i % 2 == 0]),
     "Ẏ": attrdict(arity=1, call=lambda x: [x[i] for i in range(len(x)) if i % 2]),
