@@ -479,7 +479,8 @@ atoms = {
     "∀": attrdict(arity=1, call=lambda x: [*map(sum, x)]),
     # Single byte dyads
     "c": attrdict(arity=2, call=lambda x, y: iterable(x, make_digits=True).count(y)),
-    "d": attrdict(
+    "d": attrdict(arity=2, call=vectorised_dyadic(compose(list, divmod))),
+    "ḍ": attrdict(
         arity=2,
         call=vectorised_dyadic(compose(int, lambda a, b: a % b == 0)),
     ),
