@@ -392,6 +392,7 @@ atoms = {
     "₄": attrdict(arity=0, call=lambda: 32),
     "₅": attrdict(arity=0, call=lambda: 64),
     "₆": attrdict(arity=0, call=lambda: 0),
+    "₇": attrdict(arity=0, call=lambda: 26),
     "₈": attrdict(arity=0, call=lambda: ord(sys.stdin.read(1))),
     "₉": attrdict(arity=0, call=lambda: [ord(c) for c in input()]),
     # Single byte monads
@@ -549,7 +550,6 @@ atoms = {
     "Øe": attrdict(arity=0, call=lambda: sympy.E),
     "ØP": attrdict(arity=0, call=lambda: 1.618033988749895),
     "Ø∞": attrdict(arity=0, call=lambda: sympy.oo),
-    "ØA": attrdict(arity=0, call=lambda: 26),
     "Ø₁": attrdict(arity=0, call=lambda: 128),
     "Ø₂": attrdict(arity=0, call=lambda: 256),
     "Ø₀": attrdict(arity=0, call=lambda: 1000),
