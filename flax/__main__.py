@@ -11,6 +11,9 @@ if argv:
     if argv[0] == "d":
         flax.interpreter.DEBUG = 1
         argv = argv[1:]
+    elif argv[0] == "C":
+        flax.interpreter.PRINT_CHARS = 1
+        argv = argv[1:]
 
 if argv:
     try:

@@ -13,6 +13,7 @@ import sympy
 
 # Flags
 DEBUG = 0
+PRINT_CHARS = 0
 
 # Attrdict class
 class attrdict(dict):
@@ -120,7 +121,10 @@ def flax_string(x):
 
 
 def flax_print(x):
-    print(flax_string(x))
+    if PRINT_CHARS:
+        print("".join(chr(c) for c in flatten(x)))
+    else:
+        print(flax_string(x))
     return x
 
 
