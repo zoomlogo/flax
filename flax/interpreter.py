@@ -258,6 +258,22 @@ def nprimes(x):
     return res
 
 
+def order(x, y):
+    if x == 0 or abs(y) == 1:
+        return sympy.oo
+
+    if y == 0:
+        return 0
+
+    res = 0
+    while True:
+        x, r = divmod(x, y)
+        if r:
+            break
+        res += 1
+    return res
+
+
 def prefixes(x):
     res = []
     for i in range(len(x)):
@@ -475,6 +491,7 @@ atoms = {
         arity=2,
         call=lambda x, y: [a for a in iterable(x, make_digits=True) if a in y],
     ),
+    "g": attrdict(arity=2, call=order),
     "h": attrdict(arity=2, call=lambda x, y: iterable(x, make_digits=True)[:y]),
     "i": attrdict(arity=2, call=index_into),
     "m": attrdict(arity=2, call=lambda x, y: mold(iterable(x), iterable(y))),
