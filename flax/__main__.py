@@ -6,16 +6,18 @@ from flax.main import flax_eval, cli_repl
 import flax.interpreter
 
 argv = argv[1:]
+read_from_file = False
 
 if argv:
-    if argv[0] == "d":
-        flax.interpreter.DEBUG = 1
-        argv = argv[1:]
-    elif argv[0] == "C":
-        flax.interpreter.PRINT_CHARS = 1
-        argv = argv[1:]
+    if "d" in argv[0]:
+        flax.interpreter.DEBUG = True
+    if "f" in argv[0]:
+        read_from_file = True
+    if "C" in argv[0]:
+        flax.interpreter.PRINT_CHARS = True
+    argv = argv[1:]
 
-if argv:
+if read_from_file:
     try:
         code = open(argv[0], encoding="utf-8").read()
     except FileNotFoundError:
