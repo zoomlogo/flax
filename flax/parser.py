@@ -6,6 +6,7 @@ from flax.interpreter import create_chain
 
 from flax.lexer import *
 
+from prompt_toolkit import print_formatted_text, HTML
 import sympy
 
 
@@ -104,6 +105,13 @@ def parse(tokens):
                 elif token[0] == TOKEN_TYPE.QUICK:
                     popped = []
                     while not quicks[token[1]].condition(popped) and (stack or trains):
+                        if stack == [] and chains == []:
+                            print_formatted_text(
+                                HTML(
+                                    f'<ansired>ERROR: Not enough links to pop for "{quicks[token[1]].glyph}"</ansired>'
+                                )
+                            )
+                            exit(1)
                         popped.insert(0, (stack or chains).pop())
                     stack += quicks[token[1]].qlink(popped, trains, index)
             chains.append(create_chain(stack, arity, is_forward))
