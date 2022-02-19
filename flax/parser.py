@@ -106,9 +106,11 @@ def parse(tokens):
                     popped = []
                     while not quicks[token[1]].condition(popped) and (stack or trains):
                         if stack == [] and chains == []:
+                            if token[1] in "ⁿ":
+                                break
                             print_formatted_text(
                                 HTML(
-                                    f'<ansired>ERROR: Not enough links to pop for "{quicks[token[1]].glyph}"</ansired>'
+                                    f'<ansired>ERROR: Not enough links to pop for "{token[1]}"</ansired>'
                                 )
                             )
                             exit(1)
