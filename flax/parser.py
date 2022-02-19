@@ -68,7 +68,7 @@ def parse(tokens):
         subtrains = split_on_separators(train)
         for subtrain in subtrains:
             stack = []
-            arity, is_forward = train_separators.get(subtrain[0][1], (-1, True))
+            arity, is_forward = train_separators.get(str(subtrain[0][1]), (-1, True))
             if arity == 1 and subtrain[0][1] == "г":
                 subtrain.insert(1, [TOKEN_TYPE.QUICK, "¨"])
             if arity != -1:
