@@ -134,7 +134,7 @@ def from_bin(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 2**i
+        num += abs(b) * 2 ** i
         i += 1
     return num * sign
 
@@ -145,7 +145,7 @@ def from_digits(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 10**i
+        num += abs(b) * 10 ** i
         i += 1
     return num * sign
 
@@ -407,7 +407,7 @@ atoms = {
     "Æ": attrdict(arity=1, call=vectorised(compose(int, sympy.isprime))),
     "B": attrdict(arity=1, call=vectorised(to_bin)),
     "Ḃ": attrdict(arity=1, call=from_bin),
-    "Ḅ": attrdict(arity=1, call=vectorised(lambda a: 2**a)),
+    "Ḅ": attrdict(arity=1, call=vectorised(lambda a: 2 ** a)),
     "Ƀ": attrdict(arity=1, call=vectorised(lambda a: a % 2)),
     "C": attrdict(arity=1, call=vectorised(lambda a: 1 - a)),
     "Ċ": attrdict(arity=1, call=vectorised(lambda a: a * 3)),
@@ -427,7 +427,7 @@ atoms = {
     "Ĵ": attrdict(arity=1, call=join_newlines),
     "K": attrdict(arity=1, call=lambda x: scanl1(op.add, iterable(x))),
     "L": attrdict(arity=1, call=len),
-    "M": attrdict(arity=1, call=vectorised(lambda a: a**2)),
+    "M": attrdict(arity=1, call=vectorised(lambda a: a ** 2)),
     "N": attrdict(arity=1, call=vectorised(lambda a: -a)),
     "O": attrdict(arity=1, call=lambda x: x),
     "P": attrdict(arity=1, call=lambda x: flax_print(x)),
@@ -624,8 +624,8 @@ def dyadic_chain(chain, x, y):
     else:
         accumulator = x
 
-    atoms["₎"].call = lambda: x
-    atoms["₍"].call = lambda: y
+    atoms["₍"].call = lambda: x
+    atoms["₎"].call = lambda: y
 
     try:
         while chain:
@@ -679,7 +679,7 @@ def monadic_chain(chain, x):
     init = True
 
     accumulator = x
-    atoms["₎"].call = lambda: x
+    atoms["₍"].call = lambda: x
 
     try:
         while 1:
