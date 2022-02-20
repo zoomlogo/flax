@@ -54,7 +54,7 @@ def tokenise(program):
                 tokens.append([TOKEN_TYPE.NUMBER, contextual_token_value])
         elif head == "⍝":
             # Just ignore comments
-            while program.popleft() != "\n":
+            while program and program.popleft() != "\n":
                 pass
         elif head == "\n":
             tokens.append([TOKEN_TYPE.NEWLINE, "\n"])
