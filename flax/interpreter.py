@@ -61,20 +61,33 @@ def divisors(x):
     return res
 
 
-def dyadic_vectorise(fn, x, y):
+def dyadic_vectorise(fn, x, y, rfull=True, lfull=True):
     dx = depth(x)
     dy = depth(y)
 
-    if dx == dy:
-        if dx != 0:
-            return [dyadic_vectorise(fn, a, b) for a, b in zip(x, y)]
+    if rfull and lfull:
+        if dx == dy:
+            if dx != 0:
+                return [dyadic_vectorise(fn, a, b) for a, b in zip(x, y)]
+            else:
+                return fn(x, y)
+        else:
+            if dx < dy:
+                return [dyadic_vectorise(fn, x, b) for b in y]
+            else:
+                return [dyadic_vectorise(fn, a, y) for a in x]
+    elif (not rfull) and lfull:
+        if dx > 0:
+            return [dyadic_vectorise(fn, z, y, rfull=False) for z in x]
+        else:
+            return fn(x, y)
+    elif rfull and (not lfull):
+        if dy > 0:
+            return [dyadic_vectorise(fn, x, z, lfull=False) for z in y]
         else:
             return fn(x, y)
     else:
-        if dx < dy:
-            return [dyadic_vectorise(fn, x, b) for b in y]
-        else:
-            return [dyadic_vectorise(fn, a, y) for a in x]
+        return fn(x, y)
 
 
 flatten = compose(list, mit.collapse)
@@ -381,7 +394,9 @@ def vectorise(fn, x):
 
 
 vectorised = lambda func: lambda x: vectorise(func, x)
-vectorised_dyadic = lambda func: lambda x, y: dyadic_vectorise(func, x, y)
+vectorised_dyadic = lambda func, rfull=True, lfull=True: lambda x, y: dyadic_vectorise(
+    func, x, y, rfull=rfull, lfull=lfull
+)
 
 
 lzip = lambda *x: [[*x] for x in it.zip_longest(*x, fillvalue=0)]
@@ -485,7 +500,12 @@ atoms = {
     ")": attrdict(arity=1, call=suffixes),
     "∀": attrdict(arity=1, call=lambda x: [*map(sum, x)]),
     # Single byte dyads
-    "c": attrdict(arity=2, call=lambda x, y: iterable(x, make_digits=True).count(y)),
+    "c": attrdict(
+        arity=2,
+        call=vectorised_dyadic(
+            lambda x, y: iterable(x, make_digits=True).count(y), lfull=False
+        ),
+    ),
     "d": attrdict(arity=2, call=vectorised_dyadic(compose(list, divmod))),
     "ḍ": attrdict(
         arity=2,
@@ -499,9 +519,14 @@ atoms = {
         arity=2,
         call=lambda x, y: [a for a in iterable(x, make_digits=True) if a in y],
     ),
-    "g": attrdict(arity=2, call=order),
-    "h": attrdict(arity=2, call=lambda x, y: iterable(x, make_digits=True)[:y]),
-    "i": attrdict(arity=2, call=index_into),
+    "g": attrdict(arity=2, call=vectorised_dyadic(order)),
+    "h": attrdict(
+        arity=2,
+        call=vectorised_dyadic(
+            lambda x, y: iterable(x, make_digits=True)[:y], lfull=False
+        ),
+    ),
+    "i": attrdict(arity=2, call=vectorised_dyadic(index_into, lfull=False)),
     "m": attrdict(arity=2, call=lambda x, y: mold(iterable(x), iterable(y))),
     "o": attrdict(arity=2, call=split_at),
     "r": attrdict(
@@ -509,9 +534,14 @@ atoms = {
         call=vectorised_dyadic(lambda a, b: [*range(a, b + 1)]),
     ),
     "s": attrdict(arity=2, call=split),
-    "ṡ": attrdict(arity=2, call=sliding_window),
-    "t": attrdict(arity=2, call=lambda x, y: iterable(x, make_digits=True)[y - 1 :]),
-    "u": attrdict(arity=2, call=lambda x, y: [y.find(v) + 1 for v in x]),
+    "ṡ": attrdict(arity=2, call=vectorised_dyadic(sliding_window, lfull=False)),
+    "t": attrdict(
+        arity=2,
+        call=vectorised_dyadic(
+            lambda x, y: iterable(x, make_digits=True)[y - 1 :], lfull=False
+        ),
+    ),
+    "u": attrdict(arity=2, call=lambda x, y: [y.find(v) for v in x]),
     "y": attrdict(arity=2, call=join),
     "z": attrdict(arity=2, call=lzip),
     "+": attrdict(arity=2, call=vectorised_dyadic(op.add)),
@@ -539,7 +569,7 @@ atoms = {
     "&": attrdict(arity=2, call=vectorised_dyadic(op.and_)),
     "|": attrdict(arity=2, call=vectorised_dyadic(op.or_)),
     "^": attrdict(arity=2, call=vectorised_dyadic(op.xor)),
-    "∊": attrdict(arity=2, call=lambda x, y: x in y),
+    "∊": attrdict(arity=2, call=vectorised_dyadic(lambda x, y: x in y, rfull=False)),
     "⊂": attrdict(
         arity=2,
         call=lambda x, y: find_all_indices(iterable(x, make_digits=True), y)[0],
