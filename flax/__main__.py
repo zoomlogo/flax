@@ -5,7 +5,7 @@ import sys
 from flax.main import flax_eval, cli_repl
 import flax.interpreter
 
-sys.argv = argv[1:]
+sys.argv = sys.argv[1:]
 read_from_file = False
 
 if sys.argv:
@@ -15,7 +15,7 @@ if sys.argv:
         read_from_file = True
     if "C" in sys.argv[0]:
         flax.interpreter.PRINT_CHARS = True
-    sys.argv = argv[1:]
+    sys.argv = sys.argv[1:]
 
 if read_from_file:
     try:
@@ -27,7 +27,7 @@ if read_from_file:
         )
         exit(66)
 
-    sys.argv = argv[1:]
+    sys.argv = sys.argv[1:]
     flax_eval(code, *map(eval, sys.argv))
 else:
     cli_repl()
