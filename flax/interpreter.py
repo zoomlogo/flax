@@ -222,7 +222,7 @@ def iterable(x, make_range=False, make_digits=False):
         if make_range:
             return [*range(x)]
         if make_digits:
-            return [-int(i) if x < 0 else int(i) for i in str(x)[1 if x < 0 else 0 :]]
+            return to_digits(x)
         return [x]
     return x
 
@@ -576,6 +576,9 @@ atoms = {
     "Œi": attrdict(arity=1, call=indices_multidimensional),
     "ŒÆ": attrdict(arity=1, call=vectorised(nprimes)),
     "ŒF": attrdict(arity=1, call=vectorised(fibonacci)),
+    "ŒR": attrdict(
+        arity=1, call=vectorised(compose(from_digits, lambda x: x[::-1], to_digits))
+    ),
     # Dyadic diagraphs
     "œl": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: a << b)),
     "œr": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: a >> b)),
