@@ -981,6 +981,17 @@ quicks = {
             attrdict(arity=2, call=lambda x, y: links[0].call(y))
         ],
     ),
+    "ᐣ": attrdict(
+        condition=lambda links: links and links[0].arity == 2,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=2,
+                call=lambda x, y: links[0].call(
+                    x, compose(*map(lambda a: a.call, links[1:]))(y)
+                ),
+            )
+        ],
+    ),
 }
 
 for k in quicks:
