@@ -2,7 +2,6 @@
 import sys
 import random as R
 
-from collections import deque
 from math import factorial, floor, ceil
 
 from pyhof import *
@@ -303,22 +302,15 @@ def random(x):
     return R.choice(x)
 
 
-def reshape(x, shape):
-    if not isinstance(x, list):
-        return x
-
-    if not isinstance(x, deque):
-        x = deque(x)
-
-    def nxt(dq):
-        x = dq.popleft()
-        dq.append(x)
-        return x
-
-    if len(shape) == 1:
-        return [nxt(x) for _ in range(shape[0])]
+def reshape(x, y):
+    y = iterable(y)
+    if not isinstance(x, it.cycle):
+        x = it.cycle(x)
+    
+    if len(y) == 1:
+        return [next(x) for _ in range(y[0])]
     else:
-        return [reshape(x, shape[1:]) for _ in range(shape[0])]
+        return [reshape(x, y[1:]) for _ in range(y[0])]
 
 
 def reverse_every_other(x):
