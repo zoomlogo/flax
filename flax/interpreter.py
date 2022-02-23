@@ -306,7 +306,7 @@ def reshape(x, y):
     y = iterable(y)
     if not isinstance(x, it.cycle):
         x = it.cycle(x)
-    
+
     if len(y) == 1:
         return [next(x) for _ in range(y[0])]
     else:
