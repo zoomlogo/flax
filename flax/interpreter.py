@@ -813,6 +813,18 @@ def qscan(links, outer_links, i):
     return res
 
 
+def qsort(links, outer_links, i):
+    res = [attrdict(arity=links[0].arity or 1)]
+    # TODO: Overload on nilad
+    res[0].call = lambda x, y=None: list(
+        sorted(
+            iterable(x, make_digits=True),
+            key=lambda z: variadic_link(links[0], (z, y)),
+        )
+    )
+    return res
+
+
 def quick_chain(arity, min_length):
     return attrdict(
         condition=(lambda links: len(links) >= min_length and links[0].arity == 0)
@@ -1000,6 +1012,7 @@ quicks = {
         ],
     ),
     "ᶠ": attrdict(condition=lambda links: links, qlink=qfilter),
+    "ˢ": attrdict(condition=lambda links: links, qlink=qsort),
 }
 
 for k in quicks:
