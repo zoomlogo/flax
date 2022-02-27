@@ -253,6 +253,9 @@ def join_spaces(x):
     return join(x, 32)
 
 
+lzip = lambda *x, fillvalue=0: [[*x] for x in it.zip_longest(*x, fillvalue=fillvalue)]
+
+
 def mold(x, y):
     for i in range(len(y)):
         if isinstance(y[i], list):
@@ -300,6 +303,14 @@ def prefixes(x):
 def random(x):
     x = iterable(x)
     return R.choice(x)
+
+
+def repeat(x, y):
+    zipped = lzip(iterable(y, make_digits=True), flatten(iterable(x)), fillvalue=1)
+    res = []
+    for a, b in zipped:
+        res.extend(a for _ in range(b))
+    return res
 
 
 def reshape(x, y):
@@ -390,8 +401,6 @@ vectorised_dyadic = lambda func, rfull=True, lfull=True: lambda x, y: dyadic_vec
     func, x, y, rfull=rfull, lfull=lfull
 )
 
-
-lzip = lambda *x: [[*x] for x in it.zip_longest(*x, fillvalue=0)]
 
 # ====== Atoms ========
 atoms = {
@@ -577,7 +586,7 @@ atoms = {
         arity=2, call=lambda x, y: [x[i] for i in range(len(x)) if i % y == 0]
     ),
     "·": attrdict(arity=2, call=compose(list, it.product)),
-    "\\": attrdict(arity=2, call=lambda x, y: [iterable(x) for _ in range(y)]),
+    "/": attrdict(arity=2, call=repeat),
     "#": attrdict(arity=2, call=reshape),
     # Niladic diagraphs
     "_p": attrdict(arity=0, call=lambda: sympy.pi),

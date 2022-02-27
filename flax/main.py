@@ -27,7 +27,10 @@ def cli_repl(prompt="      ", inp_prompt="> "):
             chain = parse(tokenise(inp))[-1]
             chain = chain if chain else ""
             args = [input(inp_prompt), input(inp_prompt)]
-            args = map(eval, filter("".__ne__, args))
+            args = [
+                [ord(x) for x in a] if isinstance(a, str) else a
+                for a in map(eval, filter("".__ne__, args))
+            ]
             flax_print(variadic_chain(chain, *args))
     except KeyboardInterrupt:
         pft(HTML("<ansired>ERROR: KeyboardInterrupt Recieved.</ansired>"))
