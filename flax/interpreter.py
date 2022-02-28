@@ -1090,6 +1090,28 @@ quicks = {
             )
         ],
     ),
+    "⁺": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=links[0].arity,
+                call=lambda x, y=None: max(
+                    iterable(x), key=lambda z: variadic_link(links[0], (z, y))
+                ),
+            )
+        ],
+    ),
+    "⁻": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=links[0].arity,
+                call=lambda x, y=None: min(
+                    iterable(x), key=lambda z: variadic_link(links[0], (z, y))
+                ),
+            )
+        ],
+    ),
 }
 
 for k in quicks:
