@@ -627,6 +627,9 @@ atoms = {
     "_⁰": attrdict(arity=0, call=lambda: 2 ** 20),
     "_¹": attrdict(arity=0, call=lambda: 2 ** 30),
     "_²": attrdict(arity=0, call=lambda: 2 ** 100),
+    "_(": attrdict(arity=0, call=lambda: to_chars("()")),
+    "_{": attrdict(arity=0, call=lambda: to_chars("{}")),
+    "_[": attrdict(arity=0, call=lambda: to_chars("[]")),
     # Monadic diagraphs
     ";C": attrdict(arity=1, call=vectorised(sympy.cos)),
     ";Ċ": attrdict(arity=1, call=vectorised(sympy.acos)),
