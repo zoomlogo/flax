@@ -35,6 +35,13 @@ def tokenise(program):
                 else:
                     string_contents += top
             tokens.append([TOKEN_TYPE.STRING, string_contents])
+        elif head == "₊":
+            string_contents = program.popleft()
+            tokens.append([TOKEN_TYPE.STRING, string_contents])
+        elif head == "₋":
+            string_contents = program.popleft()
+            string_contents += program.popleft()
+            tokens.append([TOKEN_TYPE.STRING, string_contents])
         elif head in string.digits + "¯.j":
             contextual_token_value = head
             if head == "0" and not (program and program[0] in "¯.j"):
@@ -58,8 +65,7 @@ def tokenise(program):
                 pass
         elif head == "\n":
             tokens.append([TOKEN_TYPE.NEWLINE, "\n"])
-        elif head in "øµðɓг":  # Is г really a train separator or a quick?
-            # according to the specs, yes.
+        elif head in "øµðɓг":
             tokens.append([TOKEN_TYPE.TRAIN_SEPARATOR, head])
         elif head in atoms:
             tokens.append([TOKEN_TYPE.ATOM, head])
@@ -73,7 +79,6 @@ def tokenise(program):
                 tokens.append([TOKEN_TYPE.QUICK, digraph])
             else:
                 raise NameError("Digraph not defined.")
-
         elif head == "[":
             contents = ""
             k = 1
