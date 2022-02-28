@@ -893,6 +893,19 @@ def quick_chain(arity, min_length):
     )
 
 
+def replace_indicies(x, with_, at, y):
+    x = iterable(x, make_digits=True)
+    at = flatten(iterable(at))
+    for i in at:
+        if with_.arity == 0:
+            x[i] = with_.call()
+        elif with_.arity == 1:
+            x[i] = with_.call(x[i])
+        else:
+            x[i] = with_.call(x[i], y)
+    return x
+
+
 def split_suffix(array):
     array = iterable(array)
     return [array[i:] for i in range(len(array))]
@@ -1066,6 +1079,17 @@ quicks = {
     ),
     "ᶠ": attrdict(condition=lambda links: links, qlink=qfilter),
     "ˢ": attrdict(condition=lambda links: links, qlink=qsort),
+    "°": attrdict(
+        condition=lambda links: len(links) == 2,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=links[0].arity or 1,
+                call=lambda x, y=None: replace_indicies(
+                    x, links[0], links[1].call(), y
+                ),
+            )
+        ],
+    ),
 }
 
 for k in quicks:
