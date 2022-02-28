@@ -374,6 +374,8 @@ def to_bin(x):
 def to_digits(x):
     return [-int(i) if x < 0 else int(i) for i in str(x)[1 if x < 0 else 0 :]]
 
+def to_chars(x: str):
+    return [ord(v) for v in x]
 
 def truthy_indices(x):
     x = iterable(x, make_digits=True)
@@ -591,11 +593,34 @@ atoms = {
     # Niladic diagraphs
     "_p": attrdict(arity=0, call=lambda: sympy.pi),
     "_e": attrdict(arity=0, call=lambda: sympy.E),
-    "_P": attrdict(arity=0, call=lambda: 1.618033988749895),
+    "_P": attrdict(arity=0, call=lambda: sympy.nsimplify('1/2 + sqrt(5)/2')),
     "_∞": attrdict(arity=0, call=lambda: sympy.oo),
     "_₁": attrdict(arity=0, call=lambda: 128),
     "_₂": attrdict(arity=0, call=lambda: 256),
+    "_₃": attrdict(arity=0, call=lambda: 512),
+    "_₄": attrdict(arity=0, call=lambda: 1024),
+    "_₅": attrdict(arity=0, call=lambda: 2048),
+    "_₆": attrdict(arity=0, call=lambda: 4096),
+    "_₇": attrdict(arity=0, call=lambda: 8192),
+    "_₈": attrdict(arity=0, call=lambda: 16384),
+    "_₉": attrdict(arity=0, call=lambda: 32768), 
+   
     "_₀": attrdict(arity=0, call=lambda: 1000),
+    "_1": attrdict(arity=0, call=lambda: 10000),
+    "_2": attrdict(arity=0, call=lambda: 100000),
+    "_3": attrdict(arity=0, call=lambda: 1000000),
+    "_H": attrdict(arity=0, call=lambda: to_chars("Hello, World!")),
+    "_h": attrdict(arity=0, call=lambda: to_chars("Hello World")),
+    "_L": attrdict(arity=0, call=lambda: to_chars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")),
+    "_A": attrdict(arity=0, call=lambda: to_chars("ABCDEFGHIJKLMNOPQRSTUVWXYZ")),
+    "_v": attrdict(arity=0, call=lambda: to_chars("aeiou")),
+    "_V": attrdict(arity=0, call=lambda: to_chars("AEIOU")),
+    "_a": attrdict(arity=0, call=lambda: to_chars("abcdefghijklmnopqrstuvwxyz")),
+    "_S": attrdict(arity=0, call=lambda: to_chars("ඞ")),
+    "_⁰": attrdict(arity=0, call=lambda: 2 ** 20),
+    "_¹": attrdict(arity=0, call=lambda: 2 ** 30),
+    "_²": attrdict(arity=0, call=lambda: 2 ** 100),
+    
     # Monadic diagraphs
     ";D": attrdict(arity=1, call=diagonals),
     ";S": attrdict(arity=1, call=vectorised(sympy.sin)),
