@@ -649,6 +649,12 @@ atoms = {
     ":T": attrdict(arity=2, call=vectorised_dyadic(sympy.atan2)),
     ":l": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: a << b)),
     ":r": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: a >> b)),
+    ":s": attrdict(
+        arity=2,
+        call=lambda x, y: [(z := iterable(y, make_digits=True))[0]]
+        + iterable(x)
+        + [z[-1]],
+    ),
     ":*": attrdict(arity=2, call=lambda x, y: [*it.product(x, repeat=y)]),
     ":·": attrdict(
         arity=2, call=lambda x, y: sum(x[i][0] * y[i] for i in range(len(y)))
