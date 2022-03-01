@@ -106,6 +106,8 @@ Syntax|Description|Example
 `j`|Defines a complex number. By default it is `0j1`.|`2j`
 `.`|Defines a decimal number. By default it is `0.5`|`.2`
 `[]`|Start / End a list|`[1 2 [3 4]]`
+`₊`|Next character's value|`₊f`
+`₋`|Next 2 characters' value|`₋(]`
 
 ## Chain separators
 Chain separators separate chains within the same line.
