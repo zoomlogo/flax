@@ -1,5 +1,24 @@
 # Introduction
 
+## Installation
+Make sure you have Python 3.9 or above.
+```sh
+git clone https://github.com/PyGamer0/flax
+pip install poetry
+cd flax
+poetry install
+poetry run python -m flax <flags, etc>
+```
+
+## Flags
+Here is a list of flags, used while running flax.
+
+Flag|Description
+----|-----------
+`C`|Prints as characters instead of numbers.
+`d`|Debug flag.
+`f`|Read and run a program from a file.
+
 ## Terminology
 
 - Arity: The number of arguments a builtin takes.
@@ -69,3 +88,20 @@ Code|New λ|Arities
 `F`|`F(λ)`| 1
 
 ₁ The rule only applies if the nilad is part of an LCC.
+
+## Datatypes
+There are 2 datatypes:
+- Lists
+- Scalars
+
+**NOTE:** A string is just a list of integers.
+
+## Syntax
+
+Here are the syntatic sugar included with flax.
+Syntax|Description|Example
+------|-----------|-------
+`'`|Start / End a string|`'Hello!'`
+`012456789`|A number|`12`
+`j`|Defines a complex number. By default it is `0j1`.|`2j`
+`.`|Defines a decimal number. By default it is `0.5`|`.2`
