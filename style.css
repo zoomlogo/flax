@@ -1,0 +1,9 @@
+@font-face {
+    font-family: Iosevka;
+    src: url("/fonts/iosevka-kalki-regular.ttf");
+}
+
+code {
+    font-family: Iosevka;
+    font-size: 14px;
+}
