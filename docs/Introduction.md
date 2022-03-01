@@ -105,3 +105,14 @@ Syntax|Description|Example
 `012456789`|A number|`12`
 `j`|Defines a complex number. By default it is `0j1`.|`2j`
 `.`|Defines a decimal number. By default it is `0.5`|`.2`
+`[]`|Start / End a list|`[1 2 [3 4]]`
+
+## Chain separators
+Chain separators separate chains within the same line.
+Chain Separator|Description
+---------------|-----------
+`ø`|Start a niladic chain.
+`µ`|Start a monadic chain.
+`г`|Start a monadic chain which maps over its argument.
+`ð`|Start a dyadic chain.
+`ɓ`|Start a dyadic chain with reversed arguments.
