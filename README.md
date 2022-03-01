@@ -3,6 +3,9 @@
 
 flax is a tacit language designed for code golfing.
 
+## Documentation
+Go [**here**](./docs/)
+
 ## Chat
 You can chat at [SE chat](https://chat.stackexchange.com/rooms/132561/flax).
 
