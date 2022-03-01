@@ -146,7 +146,7 @@ def from_bin(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 2**i
+        num += abs(b) * 2 ** i
         i += 1
     return num * sign
 
@@ -157,7 +157,7 @@ def from_digits(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 10**i
+        num += abs(b) * 10 ** i
         i += 1
     return num * sign
 
@@ -427,7 +427,7 @@ atoms = {
     "Æ": attrdict(arity=1, call=vectorised(compose(int, sympy.isprime))),
     "B": attrdict(arity=1, call=vectorised(to_bin)),
     "Ḃ": attrdict(arity=1, call=from_bin),
-    "Ḅ": attrdict(arity=1, call=vectorised(lambda a: 2**a)),
+    "Ḅ": attrdict(arity=1, call=vectorised(lambda a: 2 ** a)),
     "Ƀ": attrdict(arity=1, call=vectorised(lambda a: a % 2)),
     "C": attrdict(arity=1, call=vectorised(lambda a: 1 - a)),
     "Ċ": attrdict(arity=1, call=vectorised(lambda a: a * 3)),
@@ -447,7 +447,7 @@ atoms = {
     "Ĵ": attrdict(arity=1, call=join_newlines),
     "K": attrdict(arity=1, call=lambda x: scanl1(op.add, iterable(x))),
     "L": attrdict(arity=1, call=len),
-    "M": attrdict(arity=1, call=vectorised(lambda a: a**2)),
+    "M": attrdict(arity=1, call=vectorised(lambda a: a ** 2)),
     "N": attrdict(arity=1, call=vectorised(lambda a: -a)),
     "O": attrdict(arity=1, call=lambda x: x),
     "P": attrdict(arity=1, call=lambda x: flax_print(x)),
@@ -496,7 +496,7 @@ atoms = {
         arity=1,
         call=vectorised(lambda a: -1 if a < 0 else (0 if a == 0 else 1)),
     ),
-    "Θ": attrdict(arity=1, call=lambda x: iterable(x, make_range=True).insert(0, 0)),
+    "Θ": attrdict(arity=1, call=lambda x: iterable(x).insert(0, 0)),
     "⌽": attrdict(arity=1, call=lambda x: iterable(x, make_range=True)[::-1]),
     "{": attrdict(arity=1, call=vectorised(lambda a: a - 1)),
     "}": attrdict(arity=1, call=vectorised(lambda a: a + 1)),
@@ -624,9 +624,9 @@ atoms = {
     "_p": attrdict(arity=0, call=lambda: sympy.pi),
     "_v": attrdict(arity=0, call=lambda: to_chars("aeiou")),
     "_∞": attrdict(arity=0, call=lambda: sympy.oo),
-    "_⁰": attrdict(arity=0, call=lambda: 2**20),
-    "_¹": attrdict(arity=0, call=lambda: 2**30),
-    "_²": attrdict(arity=0, call=lambda: 2**100),
+    "_⁰": attrdict(arity=0, call=lambda: 2 ** 20),
+    "_¹": attrdict(arity=0, call=lambda: 2 ** 30),
+    "_²": attrdict(arity=0, call=lambda: 2 ** 100),
     "_(": attrdict(arity=0, call=lambda: to_chars("()")),
     "_{": attrdict(arity=0, call=lambda: to_chars("{}")),
     "_[": attrdict(arity=0, call=lambda: to_chars("[]")),
@@ -967,13 +967,11 @@ quicks = {
         qlink=lambda links, outer_links, i: [create_chain(outer_links[i])],
     ),
     "¨": attrdict(
-        condition=lambda links: links and links[0].arity == 1,
+        condition=lambda links: links,
         qlink=lambda links, outer_links, i: [
             attrdict(
-                arity=links[0].arity,
-                call=lambda x, y=None: [
-                    variadic_link(links[0], a, commute=True) for a in x
-                ],
+                arity=links[0].arity or 1,
+                call=lambda x, y=None: [variadic_link(links[0], a, y) for a in x],
             )
         ],
     ),
