@@ -35,7 +35,9 @@ def contains_false(x):
 
 
 depth = (
-    lambda x: 0 if not isinstance(x, list) else (1 if not x else max(map(depth, x)) + 1)
+    lambda x: 0
+    if not isinstance(x, list)
+    else (1 if not x else max([depth(a) for a in x]) + 1)
 )
 
 
@@ -710,7 +712,7 @@ def dyadic_chain(chain, x, y):
         while chain:
             if DEBUG:
                 print(
-                    f"DEBUG: λ: {flax_string(accumulator)}, chain: {flax_string(list(map(lambda x: x.glyph, chain)))}"
+                    f"DEBUG: λ: {flax_string(accumulator)}, chain: {flax_string([x.glyph for x in chain])}"
                 )
             if arities(chain[0:3]) == [2, 2, 0] and leading_nilad(chain[2:]):
                 accumulator = chain[1].call(
