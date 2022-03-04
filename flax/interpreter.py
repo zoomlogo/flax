@@ -31,7 +31,7 @@ def contains_false(x):
     if len(x) == 0:
         return 1
 
-    return 1 if 1 in [*map(contains_false, x)] else 0
+    return 1 if 1 in [contains_false(a) for a in x] else 0
 
 
 depth = (
@@ -233,7 +233,7 @@ def indices_multidimensional(x, up_lvl=[]):
 def iterable(x, make_range=False, make_digits=False):
     if not isinstance(x, list):
         if make_range:
-            return [*range(x)]
+            return list(range(x))
         if make_digits:
             return to_digits(x)
         return [x]
@@ -254,7 +254,9 @@ def join_spaces(x):
     return join(x, 32)
 
 
-lzip = lambda *x, fillvalue=0: [[*x] for x in it.zip_longest(*x, fillvalue=fillvalue)]
+lzip = lambda *x, fillvalue=0: [
+    list(x) for x in it.zip_longest(*x, fillvalue=fillvalue)
+]
 
 
 def mold(x, y):
@@ -510,7 +512,7 @@ atoms = {
     "⌊": attrdict(arity=1, call=vectorised(lambda a: floor(a))),
     "(": attrdict(arity=1, call=prefixes),
     ")": attrdict(arity=1, call=suffixes),
-    "∀": attrdict(arity=1, call=lambda x: [*map(sum, x)]),
+    "∀": attrdict(arity=1, call=lambda x: list(map(sum, x))),
     # Single byte dyads
     "c": attrdict(
         arity=2,
@@ -543,7 +545,7 @@ atoms = {
     "o": attrdict(arity=2, call=split_at),
     "r": attrdict(
         arity=2,
-        call=vectorised_dyadic(lambda a, b: [*range(a, b + 1)]),
+        call=vectorised_dyadic(lambda a, b: list(range(a, b + 1))),
     ),
     "s": attrdict(arity=2, call=split),
     "ṡ": attrdict(arity=2, call=vectorised_dyadic(sliding_window, lfull=False)),
@@ -659,7 +661,7 @@ atoms = {
         + iterable(x)
         + [z[-1]],
     ),
-    ":*": attrdict(arity=2, call=lambda x, y: [*it.product(x, repeat=y)]),
+    ":*": attrdict(arity=2, call=lambda x, y: list(it.product(x, repeat=y))),
     ":·": attrdict(
         arity=2, call=lambda x, y: sum(x[i][0] * y[i] for i in range(len(y)))
     ),
@@ -910,7 +912,7 @@ def split_suffix(array):
 
 
 def variadic_chain(chain, *args):
-    args = [*filter(None.__ne__, args)]
+    args = list(filter(None.__ne__, args))
     if len(args) == 0:
         return niladic_chain(chain)
     elif len(args) == 1:
@@ -921,7 +923,7 @@ def variadic_chain(chain, *args):
 
 def variadic_link(link, *args, commute=False):
     if link.arity < 0:
-        args = [*filter(None.__ne__, args)]
+        args = list(filter(None.__ne__, args))
         link.arity = len(args)
 
     if link.arity == 0:
