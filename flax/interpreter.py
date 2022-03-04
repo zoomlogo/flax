@@ -4,6 +4,7 @@ import random as R
 
 from math import factorial, floor, ceil
 
+from flax.error import error
 from pyhof import *
 import itertools as it
 import more_itertools as mit

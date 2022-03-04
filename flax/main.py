@@ -1,17 +1,16 @@
+from flax.error import error
 from flax.interpreter import variadic_chain, flax_print
 from flax.lexer import tokenise
 from flax.parser import parse
 
 from prompt_toolkit import PromptSession
-from prompt_toolkit import print_formatted_text as pft, HTML
 
 
 def flax_eval(code, *args):
     try:
         flax_print(variadic_chain(parse(tokenise(code))[-1] if code else "", *args))
     except KeyboardInterrupt:
-        pft(HTML("<ansired>ERROR: KeyboardInterrupt Recieved.</ansired>"))
-        exit(130)
+        error("ERROR: KeyboardInterrupt Recieved.", 130)
 
 
 def cli_repl(prompt="      ", inp_prompt="> "):
@@ -33,5 +32,4 @@ def cli_repl(prompt="      ", inp_prompt="> "):
             ]
             flax_print(variadic_chain(chain, *args))
     except KeyboardInterrupt:
-        pft(HTML("<ansired>ERROR: KeyboardInterrupt Recieved.</ansired>"))
-        exit(130)
+        error("ERROR: KeyboardInterrupt Recieved.", 130)

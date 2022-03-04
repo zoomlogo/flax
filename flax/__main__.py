@@ -1,7 +1,7 @@
 # Main entry point
-from prompt_toolkit import print_formatted_text, HTML
 import sys
 
+from flax.error import error
 from flax.main import flax_eval, cli_repl
 import flax.interpreter
 
@@ -21,10 +21,7 @@ if read_from_file:
     try:
         code = open(sys.argv[0], encoding="utf-8").read()
     except FileNotFoundError:
-        print_formatted_text(
-            HTML(f"<ansired>ERROR: File {sys.argv[0]} not found.</ansired>"),
-            file=sys.stderr,
-        )
+        error(f'ERROR: File "{sys.argv[0]}" not found.', 66)
         exit(66)
 
     sys.argv = sys.argv[1:]

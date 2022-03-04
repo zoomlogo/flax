@@ -1,3 +1,4 @@
+from flax.error import error
 from flax.interpreter import attrdict
 from flax.interpreter import atoms
 from flax.interpreter import quicks
@@ -6,7 +7,6 @@ from flax.interpreter import create_chain
 
 from flax.lexer import *
 
-from prompt_toolkit import print_formatted_text, HTML
 import sympy
 
 
@@ -108,12 +108,7 @@ def parse(tokens):
                         if stack == [] and chains == []:
                             if token[1] in "ⁿ":
                                 break
-                            print_formatted_text(
-                                HTML(
-                                    f'<ansired>ERROR: Not enough links to pop for "{token[1]}"</ansired>'
-                                )
-                            )
-                            exit(1)
+                            error(f'ERROR: Not enough links to pop for "{token[1]}"')
                         popped.insert(0, (stack or chains).pop())
                     stack += quicks[token[1]].qlink(popped, trains, index)
             chains.append(create_chain(stack, arity, is_forward))
