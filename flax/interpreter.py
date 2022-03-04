@@ -208,7 +208,7 @@ def index_generator(x):
     if not isinstance(x, list):
         return list(range(int(x)))
 
-    res = list(map(list, it.product([list(range(int(a))) for a in x])))
+    res = list(map(list, it.product(*(list(range(int(a))) for a in x))))
     for e in x:
         res = split(res, int(e))
     return res[0]
