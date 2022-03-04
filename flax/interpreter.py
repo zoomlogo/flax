@@ -607,7 +607,7 @@ atoms = {
     "_3": attrdict(arity=0, call=lambda: 1000),
     "_4": attrdict(arity=0, call=lambda: 10000),
     "_5": attrdict(arity=0, call=lambda: 100000),
-    "_3": attrdict(arity=0, call=lambda: 1000000),
+    "_6": attrdict(arity=0, call=lambda: 1000000),
     "_A": attrdict(arity=0, call=lambda: to_chars("ABCDEFGHIJKLMNOPQRSTUVWXYZ")),
     "_D": attrdict(arity=0, call=lambda: [[0, 1], [1, 0], [0, -1], [-1, 0]]),
     "_H": attrdict(arity=0, call=lambda: to_chars("Hello, World!")),
