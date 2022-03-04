@@ -5,8 +5,8 @@ import random as R
 from math import factorial, floor, ceil
 
 from flax.error import error
-from pyhof import *
 import itertools as it
+import functools as ft
 import more_itertools as mit
 import operator as op
 import sympy
@@ -40,7 +40,7 @@ depth = (
 
 
 def diagonals(x):
-    d = [*map(curry(constantly)([]), range(len(x) + len(x[0]) - 1))]
+    d = [[] for _ in range(len(x) + len(x[0]) - 1)]
     min_d = -len(x) + 1
 
     for i in range(len(x[0])):
@@ -90,7 +90,7 @@ def dyadic_vectorise(fn, x, y, rfull=True, lfull=True):
         return fn(x, y)
 
 
-flatten = compose(list, mit.collapse)
+flatten = lambda x: list(mit.collapse(x))
 
 
 def falsey_indices(x):
@@ -147,7 +147,7 @@ def from_bin(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 2**i
+        num += abs(b) * 2 ** i
         i += 1
     return num * sign
 
@@ -158,7 +158,7 @@ def from_digits(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 10**i
+        num += abs(b) * 10 ** i
         i += 1
     return num * sign
 
@@ -206,7 +206,7 @@ def index_generator(x):
     if not isinstance(x, list):
         return list(range(int(x)))
 
-    res = list(map(list, it.product(*map(compose(list, range), x))))
+    res = list(map(list, it.product([list(range(int(a))) for a in x])))
     for e in x:
         res = split(res, int(e))
     return res[0]
@@ -338,12 +338,12 @@ def sliding_window(x, y):
     x = iterable(x)
     y = int(y)
     if y < 0:
-        return vectorised(compose(list, reversed))(list(mit.sliding_window(x, -y)))
+        return vectorised(lambda x: list(reversed(x)))(list(mit.sliding_window(x, -y)))
     else:
         return vectorised(list)(list(mit.sliding_window(x, y)))
 
 
-split = compose(list, mit.chunked)
+split = lambda x, y: list(mit.chunked(x, y))
 
 split_at = lambda x, y: list(mit.split_at(x, lambda a: a == y))
 
@@ -363,9 +363,9 @@ def suffixes(x):
     return res
 
 
-rationalised = lambda func: compose(
-    vectorised(lambda x: sympy.nsimplify(x, rational=True)), func
-)
+rationalised = lambda func: lambda *args: vectorised(
+    lambda x: sympy.nsimplify(x, rational=True)
+)(func(*args))
 
 
 def to_bin(x):
@@ -425,10 +425,10 @@ atoms = {
     # Single byte monads
     "A": attrdict(arity=1, call=vectorised(lambda a: abs(a))),
     "Ă": attrdict(arity=1, call=contains_false),
-    "Æ": attrdict(arity=1, call=vectorised(compose(int, sympy.isprime))),
+    "Æ": attrdict(arity=1, call=vectorised(lambda a: int(sympy.isprime(a)))),
     "B": attrdict(arity=1, call=vectorised(to_bin)),
     "Ḃ": attrdict(arity=1, call=from_bin),
-    "Ḅ": attrdict(arity=1, call=vectorised(lambda a: 2**a)),
+    "Ḅ": attrdict(arity=1, call=vectorised(lambda a: 2 ** a)),
     "Ƀ": attrdict(arity=1, call=vectorised(lambda a: a % 2)),
     "C": attrdict(arity=1, call=vectorised(lambda a: 1 - a)),
     "Ċ": attrdict(arity=1, call=vectorised(lambda a: a * 3)),
@@ -446,14 +446,14 @@ atoms = {
     "I": attrdict(arity=1, call=index_generator),
     "J": attrdict(arity=1, call=join_spaces),
     "Ĵ": attrdict(arity=1, call=join_newlines),
-    "K": attrdict(arity=1, call=lambda x: scanl1(op.add, iterable(x))),
+    "K": attrdict(arity=1, call=lambda x: list(it.accumulate(iterable(x)))),
     "L": attrdict(arity=1, call=len),
-    "M": attrdict(arity=1, call=vectorised(lambda a: a**2)),
+    "M": attrdict(arity=1, call=vectorised(lambda a: a ** 2)),
     "N": attrdict(arity=1, call=vectorised(lambda a: -a)),
     "O": attrdict(arity=1, call=lambda x: x),
     "P": attrdict(arity=1, call=lambda x: flax_print(x)),
     "Ṗ": attrdict(arity=1, call=lambda x: print(end="".join(chr(c) for c in x))),
-    "Ƥ": attrdict(arity=1, call=compose(list, it.permutations)),
+    "Ƥ": attrdict(arity=1, call=lambda x: list(it.permutations(x))),
     "Q": attrdict(arity=1, call=vectorised(lambda a: a / 2)),
     "R": attrdict(
         arity=1,
@@ -465,11 +465,11 @@ atoms = {
     "Ř": attrdict(
         arity=1, call=lambda x: list(range(len(iterable(x, make_digits=True))))
     ),
-    "S": attrdict(arity=1, call=compose(list, sorted, iterable)),
-    "Ṡ": attrdict(arity=1, call=compose(list, reversed, sorted, iterable)),
+    "S": attrdict(arity=1, call=lambda x: list(sorted(iterable(x)))),
+    "Ṡ": attrdict(arity=1, call=lambda x: list(reversed(sorted(iterable(x))))),
     "T": attrdict(arity=1, call=lambda x: iterable(x, make_digits=True)[1:]),
     "Ṫ": attrdict(arity=1, call=lambda x: iterable(x, make_digits=True)[:-2]),
-    "U": attrdict(arity=1, call=compose(list, set, iterable)),
+    "U": attrdict(arity=1, call=lambda x: list(set(iterable(x)))),
     "V": attrdict(arity=1, call=lambda x: group(iterable(x, make_digits=True))),
     "W": attrdict(arity=1, call=lambda x: [x]),
     "Ẇ": attrdict(
@@ -479,17 +479,17 @@ atoms = {
     "Y": attrdict(arity=1, call=lambda x: [x[i] for i in range(len(x)) if i % 2 == 0]),
     "Ẏ": attrdict(arity=1, call=lambda x: [x[i] for i in range(len(x)) if i % 2]),
     "Z": attrdict(arity=1, call=lambda x: lzip(*x)),
-    "Π": attrdict(arity=1, call=lambda x: foldl1(op.mul, flatten(x))),
-    "Σ": attrdict(arity=1, call=compose(sum, flatten)),
+    "Π": attrdict(arity=1, call=lambda x: ft.reduce(op.mul, flatten(x))),
+    "Σ": attrdict(arity=1, call=sum),
     "⊤": attrdict(arity=1, call=truthy_indices),
     "⊥": attrdict(arity=1, call=falsey_indices),
-    "!": attrdict(arity=1, call=vectorised(compose(factorial, int))),
+    "!": attrdict(arity=1, call=vectorised(lambda a: factorial(int(a)))),
     "~": attrdict(arity=1, call=vectorised(lambda a: ~a)),
-    "¬": attrdict(arity=1, call=(vectorised(compose(int, op.not_)))),
+    "¬": attrdict(arity=1, call=(vectorised(lambda a: int(not a)))),
     "√": attrdict(arity=1, call=vectorised(sympy.sqrt)),
     "≈": attrdict(
         arity=1,
-        call=compose(int, mit.all_equal),
+        call=lambda a: int(mit.all_equal(a)),
     ),
     "∇": attrdict(arity=1, call=lambda x: min(iterable(x, make_digits=True))),
     "∆": attrdict(arity=1, call=lambda x: max(iterable(x, make_digits=True))),
@@ -518,10 +518,10 @@ atoms = {
             lambda x, y: iterable(x, make_digits=True).count(y), lfull=False
         ),
     ),
-    "d": attrdict(arity=2, call=vectorised_dyadic(compose(list, divmod))),
+    "d": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: list(divmod(a, b)))),
     "ḍ": attrdict(
         arity=2,
-        call=vectorised_dyadic(compose(int, lambda a, b: a % b == 0)),
+        call=vectorised_dyadic(lambda a, b: int(a % b == 0)),
     ),
     "f": attrdict(
         arity=2,
@@ -565,19 +565,19 @@ atoms = {
     ),
     "%": attrdict(arity=2, call=vectorised_dyadic(op.mod)),
     "*": attrdict(arity=2, call=vectorised_dyadic(op.pow)),
-    "<": attrdict(arity=2, call=vectorised_dyadic(compose(int, op.lt))),
-    ">": attrdict(arity=2, call=vectorised_dyadic(compose(int, op.gt))),
-    "=": attrdict(arity=2, call=vectorised_dyadic(compose(int, op.eq))),
-    "≠": attrdict(arity=2, call=vectorised_dyadic(compose(int, op.ne))),
-    "≥": attrdict(arity=2, call=vectorised_dyadic(compose(int, op.ge))),
-    "≤": attrdict(arity=2, call=vectorised_dyadic(compose(int, op.le))),
-    "≡": attrdict(arity=2, call=compose(int, op.eq)),
-    "≢": attrdict(arity=2, call=compose(int, op.ne)),
+    "<": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: int(a < b))),
+    ">": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: int(a > b))),
+    "=": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: int(a == b))),
+    "≠": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: int(a != b))),
+    "≥": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: int(a >= b))),
+    "≤": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: int(a <= b))),
+    "≡": attrdict(arity=2, call=lambda x, y: int(x == y)),
+    "≢": attrdict(arity=2, call=lambda x, y: int(x != y)),
     ",": attrdict(arity=2, call=lambda x, y: iterable(x) + iterable(y)),
     "⍪": attrdict(arity=2, call=lambda x, y: iterable(y) + iterable(x)),
     "⋈": attrdict(arity=2, call=lambda x, y: [x, y]),
-    "∧": attrdict(arity=2, call=vectorised_dyadic(compose(int, lambda a, b: a and b))),
-    "∨": attrdict(arity=2, call=vectorised_dyadic(compose(int, lambda a, b: a or b))),
+    "∧": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: int(a and b))),
+    "∨": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: int(a or b))),
     "&": attrdict(arity=2, call=vectorised_dyadic(op.and_)),
     "|": attrdict(arity=2, call=vectorised_dyadic(op.or_)),
     "^": attrdict(arity=2, call=vectorised_dyadic(op.xor)),
@@ -590,7 +590,7 @@ atoms = {
     "⊏": attrdict(
         arity=2, call=lambda x, y: [x[i] for i in range(len(x)) if i % y == 0]
     ),
-    "·": attrdict(arity=2, call=compose(list, it.product)),
+    "·": attrdict(arity=2, call=lambda x, y: list(it.product(x, y))),
     "/": attrdict(arity=2, call=repeat),
     "#": attrdict(arity=2, call=reshape),
     # Niladic diagraphs
@@ -625,9 +625,9 @@ atoms = {
     "_p": attrdict(arity=0, call=lambda: sympy.pi),
     "_v": attrdict(arity=0, call=lambda: to_chars("aeiou")),
     "_∞": attrdict(arity=0, call=lambda: sympy.oo),
-    "_⁰": attrdict(arity=0, call=lambda: 2**20),
-    "_¹": attrdict(arity=0, call=lambda: 2**30),
-    "_²": attrdict(arity=0, call=lambda: 2**100),
+    "_⁰": attrdict(arity=0, call=lambda: 2 ** 20),
+    "_¹": attrdict(arity=0, call=lambda: 2 ** 30),
+    "_²": attrdict(arity=0, call=lambda: 2 ** 100),
     "_(": attrdict(arity=0, call=lambda: to_chars("()")),
     "_{": attrdict(arity=0, call=lambda: to_chars("{}")),
     "_[": attrdict(arity=0, call=lambda: to_chars("[]")),
@@ -819,15 +819,12 @@ def niladic_chain(chain):
 
 def ntimes(links, args):
     times = int(links[1].call()) if len(links) == 2 else last_input()
-    if links[0].arity == 1:
-        return power(links[0].call, times)(args[0])
-    elif links[0].arity == 2:
-        res, y = args
-        for _ in range(times):
-            x = res
-            res = links[0].call(x, y)
-            y = x
-        return res
+    res, y = args
+    for _ in range(times):
+        x = res
+        res = variadic_link(links[0], x, y)
+        y = x
+    return res
 
 
 def qfilter(links, outer_links, i):
@@ -848,10 +845,10 @@ def qfilter(links, outer_links, i):
 def qfold(links, outer_links, i):
     res = [attrdict(arity=1)]
     if len(links) == 1:
-        res[0].call = lambda x, y=None: foldl1(links[0].call, x)
+        res[0].call = lambda x, y=None: ft.reduce(links[0].call, x)
     else:
         res[0].call = lambda x, y=None: [
-            foldl1(links[0].call, z) for z in sliding_window(x, links[1].call())
+            ft.reduce(links[0].call, z) for z in sliding_window(x, links[1].call())
         ]
     return res
 
@@ -859,10 +856,10 @@ def qfold(links, outer_links, i):
 def qscan(links, outer_links, i):
     res = [attrdict(arity=1)]
     if len(links) == 1:
-        res[0].call = lambda x, y=None: scanl1(links[0].call, x)
+        res[0].call = lambda x, y=None: it.accumulate(x, links[0].call)
     else:
         res[0].call = lambda x, y=None: [
-            scanl1(links[0].call, z) for z in sliding_window(x, links[1].call())
+            it.accumulate(z, links[0].call) for z in sliding_window(x, links[1].call())
         ]
     return res
 
@@ -1011,11 +1008,10 @@ quicks = {
         qlink=lambda links, outer_links, i: [
             attrdict(
                 arity=2,
-                call=lambda x, y: outer_product(
-                    links[0].call,
-                    iterable(x, make_range=True),
-                    iterable(y, make_range=True),
-                ),
+                call=lambda x, y: [
+                    [links[0].call(a, b) for a in iterable(x, make_range=True)]
+                    for b in iterable(y, make_range=True)
+                ],
             )
         ],
     ),
@@ -1071,7 +1067,10 @@ quicks = {
             attrdict(
                 arity=2,
                 call=lambda x, y: links[0].call(
-                    x, compose(*map(lambda a: a.call, links[1:]))(y)
+                    x,
+                    ft.reduce(
+                        lambda f, g: lambda a: f(g(a)), [a.call for a in links[1:]]
+                    )(y),
                 ),
             )
         ],
