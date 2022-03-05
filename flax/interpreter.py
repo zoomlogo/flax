@@ -485,7 +485,7 @@ atoms = {
     "S": attrdict(arity=1, call=lambda x: list(sorted(iterable(x)))),
     "Ṡ": attrdict(arity=1, call=lambda x: list(reversed(sorted(iterable(x))))),
     "T": attrdict(arity=1, call=lambda x: iterable(x, make_digits=True)[1:]),
-    "Ṫ": attrdict(arity=1, call=lambda x: iterable(x, make_digits=True)[:-2]),
+    "Ṫ": attrdict(arity=1, call=lambda x: iterable(x, make_digits=True)[:-1]),
     "U": attrdict(arity=1, call=lambda x: list(set(iterable(x)))),
     "V": attrdict(arity=1, call=lambda x: group(iterable(x, make_digits=True))),
     "W": attrdict(arity=1, call=lambda x: [x]),
