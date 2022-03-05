@@ -2,18 +2,23 @@
 import sys
 import random as rand
 
-from math import factorial, floor, ceil
-
-from flax.error import error
 import itertools as it
 import functools as ft
 import more_itertools as mit
 import operator as op
-import sympy
+
+from flax.error import error
+from mpmath import mp
 
 # Flags
 DEBUG = False
 PRINT_CHARS = False
+PRINT_LESS_DIGITS = False
+dps = 20
+
+# Setup mp context
+mp.dps = dps
+mp.pretty = True
 
 # Attrdict class
 class attrdict(dict):
@@ -126,13 +131,25 @@ def find_all_indices(x, y):
 
 
 def flax_string(x):
-    return (
-        str(x)
-        .replace(", ", " ")
-        .replace("oo", "∞")
-        .replace(" + ", "+")
-        .replace(" - ", "-")
-    )
+    if not isinstance(x, list):
+        if isinstance(x, mp.mpc):
+            return "j".join([flax_string(x.real), flax_string(x.imag)])
+        return (
+            (
+                str(int(x))
+                if isinstance(x, int) or (x != mp.inf and int(x) == x)
+                else (mp.nstr(x) if PRINT_LESS_DIGITS else str(x))
+            )
+            .replace("-", "¯")
+            .replace("inf", "∞")
+        )
+
+    res = ""
+    for e in x:
+        res += flax_string(e) + " "
+    res = "[" + res.strip() + "]"
+
+    return res
 
 
 def flax_print(x):
@@ -216,10 +233,10 @@ def index_generator(x):
 
 def index_into(x, y):
     x = iterable(x, make_digits=True)
-    y = int(sympy.N(y)) if int(sympy.N(y)) == sympy.N(y) else float(sympy.N(y))
+    y = int(y) if int(y) == y else y
     if isinstance(y, int):
         return x[y % len(x)]
-    return [index_into(x, floor(y)), index_into(x, ceil(y))]
+    return [index_into(x, mp.floor(y)), index_into(x, mp.ceil(y))]
 
 
 def indices_multidimensional(x, up_lvl=[]):
@@ -276,7 +293,7 @@ def nprimes(x):
     res = []
     i = 2
     while len(res) != x:
-        if sympy.isprime(i):
+        if mp.isprime(i):
             res.append(i)
         i += 1
     return res
@@ -284,7 +301,7 @@ def nprimes(x):
 
 def order(x, y):
     if x == 0 or abs(y) == 1:
-        return sympy.oo
+        return mp.inf
 
     if y == 0:
         return 0
@@ -369,11 +386,6 @@ def suffixes(x):
     return res
 
 
-rationalised = lambda func: lambda *args: vectorised(
-    lambda x: sympy.nsimplify(x, rational=True)
-)(func(*args))
-
-
 def to_bin(x):
     return [-i if x < 0 else i for i in map(int, bin(x)[3 if x < 0 else 2 :])]
 
@@ -431,7 +443,7 @@ atoms = {
     # Single byte monads
     "A": attrdict(arity=1, call=vectorised(lambda a: abs(a))),
     "Ă": attrdict(arity=1, call=contains_false),
-    "Æ": attrdict(arity=1, call=vectorised(lambda a: int(sympy.isprime(a)))),
+    "Æ": attrdict(arity=1, call=vectorised(lambda a: int(mp.isprime(a)))),
     "B": attrdict(arity=1, call=vectorised(to_bin)),
     "Ḃ": attrdict(arity=1, call=from_bin),
     "Ḅ": attrdict(arity=1, call=vectorised(lambda a: 2**a)),
@@ -488,10 +500,10 @@ atoms = {
     "Σ": attrdict(arity=1, call=sum),
     "⊤": attrdict(arity=1, call=truthy_indices),
     "⊥": attrdict(arity=1, call=falsey_indices),
-    "!": attrdict(arity=1, call=vectorised(lambda a: factorial(int(a)))),
+    "!": attrdict(arity=1, call=vectorised(lambda a: mp.factorial(a))),
     "~": attrdict(arity=1, call=vectorised(lambda a: ~a)),
     "¬": attrdict(arity=1, call=(vectorised(lambda a: int(not a)))),
-    "√": attrdict(arity=1, call=vectorised(sympy.sqrt)),
+    "√": attrdict(arity=1, call=vectorised(mp.sqrt)),
     "≈": attrdict(
         arity=1,
         call=lambda a: int(mit.all_equal(a)),
@@ -511,9 +523,9 @@ atoms = {
     "?": attrdict(arity=1, call=vectorised(random)),
     "⍋": attrdict(arity=1, call=grade_up),
     "⍒": attrdict(arity=1, call=grade_down),
-    "⅟": attrdict(arity=1, call=vectorised(lambda a: 1 / a if a else sympy.oo)),
-    "⌈": attrdict(arity=1, call=vectorised(lambda a: ceil(a))),
-    "⌊": attrdict(arity=1, call=vectorised(lambda a: floor(a))),
+    "⅟": attrdict(arity=1, call=vectorised(lambda a: 1 / a if a else mp.inf)),
+    "⌈": attrdict(arity=1, call=vectorised(lambda a: int(mp.ceil(a)))),
+    "⌊": attrdict(arity=1, call=vectorised(lambda a: int(mp.floor(a)))),
     "(": attrdict(arity=1, call=prefixes),
     ")": attrdict(arity=1, call=suffixes),
     "∀": attrdict(arity=1, call=lambda x: list(map(sum, x))),
@@ -567,7 +579,7 @@ atoms = {
     "×": attrdict(arity=2, call=vectorised_dyadic(op.mul)),
     "÷": attrdict(
         arity=2,
-        call=vectorised_dyadic(lambda a, b: a / b if b else (sympy.oo if a else 0)),
+        call=vectorised_dyadic(lambda a, b: a / b if b else (mp.inf if a else 0)),
     ),
     "%": attrdict(arity=2, call=vectorised_dyadic(op.mod)),
     "*": attrdict(arity=2, call=vectorised_dyadic(op.pow)),
@@ -622,15 +634,15 @@ atoms = {
         arity=0,
         call=lambda: to_chars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"),
     ),
-    "_P": attrdict(arity=0, call=lambda: sympy.nsimplify("1/2 + sqrt(5)/2")),
+    "_P": attrdict(arity=0, call=lambda: mp.phi),
     "_S": attrdict(arity=0, call=lambda: 3486),
     "_V": attrdict(arity=0, call=lambda: to_chars("AEIOU")),
     "_a": attrdict(arity=0, call=lambda: to_chars("abcdefghijklmnopqrstuvwxyz")),
-    "_e": attrdict(arity=0, call=lambda: sympy.E),
+    "_e": attrdict(arity=0, call=lambda: mp.e),
     "_h": attrdict(arity=0, call=lambda: to_chars("Hello World")),
-    "_p": attrdict(arity=0, call=lambda: sympy.pi),
+    "_p": attrdict(arity=0, call=lambda: mp.pi),
     "_v": attrdict(arity=0, call=lambda: to_chars("aeiou")),
-    "_∞": attrdict(arity=0, call=lambda: sympy.oo),
+    "_∞": attrdict(arity=0, call=lambda: mp.inf),
     "_⁰": attrdict(arity=0, call=lambda: 2**20),
     "_¹": attrdict(arity=0, call=lambda: 2**30),
     "_²": attrdict(arity=0, call=lambda: 2**100),
@@ -638,25 +650,25 @@ atoms = {
     "_{": attrdict(arity=0, call=lambda: to_chars("{}")),
     "_[": attrdict(arity=0, call=lambda: to_chars("[]")),
     # Monadic diagraphs
-    ";C": attrdict(arity=1, call=vectorised(sympy.cos)),
-    ";Ċ": attrdict(arity=1, call=vectorised(sympy.acos)),
+    ";C": attrdict(arity=1, call=vectorised(mp.cos)),
+    ";Ċ": attrdict(arity=1, call=vectorised(mp.acos)),
     ";D": attrdict(arity=1, call=diagonals),
     ";F": attrdict(arity=1, call=vectorised(fibonacci)),
-    ";S": attrdict(arity=1, call=vectorised(sympy.sin)),
-    ";Ṡ": attrdict(arity=1, call=vectorised(sympy.asin)),
-    ";T": attrdict(arity=1, call=vectorised(sympy.tan)),
-    ";Ṫ": attrdict(arity=1, call=vectorised(sympy.atan)),
-    ";c": attrdict(arity=1, call=vectorised(lambda a: 1 / sympy.cos(a))),
+    ";S": attrdict(arity=1, call=vectorised(mp.sin)),
+    ";Ṡ": attrdict(arity=1, call=vectorised(mp.asin)),
+    ";T": attrdict(arity=1, call=vectorised(mp.tan)),
+    ";Ṫ": attrdict(arity=1, call=vectorised(mp.atan)),
+    ";c": attrdict(arity=1, call=vectorised(lambda a: 1 / mp.cos(a))),
     ";d": attrdict(arity=1, call=vectorised(lambda x: int(48 <= x <= 57))),
-    ";h": attrdict(arity=1, call=vectorised(sympy.tanh)),
+    ";h": attrdict(arity=1, call=vectorised(mp.tanh)),
     ";i": attrdict(arity=1, call=indices_multidimensional),
-    ";n": attrdict(arity=1, call=vectorised(sympy.sinh)),
-    ";o": attrdict(arity=1, call=vectorised(sympy.cosh)),
-    ";s": attrdict(arity=1, call=vectorised(lambda a: 1 / sympy.sin(a))),
-    ";t": attrdict(arity=1, call=vectorised(lambda a: 1 / sympy.tan(a))),
+    ";n": attrdict(arity=1, call=vectorised(mp.sinh)),
+    ";o": attrdict(arity=1, call=vectorised(mp.cosh)),
+    ";s": attrdict(arity=1, call=vectorised(lambda a: 1 / mp.sin(a))),
+    ";t": attrdict(arity=1, call=vectorised(lambda a: 1 / mp.tan(a))),
     ";Æ": attrdict(arity=1, call=vectorised(nprimes)),
     # Dyadic diagraphs
-    ":T": attrdict(arity=2, call=vectorised_dyadic(sympy.atan2)),
+    ":T": attrdict(arity=2, call=vectorised_dyadic(mp.atan2)),
     ":l": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: a << b)),
     ":r": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: a >> b)),
     ":s": attrdict(
@@ -673,7 +685,6 @@ atoms = {
 
 for k in atoms:
     atoms[k].glyph = k
-    atoms[k].call = rationalised(atoms[k].call)
 
 # ===== Chain functions ====
 def arities(links):

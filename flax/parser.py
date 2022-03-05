@@ -1,13 +1,17 @@
+from mpmath import mp
+
 from flax.error import error
 from flax.interpreter import attrdict
 from flax.interpreter import atoms
 from flax.interpreter import quicks
 from flax.interpreter import train_separators
 from flax.interpreter import create_chain
+import flax.interpreter
 
 from flax.lexer import *
 
-import sympy
+mp.dps = flax.interpreter.dps
+mp.pretty = True
 
 
 def arrayify(arr_list):
@@ -28,34 +32,32 @@ def numberify(x):
     number = x.replace("¯", "-")
     if "j" in number:
         if len(number) == 1:
-            return sympy.nsimplify(complex(0, 1), rational=True)
+            return mp.mpc(0, 1)
         else:
             parts = number.split("j")
             if parts[0] == "":
                 parts[0] = "0"
             if parts[1] == "":
                 parts[1] = "1"
-            return sympy.nsimplify(
-                complex(numberify(parts[0]), numberify(parts[1])), rational=True
-            )
+            return mp.mpc(numberify(parts[0]), numberify(parts[1]))
     elif "." in number:
         if len(number) == 1:
-            return 0.5
+            return mp.mpf("0.5")
         else:
             parts = number.split(".")
             if parts[0] == "":
                 parts[0] = "0"
             if parts[1] == "":
                 parts[1] = "5"
-            return sympy.nsimplify(".".join(parts), rational=True)
+            return mp.mpf(".".join(parts))
     else:
         if "-" in number:
             if len(number) == 1:
-                return sympy.nsimplify(-1, rational=True)
+                return -1
             else:
-                return sympy.nsimplify(number, rational=True)
+                return int(number)
         else:
-            return sympy.nsimplify(number, rational=True)
+            return int(number)
 
 
 def parse(tokens):

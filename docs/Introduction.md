@@ -18,6 +18,8 @@ Flag|Description
 `C`|Prints as characters instead of numbers.
 `d`|Debug flag.
 `f`|Read and run a program from a file.
+`p`|Higher precision.
+`P`|Print less digits.
 
 ## Terminology
 
