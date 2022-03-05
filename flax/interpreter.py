@@ -10,10 +10,16 @@ import more_itertools as mit
 import operator as op
 
 from flax.error import error
+from mpmath import mp
 
 # Flags
 DEBUG = False
 PRINT_CHARS = False
+dps = 20
+
+# Setup mp context
+mp.dps = dps
+mp.pretty = True
 
 # Attrdict class
 class attrdict(dict):
