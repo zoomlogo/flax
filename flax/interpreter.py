@@ -676,6 +676,8 @@ atoms = {
     ";Æ": attrdict(arity=1, call=vectorised(nprimes)),
     ";I": attrdict(arity=1, call=vectorised(int)),
     ";f": attrdict(arity=1, call=vectorised(factors)),
+    ";r": attrdict(arity=1, call=vectorised(lambda a: list(range(2, int(a))))),
+    ";R": attrdict(arity=1, call=vectorised(lambda a: list(range(int(a) + 1)))),
     # Dyadic diagraphs
     ":T": attrdict(arity=2, call=vectorised_dyadic(mp.atan2)),
     ":l": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: a << b)),
