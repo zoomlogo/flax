@@ -7,8 +7,6 @@ from flax.interpreter import create_chain
 
 from flax.lexer import *
 
-import sympy
-
 
 def arrayify(arr_list):
     array = []
