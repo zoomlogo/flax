@@ -13,6 +13,7 @@ from mpmath import mp
 # Flags
 DEBUG = False
 PRINT_CHARS = False
+PRINT_LESS_DIGITS = False
 dps = 20
 
 # Setup mp context
@@ -134,7 +135,11 @@ def flax_string(x):
         if isinstance(x, mp.mpc):
             return "j".join([flax_string(x.real), flax_string(x.imag)])
         return (
-            (str(int(x)) if isinstance(x, int) or int(x) == x else str(x))
+            (
+                str(int(x))
+                if isinstance(x, int) or int(x) == x
+                else (mp.nstr(x) if PRINT_LESS_DIGITS else str(x))
+            )
             .replace("-", "¯")
             .replace("inf", "∞")
         )
