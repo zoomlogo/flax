@@ -29,9 +29,8 @@ class attrdict(dict):
 
 # ===== Atom functions =====
 def contains_false(x):
-    x = iterable(x, make_digits=True)
     if not isinstance(x, list):
-        return 1 if x else 0
+        return int(bool(x))
 
     if len(x) == 0:
         return 1
@@ -446,7 +445,9 @@ atoms = {
     "₍": attrdict(arity=0, call=lambda: []),
     # Single byte monads
     "A": attrdict(arity=1, call=vectorised(lambda a: abs(a))),
-    "Ă": attrdict(arity=1, call=contains_false),
+    "Ă": attrdict(
+        arity=1, call=lambda x: contains_false(iterable(x, make_digits=True))
+    ),
     "Æ": attrdict(arity=1, call=vectorised(lambda a: int(mp.isprime(a)))),
     "B": attrdict(arity=1, call=vectorised(to_bin)),
     "Ḃ": attrdict(arity=1, call=from_bin),
