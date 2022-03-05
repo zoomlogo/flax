@@ -10,7 +10,7 @@ flax = "flax.main:run"
 
 [tool.poetry.dependencies]
 python = ">3.9"
-sympy = "*"
+mpmath = "*"
 more_itertools = "*"
 prompt_toolkit = "*"
 
