@@ -97,7 +97,8 @@ def dyadic_vectorise(fn, x, y, rfull=True, lfull=True):
         return fn(x, y)
 
 
-flatten = lambda x: list(mit.collapse(x))
+def factors(x):
+    return [c for c in range(1, int(x) + 1) if x % c == 0]
 
 
 def falsey_indices(x):
@@ -128,6 +129,9 @@ def find_all_indices(x, y):
             res.append(i)
         i += 1
     return res if res else [-1]
+
+
+flatten = lambda x: list(mit.collapse(x))
 
 
 def flax_string(x):
@@ -252,7 +256,7 @@ def indices_multidimensional(x, up_lvl=[]):
 def iterable(x, make_range=False, make_digits=False):
     if not isinstance(x, list):
         if make_range:
-            return list(range(x))
+            return list(range(int(x)))
         if make_digits:
             return to_digits(x)
         return [x]
@@ -670,6 +674,8 @@ atoms = {
     ";s": attrdict(arity=1, call=vectorised(lambda a: 1 / mp.sin(a))),
     ";t": attrdict(arity=1, call=vectorised(lambda a: 1 / mp.tan(a))),
     ";Æ": attrdict(arity=1, call=vectorised(nprimes)),
+    ";I": attrdict(arity=1, call=vectorised(int)),
+    ";f": attrdict(arity=1, call=vectorised(factors)),
     # Dyadic diagraphs
     ":T": attrdict(arity=2, call=vectorised_dyadic(mp.atan2)),
     ":l": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: a << b)),
