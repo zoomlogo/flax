@@ -111,14 +111,15 @@ def fibonacci(x):
     return fibonacci(x - 1) + fibonacci(x - 2)
 
 
-def find_all_indices(x, y):
-    res = []
-    i = 0
-    while i < len(y):
-        if y[i] == x:
-            res.append(i)
-        i += 1
-    return res if res else [-1]
+def find(x, y):
+    try:
+        return iterable(x, make_digits=True).index(y)
+    except ValueError:
+        return -1
+
+
+def find_all(x, y):
+    return [i for i, e in enumerate(x) if e == y]
 
 
 flatten = lambda x: list(mit.collapse(x))
@@ -181,7 +182,7 @@ def grade_down(x):
 
     grades = []
     for a in list(sorted(x))[::-1]:
-        grades.append(find_all_indices(a, x))
+        grades.append(find_all(a, x))
     return flatten(grades)
 
 
@@ -190,7 +191,7 @@ def grade_up(x):
 
     grades = []
     for a in list(sorted(x)):
-        grades.append(find_all_indices(a, x))
+        grades.append(find_all(a, x))
     return flatten(grades)
 
 
@@ -574,7 +575,9 @@ atoms = {
             lambda x, y: iterable(x, make_digits=True)[y - 1 :], lfull=False
         ),
     ),
-    "u": attrdict(arity=2, call=lambda x, y: [y.find(v) for v in x]),
+    "u": attrdict(
+        arity=2, call=lambda x, y: [find(y, a) for a in iterable(x, make_digits=True)]
+    ),
     "y": attrdict(arity=2, call=join),
     "z": attrdict(arity=2, call=lzip),
     "+": attrdict(arity=2, call=vectorised_dyadic(op.add)),
@@ -607,11 +610,19 @@ atoms = {
     "^": attrdict(arity=2, call=vectorised_dyadic(op.xor)),
     "⊂": attrdict(
         arity=2,
-        call=lambda x, y: find_all_indices(iterable(x, make_digits=True), y)[0],
+        call=vectorised_dyadic(find, lfull=False),
     ),
-    "⊆": attrdict(arity=2, call=find_all_indices),
+    "⊆": attrdict(arity=2, call=vectorised_dyadic(find_all, lfull=False)),
     "⊏": attrdict(
-        arity=2, call=lambda x, y: [x[i] for i in range(len(x)) if i % y == 0]
+        arity=2,
+        call=vectorised_dyadic(
+            lambda a, b: [
+                iterable(a, make_range=True)[i]
+                for i in range(len(iterable(a, make_range=True)))
+                if i % b == 0
+            ],
+            lfull=False,
+        ),
     ),
     "·": attrdict(arity=2, call=lambda x, y: list(it.product(x, y))),
     "/": attrdict(arity=2, call=repeat),
@@ -679,8 +690,8 @@ atoms = {
     ";R": attrdict(arity=1, call=vectorised(lambda a: list(range(int(a) + 1)))),
     # Dyadic diagraphs
     ":T": attrdict(arity=2, call=vectorised_dyadic(mp.atan2)),
-    ":l": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: a << b)),
-    ":r": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: a >> b)),
+    ":<": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: a << b)),
+    ":>": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: a >> b)),
     ":s": attrdict(
         arity=2,
         call=lambda x, y: [(z := iterable(y, make_digits=True))[0]]
