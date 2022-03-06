@@ -6,6 +6,7 @@ import itertools as it
 import functools as ft
 import more_itertools as mit
 import operator as op
+import math
 
 from flax.error import error
 from mpmath import mp
@@ -548,7 +549,7 @@ atoms = {
         arity=2,
         call=lambda x, y: [a for a in iterable(x, make_digits=True) if a in y],
     ),
-    "g": attrdict(arity=2, call=vectorised_dyadic(order)),
+    "g": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: int(math.gcd(a, b)))),
     "h": attrdict(
         arity=2,
         call=vectorised_dyadic(
@@ -556,9 +557,11 @@ atoms = {
         ),
     ),
     "i": attrdict(arity=2, call=vectorised_dyadic(index_into, lfull=False)),
+    "l": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: int(math.lcm(a, b)))),
     "m": attrdict(arity=2, call=lambda x, y: mold(iterable(x), iterable(y))),
     "n": attrdict(arity=2, call=vectorised_dyadic(op.floordiv)),
     "o": attrdict(arity=2, call=split_at),
+    "q": attrdict(arity=2, call=vectorised_dyadic(order)),
     "r": attrdict(
         arity=2,
         call=vectorised_dyadic(lambda a, b: list(range(a, b + 1))),
