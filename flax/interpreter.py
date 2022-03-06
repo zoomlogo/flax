@@ -28,16 +28,6 @@ class attrdict(dict):
 
 
 # ===== Atom functions =====
-def contains_false(x):
-    if not isinstance(x, list):
-        return int(bool(x))
-
-    if len(x) == 0:
-        return 1
-
-    return 1 if 1 in [contains_false(a) for a in x] else 0
-
-
 depth = (
     lambda x: 0
     if not isinstance(x, list)
@@ -445,9 +435,9 @@ atoms = {
     "₍": attrdict(arity=0, call=lambda: []),
     # Single byte monads
     "A": attrdict(arity=1, call=vectorised(lambda a: abs(a))),
-    "Ă": attrdict(
-        arity=1, call=lambda x: contains_false(iterable(x, make_digits=True))
-    ),
+    "Ạ": attrdict(arity=1, call=lambda x: int(all(iterable(x, make_digits=True)))),
+    "Ȧ": attrdict(arity=1, call=lambda x: int(any(iterable(x)))),
+    "Ă": attrdict(arity=1, call=lambda x: int(iterable(x) > [] and all(flatten(x)))),
     "Æ": attrdict(arity=1, call=vectorised(lambda a: int(mp.isprime(a)))),
     "B": attrdict(arity=1, call=vectorised(to_bin)),
     "Ḃ": attrdict(arity=1, call=from_bin),
@@ -460,7 +450,10 @@ atoms = {
     "Ḋ": attrdict(arity=1, call=from_digits),
     "Ḍ": attrdict(arity=1, call=vectorised(divisors)),
     "Ð": attrdict(arity=1, call=vectorised(lambda a: a * 2)),
-    "Ď": attrdict(arity=1, call=depth),
+    "Ď": attrdict(
+        arity=1,
+        call=lambda x: [ft.reduce(lambda x, y: y - x, a) for a in sliding_window(x, 2)],
+    ),
     "E": attrdict(arity=1, call=vectorised(lambda a: list(range(1, a + 1)))),
     "F": attrdict(arity=1, call=flatten),
     "G": attrdict(arity=1, call=lambda x: group_equal(iterable(x, make_digits=True))),
@@ -474,9 +467,9 @@ atoms = {
     "M": attrdict(arity=1, call=vectorised(lambda a: a ** 2)),
     "N": attrdict(arity=1, call=vectorised(lambda a: -a)),
     "O": attrdict(arity=1, call=lambda x: x),
-    "P": attrdict(arity=1, call=lambda x: flax_print(x)),
-    "Ṗ": attrdict(arity=1, call=lambda x: print(end="".join(chr(c) for c in x))),
-    "Ƥ": attrdict(arity=1, call=lambda x: list(it.permutations(x))),
+    "P": attrdict(arity=1, call=lambda x: list(it.permutations(x))),
+    "Ṗ": attrdict(arity=1, call=lambda x: print(end="".join(chr(c) for c in x)) or x),
+    "Ƥ": attrdict(arity=1, call=lambda x: flax_print(x)),
     "Q": attrdict(arity=1, call=vectorised(lambda a: a / 2)),
     "R": attrdict(
         arity=1,
@@ -535,7 +528,7 @@ atoms = {
     ")": attrdict(arity=1, call=suffixes),
     "∀": attrdict(arity=1, call=lambda x: list(map(sum, x))),
     # Single byte dyads
-    "c": attrdict(
+    "ċ": attrdict(
         arity=2,
         call=vectorised_dyadic(
             lambda x, y: iterable(x, make_digits=True).count(y), lfull=False
@@ -546,6 +539,7 @@ atoms = {
         arity=2,
         call=vectorised_dyadic(lambda a, b: a % b == 0 if b else mp.inf),
     ),
+    "e": attrdict(arity=2, call=vectorised_dyadic(lambda x, y: x in y, rfull=False)),
     "f": attrdict(
         arity=2,
         call=lambda x, y: [a for a in iterable(x, make_digits=True) if a not in y],
@@ -563,6 +557,7 @@ atoms = {
     ),
     "i": attrdict(arity=2, call=vectorised_dyadic(index_into, lfull=False)),
     "m": attrdict(arity=2, call=lambda x, y: mold(iterable(x), iterable(y))),
+    "n": attrdict(arity=2, call=vectorised_dyadic(op.floordiv)),
     "o": attrdict(arity=2, call=split_at),
     "r": attrdict(
         arity=2,
@@ -607,7 +602,6 @@ atoms = {
     "&": attrdict(arity=2, call=vectorised_dyadic(op.and_)),
     "|": attrdict(arity=2, call=vectorised_dyadic(op.or_)),
     "^": attrdict(arity=2, call=vectorised_dyadic(op.xor)),
-    "∊": attrdict(arity=2, call=vectorised_dyadic(lambda x, y: x in y, rfull=False)),
     "⊂": attrdict(
         arity=2,
         call=lambda x, y: find_all_indices(iterable(x, make_digits=True), y)[0],
@@ -661,6 +655,7 @@ atoms = {
     ";C": attrdict(arity=1, call=vectorised(mp.cos)),
     ";Ċ": attrdict(arity=1, call=vectorised(mp.acos)),
     ";D": attrdict(arity=1, call=diagonals),
+    ";Ḋ": attrdict(arity=1, call=depth),
     ";F": attrdict(arity=1, call=vectorised(fibonacci)),
     ";S": attrdict(arity=1, call=vectorised(mp.sin)),
     ";Ṡ": attrdict(arity=1, call=vectorised(mp.asin)),
