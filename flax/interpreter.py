@@ -568,7 +568,6 @@ atoms = {
         call=vectorised_dyadic(lambda a, b: list(range(a, b + 1))),
     ),
     "s": attrdict(arity=2, call=split),
-    "ṡ": attrdict(arity=2, call=vectorised_dyadic(sliding_window, lfull=False)),
     "t": attrdict(
         arity=2,
         call=vectorised_dyadic(
@@ -578,6 +577,7 @@ atoms = {
     "u": attrdict(
         arity=2, call=lambda x, y: [find(y, a) for a in iterable(x, make_digits=True)]
     ),
+    "x": attrdict(arity=2, call=vectorised_dyadic(sliding_window, lfull=False)),
     "y": attrdict(arity=2, call=join),
     "z": attrdict(arity=2, call=lzip),
     "+": attrdict(arity=2, call=vectorised_dyadic(op.add)),
