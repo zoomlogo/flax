@@ -132,7 +132,8 @@ def flax_string(x):
         return (
             (
                 str(int(x))
-                if isinstance(x, int) or (isinstance(x, mp.mpf) and (x != mp.inf and int(x) == x))
+                if isinstance(x, int)
+                or (isinstance(x, mp.mpf) and (x != mp.inf and int(x) == x))
                 else (mp.nstr(x) if PRINT_LESS_DIGITS else str(x))
             )
             .replace("-", "¯")
