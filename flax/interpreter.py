@@ -1010,7 +1010,16 @@ quicks = {
         qlink=lambda links, outer_links, i: [
             attrdict(
                 arity=links[0].arity or 1,
-                call=lambda x, y=None: [variadic_link(links[0], a, y) for a in x],
+                call=lambda x, y=None: [variadic_link(links[0], a, y) for a in x] if isinstance(x, list) else variadic_link(links[0], x, y),
+            )
+        ],
+    ),
+    "\"": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=2,
+                call=lambda x, y: [variadic_link(links[0], x, b) for b in y] if isinstance(y, list) else variadic_link(links[0], x, y),
             )
         ],
     ),
