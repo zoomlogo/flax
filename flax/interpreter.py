@@ -903,7 +903,8 @@ def qscan(links, outer_links, i):
         res[0].call = lambda x, y=None: list(it.accumulate(x, links[0].call))
     else:
         res[0].call = lambda x, y=None: [
-            list(it.accumulate(z, links[0].call)) for z in sliding_window(x, links[1].call())
+            list(it.accumulate(z, links[0].call))
+            for z in sliding_window(x, links[1].call())
         ]
     return res
 
