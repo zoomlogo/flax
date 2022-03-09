@@ -43,7 +43,7 @@ For example: `¨` is the quick which maps a link over its argument.
 Links are atoms, or group of atoms processed by quicks.
 
 ### Chains
-Chains are a sequence of atoms.
+Chains are a sequence of links.
 Chains can be called niladically, monadically or dyadically.
 
 Certain rules are followed when chains are processed.
