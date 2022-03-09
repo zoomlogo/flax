@@ -624,6 +624,8 @@ atoms = {
             lfull=False,
         ),
     ),
+    "⊣": attrdict(arity=2, call=lambda x, y: x),
+    "⊢": attrdict(arity=2, call=lambda x, y: y),
     "·": attrdict(arity=2, call=lambda x, y: list(it.product(x, y))),
     "/": attrdict(arity=2, call=repeat),
     "#": attrdict(arity=2, call=reshape),
