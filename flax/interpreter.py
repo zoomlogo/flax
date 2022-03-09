@@ -900,10 +900,10 @@ def qfold(links, outer_links, i):
 def qscan(links, outer_links, i):
     res = [attrdict(arity=1)]
     if len(links) == 1:
-        res[0].call = lambda x, y=None: it.accumulate(x, links[0].call)
+        res[0].call = lambda x, y=None: list(it.accumulate(x, links[0].call))
     else:
         res[0].call = lambda x, y=None: [
-            it.accumulate(z, links[0].call) for z in sliding_window(x, links[1].call())
+            list(it.accumulate(z, links[0].call)) for z in sliding_window(x, links[1].call())
         ]
     return res
 
