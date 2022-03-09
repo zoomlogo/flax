@@ -44,7 +44,7 @@ Links are atoms, or group of atoms processed by quicks.
 
 ### Chains
 Chains are a sequence of links.
-Chains can be called niladically, monadically or dyadically.
+Chains can be called niladically, monadically or dyadically, depending on the number of arguments a chain was called with.
 
 Certain rules are followed when chains are processed.
 
