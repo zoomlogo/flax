@@ -58,35 +58,6 @@ def divisors(x):
     return res
 
 
-def dyadic_vectorise(fn, x, y, rfull=True, lfull=True):
-    dx = depth(x)
-    dy = depth(y)
-
-    if rfull and lfull:
-        if dx == dy:
-            if dx != 0:
-                return [dyadic_vectorise(fn, a, b) for a, b in zip(x, y)]
-            else:
-                return fn(x, y)
-        else:
-            if dx < dy:
-                return [dyadic_vectorise(fn, x, b) for b in y]
-            else:
-                return [dyadic_vectorise(fn, a, y) for a in x]
-    elif (not rfull) and lfull:
-        if dx > 0:
-            return [dyadic_vectorise(fn, z, y, rfull=False) for z in x]
-        else:
-            return fn(x, y)
-    elif rfull and (not lfull):
-        if dy > 0:
-            return [dyadic_vectorise(fn, x, z, lfull=False) for z in y]
-        else:
-            return fn(x, y)
-    else:
-        return fn(x, y)
-
-
 def factors(x):
     return [c for c in range(1, int(x) + 1) if x % c == 0]
 
@@ -357,9 +328,9 @@ def sliding_window(x, y):
     x = iterable(x)
     y = int(y)
     if y < 0:
-        return vectorised(lambda x: list(reversed(x)))(list(mit.sliding_window(x, -y)))
+        return vecd(lambda x: list(reversed(x)))(list(mit.sliding_window(x, -y)))
     else:
-        return vectorised(list)(list(mit.sliding_window(x, y)))
+        return vecd(list)(list(mit.sliding_window(x, y)))
 
 
 split = lambda x, y: list(mit.chunked(x, y))
@@ -408,17 +379,25 @@ def truthy_indices(x):
     return indices
 
 
-def vectorise(fn, x):
-    if depth(x) != 0:
-        return [vectorise(fn, a) for a in x]
+def vec(fn, x, y=None, lfull=True, rfull=True):
+    if y is None:
+        return [vec(fn, a) for a in x] if depth(x) != 0 and lfull else fn(x)
+    dx, dy = depth(x), depth(y)
+    # TODO: Clean this mess
+    if lfull and rfull:
+        if dx == dy:
+            return [vec(fn, a, b) for a, b in zip(x, y)] if dx != 0 else fn(x, y)
+        else:
+            return [vec(fn, x, b) for b in y] if dx < dy else [vec(fn, a, y) for a in x]
+    elif (not lfull) and rfull:
+        return [vec(fn, x, b) for b in y] if dy > 0 else fn(x, y)
+    elif lfull and (not rfull):
+        return [vec(fn, a, y) for a in x] if dx > 0 else fn(x, y)
     else:
-        return fn(x)
+        return fn(x, y)
 
 
-vectorised = lambda func: lambda x: vectorise(func, x)
-vectorised_dyadic = lambda func, rfull=True, lfull=True: lambda x, y: dyadic_vectorise(
-    func, x, y, rfull=rfull, lfull=lfull
-)
+vecd = lambda fn, lfull=True, rfull=True: lambda x, y=None: vec(fn, x, y, lfull, rfull)
 
 
 # ====== Atoms ========
@@ -437,27 +416,27 @@ atoms = {
     "₎": attrdict(arity=0, call=lambda: []),
     "₍": attrdict(arity=0, call=lambda: []),
     # Single byte monads
-    "A": attrdict(arity=1, call=vectorised(lambda a: abs(a))),
+    "A": attrdict(arity=1, call=vecd(lambda a: abs(a))),
     "Ạ": attrdict(arity=1, call=lambda x: int(all(iterable(x, make_digits=True)))),
     "Ȧ": attrdict(arity=1, call=lambda x: int(any(iterable(x)))),
     "Ă": attrdict(arity=1, call=lambda x: int(iterable(x) > [] and all(flatten(x)))),
-    "Æ": attrdict(arity=1, call=vectorised(lambda a: int(mp.isprime(a)))),
-    "B": attrdict(arity=1, call=vectorised(to_bin)),
+    "Æ": attrdict(arity=1, call=vecd(lambda a: int(mp.isprime(a)))),
+    "B": attrdict(arity=1, call=vecd(to_bin)),
     "Ḃ": attrdict(arity=1, call=from_bin),
-    "Ḅ": attrdict(arity=1, call=vectorised(lambda a: 2 ** a)),
-    "Ƀ": attrdict(arity=1, call=vectorised(lambda a: a % 2)),
-    "C": attrdict(arity=1, call=vectorised(lambda a: 1 - a)),
-    "Ċ": attrdict(arity=1, call=vectorised(lambda a: a * 3)),
+    "Ḅ": attrdict(arity=1, call=vecd(lambda a: 2 ** a)),
+    "Ƀ": attrdict(arity=1, call=vecd(lambda a: a % 2)),
+    "C": attrdict(arity=1, call=vecd(lambda a: 1 - a)),
+    "Ċ": attrdict(arity=1, call=vecd(lambda a: a * 3)),
     "Ç": attrdict(arity=1, call=lambda x: split(x, 2)),
-    "D": attrdict(arity=1, call=vectorised(to_digits)),
+    "D": attrdict(arity=1, call=vecd(to_digits)),
     "Ḋ": attrdict(arity=1, call=from_digits),
-    "Ḍ": attrdict(arity=1, call=vectorised(divisors)),
-    "Ð": attrdict(arity=1, call=vectorised(lambda a: a * 2)),
+    "Ḍ": attrdict(arity=1, call=vecd(divisors)),
+    "Ð": attrdict(arity=1, call=vecd(lambda a: a * 2)),
     "Ď": attrdict(
         arity=1,
         call=lambda x: [ft.reduce(lambda x, y: y - x, a) for a in sliding_window(x, 2)],
     ),
-    "E": attrdict(arity=1, call=vectorised(lambda a: list(range(1, a + 1)))),
+    "E": attrdict(arity=1, call=vecd(lambda a: list(range(1, a + 1)))),
     "F": attrdict(arity=1, call=flatten),
     "G": attrdict(arity=1, call=lambda x: group_equal(iterable(x, make_digits=True))),
     "H": attrdict(arity=1, call=lambda x: iterable(x, make_digits=True)[0]),
@@ -467,13 +446,13 @@ atoms = {
     "Ĵ": attrdict(arity=1, call=join_newlines),
     "K": attrdict(arity=1, call=lambda x: list(it.accumulate(iterable(x)))),
     "L": attrdict(arity=1, call=len),
-    "M": attrdict(arity=1, call=vectorised(lambda a: a ** 2)),
-    "N": attrdict(arity=1, call=vectorised(lambda a: -a)),
+    "M": attrdict(arity=1, call=vecd(lambda a: a ** 2)),
+    "N": attrdict(arity=1, call=vecd(lambda a: -a)),
     "O": attrdict(arity=1, call=lambda x: x),
     "P": attrdict(arity=1, call=lambda x: list(it.permutations(x))),
     "Ṗ": attrdict(arity=1, call=lambda x: print(end="".join(chr(c) for c in x)) or x),
     "Ƥ": attrdict(arity=1, call=lambda x: flax_print(x)),
-    "Q": attrdict(arity=1, call=vectorised(lambda a: a / 2)),
+    "Q": attrdict(arity=1, call=vecd(lambda a: a / 2)),
     "R": attrdict(
         arity=1,
         call=lambda x: [z[::-1] if isinstance(z, list) else z for z in x]
@@ -501,10 +480,10 @@ atoms = {
     "Σ": attrdict(arity=1, call=sum),
     "⊤": attrdict(arity=1, call=truthy_indices),
     "⊥": attrdict(arity=1, call=falsey_indices),
-    "!": attrdict(arity=1, call=vectorised(lambda a: mp.factorial(a))),
-    "~": attrdict(arity=1, call=vectorised(lambda a: ~a)),
-    "¬": attrdict(arity=1, call=(vectorised(lambda a: int(not a)))),
-    "√": attrdict(arity=1, call=vectorised(mp.sqrt)),
+    "!": attrdict(arity=1, call=vecd(lambda a: mp.factorial(a))),
+    "~": attrdict(arity=1, call=vecd(lambda a: ~a)),
+    "¬": attrdict(arity=1, call=(vecd(lambda a: int(not a)))),
+    "√": attrdict(arity=1, call=vecd(mp.sqrt)),
     "≈": attrdict(
         arity=1,
         call=lambda a: int(mit.all_equal(a)),
@@ -513,34 +492,32 @@ atoms = {
     "∆": attrdict(arity=1, call=lambda x: max(iterable(x, make_digits=True))),
     "±": attrdict(
         arity=1,
-        call=vectorised(lambda a: -1 if a < 0 else (0 if a == 0 else 1)),
+        call=vecd(lambda a: -1 if a < 0 else (0 if a == 0 else 1)),
     ),
     "Θ": attrdict(arity=1, call=lambda x: iterable(x).insert(0, 0)),
     "⌽": attrdict(arity=1, call=lambda x: iterable(x, make_range=True)[::-1]),
-    "{": attrdict(arity=1, call=vectorised(lambda a: a - 1)),
-    "}": attrdict(arity=1, call=vectorised(lambda a: a + 1)),
+    "{": attrdict(arity=1, call=vecd(lambda a: a - 1)),
+    "}": attrdict(arity=1, call=vecd(lambda a: a + 1)),
     "ε": attrdict(arity=1, call=lambda x: sub_lists(iterable(x, make_range=True))),
     "σ": attrdict(arity=1, call=reverse_every_other),
-    "?": attrdict(arity=1, call=vectorised(random)),
+    "?": attrdict(arity=1, call=vecd(random)),
     "⍋": attrdict(arity=1, call=grade_up),
     "⍒": attrdict(arity=1, call=grade_down),
-    "⅟": attrdict(arity=1, call=vectorised(lambda a: 1 / a if a else mp.inf)),
-    "⌈": attrdict(arity=1, call=vectorised(lambda a: int(mp.ceil(a)))),
-    "⌊": attrdict(arity=1, call=vectorised(lambda a: int(mp.floor(a)))),
+    "⅟": attrdict(arity=1, call=vecd(lambda a: 1 / a if a else mp.inf)),
+    "⌈": attrdict(arity=1, call=vecd(lambda a: int(mp.ceil(a)))),
+    "⌊": attrdict(arity=1, call=vecd(lambda a: int(mp.floor(a)))),
     "(": attrdict(arity=1, call=prefixes),
     ")": attrdict(arity=1, call=suffixes),
     "∀": attrdict(arity=1, call=lambda x: list(map(sum, x))),
     # Single byte dyads
     "ċ": attrdict(
         arity=2,
-        call=vectorised_dyadic(
-            lambda x, y: iterable(x, make_digits=True).count(y), lfull=False
-        ),
+        call=vecd(lambda x, y: iterable(x, make_digits=True).count(y), lfull=False),
     ),
-    "d": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: list(divmod(a, b)))),
+    "d": attrdict(arity=2, call=vecd(lambda a, b: list(divmod(a, b)))),
     "ḍ": attrdict(
         arity=2,
-        call=vectorised_dyadic(lambda a, b: a % b == 0 if b else mp.inf),
+        call=vecd(lambda a, b: a % b == 0 if b else mp.inf),
     ),
     "f": attrdict(
         arity=2,
@@ -550,73 +527,69 @@ atoms = {
         arity=2,
         call=lambda x, y: [a for a in iterable(x, make_digits=True) if a in y],
     ),
-    "g": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: int(math.gcd(a, b)))),
+    "g": attrdict(arity=2, call=vecd(lambda a, b: int(math.gcd(a, b)))),
     "h": attrdict(
         arity=2,
-        call=vectorised_dyadic(
-            lambda x, y: iterable(x, make_digits=True)[:y], lfull=False
-        ),
+        call=vecd(lambda x, y: iterable(x, make_digits=True)[:y], lfull=False),
     ),
-    "i": attrdict(arity=2, call=vectorised_dyadic(index_into, lfull=False)),
-    "l": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: int(math.lcm(a, b)))),
+    "i": attrdict(arity=2, call=vecd(index_into, lfull=False)),
+    "l": attrdict(arity=2, call=vecd(lambda a, b: int(math.lcm(a, b)))),
     "m": attrdict(arity=2, call=lambda x, y: mold(iterable(x), iterable(y))),
-    "n": attrdict(arity=2, call=vectorised_dyadic(op.floordiv)),
+    "n": attrdict(arity=2, call=vecd(op.floordiv)),
     "o": attrdict(arity=2, call=split_at),
-    "q": attrdict(arity=2, call=vectorised_dyadic(order)),
+    "q": attrdict(arity=2, call=vecd(order)),
     "r": attrdict(
         arity=2,
-        call=vectorised_dyadic(lambda a, b: list(range(a, b + 1))),
+        call=vecd(lambda a, b: list(range(a, b + 1))),
     ),
     "s": attrdict(arity=2, call=split),
     "t": attrdict(
         arity=2,
-        call=vectorised_dyadic(
-            lambda x, y: iterable(x, make_digits=True)[y - 1 :], lfull=False
-        ),
+        call=vecd(lambda x, y: iterable(x, make_digits=True)[y - 1 :], lfull=False),
     ),
     "u": attrdict(
         arity=2, call=lambda x, y: [find(y, a) for a in iterable(x, make_digits=True)]
     ),
-    "x": attrdict(arity=2, call=vectorised_dyadic(sliding_window, lfull=False)),
+    "x": attrdict(arity=2, call=vecd(sliding_window, lfull=False)),
     "y": attrdict(arity=2, call=join),
     "z": attrdict(arity=2, call=lzip),
-    "+": attrdict(arity=2, call=vectorised_dyadic(op.add)),
-    "-": attrdict(arity=2, call=vectorised_dyadic(op.sub)),
-    "×": attrdict(arity=2, call=vectorised_dyadic(op.mul)),
+    "+": attrdict(arity=2, call=vecd(op.add)),
+    "-": attrdict(arity=2, call=vecd(op.sub)),
+    "×": attrdict(arity=2, call=vecd(op.mul)),
     "÷": attrdict(
         arity=2,
-        call=vectorised_dyadic(lambda a, b: a / b if b else (mp.inf if a else 0)),
+        call=vecd(lambda a, b: a / b if b else (mp.inf if a else 0)),
     ),
     "%": attrdict(
         arity=2,
-        call=vectorised_dyadic(lambda a, b: a % b if b else (mp.inf if a else 0)),
+        call=vecd(lambda a, b: a % b if b else (mp.inf if a else 0)),
     ),
-    "*": attrdict(arity=2, call=vectorised_dyadic(op.pow)),
-    "<": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: int(a < b))),
-    ">": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: int(a > b))),
-    "=": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: int(a == b))),
-    "≠": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: int(a != b))),
-    "≥": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: int(a >= b))),
-    "≤": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: int(a <= b))),
+    "*": attrdict(arity=2, call=vecd(op.pow)),
+    "<": attrdict(arity=2, call=vecd(lambda a, b: int(a < b))),
+    ">": attrdict(arity=2, call=vecd(lambda a, b: int(a > b))),
+    "=": attrdict(arity=2, call=vecd(lambda a, b: int(a == b))),
+    "≠": attrdict(arity=2, call=vecd(lambda a, b: int(a != b))),
+    "≥": attrdict(arity=2, call=vecd(lambda a, b: int(a >= b))),
+    "≤": attrdict(arity=2, call=vecd(lambda a, b: int(a <= b))),
     "≡": attrdict(arity=2, call=lambda x, y: int(x == y)),
     "≢": attrdict(arity=2, call=lambda x, y: int(x != y)),
     ",": attrdict(arity=2, call=lambda x, y: iterable(x) + iterable(y)),
     "⍪": attrdict(arity=2, call=lambda x, y: iterable(y) + iterable(x)),
     "⋈": attrdict(arity=2, call=lambda x, y: [x, y]),
-    "∧": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: a and b)),
-    "∨": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: a or b)),
-    "∊": attrdict(arity=2, call=vectorised_dyadic(lambda x, y: x in y, rfull=False)),
-    "&": attrdict(arity=2, call=vectorised_dyadic(op.and_)),
-    "|": attrdict(arity=2, call=vectorised_dyadic(op.or_)),
-    "^": attrdict(arity=2, call=vectorised_dyadic(op.xor)),
+    "∧": attrdict(arity=2, call=vecd(lambda a, b: a and b)),
+    "∨": attrdict(arity=2, call=vecd(lambda a, b: a or b)),
+    "∊": attrdict(arity=2, call=vecd(lambda x, y: x in y, rfull=False)),
+    "&": attrdict(arity=2, call=vecd(op.and_)),
+    "|": attrdict(arity=2, call=vecd(op.or_)),
+    "^": attrdict(arity=2, call=vecd(op.xor)),
     "⊂": attrdict(
         arity=2,
-        call=vectorised_dyadic(find, lfull=False),
+        call=vecd(find, lfull=False),
     ),
-    "⊆": attrdict(arity=2, call=vectorised_dyadic(find_all, lfull=False)),
+    "⊆": attrdict(arity=2, call=vecd(find_all, lfull=False)),
     "⊏": attrdict(
         arity=2,
-        call=vectorised_dyadic(
+        call=vecd(
             lambda a, b: [
                 iterable(a, make_range=True)[i]
                 for i in range(len(iterable(a, make_range=True)))
@@ -672,32 +645,32 @@ atoms = {
     "_{": attrdict(arity=0, call=lambda: to_chars("{}")),
     "_[": attrdict(arity=0, call=lambda: to_chars("[]")),
     # Monadic diagraphs
-    ";C": attrdict(arity=1, call=vectorised(mp.cos)),
-    ";Ċ": attrdict(arity=1, call=vectorised(mp.acos)),
+    ";C": attrdict(arity=1, call=vecd(mp.cos)),
+    ";Ċ": attrdict(arity=1, call=vecd(mp.acos)),
     ";D": attrdict(arity=1, call=diagonals),
     ";Ḋ": attrdict(arity=1, call=depth),
-    ";F": attrdict(arity=1, call=vectorised(fibonacci)),
-    ";S": attrdict(arity=1, call=vectorised(mp.sin)),
-    ";Ṡ": attrdict(arity=1, call=vectorised(mp.asin)),
-    ";T": attrdict(arity=1, call=vectorised(mp.tan)),
-    ";Ṫ": attrdict(arity=1, call=vectorised(mp.atan)),
-    ";c": attrdict(arity=1, call=vectorised(lambda a: 1 / mp.cos(a))),
-    ";d": attrdict(arity=1, call=vectorised(lambda x: int(48 <= x <= 57))),
-    ";h": attrdict(arity=1, call=vectorised(mp.tanh)),
+    ";F": attrdict(arity=1, call=vecd(fibonacci)),
+    ";S": attrdict(arity=1, call=vecd(mp.sin)),
+    ";Ṡ": attrdict(arity=1, call=vecd(mp.asin)),
+    ";T": attrdict(arity=1, call=vecd(mp.tan)),
+    ";Ṫ": attrdict(arity=1, call=vecd(mp.atan)),
+    ";c": attrdict(arity=1, call=vecd(lambda a: 1 / mp.cos(a))),
+    ";d": attrdict(arity=1, call=vecd(lambda x: int(48 <= x <= 57))),
+    ";h": attrdict(arity=1, call=vecd(mp.tanh)),
     ";i": attrdict(arity=1, call=indices_multidimensional),
-    ";n": attrdict(arity=1, call=vectorised(mp.sinh)),
-    ";o": attrdict(arity=1, call=vectorised(mp.cosh)),
-    ";s": attrdict(arity=1, call=vectorised(lambda a: 1 / mp.sin(a))),
-    ";t": attrdict(arity=1, call=vectorised(lambda a: 1 / mp.tan(a))),
-    ";Æ": attrdict(arity=1, call=vectorised(nprimes)),
-    ";I": attrdict(arity=1, call=vectorised(int)),
-    ";f": attrdict(arity=1, call=vectorised(factors)),
-    ";r": attrdict(arity=1, call=vectorised(lambda a: list(range(2, int(a))))),
-    ";R": attrdict(arity=1, call=vectorised(lambda a: list(range(int(a) + 1)))),
+    ";n": attrdict(arity=1, call=vecd(mp.sinh)),
+    ";o": attrdict(arity=1, call=vecd(mp.cosh)),
+    ";s": attrdict(arity=1, call=vecd(lambda a: 1 / mp.sin(a))),
+    ";t": attrdict(arity=1, call=vecd(lambda a: 1 / mp.tan(a))),
+    ";Æ": attrdict(arity=1, call=vecd(nprimes)),
+    ";I": attrdict(arity=1, call=vecd(int)),
+    ";f": attrdict(arity=1, call=vecd(factors)),
+    ";r": attrdict(arity=1, call=vecd(lambda a: list(range(2, int(a))))),
+    ";R": attrdict(arity=1, call=vecd(lambda a: list(range(int(a) + 1)))),
     # Dyadic diagraphs
-    ":T": attrdict(arity=2, call=vectorised_dyadic(mp.atan2)),
-    ":<": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: a << b)),
-    ":>": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: a >> b)),
+    ":T": attrdict(arity=2, call=vecd(mp.atan2)),
+    ":<": attrdict(arity=2, call=vecd(lambda a, b: a << b)),
+    ":>": attrdict(arity=2, call=vecd(lambda a, b: a >> b)),
     ":s": attrdict(
         arity=2,
         call=lambda x, y: [(z := iterable(y, make_digits=True))[0]]
