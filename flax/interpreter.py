@@ -74,6 +74,7 @@ def falsey_indices(x):
     return indices
 
 
+@ft.cache
 def fibonacci(x):
     if x < 2:
         return x
