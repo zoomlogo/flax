@@ -1,17 +1,12 @@
-from mpmath import mp
-
 from flax.error import error
 from flax.interpreter import attrdict
 from flax.interpreter import atoms
 from flax.interpreter import quicks
 from flax.interpreter import train_separators
 from flax.interpreter import create_chain
-import flax.interpreter
+from flax.interpreter import mp
 
 from flax.lexer import *
-
-mp.dps = flax.interpreter.dps
-mp.pretty = True
 
 
 def arrayify(arr_list):

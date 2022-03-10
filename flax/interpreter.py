@@ -14,11 +14,9 @@ from mpmath import mp
 # Flags
 DEBUG = False
 PRINT_CHARS = False
-PRINT_LESS_DIGITS = False
-dps = 20
 
 # Setup mp context
-mp.dps = dps
+mp.dps = 20
 mp.pretty = True
 
 # Attrdict class
@@ -105,7 +103,7 @@ def flax_string(x):
                 str(int(x))
                 if isinstance(x, int)
                 or (isinstance(x, mp.mpf) and (x != mp.inf and int(x) == x))
-                else (mp.nstr(x) if PRINT_LESS_DIGITS else str(x))
+                else str(x)
             )
             .replace("-", "¯")
             .replace("inf", "∞")

@@ -16,9 +16,7 @@ if sys.argv:
     if "C" in sys.argv[0]:
         flax.interpreter.PRINT_CHARS = True
     if "p" in sys.argv[0]:
-        flax.interpreter.dps = 100
-    if "P" in sys.argv[0]:
-        flax.interpreter.PRINT_LESS_DIGITS = True
+        flax.interpreter.mp.dps = 100
     sys.argv = sys.argv[1:]
 
 if read_from_file:
