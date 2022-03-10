@@ -542,7 +542,6 @@ atoms = {
         arity=2,
         call=vectorised_dyadic(lambda a, b: a % b == 0 if b else mp.inf),
     ),
-    "e": attrdict(arity=2, call=vectorised_dyadic(lambda x, y: x in y, rfull=False)),
     "f": attrdict(
         arity=2,
         call=lambda x, y: [a for a in iterable(x, make_digits=True) if a not in y],
@@ -606,6 +605,7 @@ atoms = {
     "⋈": attrdict(arity=2, call=lambda x, y: [x, y]),
     "∧": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: a and b)),
     "∨": attrdict(arity=2, call=vectorised_dyadic(lambda a, b: a or b)),
+    "∊": attrdict(arity=2, call=vectorised_dyadic(lambda x, y: x in y, rfull=False)),
     "&": attrdict(arity=2, call=vectorised_dyadic(op.and_)),
     "|": attrdict(arity=2, call=vectorised_dyadic(op.or_)),
     "^": attrdict(arity=2, call=vectorised_dyadic(op.xor)),
