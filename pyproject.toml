@@ -6,7 +6,7 @@ authors = ["PyGamer0"]
 license = "MIT"
 
 [tool.poetry.scripts]
-flax = "flax.main:run"
+flax = "flax"
 
 [tool.poetry.dependencies]
 python = ">3.9"
