@@ -61,20 +61,6 @@ def factors(x):
     return [c for c in range(1, int(x) + 1) if x % c == 0]
 
 
-def falsey_indices(x):
-    x = iterable(x, make_digits=True)
-    if not isinstance(x, list):
-        return []
-
-    i = 0
-    indices = []
-    while i < len(x):
-        if not x[i]:
-            indices.append(i)
-        i += 1
-    return indices
-
-
 @ft.cache
 def fibonacci(x):
     if x < 2:
@@ -386,20 +372,6 @@ def to_chars(x):
     return [ord(v) for v in x]
 
 
-def truthy_indices(x):
-    x = iterable(x, make_digits=True)
-    if not isinstance(x, list):
-        return []
-
-    i = 0
-    indices = []
-    while i < len(x):
-        if x[i]:
-            indices.append(i)
-        i += 1
-    return indices
-
-
 def vec(fn, x, y=None, lfull=True, rfull=True):
     if y is None:
         return [vec(fn, a) for a in x] if depth(x) != 0 and lfull else fn(x)
@@ -459,6 +431,12 @@ atoms = {
     ),
     "E": attrdict(arity=1, call=vecd(lambda a: list(range(1, a + 1)))),
     "F": attrdict(arity=1, call=flatten),
+    "Ḟ": attrdict(
+        arity=1,
+        call=lambda x: [
+            i for i, e in enumerate(iterable(x, make_digits=True)) if not e
+        ],
+    ),
     "G": attrdict(arity=1, call=lambda x: group_equal(iterable(x, make_digits=True))),
     "H": attrdict(arity=1, call=lambda x: iterable(x, make_digits=True)[0]),
     "Ḣ": attrdict(arity=1, call=lambda x: iterable(x, make_digits=True)[-1]),
@@ -487,6 +465,10 @@ atoms = {
     "Ṡ": attrdict(arity=1, call=lambda x: list(reversed(sorted(iterable(x))))),
     "T": attrdict(arity=1, call=lambda x: iterable(x, make_digits=True)[1:]),
     "Ṫ": attrdict(arity=1, call=lambda x: iterable(x, make_digits=True)[:-1]),
+    "Ṭ": attrdict(
+        arity=1,
+        call=lambda x: [i for i, e in enumerate(iterable(x, make_digits=True)) if e],
+    ),
     "U": attrdict(arity=1, call=lambda x: list(set(iterable(x)))),
     "V": attrdict(arity=1, call=lambda x: group(iterable(x, make_digits=True))),
     "W": attrdict(arity=1, call=lambda x: [x]),
@@ -499,8 +481,6 @@ atoms = {
     "Z": attrdict(arity=1, call=lambda x: lzip(*x)),
     "Π": attrdict(arity=1, call=lambda x: ft.reduce(op.mul, flatten(x))),
     "Σ": attrdict(arity=1, call=sum),
-    "⊤": attrdict(arity=1, call=truthy_indices),
-    "⊥": attrdict(arity=1, call=falsey_indices),
     "!": attrdict(arity=1, call=vecd(lambda a: mp.factorial(a))),
     "~": attrdict(arity=1, call=vecd(lambda a: ~a)),
     "¬": attrdict(arity=1, call=(vecd(lambda a: int(not a)))),
