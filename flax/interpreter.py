@@ -936,7 +936,7 @@ def variadic_chain(chain, *args):
         return dyadic_chain(chain, *args)
 
 
-def variadic_link(link, *args, commute=False):
+def variadic_link(link, *args, swap=False):
     if link.arity < 0:
         args = list(filter(None.__ne__, args))
         link.arity = len(args)
@@ -946,11 +946,8 @@ def variadic_link(link, *args, commute=False):
     elif link.arity == 1:
         return link.call(args[0])
     elif link.arity == 2:
-        if commute:
-            if len(args) == 1:
-                return link.call(args[0], args[0])
-            else:
-                return link.call(args[1], args[0])
+        if swap:
+            return link.call(args[1], args[0])
         else:
             return link.call(args[0], args[1])
 
@@ -1027,7 +1024,7 @@ quicks = {
         qlink=lambda links, outer_links, i: [
             attrdict(
                 arity=links[0].arity,
-                call=lambda x=None, y=None: variadic_link(links[0], x, y, commute=True),
+                call=lambda x=None, y=None: variadic_link(links[0], x, y, swap=True),
             )
         ],
     ),
@@ -1036,7 +1033,7 @@ quicks = {
         qlink=lambda links, outer_links, i: [
             attrdict(
                 arity=links[0].arity and 1,
-                call=lambda x=None, y=None: variadic_link(links[0], x, y, commute=True),
+                call=lambda x=None: variadic_link(links[0], x, x),
             )
         ],
     ),
