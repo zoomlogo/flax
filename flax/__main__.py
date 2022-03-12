@@ -17,6 +17,8 @@ if sys.argv:
         flax.interpreter.PRINT_CHARS = True
     if "p" in sys.argv[0]:
         flax.interpreter.mp.dps = 100
+    if "P" in sys.argv[0]:
+        flax.interpreter.DISABLE_GRID = True
     sys.argv = sys.argv[1:]
 
 if read_from_file:
