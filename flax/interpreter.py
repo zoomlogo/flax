@@ -419,7 +419,7 @@ atoms = {
     "Ḅ": attrdict(arity=1, call=vecd(lambda a: 2 ** a)),
     "Ƀ": attrdict(arity=1, call=vecd(lambda a: a % 2)),
     "C": attrdict(arity=1, call=vecd(lambda a: 1 - a)),
-    "Ċ": attrdict(arity=1, call=vecd(lambda a: a * 3)),
+    "Ċ": attrdict(arity=1, call=vecd(lambda a: a ** 3)),
     "Ç": attrdict(arity=1, call=lambda x: split(x, 2)),
     "D": attrdict(arity=1, call=vecd(to_digits)),
     "Ḋ": attrdict(arity=1, call=from_digits),
