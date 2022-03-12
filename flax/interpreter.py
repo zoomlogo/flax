@@ -864,18 +864,32 @@ def ntimes(links, args, cumulative=False):
     return c_res if cumulative else res
 
 
-def qfilter(links, outer_links, i):
+def qfilter(links, outer_links, i, notted=True):
     res = [attrdict(arity=links[0].arity or 1)]
     if links[0].arity == 0:
-        res[0].call = lambda x: list(
-            filter(lambda z: z != links[0].call(), iterable(x, make_range=True))
-        )
-    else:
-        res[0].call = lambda x, y=None: list(
-            filter(
-                lambda z: variadic_link(links[0], z, y), iterable(x, make_range=True)
+        if notted:
+            res[0].call = lambda x: list(
+                filter(lambda z: z == links[0].call(), iterable(x, make_range=True))
             )
-        )
+        else:
+            res[0].call = lambda x: list(
+                filter(lambda z: z != links[0].call(), iterable(x, make_range=True))
+            )
+    else:
+        if notted:
+            res[0].call = lambda x, y=None: list(
+                filter(
+                    lambda z: not variadic_link(links[0], z, y),
+                    iterable(x, make_range=True),
+                )
+            )
+        else:
+            res[0].call = lambda x, y=None: list(
+                filter(
+                    lambda z: variadic_link(links[0], z, y),
+                    iterable(x, make_range=True),
+                )
+            )
     return res
 
 
@@ -1163,6 +1177,10 @@ quicks = {
         ],
     ),
     "ᶠ": attrdict(condition=lambda links: links, qlink=qfilter),
+    "ᵍ": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outer_links, i: qfilter(links, outer_links, i, notted=True),
+    ),
     "ˢ": attrdict(condition=lambda links: links, qlink=qsort),
     "°": attrdict(
         condition=lambda links: len(links) == 2,
