@@ -71,7 +71,7 @@ def tokenise(program):
             tokens.append([TOKEN_TYPE.ATOM, head])
         elif head in quicks:
             tokens.append([TOKEN_TYPE.QUICK, head])
-        elif head in "_;:" and program:
+        elif head in "_;:ᵟ" and program:
             digraph = head + program.popleft()
             if digraph in atoms:
                 tokens.append([TOKEN_TYPE.ATOM, digraph])

@@ -140,7 +140,7 @@ def from_bin(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 2**i
+        num += abs(b) * 2 ** i
         i += 1
     return num * sign
 
@@ -151,7 +151,7 @@ def from_digits(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 10**i
+        num += abs(b) * 10 ** i
         i += 1
     return num * sign
 
@@ -416,10 +416,10 @@ atoms = {
     "Æ": attrdict(arity=1, call=vecd(lambda a: int(mp.isprime(a)))),
     "B": attrdict(arity=1, call=vecd(to_bin)),
     "Ḃ": attrdict(arity=1, call=from_bin),
-    "Ḅ": attrdict(arity=1, call=vecd(lambda a: 2**a)),
+    "Ḅ": attrdict(arity=1, call=vecd(lambda a: 2 ** a)),
     "Ƀ": attrdict(arity=1, call=vecd(lambda a: a % 2)),
     "C": attrdict(arity=1, call=vecd(lambda a: 1 - a)),
-    "Ċ": attrdict(arity=1, call=vecd(lambda a: a**3)),
+    "Ċ": attrdict(arity=1, call=vecd(lambda a: a ** 3)),
     "Ç": attrdict(arity=1, call=lambda x: split(x, 2)),
     "D": attrdict(arity=1, call=vecd(to_digits)),
     "Ḋ": attrdict(arity=1, call=from_digits),
@@ -445,7 +445,7 @@ atoms = {
     "Ĵ": attrdict(arity=1, call=join_newlines),
     "K": attrdict(arity=1, call=lambda x: list(it.accumulate(iterable(x)))),
     "L": attrdict(arity=1, call=len),
-    "M": attrdict(arity=1, call=vecd(lambda a: a**2)),
+    "M": attrdict(arity=1, call=vecd(lambda a: a ** 2)),
     "N": attrdict(arity=1, call=vecd(lambda a: -a)),
     "O": attrdict(arity=1, call=lambda x: x),
     "P": attrdict(arity=1, call=lambda x: list(it.permutations(x))),
@@ -645,9 +645,9 @@ atoms = {
     "_v": attrdict(arity=0, call=lambda: to_chars("aeiou")),
     "_y": attrdict(arity=0, call=lambda: to_chars("aeiouy")),
     "_∞": attrdict(arity=0, call=lambda: mp.inf),
-    "_⁰": attrdict(arity=0, call=lambda: 2**20),
-    "_¹": attrdict(arity=0, call=lambda: 2**30),
-    "_²": attrdict(arity=0, call=lambda: 2**100),
+    "_⁰": attrdict(arity=0, call=lambda: 2 ** 20),
+    "_¹": attrdict(arity=0, call=lambda: 2 ** 30),
+    "_²": attrdict(arity=0, call=lambda: 2 ** 100),
     "_(": attrdict(arity=0, call=lambda: to_chars("()")),
     "_{": attrdict(arity=0, call=lambda: to_chars("{}")),
     "_[": attrdict(arity=0, call=lambda: to_chars("[]")),
@@ -850,14 +850,18 @@ def niladic_chain(chain):
     return monadic_chain(chain[1:], chain[0].call())
 
 
-def ntimes(links, args):
+def ntimes(links, args, cumulative=False):
     times = int(links[1].call()) if len(links) == 2 else last_input()
     res, y = args
+    if cumulative:
+        c_res = [res]
     for _ in range(times):
         x = res
         res = variadic_link(links[0], x, y)
+        if cumulative:
+            c_res.append(res)
         y = x
-    return res
+    return c_res if cumulative else res
 
 
 def qfilter(links, outer_links, i):
@@ -987,13 +991,17 @@ def variadic_link(link, *args, swap=False):
             return link.call(args[0], args[1])
 
 
-def while_loop(link, cond, args):
+def while_loop(link, cond, args, cumulative=False):
     res, y = args
+    if cumulative:
+        c_res = [res]
     while variadic_link(cond, res, y):
         x = res
         res = variadic_link(link, x, y)
+        if cumulative:
+            c_res.append(res)
         y = x
-    return res
+    return c_res if cumulative else res
 
 
 # ========= Quicks ==========
@@ -1167,6 +1175,17 @@ quicks = {
             )
         ],
     ),
+    "ᵔ": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=1,
+                call=lambda x: [
+                    variadic_link(links[0], a, b) for a, b in sliding_window(x, 2)
+                ],
+            )
+        ],
+    ),
     "⁺": attrdict(
         condition=lambda links: links,
         qlink=lambda links, outer_links, i: [
@@ -1185,6 +1204,29 @@ quicks = {
                 arity=links[0].arity,
                 call=lambda x, y=None: min(
                     iterable(x), key=lambda z: variadic_link(links[0], z, y)
+                ),
+            )
+        ],
+    ),
+    "ᵟⁿ": attrdict(
+        condition=lambda links: len(links) == 2,
+        qlink=lambda links, outer_links, i: (
+            [links.pop(0)] if len(links) == 2 and links[0].arity == 0 else []
+        )
+        + [
+            attrdict(
+                arity=max_arity(links),
+                call=lambda x=None, y=None: ntimes(links, (x, y), cumulative=True),
+            )
+        ],
+    ),
+    "ᵟᵂ": attrdict(
+        condition=lambda links: len(links) == 2,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=max(arities(links)),
+                call=lambda x=None, y=None: while_loop(
+                    links[0], links[1], (x, y), cumulative=True
                 ),
             )
         ],
