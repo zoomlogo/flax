@@ -1031,6 +1031,15 @@ quicks = {
             )
         ],
     ),
+    "˘": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=links[0].arity and 1,
+                call=lambda x=None, y=None: variadic_link(links[0], x, y, commute=True),
+            )
+        ],
+    ),
     "´": attrdict(condition=lambda links: links and links[0].arity, qlink=qfold),
     "`": attrdict(condition=lambda links: links and links[0].arity, qlink=qscan),
     "⌜": attrdict(
