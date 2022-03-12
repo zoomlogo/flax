@@ -383,9 +383,9 @@ def vec(fn, x, y=None, lfull=True, rfull=True):
         else:
             return [vec(fn, x, b) for b in y] if dx < dy else [vec(fn, a, y) for a in x]
     elif (not lfull) and rfull:
-        return [vec(fn, x, b) for b in y] if dy > 0 else fn(x, y)
+        return [vec(fn, x, b, lfull=lfull) for b in y] if dy > 0 else fn(x, y)
     elif lfull and (not rfull):
-        return [vec(fn, a, y) for a in x] if dx > 0 else fn(x, y)
+        return [vec(fn, a, y, rfull=rfull) for a in x] if dx > 0 else fn(x, y)
     else:
         return fn(x, y)
 
