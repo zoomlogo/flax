@@ -478,7 +478,7 @@ atoms = {
     "X": attrdict(arity=1, call=lambda x: split(x, int(len(x) / 2))),
     "Y": attrdict(arity=1, call=lambda x: [x[i] for i in range(len(x)) if i % 2 == 0]),
     "Ẏ": attrdict(arity=1, call=lambda x: [x[i] for i in range(len(x)) if i % 2]),
-    "Z": attrdict(arity=1, call=lambda x: lzip(*x)),
+    "Z": attrdict(arity=1, call=lambda x: zip(*iterable(x))),
     "Π": attrdict(arity=1, call=lambda x: ft.reduce(op.mul, flatten(x))),
     "Σ": attrdict(arity=1, call=sum),
     "!": attrdict(arity=1, call=vecd(lambda a: mp.factorial(a))),
@@ -511,6 +511,7 @@ atoms = {
     ")": attrdict(arity=1, call=suffixes),
     "∀": attrdict(arity=1, call=lambda x: list(map(sum, x))),
     # Single byte dyads
+    "c": attrdict(arity=2, call=vecd(mp.binomial)),
     "ċ": attrdict(
         arity=2,
         call=vecd(lambda x, y: iterable(x, make_digits=True).count(y), lfull=False),
@@ -519,6 +520,10 @@ atoms = {
     "ḍ": attrdict(
         arity=2,
         call=vecd(lambda a, b: a % b == 0 if b else mp.inf),
+    ),
+    "e": attrdict(
+        arity=2,
+        call=vecd(lambda a, b: iterable(a) + iterable(b), lfull=False),
     ),
     "f": attrdict(
         arity=2,
@@ -554,6 +559,7 @@ atoms = {
     "x": attrdict(arity=2, call=vecd(sliding_window, lfull=False)),
     "y": attrdict(arity=2, call=join),
     "z": attrdict(arity=2, call=lzip),
+    "ż": attrdict(arity=2, call=lambda x, y: lzip(*iterable(x), fillvalue=y)),
     "+": attrdict(arity=2, call=vecd(op.add)),
     "-": attrdict(arity=2, call=vecd(op.sub)),
     "×": attrdict(arity=2, call=vecd(op.mul)),
@@ -668,6 +674,11 @@ atoms = {
     ";f": attrdict(arity=1, call=vecd(factors)),
     ";r": attrdict(arity=1, call=vecd(lambda a: list(range(2, int(a))))),
     ";R": attrdict(arity=1, call=vecd(lambda a: list(range(int(a) + 1)))),
+    ";√": attrdict(arity=1, call=vecd(lambda a: int(mp.sqrt(a)))),
+    ";j": attrdict(arity=1, call=vecd(lambda a: [mp.mpc(a).real, mp.mpc(a).imag])),
+    ";J": attrdict(arity=1, call=vecd(lambda a: mp.mpc(a[0], a[1]))),
+    ";L": attrdict(arity=1, call=vecd(mp.log)),
+    ";E": attrdict(arity=1, call=vecd(mp.exp)),
     # Dyadic diagraphs
     ":T": attrdict(arity=2, call=vecd(mp.atan2)),
     ":<": attrdict(arity=2, call=vecd(lambda a, b: a << b)),
