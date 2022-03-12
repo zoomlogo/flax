@@ -875,26 +875,44 @@ def qfilter(links, outer_links, i):
     return res
 
 
-def qfold(links, outer_links, i):
-    res = [attrdict(arity=1)]
+def qfold(links, outer_links, i, starting=False):
+    res = [attrdict(arity=2 if starting else 1)]
     if len(links) == 1:
-        res[0].call = lambda x, y=None: ft.reduce(links[0].call, x)
+        if starting:
+            res[0].call = lambda x, y: ft.reduce(links[0].call, x, y)
+        else:
+            res[0].call = lambda x: ft.reduce(links[0].call, x)
     else:
-        res[0].call = lambda x, y=None: [
-            ft.reduce(links[0].call, z) for z in sliding_window(x, links[1].call())
-        ]
+        if starting:
+            res[0].call = lambda x, y: [
+                ft.reduce(links[0].call, z, y)
+                for z in sliding_window(x, links[1].call())
+            ]
+        else:
+            res[0].call = lambda x: [
+                ft.reduce(links[0].call, z) for z in sliding_window(x, links[1].call())
+            ]
     return res
 
 
-def qscan(links, outer_links, i):
-    res = [attrdict(arity=1)]
+def qscan(links, outer_links, i, starting=False):
+    res = [attrdict(arity=2 if starting else 1)]
     if len(links) == 1:
-        res[0].call = lambda x, y=None: list(it.accumulate(x, links[0].call))
+        if starting:
+            res[0].call = lambda x, y: list(it.accumulate(x, links[0].call, initial=y))
+        else:
+            res[0].call = lambda x: list(it.accumulate(x, links[0].call))
     else:
-        res[0].call = lambda x, y=None: [
-            list(it.accumulate(z, links[0].call))
-            for z in sliding_window(x, links[1].call())
-        ]
+        if starting:
+            res[0].call = lambda x, y: [
+                list(it.accumulate(z, links[0].call, initial=y))
+                for z in sliding_window(x, links[1].call())
+            ]
+        else:
+            res[0].call = lambda x, y: [
+                list(it.accumulate(z, links[0].call))
+                for z in sliding_window(x, links[1].call())
+            ]
     return res
 
 
@@ -1056,6 +1074,14 @@ quicks = {
     ),
     "´": attrdict(condition=lambda links: links and links[0].arity, qlink=qfold),
     "`": attrdict(condition=lambda links: links and links[0].arity, qlink=qscan),
+    "˝": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, outer_links, i: qfold(links, outer_links, i, starting=True),
+    ),
+    "‶": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, outer_links, i: qscan(links, outer_links, i, starting=True),
+    ),
     "⌜": attrdict(
         condition=lambda links: links,
         qlink=lambda links, outer_links, i: [
