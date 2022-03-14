@@ -1131,6 +1131,17 @@ quicks = {
             )
         ],
     ),
+    "ᵐ": attrdict(
+        condition=lambda links: len(links) == 2,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=1,
+                call=lambda x: [variadic_chain(links, a) for a in x]
+                if isinstance(x, list)
+                else variadic_chain(links[0], x),
+            )
+        ],
+    ),
     "⁰": attrdict(
         condition=lambda links: True,
         qlink=lambda links, outer_links, i: [create_chain(outer_links[i], 0)],
@@ -1190,6 +1201,19 @@ quicks = {
         condition=lambda links: links,
         qlink=lambda links, outer_links, i: [
             attrdict(arity=1, call=lambda x: links[0].call(lzip(*links[0].call(x))))
+        ],
+    ),
+    "ᵀ": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=1,
+                call=lambda x: [
+                    i
+                    for i, e in enumerate(links[0].call(iterable(x, make_digits=True)))
+                    if e
+                ],
+            )
         ],
     ),
     "´": attrdict(condition=lambda links: links and links[0].arity, qlink=qfold),
