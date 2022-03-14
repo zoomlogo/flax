@@ -306,6 +306,7 @@ def permutations(x):
 
 
 def prefixes(x):
+    x = iterable(x, make_digits=True)
     res = []
     for i in range(len(x)):
         res.append(x[: i + 1])
@@ -370,10 +371,11 @@ def sub_lists(l):
 
 
 def suffixes(x):
+    x = iterable(x, make_digits=True)
     res = []
     for i in range(len(x)):
         res.append(x[i:])
-    return res
+    return res[::-1]
 
 
 def to_bin(x):
@@ -677,7 +679,7 @@ atoms = {
     ),
     ";Ḃ": attrdict(
         arity=1,
-        call=[
+        call=lambda x: [
             iterable(a, make_digits=True) + iterable(a, make_digits=True)[::-1]
             for a in iterable(x)
         ],
@@ -910,72 +912,87 @@ def ntimes(links, args, cumulative=False):
     return c_res if cumulative else res
 
 
-def qfilter(links, outer_links, i, notted=True):
+def qfilter(links, outer_links, i, notted=False, perm=False):
     res = [attrdict(arity=links[0].arity or 1)]
+    if perm:
+        p = lambda x: permutations(x)
+    else:
+        p = lambda x: x
     if links[0].arity == 0:
         if notted:
             res[0].call = lambda x: list(
-                filter(lambda z: z == links[0].call(), iterable(x, make_range=True))
+                filter(lambda z: z == links[0].call(), p(iterable(x, make_range=True)))
             )
         else:
             res[0].call = lambda x: list(
-                filter(lambda z: z != links[0].call(), iterable(x, make_range=True))
+                filter(lambda z: z != links[0].call(), p(iterable(x, make_range=True)))
             )
     else:
         if notted:
             res[0].call = lambda x, y=None: list(
                 filter(
                     lambda z: not variadic_link(links[0], z, y),
-                    iterable(x, make_range=True),
+                    p(iterable(x, make_range=True)),
                 )
             )
         else:
             res[0].call = lambda x, y=None: list(
                 filter(
                     lambda z: variadic_link(links[0], z, y),
-                    iterable(x, make_range=True),
+                    p(iterable(x, make_range=True)),
                 )
             )
     return res
 
 
-def qfold(links, outer_links, i, starting=False):
+def qfold(links, outer_links, i, starting=False, right=False):
     res = [attrdict(arity=2 if starting else 1)]
+    if right:
+        call = lambda x, y: variadic_link(links[0], x, y, swap=True)
+        r = lambda x: x[::-1]
+    else:
+        call = lambda x, y: links[0].call(x, y)
+        r = lambda x: x
     if len(links) == 1:
         if starting:
-            res[0].call = lambda x, y: ft.reduce(links[0].call, x, y)
+            res[0].call = lambda x, y: ft.reduce(call, r(x), y)
         else:
-            res[0].call = lambda x: ft.reduce(links[0].call, x)
+            res[0].call = lambda x: ft.reduce(call, r(x))
     else:
         if starting:
             res[0].call = lambda x, y: [
-                ft.reduce(links[0].call, z, y)
-                for z in sliding_window(x, links[1].call())
+                ft.reduce(call, z, y) for z in sliding_window(r(x), links[1].call())
             ]
         else:
             res[0].call = lambda x: [
-                ft.reduce(links[0].call, z) for z in sliding_window(x, links[1].call())
+                ft.reduce(call, z) for z in sliding_window(r(x), links[1].call())
             ]
     return res
 
 
-def qscan(links, outer_links, i, starting=False):
+def qscan(links, outer_links, i, starting=False, right=False):
     res = [attrdict(arity=2 if starting else 1)]
+    if right:
+        call = lambda x, y: variadic_link(links[0], x, y, swap=True)
+        r = lambda x: x[::-1]
+    else:
+        call = lambda x, y: links[0].call(x, y)
+        r = lambda x: x
     if len(links) == 1:
         if starting:
-            res[0].call = lambda x, y: list(it.accumulate(x, links[0].call, initial=y))
+            res[0].call = lambda x, y: list(it.accumulate(r(x), call, initial=y))
         else:
-            res[0].call = lambda x: list(it.accumulate(x, links[0].call))
+            res[0].call = lambda x: list(it.accumulate(r(x), call))
     else:
         if starting:
             res[0].call = lambda x, y: [
-                list(it.accumulate(z, links[0].call, initial=y))
-                for z in sliding_window(x, links[1].call())
+                list(it.accumulate(z, call, initial=y))
+                for z in sliding_window(r(x), links[1].call())
             ]
         else:
             res[0].call = lambda x, y: [
-                list(it.accumulate(z, links[0].call))
-                for z in sliding_window(x, links[1].call())
+                list(it.accumulate(z, call))
+                for z in sliding_window(r(x), links[1].call())
             ]
     return res
 
@@ -1103,6 +1120,17 @@ quicks = {
             )
         ],
     ),
+    "ᵖ": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=links[0].arity or 1,
+                call=lambda x, y=None: [
+                    variadic_link(links[0], a, y) for a in prefixes(x)
+                ],
+            )
+        ],
+    ),
     "⁰": attrdict(
         condition=lambda links: True,
         qlink=lambda links, outer_links, i: [create_chain(outer_links[i], 0)],
@@ -1114,6 +1142,24 @@ quicks = {
     "²": attrdict(
         condition=lambda links: True,
         qlink=lambda links, outer_links, i: [create_chain(outer_links[i], 2)],
+    ),
+    "³": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outer_links, i: [
+            create_chain(outer_links[links[0].call() % len(outer_links)], 0)
+        ],
+    ),
+    "⁴": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outer_links, i: [
+            create_chain(outer_links[links[0].call() % len(outer_links)], 1)
+        ],
+    ),
+    "⁵": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outer_links, i: [
+            create_chain(outer_links[links[0].call() % len(outer_links)], 2)
+        ],
     ),
     "˙": quick_chain(0, 2),
     "ᴹ": quick_chain(1, 2),
@@ -1138,6 +1184,12 @@ quicks = {
                 arity=links[0].arity and 1,
                 call=lambda x=None: variadic_link(links[0], x, x),
             )
+        ],
+    ),
+    "ˇ": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outer_links, i: [
+            attrdict(arity=1, call=lambda x: links[0].call(lzip(*links[0].call(x))))
         ],
     ),
     "´": attrdict(condition=lambda links: links and links[0].arity, qlink=qfold),
@@ -1294,6 +1346,30 @@ quicks = {
                 ),
             )
         ],
+    ),
+    "ᵟᶠ": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outer_links, i: qfilter(links, outer_links, i, perm=True),
+    ),
+    "ᵟ´": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, outer_links, i: qfold(links, outer_links, i, right=True),
+    ),
+    "ᵟ`": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, outer_links, i: qscan(links, outer_links, i, right=True),
+    ),
+    "ᵟ˝": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, outer_links, i: qfold(
+            links, outer_links, i, starting=True, right=True
+        ),
+    ),
+    "ᵟ‶": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, outer_links, i: qscan(
+            links, outer_links, i, starting=True, right=True
+        ),
     ),
 }
 
