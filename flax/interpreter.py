@@ -43,6 +43,7 @@ def diagonals(x):
         for j in range(len(x)):
             d[i - j - min_d].append(x[j][i])
     return d
+    d = []
 
 
 def divisors(x):
@@ -140,7 +141,7 @@ def from_bin(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 2**i
+        num += abs(b) * 2 ** i
         i += 1
     return num * sign
 
@@ -151,7 +152,7 @@ def from_digits(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 10**i
+        num += abs(b) * 10 ** i
         i += 1
     return num * sign
 
@@ -289,6 +290,10 @@ def order(x, y):
     return res
 
 
+def permutations(x):
+    return list(map(list, it.permutations(x)))
+
+
 def prefixes(x):
     res = []
     for i in range(len(x)):
@@ -416,10 +421,10 @@ atoms = {
     "Æ": attrdict(arity=1, call=vecd(lambda a: int(mp.isprime(a)))),
     "B": attrdict(arity=1, call=vecd(to_bin)),
     "Ḃ": attrdict(arity=1, call=from_bin),
-    "Ḅ": attrdict(arity=1, call=vecd(lambda a: 2**a)),
+    "Ḅ": attrdict(arity=1, call=vecd(lambda a: 2 ** a)),
     "Ƀ": attrdict(arity=1, call=vecd(lambda a: a % 2)),
     "C": attrdict(arity=1, call=vecd(lambda a: 1 - a)),
-    "Ċ": attrdict(arity=1, call=vecd(lambda a: a**3)),
+    "Ċ": attrdict(arity=1, call=vecd(lambda a: a ** 3)),
     "Ç": attrdict(arity=1, call=lambda x: split(x, 2)),
     "D": attrdict(arity=1, call=vecd(to_digits)),
     "Ḋ": attrdict(arity=1, call=from_digits),
@@ -445,10 +450,10 @@ atoms = {
     "Ĵ": attrdict(arity=1, call=join_newlines),
     "K": attrdict(arity=1, call=lambda x: list(it.accumulate(iterable(x)))),
     "L": attrdict(arity=1, call=len),
-    "M": attrdict(arity=1, call=vecd(lambda a: a**2)),
+    "M": attrdict(arity=1, call=vecd(lambda a: a ** 2)),
     "N": attrdict(arity=1, call=vecd(lambda a: -a)),
     "O": attrdict(arity=1, call=lambda x: x),
-    "P": attrdict(arity=1, call=lambda x: list(it.permutations(x))),
+    "P": attrdict(arity=1, call=lambda x: permutations(x)),
     "Ṗ": attrdict(arity=1, call=lambda x: print(end="".join(chr(c) for c in x)) or x),
     "Ƥ": attrdict(arity=1, call=lambda x: flax_print(x)),
     "Q": attrdict(arity=1, call=vecd(lambda a: a / 2)),
@@ -636,6 +641,7 @@ atoms = {
     ),
     "_P": attrdict(arity=0, call=lambda: mp.phi),
     "_S": attrdict(arity=0, call=lambda: [1, -1]),
+    "_s": attrdict(arity=0, call=lambda: to_chars("ඞ")),
     "_V": attrdict(arity=0, call=lambda: to_chars("AEIOU")),
     "_a": attrdict(arity=0, call=lambda: to_chars("abcdefghijklmnopqrstuvwxyz")),
     "_c": attrdict(arity=0, call=lambda: to_chars("bcdfghjklmnpqrstvwxyz")),
@@ -645,9 +651,9 @@ atoms = {
     "_v": attrdict(arity=0, call=lambda: to_chars("aeiou")),
     "_y": attrdict(arity=0, call=lambda: to_chars("aeiouy")),
     "_∞": attrdict(arity=0, call=lambda: mp.inf),
-    "_⁰": attrdict(arity=0, call=lambda: 2**20),
-    "_¹": attrdict(arity=0, call=lambda: 2**30),
-    "_²": attrdict(arity=0, call=lambda: 2**100),
+    "_⁰": attrdict(arity=0, call=lambda: 2 ** 20),
+    "_¹": attrdict(arity=0, call=lambda: 2 ** 30),
+    "_²": attrdict(arity=0, call=lambda: 2 ** 100),
     "_(": attrdict(arity=0, call=lambda: to_chars("()")),
     "_{": attrdict(arity=0, call=lambda: to_chars("{}")),
     "_[": attrdict(arity=0, call=lambda: to_chars("[]")),
@@ -663,6 +669,7 @@ atoms = {
     ";Ṫ": attrdict(arity=1, call=vecd(mp.atan)),
     ";c": attrdict(arity=1, call=vecd(lambda a: 1 / mp.cos(a))),
     ";d": attrdict(arity=1, call=vecd(lambda x: int(48 <= x <= 57))),
+    ";ḍ": attrdict(arity=1, call=lambda x: mp.det(mp.matrix(x))),
     ";h": attrdict(arity=1, call=vecd(mp.tanh)),
     ";i": attrdict(arity=1, call=indices_multidimensional),
     ";n": attrdict(arity=1, call=vecd(mp.sinh)),
@@ -683,6 +690,10 @@ atoms = {
     ";E": attrdict(arity=1, call=vecd(mp.exp)),
     ";°": attrdict(arity=1, call=vecd(mp.radians)),
     ";P": attrdict(arity=1, call=lambda x: list(mp.polyroots(flatten(x)))),
+    ";ε": attrdict(
+        arity=1,
+        call=lambda x: sub_lists(permutations(iterable(x, make_range=True))),
+    ),
     # Dyadic diagraphs
     ":T": attrdict(arity=2, call=vecd(mp.atan2)),
     ":<": attrdict(arity=2, call=vecd(lambda a, b: a << b)),
