@@ -35,15 +35,16 @@ depth = (
 )
 
 
-def diagonals(x):
-    d = [[] for _ in range(len(x) + len(x[0]) - 1)]
+def diagonals(x, backward=False):
+    fdiag = [[] for _ in range(len(x) + len(x[0]) - 1)]
+    bdiag = [[] for _ in range(len(bdiag))]
     min_d = -len(x) + 1
 
     for i in range(len(x[0])):
         for j in range(len(x)):
-            d[i - j - min_d].append(x[j][i])
-    return d
-    d = []
+            fdiag[i + j].append(x[j][i])
+            bdiag[i - j - min_d].append(x[j][i])
+    return bdiag if backward else fdiag
 
 
 def divisors(x):
@@ -661,7 +662,8 @@ atoms = {
     ";C": attrdict(arity=1, call=vecd(mp.cos)),
     ";Ċ": attrdict(arity=1, call=vecd(mp.acos)),
     ";D": attrdict(arity=1, call=diagonals),
-    ";Ḋ": attrdict(arity=1, call=depth),
+    ";Ḋ": attrdict(arity=1, call=lambda x: diagonals(x, backward=True)),
+    ";Ð": attrdict(arity=1, call=depth),
     ";F": attrdict(arity=1, call=vecd(fibonacci)),
     ";S": attrdict(arity=1, call=vecd(mp.sin)),
     ";Ṡ": attrdict(arity=1, call=vecd(mp.asin)),
