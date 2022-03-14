@@ -679,7 +679,9 @@ atoms = {
     ";s": attrdict(arity=1, call=vecd(lambda a: 1 / mp.sin(a))),
     ";t": attrdict(arity=1, call=vecd(lambda a: 1 / mp.tan(a))),
     ";Æ": attrdict(arity=1, call=vecd(nprimes)),
-    ";I": attrdict(arity=1, call=vecd(int)),
+    ";I": attrdict(
+        arity=1, call=vecd(lambda a: [[x == y for x in range(a)] for y in range(a)])
+    ),
     ";f": attrdict(arity=1, call=vecd(factors)),
     ";r": attrdict(arity=1, call=vecd(lambda a: list(range(2, int(a))))),
     ";R": attrdict(arity=1, call=vecd(lambda a: list(range(int(a) + 1)))),
