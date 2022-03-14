@@ -81,6 +81,16 @@ def find_all(x, y):
     return [i for i, e in enumerate(x) if e == y]
 
 
+def find_sublist(x, y):
+    x = iterable(x, make_digits=True)
+    y = iterable(y, make_digits=True)
+    yl = len(y)
+    for i in range(len(x)):
+        if x[i : i + yl] == y:
+            return 1 + i
+    return 0
+
+
 flatten = lambda x: list(mit.collapse(x))
 
 
@@ -562,6 +572,7 @@ atoms = {
     "u": attrdict(
         arity=2, call=lambda x, y: [find(y, a) for a in iterable(x, make_digits=True)]
     ),
+    "w": attrdict(arity=2, call=find_sublist),
     "x": attrdict(arity=2, call=vecd(sliding_window, lfull=False)),
     "y": attrdict(arity=2, call=join),
     "z": attrdict(arity=2, call=lzip),
@@ -659,6 +670,18 @@ atoms = {
     "_{": attrdict(arity=0, call=lambda: to_chars("{}")),
     "_[": attrdict(arity=0, call=lambda: to_chars("[]")),
     # Monadic diagraphs
+    ";B": attrdict(
+        arity=1,
+        call=lambda x: iterable(x, make_digits=True)
+        + iterable(x, make_digits=True)[::-1],
+    ),
+    ";Ḃ": attrdict(
+        arity=1,
+        call=[
+            iterable(a, make_digits=True) + iterable(a, make_digits=True)[::-1]
+            for a in iterable(x)
+        ],
+    ),
     ";C": attrdict(arity=1, call=vecd(mp.cos)),
     ";Ċ": attrdict(arity=1, call=vecd(mp.acos)),
     ";D": attrdict(arity=1, call=diagonals),
@@ -667,6 +690,12 @@ atoms = {
     ";F": attrdict(arity=1, call=vecd(fibonacci)),
     ";S": attrdict(arity=1, call=vecd(mp.sin)),
     ";Ṡ": attrdict(arity=1, call=vecd(mp.asin)),
+    ";P": attrdict(
+        arity=1,
+        call=lambda x: int(
+            iterable(x, make_digits=True) == iterable(x, make_digits=True)[::-1]
+        ),
+    ),
     ";T": attrdict(arity=1, call=vecd(mp.tan)),
     ";Ṫ": attrdict(arity=1, call=vecd(mp.atan)),
     ";c": attrdict(arity=1, call=vecd(lambda a: 1 / mp.cos(a))),
@@ -698,6 +727,7 @@ atoms = {
         arity=1,
         call=lambda x: sub_lists(permutations(iterable(x, make_range=True))),
     ),
+    ";²": attrdict(arity=1, call=vecd(lambda a: int(int(mp.sqrt(a)) ** 2 == a))),
     # Dyadic diagraphs
     ":T": attrdict(arity=2, call=vecd(mp.atan2)),
     ":<": attrdict(arity=2, call=vecd(lambda a, b: a << b)),
@@ -712,6 +742,7 @@ atoms = {
     ":·": attrdict(
         arity=2, call=lambda x, y: sum(x[i][0] * y[i] for i in range(len(y)))
     ),
+    ":j": attrdict(arity=2, call=vecd(lambda a, b: mp.mpc(a, b))),
 }
 
 for k in atoms:
