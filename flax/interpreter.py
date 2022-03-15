@@ -1193,8 +1193,10 @@ quicks = {
         condition=lambda links: links,
         qlink=lambda links, outer_links, i: [
             attrdict(
-                arity=links[0].arity,
-                call=lambda x=None, y=None: variadic_link(links[0], x, y, swap=True),
+                arity=2 if links[0].arity else 0,
+                call=lambda x=None, y=None: variadic_link(links[0], x, y, swap=True)
+                if links[0].arity != 1
+                else links[0].call(y),
             )
         ],
     ),
@@ -1202,8 +1204,10 @@ quicks = {
         condition=lambda links: links,
         qlink=lambda links, outer_links, i: [
             attrdict(
-                arity=links[0].arity and 1,
-                call=lambda x=None: variadic_link(links[0], x, x),
+                arity=1 if links[0].arity == 2 else (2 if links[0].arity == 1 else 0),
+                call=lambda x=None, y=None: variadic_link(links[0], x, x)
+                if links[0].arity != 0
+                else links[0].call(x),
             )
         ],
     ),
@@ -1280,18 +1284,6 @@ quicks = {
                 arity=max(arities(links)),
                 call=lambda x=None, y=None: while_loop(links[0], links[1], (x, y)),
             )
-        ],
-    ),
-    "⁽": attrdict(
-        condition=lambda links: links,
-        qlink=lambda links, outer_links, i: [
-            attrdict(arity=2, call=lambda x, y: links[0].call(x))
-        ],
-    ),
-    "⁾": attrdict(
-        condition=lambda links: links,
-        qlink=lambda links, outer_links, i: [
-            attrdict(arity=2, call=lambda x, y: links[0].call(y))
         ],
     ),
     "ᐣ": attrdict(
