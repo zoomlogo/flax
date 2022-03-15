@@ -83,8 +83,8 @@ Code|New λ|Arities
 Now one by one the atoms are considered from right to left, and are applied to the accumulator `λ` according to this table:
 Code|New λ|Arities
 ----|-----|-------
-`1 × +`| `1 × (⍺ + λ)`| 2, 2, 0₁
-`+ ×`| `λ + (⍺ × ⍵)`| 2, 2
+`1 × +`| `1 × (⍺ + λ)`| 0₁, 2, 2 
+`× +`| `(⍵ × ⍺) + λ`| 2, 2
 `1 +`|`1 + λ`| 0, 2
 `+ 1`|`λ + 1`| 2, 0
 `+`|`λ + ⍺`| 2
