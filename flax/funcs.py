@@ -53,6 +53,16 @@ def find_all(w, x):
     return [i for i, e in enumerate(w) if e == x]
 
 
+def find_sublist(w, x):
+    # find_sublist: find the occurence of the sublist x in w
+    w = iterable(w, digits=True)
+    x = iterable(x, digits=True)
+    for i in range(len(w)):
+        if w[i : i + len(x)] == x:
+            return i
+    return []
+
+
 def flatten(x):
     # flatten: flatten x
     return list(more_itertools.collapse(x))
@@ -73,4 +83,6 @@ def iterable(x, digits=False, range_=False):
 
 def to_digits(x):
     # to_digits: turn x into a list of digits
-    ...
+    return [
+        -int(i) if x < 0 else int(i) for i in str(x)[1 if x < 0 else 0 :] if i != "."
+    ]
