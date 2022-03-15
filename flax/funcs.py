@@ -45,7 +45,12 @@ def find(w, x):
     try:
         return iterable(w, digits=True).index(x)
     except ValueError:
-        return -1
+        return []
+
+
+def find_all(w, x):
+    # find_all: returns all indicies of occurences of x in w
+    return [i for i, e in enumerate(w) if e == x]
 
 
 def flatten(x):
