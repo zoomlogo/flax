@@ -87,7 +87,7 @@ Code|New λ|Arities
 `× +`| `(⍵ × ⍺) + λ`| 2, 2
 `1 +`|`1 + λ`| 0, 2
 `+ 1`|`λ + 1`| 2, 0
-`+`|`λ + ⍺`| 2
+`+`|`⍺ + λ`| 2
 `F`|`F(λ)`| 1
 
 ₁ The rule only applies if the nilad is part of an LCC.
