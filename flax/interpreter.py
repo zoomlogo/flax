@@ -152,7 +152,7 @@ def from_bin(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 2**i
+        num += abs(b) * 2 ** i
         i += 1
     return num * sign
 
@@ -163,7 +163,7 @@ def from_digits(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 10**i
+        num += abs(b) * 10 ** i
         i += 1
     return num * sign
 
@@ -434,10 +434,10 @@ atoms = {
     "Æ": attrdict(arity=1, call=vecd(lambda a: int(mp.isprime(a)))),
     "B": attrdict(arity=1, call=vecd(to_bin)),
     "Ḃ": attrdict(arity=1, call=from_bin),
-    "Ḅ": attrdict(arity=1, call=vecd(lambda a: 2**a)),
+    "Ḅ": attrdict(arity=1, call=vecd(lambda a: 2 ** a)),
     "Ƀ": attrdict(arity=1, call=vecd(lambda a: a % 2)),
     "C": attrdict(arity=1, call=vecd(lambda a: 1 - a)),
-    "Ċ": attrdict(arity=1, call=vecd(lambda a: a**3)),
+    "Ċ": attrdict(arity=1, call=vecd(lambda a: a ** 3)),
     "Ç": attrdict(arity=1, call=lambda x: split(x, 2)),
     "D": attrdict(arity=1, call=vecd(to_digits)),
     "Ḋ": attrdict(arity=1, call=from_digits),
@@ -463,7 +463,7 @@ atoms = {
     "Ĵ": attrdict(arity=1, call=join_newlines),
     "K": attrdict(arity=1, call=lambda x: list(it.accumulate(iterable(x)))),
     "L": attrdict(arity=1, call=len),
-    "M": attrdict(arity=1, call=vecd(lambda a: a**2)),
+    "M": attrdict(arity=1, call=vecd(lambda a: a ** 2)),
     "N": attrdict(arity=1, call=vecd(lambda a: -a)),
     "O": attrdict(arity=1, call=lambda x: x),
     "P": attrdict(arity=1, call=lambda x: permutations(x)),
@@ -665,9 +665,9 @@ atoms = {
     "_v": attrdict(arity=0, call=lambda: to_chars("aeiou")),
     "_y": attrdict(arity=0, call=lambda: to_chars("aeiouy")),
     "_∞": attrdict(arity=0, call=lambda: mp.inf),
-    "_⁰": attrdict(arity=0, call=lambda: 2**20),
-    "_¹": attrdict(arity=0, call=lambda: 2**30),
-    "_²": attrdict(arity=0, call=lambda: 2**100),
+    "_⁰": attrdict(arity=0, call=lambda: 2 ** 20),
+    "_¹": attrdict(arity=0, call=lambda: 2 ** 30),
+    "_²": attrdict(arity=0, call=lambda: 2 ** 100),
     "_(": attrdict(arity=0, call=lambda: to_chars("()")),
     "_{": attrdict(arity=0, call=lambda: to_chars("{}")),
     "_[": attrdict(arity=0, call=lambda: to_chars("[]")),
@@ -740,7 +740,8 @@ atoms = {
         + iterable(x)
         + [z[-1]],
     ),
-    ":*": attrdict(arity=2, call=lambda x, y: list(it.product(x, repeat=y))),
+    ":×": attrdict(arity=2, call=lambda x, y: list(it.product(x, repeat=y))),
+    ":*": attrdict(arity=2, call=lambda x, y: mp.matrix(x) ** y),
     ":·": attrdict(
         arity=2, call=lambda x, y: sum(x[i][0] * y[i] for i in range(len(y)))
     ),
@@ -1081,6 +1082,15 @@ def while_loop(link, cond, args, cumulative=False):
     return c_res if cumulative else res
 
 
+def while_not_unique(link, x):
+    res = link.call(x)
+    before = x
+    while res != before:
+        before = res
+        res = link.call(res)
+    return res
+
+
 # ========= Quicks ==========
 quicks = {
     "⁶": attrdict(
@@ -1344,6 +1354,34 @@ quicks = {
                 arity=links[0].arity,
                 call=lambda x, y=None: min(
                     iterable(x), key=lambda z: variadic_link(links[0], z, y)
+                ),
+            )
+        ],
+    ),
+    "ᙾ": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outer_links, i: [
+            attrdict(arity=1, call=lambda x: while_not_unique(links[0], x))
+        ],
+    ),
+    "⁼": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=links[0].arity,
+                call=lambda x=None, y=None: int(x == variadic_link(links[0], x, y)),
+            )
+        ],
+    ),
+    "ᴺ": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=1,
+                call=lambda x: int(
+                    mit.all_equal(
+                        [variadic_link(links[0], a, b) for a, b in sliding_window(x, 2)]
+                    )
                 ),
             )
         ],
