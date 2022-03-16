@@ -92,19 +92,6 @@ def from_digits(x):
     return num * sign
 
 
-def iterable(x, digits=False, range_=False):
-    # iterable: make sure x is a list
-    if type(x) != list:
-        if range_:
-            return list(range(int(x)))
-        elif digits:
-            return to_digits(x)
-        else:
-            return [x]
-    else:
-        return x
-
-
 def grade_down(x):
     # grade_down: grade x in descending order
     x = iterable(x, digits=True)
@@ -146,8 +133,37 @@ def group_equal(x):
     return res
 
 
+def iota(x):
+    # iota: APL's ⍳ and BQN's ↕
+    if type(x) != list:
+        return list(range(int(x)))
+
+    res = list(map(list, itertools.product(*(list(range(int(a))) for a in x))))
+    for e in x:
+        res = split(res, int(e))
+    return res[0]
+
+
+def iterable(x, digits=False, range_=False):
+    # iterable: make sure x is a list
+    if type(x) != list:
+        if range_:
+            return list(range(int(x)))
+        elif digits:
+            return to_digits(x)
+        else:
+            return [x]
+    else:
+        return x
+
+
 def to_digits(x):
     # to_digits: turn x into a list of digits
     return [
         -int(i) if x < 0 else int(i) for i in str(x)[1 if x < 0 else 0 :] if i != "."
     ]
+
+
+def split(w, x):
+    # split: split x into chunks of w
+    return list(more_itertools.chunked(x, w))
