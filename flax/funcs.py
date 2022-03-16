@@ -105,6 +105,47 @@ def iterable(x, digits=False, range_=False):
         return x
 
 
+def grade_down(x):
+    # grade_down: grade x in descending order
+    x = iterable(x, digits=True)
+    grades = []
+    for a in reversed(sorted(x)):
+        grades.append(find_all(x, a))
+    return flatten(grades)
+
+
+def grade_up(x):
+    # grade_up: grade x in ascending order
+    x = iterable(x, digits=True)
+    grades = []
+    for a in sorted(x):
+        grades.append(find_all(x, a))
+    return flatten(grades)
+
+
+def group_indicies(x):
+    # group_indicies: groups indicies with equal values
+    res = {}
+    for i, e in enumerate(x):
+        e = str(e)
+        if e in res:
+            res[e].append(i)
+        else:
+            res[e] = [i]
+    return [res[k] for k in sorted(res, key=eval)]
+
+
+def group_equal(x):
+    # group_equal: group equal adjacent elements
+    res = []
+    for e in x:
+        if res and res[-1][0] == e:
+            res[-1].append(e)
+        else:
+            res.append([e])
+    return res
+
+
 def to_digits(x):
     # to_digits: turn x into a list of digits
     return [
