@@ -68,6 +68,30 @@ def flatten(x):
     return list(more_itertools.collapse(x))
 
 
+def from_bin(x):
+    # from_bin: convert x from binary
+    x = iterable(x, digits=True)
+    sign = -1 if sum(x) < 0 else 1
+    num = 0
+    i = 0
+    for b in x[::-1]:
+        num += abs(b) * 2 ** i
+        i += 1
+    return num * sign
+
+
+def from_digits(x):
+    # from_digits: convert x from digits:
+    x = iterable(x, range_=True)
+    sign = -1 if sum(x) < 0 else 1
+    num = 0
+    i = 0
+    for b in x[::-1]:
+        num += abs(b) * 10 ** i
+        i += 1
+    return num * sign
+
+
 def iterable(x, digits=False, range_=False):
     # iterable: make sure x is a list
     if type(x) != list:
