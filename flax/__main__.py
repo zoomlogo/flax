@@ -1,4 +1,4 @@
-# Main entry point
+# __main__: main entry point
 import sys
 
 from flax.error import error
@@ -8,6 +8,7 @@ import flax.interpreter
 sys.argv = sys.argv[1:]
 read_from_file = False
 
+# handle flags
 if sys.argv:
     if "d" in sys.argv[0]:
         flax.interpreter.DEBUG = True
@@ -21,6 +22,7 @@ if sys.argv:
         flax.interpreter.DISABLE_GRID = True
     sys.argv = sys.argv[1:]
 
+# run
 if read_from_file:
     try:
         code = open(sys.argv[0], encoding="utf-8").read()

@@ -1,3 +1,4 @@
+# lexer: holds the flax lexer
 import collections
 import enum
 import string
@@ -19,6 +20,7 @@ class TOKEN_TYPE(enum.Enum):
 
 
 def tokenise(program):
+    # tokenise: convert program into tokens
     tokens = []
     program = collections.deque(program)
 
@@ -45,7 +47,7 @@ def tokenise(program):
         elif head in string.digits + "¯.j":
             contextual_token_value = head
             if head == "0" and not (program and program[0] in "¯.j"):
-                # Handle the special case of 0.
+                # handle the special case of 0
                 tokens.append([TOKEN_TYPE.NUMBER, contextual_token_value])
             else:
                 while (
@@ -59,8 +61,8 @@ def tokenise(program):
                 ):
                     contextual_token_value += program.popleft()
                 tokens.append([TOKEN_TYPE.NUMBER, contextual_token_value])
-        elif head == "⍝":
-            # Just ignore comments
+        elif head == "⍝":  # ideally these string constants will be in builtins
+            # just ignore comments
             while program and program.popleft() != "\n":
                 pass
         elif head == "\n":
