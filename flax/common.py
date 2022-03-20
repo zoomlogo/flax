@@ -61,6 +61,7 @@ def flax_string(x):
 
 
 def flax_print(x):
+    # flax_print: print x using formatting
     if PRINT_CHARS:
         print(end="".join(chr(c) for c in more_itertools.collapse(x)))
     else:
