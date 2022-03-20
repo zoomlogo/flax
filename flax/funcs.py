@@ -74,7 +74,7 @@ def from_bin(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 2**i
+        num += abs(b) * 2 ** i
         i += 1
     return num * sign
 
@@ -86,7 +86,7 @@ def from_digits(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 10**i
+        num += abs(b) * 10 ** i
         i += 1
     return num * sign
 
@@ -141,6 +141,7 @@ def iota(x):
     for e in x:
         res = split(res, int(e))
     return res[0]
+
 
 def index_into(w, x):
     # index_into: index into x with w
@@ -254,6 +255,7 @@ def reshape(w, x):
     else:
         return [reshape(w[1:], x) for _ in range(w[0])]
 
+
 def sublists(x):
     # sublists: return all sublists of x
     sub = [[]]
@@ -271,9 +273,11 @@ def suffixes(x):
         res.append(x[i:])
     return res[::-1]
 
+
 def to_bin(x):
     # to_bin: return the binary representation of x
-    return [-i if x < 0 else i for i in map(int, bin(x)[3 if x < 0 else 2:])]
+    return [-i if x < 0 else i for i in map(int, bin(x)[3 if x < 0 else 2 :])]
+
 
 def to_chars(x):
     # to_chars: convert x to list of ints
