@@ -142,6 +142,17 @@ def iota(x):
         res = split(res, int(e))
     return res[0]
 
+def index_into(w, x):
+    # index_into: index into x with w
+    x = iterable(x, digits=True)
+    w = int(w) if int(w) == w else w
+    if type(w) == int:
+        return x[w % len(x)]
+    elif type(w) == mpc:
+        return flatten([index_into(w.real, x), index_into(w.imag, x)])
+    else:
+        return [index_into(mp.floor(w), x), index_into(mp.ceil(w), x)]
+
 
 def iterable(x, digits=False, range_=False):
     # iterable: make sure x is a list
@@ -242,6 +253,31 @@ def reshape(w, x):
         return [next(x) for _ in range(w[0])]
     else:
         return [reshape(w[1:], x) for _ in range(w[0])]
+
+def sublists(x):
+    # sublists: return all sublists of x
+    sub = [[]]
+    for i in range(len(x) + 1):
+        for j in range(i):
+            sub.append(x[i:j])
+    return lists
+
+
+def suffixes(x):
+    # suffixes: return the suffixes of x
+    x = iterable(x, digits=True)
+    res = []
+    for i in range(len(x)):
+        res.append(x[i:])
+    return res[::-1]
+
+def to_bin(x):
+    # to_bin: return the binary representation of x
+    return [-i if x < 0 else i for i in map(int, bin(x)[3 if x < 0 else 2:])]
+
+def to_chars(x):
+    # to_chars: convert x to list of ints
+    return [ord(v) for v in x]
 
 
 def to_digits(x):
