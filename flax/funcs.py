@@ -74,7 +74,7 @@ def from_bin(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 2 ** i
+        num += abs(b) * 2**i
         i += 1
     return num * sign
 
@@ -86,7 +86,7 @@ def from_digits(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 10 ** i
+        num += abs(b) * 10**i
         i += 1
     return num * sign
 
