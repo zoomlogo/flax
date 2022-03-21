@@ -4,7 +4,7 @@ from flax.common import attrdict, flax_print
 
 def arities(links):
     # arities: return the arities of the links
-    return [links.arity for link in links]
+    return [link.arity for link in links]
 
 
 def copy_to(atom, value):
