@@ -132,3 +132,18 @@ def niladic_chain(chain):
     if not chain or chain[-1].arity > 0:
         return monadic_chain(chain, 0)
     return monadic_chain(chain[:-1], chain[-1].call())
+
+
+def ntimes(links, args, cumulative=False):
+    # ntimes: repeat link n times
+    times = int(links[1].call()) if len(links) == 2 else int(input())
+    res, x = args
+    if cumulative:
+        c_res = [res]
+    for _ in range(times):
+        w = res
+        res = variadic_link(links[0], (w, x))
+        if cumulative:
+            c_res.append(res)
+        x = w
+    return c_res if cumulative else res
