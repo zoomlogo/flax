@@ -45,17 +45,23 @@ def tokenise(program):
             tokens.append([TOKEN_TYPE.STRING, string_contents])
         elif head in DIGITS:
             contextual_token_value = head
-            if head == ZERO and not (program and program[0] in DECIMAL_POINT + COMPLEX_DELIMETER + NEGATIVE_SIGN):
+            if head == ZERO and not (
+                program
+                and program[0] in DECIMAL_POINT + COMPLEX_DELIMETER + NEGATIVE_SIGN
+            ):
                 # handle the special case of 0
                 tokens.append([TOKEN_TYPE.NUMBER, contextual_token_value])
             else:
                 while (
                     program
                     and program[0] in DIGITS
-                    and (contextual_token_value + program[0]).count(COMPLEX_DELIMETER) < 2
+                    and (contextual_token_value + program[0]).count(COMPLEX_DELIMETER)
+                    < 2
                     and all(
                         (x.count(DECIMAL_POINT) < 2 and x.count(NEGATIVE_SIGN) < 2)
-                        for x in (contextual_token_value + program[0]).split(COMPLEX_DELIMETER)
+                        for x in (contextual_token_value + program[0]).split(
+                            COMPLEX_DELIMETER
+                        )
                     )
                 ):
                     contextual_token_value += program.popleft()
