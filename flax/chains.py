@@ -77,3 +77,57 @@ def max_arity(links):
         if min(arities(links)) > -1
         else (~max(arities(links))) or -1
     )
+
+
+def monadic_chain(chain, x):
+    # monadic_chain: evaluate a monadic chain
+    init = True
+
+    λ = x
+    while True:
+        if init:
+            for link in chain:
+                if link.arity < 0:
+                    link.arity = 1
+
+            if trailing_nilad(chain):
+                λ = chain[-1].call()
+                chain = chain[:-1]
+
+            init = False
+
+        if not chain:
+            break
+
+        if arities(chain[-2:]) == [1, 2]:
+            λ = chain[-1].call(chain[-2].call(x), λ)
+        elif arities(chain[-2:]) == [0, 2]:
+            λ = chain[-1].call(chain[-2].call(), λ)
+            chain = chain[:-2]
+        elif arities(chain[-2:]) == [0, 2]:
+            λ = chain[-2].call(λ, chain[-1].call())
+            chain = chain[:-2]
+        elif chain[-1].arity == 2:
+            λ = chain[-1].call(x, λ)
+            chain = chain[:-1]
+        elif chain[-1].arity == 1:
+            if not chain[:-1] and hasattr(chain[-1], "chain"):
+                x = λ
+                chain = chain[-1].chain
+                init = True
+            else:
+                λ = chain[-1].call(λ)
+                chain = chain[:-1]
+        else:
+            flax_print(λ)
+            λ = chain[-1].call()
+            chain = chain[:-1]
+
+    return λ
+
+
+def niladic_chain(chain):
+    # niladic_chain: evaluate a niladic chain
+    if not chain or chain[-1].arity > 0:
+        return monadic_chain(chain, 0)
+    return monadic_chain(chain[:-1], chain[-1].call())
