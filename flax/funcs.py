@@ -150,7 +150,7 @@ def index_into(w, x):
     if type(w) == int:
         return x[w % len(x)]
     elif type(w) == mpc:
-        return flatten([index_into(w.real, x), index_into(w.imag, x)])
+        return index_into(w.real, index_into(w.imag, x))
     else:
         return [index_into(mp.floor(w), x), index_into(mp.ceil(w), x)]
 
