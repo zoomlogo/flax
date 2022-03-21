@@ -30,7 +30,7 @@ def flax_indent(x):
     level = 0
     for i in range(len(x)):
         if x[i] == "[":
-            if i != 0 and x[i - 1] == " ":
+            if i != 0 and x[i - 1] == ",":
                 res += "\n" + " " * level + "["
             else:
                 res += "["
@@ -55,7 +55,7 @@ def flax_string(x):
     else:
         res = ""
         for e in x:
-            res += flax_string(e) + " "
+            res += flax_string(e) + ","
         res = "[" + res.strip() + "]"
         return res
 
