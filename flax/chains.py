@@ -101,6 +101,7 @@ def monadic_chain(chain, x):
 
         if arities(chain[-2:]) == [1, 2]:
             λ = chain[-1].call(chain[-2].call(x), λ)
+            chain = chain[:-2]
         elif arities(chain[-2:]) == [0, 2]:
             λ = chain[-1].call(chain[-2].call(), λ)
             chain = chain[:-2]
