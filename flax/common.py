@@ -55,8 +55,8 @@ def flax_string(x):
     else:
         res = ""
         for e in x:
-            res += flax_string(e) + ","
-        res = "[" + res.strip() + "]"
+            res += flax_string(e) + " "
+        res = "[" + res.strip().replace(" ", ",") + "]"
         return res
 
 
