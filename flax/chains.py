@@ -1,5 +1,6 @@
 # chains: holds the functions used by quicks and the chains
 from flax.common import attrdict, flax_print
+from flax.funcs import permutations, iterable
 
 
 def arities(links):
@@ -147,3 +148,50 @@ def ntimes(links, args, cumulative=False):
             c_res.append(res)
         x = w
     return c_res if cumulative else res
+
+
+def qfilter(links, outmost_links, i, inverse=False, permutation=False):
+    # qfilter: filter quick with optional inverse or permuting the argument
+    res = [attrdict(arity=links[0].arity or 1)]
+
+    # handle inverse
+    if inverse:
+        inv = lambda x: not x
+    else:
+        inv = lambda x: x
+
+    # handle permutation
+    if permutation:
+        permute = lambda x: permutations(x)
+    else:
+        permute = lambda x: x
+
+    if links[0].arity == 0:
+        res[0].call = lambda x: list(
+            filter(
+                lambda a: inv(a == links[0].call()), permute(iterable(x, range_=True))
+            )
+        )
+    else:
+        res[0].call = lambda w=None, x=None: list(
+            filter(
+                lambda a: inv(variadic_link(links[0], (a, x))),
+                permute(iterable(w, range_=True)),
+            )
+        )
+
+    return res
+
+
+def variadic_link(link, args):
+    # call link with args
+    args = list(filter(None.__ne__, args))
+    if link.arity == -1:
+        link.arity = len(args)
+
+    if link.arity == 0:
+        return link.call()
+    elif link.arity == 1:
+        return link.call(args[0])
+    elif link.arity == 2:
+        return link.call(args[0], args[1])
