@@ -1,6 +1,9 @@
 # chains: holds the functions used by quicks and the chains
+import functools
+import itertools
+
 from flax.common import attrdict, flax_print
-from flax.funcs import permutations, iterable
+from flax.funcs import permutations, iterable, sliding_window
 
 
 def arities(links):
@@ -150,37 +153,94 @@ def ntimes(links, args, cumulative=False):
     return c_res if cumulative else res
 
 
-def qfilter(links, outmost_links, i, inverse=False, permutation=False):
-    # qfilter: filter quick with optional inverse or permuting the argument
-    res = [attrdict(arity=links[0].arity or 1)]
-
-    # handle inverse
-    if inverse:
-        inv = lambda x: not x
+def ffilter(links, *args, inverse=False, permutation=False):
+    # ffilter: filter with optional inverse or permuting the argument
+    x = iterable(args[-1], range_=True)
+    if len(args) == 2:
+        w = args[0]
     else:
-        inv = lambda x: x
+        w = None
 
-    # handle permutation
     if permutation:
-        permute = lambda x: permutations(x)
-    else:
-        permute = lambda x: x
+        x = permutations(x)
 
     if links[0].arity == 0:
-        res[0].call = lambda x: list(
+        return list(
             filter(
-                lambda a: inv(a == links[0].call()), permute(iterable(x, range_=True))
+                lambda a: a != links[0].call() if inverse else a == links[0].call(), x
             )
         )
     else:
-        res[0].call = lambda w=None, x=None: list(
+        return list(
             filter(
-                lambda a: inv(variadic_link(links[0], (a, x))),
-                permute(iterable(w, range_=True)),
+                lambda a: not variadic_link(links[0], (a, w))
+                if inverse
+                else variadic_link(links[0], (a, w)),
+                x,
             )
         )
 
-    return res
+
+def fold(links, *args, right=False, initial=False):
+    # fold: fold over args
+    x = iterable(args[-1])
+    if len(args) == 2:
+        w = args[0]
+    else:
+        w = None
+
+    if right:
+        x = x[::-1]
+        call = lambda w, x: variadic_link(links[0], (x, w), force_dyad=True)
+    else:
+        call = lambda w, x: variadic_link(links[0], (w, x), force_dyad=True)
+
+    if len(links) == 1:
+        if initial:
+            return functools.reduce(call, x, w)
+        else:
+            return functools.reduce(call, x)
+    else:
+        if initial:
+            return [
+                functools.reduce(call, z, w) for z in sliding_window(x, links[1].call())
+            ]
+        else:
+            return [
+                functools.reduce(call, z) for z in sliding_window(x, links[1].call())
+            ]
+
+
+def scan(links, *args, right=False, initial=False):
+    # scan: scan over args
+    x = iterable(args[-1])
+    if len(args) == 2:
+        w = args[0]
+    else:
+        w = None
+
+    if right:
+        x = x[::-1]
+        call = lambda w, x: variadic_link(links[0], (x, w), force_dyad=True)
+    else:
+        call = lambda w, x: variadic_link(links[0], (w, x), force_dyad=True)
+
+    if len(links) == 1:
+        if initial:
+            return itertools.accumulate(call, x, initial=w)
+        else:
+            return itertools.accumulate(call, x)
+    else:
+        if initial:
+            return [
+                itertools.accumulate(call, z, initial=w)
+                for z in sliding_window(x, links[1].call())
+            ]
+        else:
+            return [
+                itertools.accumulate(call, z)
+                for z in sliding_window(x, links[1].call())
+            ]
 
 
 def variadic_link(link, args):
@@ -192,6 +252,9 @@ def variadic_link(link, args):
     if link.arity == 0:
         return link.call()
     elif link.arity == 1:
-        return link.call(args[0])
+        if force_dyad:
+            return [args[0], link.call(args[1])]
+        else:
+            return link.call(args[0])
     elif link.arity == 2:
         return link.call(args[0], args[1])
