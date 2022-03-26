@@ -5,7 +5,7 @@ import itertools
 import flax.common
 from flax.common import attrdict, flax_print, flax_string
 from flax.error import debug
-from flax.funcs import permutations, iterable, sliding_window, split, flatten
+from flax.funcs import permutations, iterable, sliding_window, split, flatten, suffixes
 
 
 def apply_at(link, indicies, *args):
@@ -240,6 +240,20 @@ def ntimes(links, args, cumulative=False):
         x = w
     return c_res if cumulative else res
 
+
+def quick_chain(arity, min_length):
+    return attrdict(
+        condition=(lambda links: len(links) >= min_length and links[0].arity == 0)
+        if arity == 0
+        else lambda links: len(links)
+        - sum([leading_nilad(x) for x in suffixes(links)])
+        >= min_length,
+        qlink=lambda links, outer_links, i: [
+            attrdict(
+                arity=arity, call=lambda x=None, y=None: variadic_chain(links, x, y)
+            )
+        ],
+    )
 
 def scan(links, *args, right=False, initial=False):
     # scan: scan over args
