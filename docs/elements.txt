@@ -1,0 +1,22 @@
++ Add
+- Sub
+× Mul
+÷ Divide
+= Equal
+≠ Not equal
+# Length
+* Power
+% Moduluo
+& Bitwise and
+| Bitwise or
+^ Bitwise xor
+~ Bitwise not
+A absolute value
+B to binary
+C complement
+D to digits
+H head popping
+M square
+N negate
+P permutations
+T tail
