@@ -5,7 +5,9 @@ from prompt_toolkit import print_formatted_text, HTML
 
 def error(msg, exit_status=1, prefix="ERROR: "):
     # error: errors with msg and optional exit_status
-    print_formatted_text(HTML("<ansired>" + prefix + msg + "</ansired>"), file=sys.stderr)
+    print_formatted_text(
+        HTML("<ansired>" + prefix + msg + "</ansired>"), file=sys.stderr
+    )
     exit(exit_status)
 
 
