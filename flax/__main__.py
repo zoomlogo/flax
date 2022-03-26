@@ -13,17 +13,14 @@ __all__ = ["flax_run"]
 
 # function for running flax
 def flax_run(code, args):
-    try:
-        tokens = tokenise(code)
-        if flax.common.DEBUG:
-            debug("tokens: " + tokens)
-        parsed = parse(tokens)
-        if flax.common.DEBUG:
-            debug("parsed: " + parsed)
-            debug("main chain: " + parsed[-1])
-        flax_print(variadic_chain(parsed[-1] if parsed else "", args))
-    except KeyboardInterrupt:
-        error("KeyboardInterrupt", 130)
+    tokens = tokenise(code)
+    if flax.common.DEBUG:
+        debug("tokens: " + tokens)
+    parsed = parse(tokens)
+    if flax.common.DEBUG:
+        debug("parsed: " + parsed)
+        debug("main chain: " + parsed[-1])
+    flax_print(variadic_chain(parsed[-1] if parsed else "", args))
 
 
 sys.argv = sys.argv[1:]
@@ -51,9 +48,21 @@ if read_from_file:
         error(f'File "{sys.argv[0]}" not found.', 66)
         exit(66)
 
-    sys.argv = sys.argv[1:]
-    args = [eval(arg) for arg in sys.argv]
-    args = [to_chars(arg) if type(arg) == str else arg for arg in sys.argv]
-    flax_eval(code, args)
+    try:
+        sys.argv = sys.argv[1:]
+        args = [eval(arg) for arg in sys.argv]
+        args = [to_chars(arg) if type(arg) == str else arg for arg in sys.argv]
+        flax_eval(code, args)
+    except KeyboardInterrupt:
+        error("KeyboardInterrupt", 130)
 else:
-    error("'nyi")
+    # repl
+    try:
+        while True:
+            code = input("      ")
+            args = [a.strip() for a in input(">>> ").split("|") if a != ""]
+            args = [eval(arg) for arg in sys.argv]
+            args = [to_chars(arg) if type(arg) == str else arg for arg in sys.argv]
+            flax_eval(code, args)
+    except KeyboardInterrupt:
+        error("KeyboardInterrupt", 130)
