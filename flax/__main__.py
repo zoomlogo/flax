@@ -9,6 +9,8 @@ from flax.lexer import tokenise
 from flax.parser import parse
 import flax.common
 
+from prompt_toolkit import PromptSession
+
 __all__ = ["flax_run"]
 
 # function for running flax
@@ -58,9 +60,11 @@ if read_from_file:
 else:
     # repl
     try:
+        code_session = PromptSession()
+        input_session = PromptSession()
         while True:
-            code = input("      ")
-            args = [a.strip() for a in input(">>> ").split("|") if a != ""]
+            code = code_session.prompt("      ")
+            args = [a.strip() for a in input_session.prompt(">>> ").split("|") if a != ""]
             args = [eval(arg) for arg in sys.argv]
             args = [to_chars(arg) if type(arg) == str else arg for arg in sys.argv]
             flax_run(code, args)
