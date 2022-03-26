@@ -281,7 +281,7 @@ def to_bin(x):
 
 def to_chars(x):
     # to_chars: convert x to list of ints
-    return [ord(v) for v in x]
+    return [ord(a) for a in x]
 
 
 def to_digits(x):
