@@ -7,3 +7,8 @@ def error(msg, exit_status=1):
     # error: errors with msg and optional exit_status
     print_formatted_text(HTML("<ansired>" + msg + "</ansired>"), file=sys.stderr)
     exit(exit_status)
+
+
+def debug(msg):
+    # debug: log a debug message to stderr
+    print_formatted_text(HTML("<ansiyellow>" + msg + "</ansiyellow>"), file=sys.stderr)

@@ -1,10 +1,8 @@
 # parser: holds the main components of the flax parser
 from flax.error import error
-from flax.interpreter import atoms
-from flax.interpreter import quicks
-from flax.interpreter import train_separators
-from flax.interpreter import create_chain
 from flax.common import attrdict, mpc, mpf
+from flax.builtins import atoms, quicks, train_separators
+from flax.chains import create_chain
 
 from flax.lexer import *
 
