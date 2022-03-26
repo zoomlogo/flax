@@ -1,4 +1,8 @@
 # builtins: holds the builtins and some constants for the lexer
+import operator
+from flax.common import mpc, mpf, inf, mp, attrdict
+from flax.funcs import *
+from flax.chains import *
 
 # constants
 COMMENT = "⍝"
