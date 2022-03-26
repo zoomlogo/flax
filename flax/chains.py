@@ -2,7 +2,9 @@
 import functools
 import itertools
 
-from flax.common import attrdict, flax_print
+import flax.common
+from flax.common import attrdict, flax_print, flax_string
+from flax.error import debug
 from flax.funcs import permutations, iterable, sliding_window, split, flatten
 
 
@@ -58,7 +60,13 @@ def dyadic_chain(chain, w, x):
     else:
         λ = x
 
+    if flax.common.DEBUG:
+        debug("in dyadic chain | w, x ← " + flax_string(w) + ", " + flax_string(x))
+
     while chain:
+        if flax.common.DEBUG:
+            debug("λ: " + flax_string(λ))
+
         if arities(chain[-3:]) == [0, 2, 2] and trailing_nilad(chain[:-2]):
             λ = chain[-2].call(chain[-3].call(), chain[-1].call(w + λ))
             chain = chain[:-3]
@@ -173,8 +181,14 @@ def monadic_chain(chain, x):
 
             init = False
 
+            if flax.common.DEBUG:
+                debug("in monadic chain | x ← " + flax_string(x))
+
         if not chain:
             break
+
+        if flax.common.DEBUG:
+            debug("λ: " + flax_string(λ))
 
         if arities(chain[-2:]) == [1, 2]:
             λ = chain[-1].call(chain[-2].call(x), λ)
@@ -206,6 +220,7 @@ def monadic_chain(chain, x):
 
 def niladic_chain(chain):
     # niladic_chain: evaluate a niladic chain
+    debug("in niladic chain")
     if not chain or chain[-1].arity > 0:
         return monadic_chain(chain, 0)
     return monadic_chain(chain[:-1], chain[-1].call())
@@ -274,7 +289,7 @@ def sort(links, *args, i):
     return sum(res, []) if len(links) == 2 else res
 
 
-def variadic_chain(chain, *args):
+def variadic_chain(chain, args):
     args = list(filter(None.__ne__, args))
     if len(args) == 0:
         return niladic_chain(chain)
