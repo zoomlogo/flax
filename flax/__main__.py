@@ -16,7 +16,8 @@ __all__ = ["flax_run"]
 def flax_run(code, args):
     try:
         tokens = tokenise(code)
-        if flax.common.DEBUG: debug("tokens: " + tokens)
+        if flax.common.DEBUG:
+            debug("tokens: " + tokens)
         parsed = parse(tokens)
         if flax.common.DEBUG:
             debug("parsed: " + parsed)
