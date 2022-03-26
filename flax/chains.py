@@ -243,7 +243,7 @@ def scan(links, *args, right=False, initial=False):
             ]
 
 
-def variadic_link(link, args):
+def variadic_link(link, args, force_dyad=False):
     # call link with args
     args = list(filter(None.__ne__, args))
     if link.arity == -1:
