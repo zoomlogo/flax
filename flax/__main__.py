@@ -52,7 +52,7 @@ if read_from_file:
         sys.argv = sys.argv[1:]
         args = [eval(arg) for arg in sys.argv]
         args = [to_chars(arg) if type(arg) == str else arg for arg in sys.argv]
-        flax_eval(code, args)
+        flax_run(code, args)
     except KeyboardInterrupt:
         error("KeyboardInterrupt", 130)
 else:
@@ -63,6 +63,6 @@ else:
             args = [a.strip() for a in input(">>> ").split("|") if a != ""]
             args = [eval(arg) for arg in sys.argv]
             args = [to_chars(arg) if type(arg) == str else arg for arg in sys.argv]
-            flax_eval(code, args)
+            flax_run(code, args)
     except KeyboardInterrupt:
         error("KeyboardInterrupt", 130)
