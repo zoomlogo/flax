@@ -6,6 +6,7 @@ from flax.common import attrdict, flax_print
 from flax.funcs import permutations, iterable, sliding_window, split, flatten
 
 def apply_at(link, indicies, *args):
+    # apply_at: apply link at indicies
     x = iterable(args[-1])
     if len(args) == 2:
         w = args[0]
