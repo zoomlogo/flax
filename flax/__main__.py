@@ -64,7 +64,9 @@ else:
         input_session = PromptSession()
         while True:
             code = code_session.prompt("      ")
-            args = [a.strip() for a in input_session.prompt(">>> ").split("|") if a != ""]
+            args = [
+                a.strip() for a in input_session.prompt(">>> ").split("|") if a != ""
+            ]
             args = [eval(arg) for arg in sys.argv]
             args = [to_chars(arg) if type(arg) == str else arg for arg in sys.argv]
             flax_run(code, args)
