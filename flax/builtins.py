@@ -20,12 +20,7 @@ ZERO = "0"
 DIGITS = ZERO + "123456789" + DECIMAL_POINT + COMPLEX_DELIMETER + NEGATIVE_SIGN
 
 # dicts
-atoms = {
-    "+": attrdict(arity=2, call=vecc(operator.add)),
-    "×": attrdict(arity=2, call=vecc(operator.mul)),
-    "C": attrdict(arity=1, call=vecc(lambda x: 1 - x)),
-    "⍴": attrdict(arity=2, call=reshape),
-}
+atoms = {}
 
 quicks = {}
 
