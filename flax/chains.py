@@ -5,6 +5,19 @@ import itertools
 from flax.common import attrdict, flax_print
 from flax.funcs import permutations, iterable, sliding_window, split, flatten
 
+def apply_at(link, indicies, *args):
+    x = iterable(args[-1])
+    if len(args) == 2:
+        w = args[0]
+    else:
+        w = None
+    
+    indicies = flatten(iterable(indicies))
+    for i in indicies:
+        i = int(i)
+        x[i % len(x)] = variadic_link(link, (x[i % len(x)]))
+    return x
+
 
 def arities(links):
     # arities: return the arities of the links
@@ -258,6 +271,15 @@ def sort(links, *args, i):
     res = list(sorted(x, key=lambda a: variadic_link(links[0], (w, a))))
     return sum(res, []) if len(links) == 2 else res
 
+def variadic_chain(chain, *args):
+    args = list(filter(None.__ne__, args))
+    if len(args) == 0:
+        return niladic_chain(chain)
+    elif len(args) == 1:
+        return monadic_chain(chain, *args)
+    else:
+        return dyadic_chain(chain, *args)
+
 
 def variadic_link(link, args, force_dyad=False):
     # call link with args
@@ -274,3 +296,25 @@ def variadic_link(link, args, force_dyad=False):
             return link.call(args[0])
     elif link.arity == 2:
         return link.call(args[0], args[1])
+
+def while_loop(link, cond, args, cumulative=False):
+    # while_loop: while condition is true apply link
+    res, x = args
+    if cumulative: c_res = [res]
+    while variadic_link(cond, (res, x)):
+        w = res
+        res = variadic_link(link, (w, x))
+        if cumulative: c_res.append(res)
+        x = w
+    return c_res if cumulative else res
+
+def while_not_unique(link, x, cumulative=False):
+    # while_not_unique: run link while the result is not equal to the previous result
+    res = link.call(x)
+    before = x
+    if cumulative: c_res = [res]
+    while res != before:
+        before = res
+        res = link.call(res)
+        if cumulative: c_res.append(res)
+    return c_res if cumulative else res
