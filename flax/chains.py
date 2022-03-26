@@ -245,8 +245,7 @@ def quick_chain(arity, min_length):
     return attrdict(
         condition=(lambda links: len(links) >= min_length and links[0].arity == 0)
         if arity == 0
-        else lambda links: len(links)
-        - sum([leading_nilad(x) for x in suffixes(links)])
+        else lambda links: len(links) - sum([leading_nilad(x) for x in suffixes(links)])
         >= min_length,
         qlink=lambda links, outer_links, i: [
             attrdict(
@@ -254,6 +253,7 @@ def quick_chain(arity, min_length):
             )
         ],
     )
+
 
 def scan(links, *args, right=False, initial=False):
     # scan: scan over args
