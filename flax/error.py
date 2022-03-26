@@ -9,6 +9,6 @@ def error(msg, exit_status=1):
     exit(exit_status)
 
 
-def debug(msg):
+def debug(msg, prefix="DEBUG: "):
     # debug: log a debug message to stderr
-    print_formatted_text(HTML("<ansiyellow>" + msg + "</ansiyellow>"), file=sys.stderr)
+    print_formatted_text(HTML("<ansiyellow>" + prefix + msg + "</ansiyellow>"), file=sys.stderr)
