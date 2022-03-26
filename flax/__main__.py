@@ -6,7 +6,6 @@ from flax.common import flax_print
 from flax.error import error, debug
 from flax.funcs import to_chars
 from flax.lexer import tokenise
-from flax.main import flax_eval, cli_repl
 from flax.parser import parse
 import flax.common
 
