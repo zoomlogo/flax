@@ -3,7 +3,7 @@ import functools
 import itertools
 
 from flax.common import attrdict, flax_print
-from flax.funcs import permutations, iterable, sliding_window
+from flax.funcs import permutations, iterable, sliding_window, split, flatten
 
 
 def arities(links):
@@ -67,6 +67,64 @@ def dyadic_chain(chain, w, x):
             λ = chain[-1].call()
             chain = chain[:-1]
     return λ
+
+
+def ffilter(links, *args, inverse=False, permutation=False):
+    # ffilter: filter with optional inverse or permuting the argument
+    x = iterable(args[-1], range_=True)
+    if len(args) == 2:
+        w = args[0]
+    else:
+        w = None
+
+    if permutation:
+        x = permutations(x)
+
+    if links[0].arity == 0:
+        return list(
+            filter(
+                lambda a: a != links[0].call() if inverse else a == links[0].call(), x
+            )
+        )
+    else:
+        return list(
+            filter(
+                lambda a: not variadic_link(links[0], (a, w))
+                if inverse
+                else variadic_link(links[0], (a, w)),
+                x,
+            )
+        )
+
+
+def fold(links, *args, right=False, initial=False):
+    # fold: fold over args
+    x = iterable(args[-1])
+    if len(args) == 2:
+        w = args[0]
+    else:
+        w = None
+
+    if right:
+        x = x[::-1]
+        call = lambda w, x: variadic_link(links[0], (x, w), force_dyad=True)
+    else:
+        call = lambda w, x: variadic_link(links[0], (w, x), force_dyad=True)
+
+    if len(links) == 1:
+        if initial:
+            return functools.reduce(call, x, w)
+        else:
+            return functools.reduce(call, x)
+    else:
+        if initial:
+            return [
+                functools.reduce(call, z, w) for z in sliding_window(links[1].call(), x)
+            ]
+        else:
+            return [
+                functools.reduce(call, z) for z in sliding_window(links[1].call(), x)
+            ]
 
 
 def trailing_nilad(chain):
@@ -153,64 +211,6 @@ def ntimes(links, args, cumulative=False):
     return c_res if cumulative else res
 
 
-def ffilter(links, *args, inverse=False, permutation=False):
-    # ffilter: filter with optional inverse or permuting the argument
-    x = iterable(args[-1], range_=True)
-    if len(args) == 2:
-        w = args[0]
-    else:
-        w = None
-
-    if permutation:
-        x = permutations(x)
-
-    if links[0].arity == 0:
-        return list(
-            filter(
-                lambda a: a != links[0].call() if inverse else a == links[0].call(), x
-            )
-        )
-    else:
-        return list(
-            filter(
-                lambda a: not variadic_link(links[0], (a, w))
-                if inverse
-                else variadic_link(links[0], (a, w)),
-                x,
-            )
-        )
-
-
-def fold(links, *args, right=False, initial=False):
-    # fold: fold over args
-    x = iterable(args[-1])
-    if len(args) == 2:
-        w = args[0]
-    else:
-        w = None
-
-    if right:
-        x = x[::-1]
-        call = lambda w, x: variadic_link(links[0], (x, w), force_dyad=True)
-    else:
-        call = lambda w, x: variadic_link(links[0], (w, x), force_dyad=True)
-
-    if len(links) == 1:
-        if initial:
-            return functools.reduce(call, x, w)
-        else:
-            return functools.reduce(call, x)
-    else:
-        if initial:
-            return [
-                functools.reduce(call, z, w) for z in sliding_window(x, links[1].call())
-            ]
-        else:
-            return [
-                functools.reduce(call, z) for z in sliding_window(x, links[1].call())
-            ]
-
-
 def scan(links, *args, right=False, initial=False):
     # scan: scan over args
     x = iterable(args[-1])
@@ -234,13 +234,29 @@ def scan(links, *args, right=False, initial=False):
         if initial:
             return [
                 itertools.accumulate(call, z, initial=w)
-                for z in sliding_window(x, links[1].call())
+                for z in sliding_window(links[1].call(), x)
             ]
         else:
             return [
                 itertools.accumulate(call, z)
-                for z in sliding_window(x, links[1].call())
+                for z in sliding_window(links[1].call(), x)
             ]
+
+
+def sort(links, *args, i):
+    # sort: sort args according to links
+    x = iterable(args[-1], digits=True)
+    if len(args) == 2:
+        w = args[0]
+    else:
+        w = None
+
+    if len(links) == 2:
+        # special nilad case
+        x = split(links[1].call(), x)
+
+    res = list(sorted(x, key=lambda a: variadic_link(links[0], (w, a))))
+    return sum(res, []) if len(links) == 2 else res
 
 
 def variadic_link(link, args, force_dyad=False):
