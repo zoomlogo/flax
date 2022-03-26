@@ -40,7 +40,7 @@ def create_chain(chain, arity=-1, isForward=True):
         arity=arity,
         chain=chain,
         call=lambda w=None, x=None: variadic_chain(
-            chain, *(isForward and (w, x) or (x, w))
+            chain, (isForward and (w, x) or (x, w))
         ),
     )
 
@@ -220,7 +220,8 @@ def monadic_chain(chain, x):
 
 def niladic_chain(chain):
     # niladic_chain: evaluate a niladic chain
-    debug("in niladic chain")
+    if flax.common.DEBUG:
+        debug("in niladic chain")
     if not chain or chain[-1].arity > 0:
         return monadic_chain(chain, 0)
     return monadic_chain(chain[:-1], chain[-1].call())
