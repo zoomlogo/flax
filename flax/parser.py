@@ -1,15 +1,14 @@
+# parser: holds the main components of the flax parser
 from flax.error import error
-from flax.interpreter import attrdict
-from flax.interpreter import atoms
-from flax.interpreter import quicks
-from flax.interpreter import train_separators
-from flax.interpreter import create_chain
-from flax.interpreter import mp
+from flax.common import attrdict, mpc, mpf
+from flax.builtins import atoms, quicks, train_separators
+from flax.chains import create_chain
 
 from flax.lexer import *
 
 
 def arrayify(arr_list):
+    # arrayify: convert to python list
     array = []
     for x in arr_list:
         if x[0] == TOKEN_TYPE.NUMBER:
@@ -17,6 +16,7 @@ def arrayify(arr_list):
         elif x[0] == TOKEN_TYPE.LIST:
             array.append(arrayify(x[1]))
         elif x[0] == TOKEN_TYPE.STRING:
+            # handle backslashes
             array.append(
                 [ord(c) for c in x[1].replace("\\n", "\n").replace("\\'", "'")]
             )
@@ -24,27 +24,28 @@ def arrayify(arr_list):
 
 
 def numberify(x):
+    # numberify: convert to a mp number / python number
     number = x.replace("¯", "-")
     if "j" in number:
         if len(number) == 1:
-            return mp.mpc(0, 1)
+            return mpc(0, 1)
         else:
             parts = number.split("j")
             if parts[0] == "":
                 parts[0] = "0"
             if parts[1] == "":
                 parts[1] = "1"
-            return mp.mpc(numberify(parts[0]), numberify(parts[1]))
+            return mpc(numberify(parts[0]), numberify(parts[1]))
     elif "." in number:
         if len(number) == 1:
-            return mp.mpf("0.5")
+            return mpf("0.5")
         else:
             parts = number.split(".")
             if parts[0] == "":
                 parts[0] = "0"
             if parts[1] == "":
                 parts[1] = "5"
-            return mp.mpf(".".join(parts))
+            return mpf(".".join(parts))
     else:
         if "-" in number:
             if len(number) == 1:
@@ -56,7 +57,7 @@ def numberify(x):
 
 
 def parse(tokens):
-
+    # parse: parse and group tokens
     tokens = split_on_newlines(tokens)
     tokens = [*filter([].__ne__, tokens)]
     trains = [[] for _ in tokens]
@@ -100,12 +101,13 @@ def parse(tokens):
                 elif token[0] == TOKEN_TYPE.ATOM:
                     stack.append(atoms[token[1]])
                 elif token[0] == TOKEN_TYPE.QUICK:
+                    # handle quicks
                     popped = []
                     while not quicks[token[1]].condition(popped) and (stack or trains):
                         if stack == [] and chains == []:
                             if token[1] in "ⁿ":
                                 break
-                            error(f'ERROR: Not enough links to pop for "{token[1]}"')
+                            error(f'Not enough links to pop for "{token[1]}"')
                         popped.insert(0, (stack or chains).pop())
                     stack += quicks[token[1]].qlink(popped, trains, index)
             chains.append(create_chain(stack, arity, is_forward))
@@ -113,6 +115,7 @@ def parse(tokens):
 
 
 def split_on_newlines(tokens):
+    # split_on_newlines: split tokens on newlines
     lines = []
     current = []
     for token in tokens:
@@ -126,6 +129,7 @@ def split_on_newlines(tokens):
 
 
 def split_on_separators(tokens):
+    # split_on_separators: split tokens on chain separators
     separators = []
     current = []
     for token in tokens:

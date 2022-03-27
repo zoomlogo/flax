@@ -45,6 +45,7 @@ Links are atoms, or group of atoms processed by quicks.
 ### Chains
 Chains are a sequence of links.
 Chains can be called niladically, monadically or dyadically, depending on the number of arguments a chain was called with.
+Chains are evaluated from right to left.
 
 Certain rules are followed when chains are processed.
 
@@ -55,38 +56,38 @@ You can think of it as a chain that takes no arguments (i.e. is niladic) because
 Certain chaining rules depend on this.
 
 #### Niladic chains
-- If the chain starts with a nilad say `1`, the accumulator (we will call it `λ`) is that nilad.
+- If the chain ends with a nilad say `1`, the accumulator (we will call it `λ`) is that nilad.
 `λ = 1`.
 - Otherwise `λ = 0`.
 
 Now the rest of the chain is evaluated monadically.
 
 #### Monadic chains
-- If the chain starts with an LCC, `1 ...` then `λ = 1` and the rest of the chain is evaluated. 
-- Otherwise `λ = α` (`α` is the left argument).
+- If the chain starts with an LCC, `... 1` then `λ = 1` and the rest of the chain is evaluated.
+- Otherwise `λ = ⍵` (`⍵` is the right argument).
 
-Now one by one the atoms are considered, and are applied to the accumulator `λ` according to this table:
+Now one by one the atoms are considered from right to left, and are applied to the accumulator `λ` according to this table:
 Code|New λ|Arities
 ----|-----|-------
-`+ F`|`λ + F(⍺)`| 2, 1
-`+ 1`|`λ + 1`| 2, 0
+`F +`|`F(⍵) + λ`| 1, 2
 `1 +`|`1 + λ`| 0, 2
-`+`|`λ + ⍺`| 2
+`+ 1`|`λ + 1`| 2, 0
+`+`|`⍵ + λ`| 2
 `F`|`F(λ)`| 1
 
 #### Dyadic chains
-- If the chain starts with an LCC `1 ...` then `λ = 1`  and the rest of the chain is evaluated.
-- If the chain starts with 3 dyads `+ × ÷` then `λ = ⍺ + ⍵` (`⍵` is the right argument) and the rest of the chain is evaluated.
-- Otherwise `λ = ⍺`.
+- If the chain starts with an LCC `... 1` then `λ = 1`  and the rest of the chain is evaluated.
+- If the chain starts with 3 dyads `+ × ÷` then `λ = ⍺ ÷ ⍵` (`⍺` is the left argument) and the rest of the chain is evaluated.
+- Otherwise `λ = ⍵`.
 
-Now one by one the atoms are considered, and are applied to the accumulator `λ` according to this table:
+Now one by one the atoms are considered from right to left, and are applied to the accumulator `λ` according to this table:
 Code|New λ|Arities
 ----|-----|-------
-`+ × 1`| `(λ + ⍵) × 1`| 2, 2, 0₁
-`+ ×`| `λ + (⍺ × ⍵)`| 2, 2
-`+ 1`|`λ + 1`| 2, 0
+`1 × +`| `1 × (⍺ + λ)`| 0₁, 2, 2 
+`× +`| `(⍵ × ⍺) + λ`| 2, 2
 `1 +`|`1 + λ`| 0, 2
-`+`|`λ + ⍵`| 2
+`+ 1`|`λ + 1`| 2, 0
+`+`|`⍺ + λ`| 2
 `F`|`F(λ)`| 1
 
 ₁ The rule only applies if the nilad is part of an LCC.
