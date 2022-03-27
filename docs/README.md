@@ -4,4 +4,4 @@ Documentation for flax.
 ## Contents
 - [Introduction](./Introduction.md)
 - Explained Examples
-- Elements list / Search (txt)
+- [Elements list (txt)](./elements.txt)
