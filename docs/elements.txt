@@ -110,8 +110,8 @@ z  2 zip
 ₃  0 16 / 4th arg
 ₄  0 32 / 5th arg
 ₅  0 64 / 6th arg
-₆  0 get registor
-₇  0 26
+₆  0 26 / 7th arg
+₇  0 get register
 ₈  0 read a character
 ₉  0 read a line
 ₍  0 chains left argument
