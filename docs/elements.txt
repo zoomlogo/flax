@@ -39,6 +39,8 @@ X  1 split into 2
 Y  1 elements at even indicies
 Z  1 transpose
 ^  2 bitwise xor
+a  2
+b  2
 c  2 binomial coefficient
 d  2 divmod
 e  2 join each of one to other
@@ -53,7 +55,9 @@ r  2 range
 s  2 split into chunks
 t  2 tail
 u  2 find for each
-x  2 windows
+v  2
+w  2 windows
+x  2
 y  2 join
 z  2 zip
 {  1 decrement
