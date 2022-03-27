@@ -104,18 +104,18 @@ z  2 zip
 ị  2 find
 Ọ  1 reverse every other
 ọ  2 order
-₀  0 100
-₁  0 [0,1]
-₂  0 10
-₃  0 16
-₄  0 32
-₅  0 54
+₀  0 100 / 1st arg
+₁  0 [0,1] / 2nd arg
+₂  0 10 / 3rd arg
+₃  0 16 / 4th arg
+₄  0 32 / 5th arg
+₅  0 64 / 6th arg
 ₆  0 get registor
 ₇  0 26
 ₈  0 read a character
 ₉  0 read a line
-₍  0 chain's left argument
-₎  0 chain's right argument
+₍  0 chains left argument
+₎  0 chains right argument
 ∆  1 maximum
 ∇  1 minimum
 ∊  2 in
