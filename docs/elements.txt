@@ -51,7 +51,8 @@ i  2 index into
 l  2 lcm
 n  2 floor div
 o  2 split at occurence
-r  2 range
+r  2 range inclusive
+ṙ  2 range exclusive
 s  2 split into chunks
 t  2 tail
 u  2 find for each
