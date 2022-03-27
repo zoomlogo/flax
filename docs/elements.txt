@@ -1,22 +1,37 @@
-+   add
--   sub
-×   mul
-÷   divide
-=   equal
-≠   not equal
-#   length
-*   power
-%   moduluo
-&   bitwise and
-|   bitwise or
-^   bitwise xor
-~   bitwise not
-A   absolute value
-B   to binary
-C   complement
-D   to digits
-H   head popping
-M   square
-N   negate
-P   permutations
-T   tail
++  2 add
+-  2 sub
+×  2 mul
+÷  2 divide
+=  2 equal
+≠  2 not equal
+*  2 power
+%  2 moduluo
+&  2 bitwise and
+|  2 bitwise or
+^  2 bitwise xor
+#  1 length
+~  1 bitwise not
+A  1 absolute value
+B  1 to binary
+C  1 complement
+D  1 to digits
+E  1 all equal
+F  1 flatten
+G  1 group equal elements by indicies
+H  1 head popping
+I  1 increments
+J  1 range of len
+K  1 cumulative sum
+M  1 square
+N  1 negate
+O  1 identity
+P  1 permutations
+Q  1 half
+R  1 reverse on depth 1
+S  1 sort
+T  1 tail
+U  1 unique
+W  1 wrap
+X  1 split into 2
+Y  1 elements at even indicies
+Z  1 transpose
