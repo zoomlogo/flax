@@ -73,7 +73,7 @@ Z  1 transpose
 ₂  0 10
 ₃  0 16
 ₄  0 32
-₅  0 54
+₅  0 64
 ₆  0 get registor
 ₇  0 26
 ₈  0 read a character
