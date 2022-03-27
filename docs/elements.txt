@@ -142,3 +142,6 @@ z  2 zip
 ⍪  2 prepend
 ⍳  1 iota
 ⍴  2 reshape
+¨  Q Map over right argument
+'  Q Map over left argument
+ᵖ  Q Map over prefixes
