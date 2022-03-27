@@ -66,7 +66,7 @@ z  2 zip
 ~  1 bitwise not
 ¬  1 not
 ±  1 sign
-·  2 cartesian product
+•  2 cartesian product
 Ç  1 split into chunks of length 2
 Ð  1 double
 ×  2 mul
