@@ -8,31 +8,70 @@
 =  2 equal
 >  2 more
 A  1 absolute value
+Ạ  1 all
+Ȧ  1 any
+Ă  1 any and all
 B  1 to binary
+Ḃ  1 from binary
+Ḅ  1 bit
 C  1 complement
+Ċ  1 cube
+Ç  1 split into chunks of length 2
 D  1 to digits
+Ḋ  1 from digits
+Ḍ  1 divisors
+Ð  1 double
 E  1 all equal
 F  1 flatten
+Ḟ  1 indices of falsey
 G  1 group equal elements by indicies
+Ġ  1 group adjacent equal
 H  1 head popping
 I  1 increments
-J  1 range of len
+⍳  1 iota
+J  1 range of length
 K  1 cumulative sum
-L  1
+L  1 last popping
 M  1 square
-N  1 negate
+N  1 neck
+Ṅ  1 negate
 O  1 identity
+Ọ  1 reverse every other
 P  1 permutations
 Q  1 half
 R  1 reverse on depth 1
+Ṛ  1 reciprocal
 S  1 sort
+Ṡ  1 reverse sort
+Ṣ  1 sublists
 T  1 tail
+Ṫ  1 indicies of truthy
 U  1 unique
-V  1
+V  1 is prime
 W  1 wrap
 X  1 split into 2
 Y  1 elements at even indicies
+Ẏ  1 elements at odd indicies
+Σ  1 sum
+Π  1 product
 Z  1 transpose
+¬  1 not
+√  1 square root
+∇  1 minimum
+∆  1 maximum
+±  1 sign
+Θ  1 prepend zero
+⌽  1 reverse
+}  1 increment
+{  1 decrement
+⌊  1 floor
+⌈  1 ceil
+Ḳ  1 sum depth 1
+(  1 prefixes
+?  1 random floats
+⍋  1 grade up
+⍒  1 grade down
+)  1 suffixes
 ^  2 bitwise xor
 |  2 bitwise or
 ~  1 bitwise not
