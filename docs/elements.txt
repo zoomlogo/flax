@@ -5,7 +5,9 @@
 )  1 suffixes
 *  2 power
 +  2 add
+,  2 append
 -  2 sub
+/  2 repeat
 <  2 less
 =  2 equal
 >  2 more
@@ -32,48 +34,78 @@ S  1 sort
 T  1 tail
 U  1 unique
 V  1 is prime
-W  1 wrap
+W  1
 X  1 split into 2
 Y  1 elements at even indicies
 Z  1 transpose
 ^  2 bitwise xor
+c  2 binomial coefficient
+d  2 divmod
+e  2 join each of one to other
+f  2 filter drop
+g  2 gcd
+h  2 head
+i  2 index into
+l  2 lcm
+n  2 floor div
+o  2 split at occurence
+r  2 range
+s  2 split into chunks
+t  2 tail
+u  2 find for each
+x  2 windows
+y  2 join
+z  2 zip
 {  1 decrement
 |  2 bitwise or
 }  1 increment
 ~  1 bitwise not
 ¬  1 not
 ±  1 sign
+·  2 cartesian product
 Ç  1 split into chunks of length 2
 Ð  1 double
 ×  2 mul
 ÷  2 divide
 Ă  1 any and all
 Ċ  1 cube
+ċ  2 count occerence
 Ġ  1 group adjacent equal
+Ń  1 split on newlines
+Ň  1 join on newlines
+Ś  1 split on spaces
+Š  1 join on spaces
+Ż  1 prepend zero
+ż  2 transpose with filler
 Ȧ  1 any
-Θ  1 prepend zero
 Π  1 product
 Σ  1 sum
 Ḃ  1 from binary
 Ḅ  1 bit
 Ḋ  1 from digits
 Ḍ  1 divisors
+ḍ  2 is divisible
 Ḟ  1 indices of falsey
+ḟ  2 filter keep
 Ḳ  1 sum depth 1
+ḷ  2 find all
 Ṅ  1 negate
 Ṛ  1 reciprocal
 Ṡ  1 reverse sort
 Ṣ  1 sublists
 Ṫ  1 indicies of truthy
 Ẏ  1 elements at odd indicies
+Ẓ  1 zip with filler 0
 Ạ  1 all
+ị  2 find
 Ọ  1 reverse every other
+ọ  2 order
 ₀  0 100
 ₁  0 [0,1]
 ₂  0 10
 ₃  0 16
 ₄  0 32
-₅  0 64
+₅  0 54
 ₆  0 get registor
 ₇  0 26
 ₈  0 read a character
@@ -82,13 +114,26 @@ Z  1 transpose
 ₎  0 chain's right argument
 ∆  1 maximum
 ∇  1 minimum
+∊  2 in
 √  1 square root
+∧  2 and
+∨  2 or
 ≠  2 not equal
+≡  2 strictly equal
+≢  2 strictly not equal
 ≤  2 less or equal
 ≥  2 more or equal
+⊂  1 enclose
+⊆  1 enclose if not
+⊏  2 everyth element
+⊢  2 right
+⊣  2 left
+⋈  2 pair
 ⌈  1 ceil
 ⌊  1 floor
 ⌽  1 reverse
 ⍋  1 grade up
 ⍒  1 grade down
+⍪  2 prepend
 ⍳  1 iota
+⍴  2 reshape
