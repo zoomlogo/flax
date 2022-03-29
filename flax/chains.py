@@ -7,6 +7,28 @@ from flax.common import attrdict, flax_print, flax_string
 from flax.error import debug
 from flax.funcs import permutations, iterable, sliding_window, split, flatten, suffixes
 
+__all__ = [
+    "apply_at",
+    "arities",
+    "copy_to",
+    "create_chain",
+    "dyadic_chain",
+    "ffilter",
+    "fold",
+    "max_arity",
+    "monadic_chain",
+    "niladic_chain",
+    "ntimes",
+    "quick_chain",
+    "scan",
+    "sort",
+    "trailing_nilad",
+    "variadic_chain",
+    "variadic_link",
+    "while_loop",
+    "while_not_unique",
+]
+
 
 def apply_at(link, indicies, *args):
     # apply_at: apply link at indicies
@@ -148,11 +170,6 @@ def fold(links, *args, right=False, initial=False):
             return [
                 functools.reduce(call, z) for z in sliding_window(links[1].call(), x)
             ]
-
-
-def trailing_nilad(chain):
-    # trailing_nilad: if the chain is a trailing constant chain
-    return chain and arities(chain[::-1]) + [1] < [0, 2] * len(chain)
 
 
 def max_arity(links):
@@ -302,6 +319,11 @@ def sort(links, *args, i):
 
     res = list(sorted(x, key=lambda a: variadic_link(links[0], (w, a))))
     return sum(res, []) if len(links) == 2 else res
+
+
+def trailing_nilad(chain):
+    # trailing_nilad: if the chain is a trailing constant chain
+    return chain and arities(chain[::-1]) + [1] < [0, 2] * len(chain)
 
 
 def variadic_chain(chain, args):
