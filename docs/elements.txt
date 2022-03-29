@@ -110,7 +110,7 @@ z  2 zip
 ᵐ  Q 3 links as monad
 ᵔ  Q apply to neighbours
 ᵖ  Q Map over prefixes
-ᵝ  S call self
+ᵝ  Q call self
 ᵠ  Q 4 links as dyad
 ᶠ  Q filter keep
 ᶲ  Q 4 links as monad
@@ -142,7 +142,7 @@ z  2 zip
 ⁰  Q previous chain as nilad
 ⁴  Q next chain as monad
 ⁵  Q next chain as dyad
-⁷  S set register
+⁷  Q set register
 ⁺  Q max
 ⁻  Q min
 ⁼  Q is equal after applying
