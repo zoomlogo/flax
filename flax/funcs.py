@@ -7,6 +7,46 @@ import operator
 
 from flax.common import mp, mpc, mpf, inf
 
+__all__ = [
+    "depth",
+    "diagonals",
+    "divisors",
+    "fibonacci",
+    "find",
+    "find_all",
+    "find_sublist",
+    "flatten",
+    "from_bin",
+    "from_digits",
+    "grade_down",
+    "grade_up",
+    "group_equal",
+    "group_indicies",
+    "index_into",
+    "iota",
+    "iterable",
+    "join",
+    "mold",
+    "nprimes",
+    "order",
+    "permutations",
+    "prefixes",
+    "random",
+    "repeat",
+    "reshape",
+    "sliding_window",
+    "split",
+    "split_at",
+    "sublists",
+    "suffixes",
+    "to_bin",
+    "to_chars",
+    "to_digits",
+    "vec",
+    "vecc",
+    "where",
+]
+
 
 def depth(x):
     # depth: returns the depth of x
@@ -74,7 +114,7 @@ def from_bin(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 2**i
+        num += abs(b) * 2 ** i
         i += 1
     return num * sign
 
@@ -86,7 +126,7 @@ def from_digits(x):
     num = 0
     i = 0
     for b in x[::-1]:
-        num += abs(b) * 10**i
+        num += abs(b) * 10 ** i
         i += 1
     return num * sign
 
@@ -109,6 +149,17 @@ def grade_up(x):
     return flatten(grades)
 
 
+def group_equal(x):
+    # group_equal: group equal adjacent elements
+    res = []
+    for e in x:
+        if res and res[-1][0] == e:
+            res[-1].append(e)
+        else:
+            res.append([e])
+    return res
+
+
 def group_indicies(x):
     # group_indicies: groups indicies with equal values
     res = {}
@@ -121,15 +172,16 @@ def group_indicies(x):
     return [res[k] for k in sorted(res, key=eval)]
 
 
-def group_equal(x):
-    # group_equal: group equal adjacent elements
-    res = []
-    for e in x:
-        if res and res[-1][0] == e:
-            res[-1].append(e)
-        else:
-            res.append([e])
-    return res
+def index_into(w, x):
+    # index_into: index into x with w
+    x = iterable(x, digits=True)
+    w = int(w) if int(w) == w else w
+    if type(w) == int:
+        return x[w % len(x)]
+    elif type(w) == mpc:
+        return index_into(w.real, index_into(w.imag, x))
+    else:
+        return [index_into(mp.floor(w), x), index_into(mp.ceil(w), x)]
 
 
 def iota(x):
@@ -141,18 +193,6 @@ def iota(x):
     for e in x:
         res = split(res, int(e))
     return res[0]
-
-
-def index_into(w, x):
-    # index_into: index into x with w
-    x = iterable(x, digits=True)
-    w = int(w) if int(w) == w else w
-    if type(w) == int:
-        return x[w % len(x)]
-    elif type(w) == mpc:
-        return index_into(w.real, index_into(w.imag, x))
-    else:
-        return [index_into(mp.floor(w), x), index_into(mp.ceil(w), x)]
 
 
 def iterable(x, digits=False, range_=False):
@@ -256,6 +296,28 @@ def reshape(w, x):
         return [reshape(w[1:], x) for _ in range(w[0])]
 
 
+def sliding_window(w, x):
+    # sliding_window: windows of x of length w
+    x = iterable(x)
+    w = int(w)
+    if w < 0:
+        return vec(
+            lambda a: list(reversed(x)), list(more_itertools.sliding_window(x, -w))
+        )
+    else:
+        return vec(list, list(more_itertools.sliding_window(x, w)))
+
+
+def split(w, x):
+    # split: split x into chunks of w
+    return list(more_itertools.chunked(x, w))
+
+
+def split_at(w, x):
+    # split_at: split x at occurences of w
+    return list(more_itertools.split_at(x, lambda a: a == w))
+
+
 def sublists(x):
     # sublists: return all sublists of x
     sub = [[]]
@@ -291,33 +353,6 @@ def to_digits(x):
     ]
 
 
-def sliding_window(w, x):
-    # sliding_window: windows of x of length w
-    x = iterable(x)
-    w = int(w)
-    if w < 0:
-        return vec(
-            lambda a: list(reversed(x)), list(more_itertools.sliding_window(x, -w))
-        )
-    else:
-        return vec(list, list(more_itertools.sliding_window(x, w)))
-
-
-def split(w, x):
-    # split: split x into chunks of w
-    return list(more_itertools.chunked(x, w))
-
-
-def split_at(w, x):
-    # split_at: split x at occurences of w
-    return list(more_itertools.split_at(x, lambda a: a == w))
-
-
-def where(x):
-    # where: ngn/k's &
-    return flatten([[i] * e for i, e in enumerate(x)])
-
-
 def vec(fn, *args, lfull=True, rfull=True):
     # vec: vectorise fn over it's args
     if len(args) == 1:
@@ -344,3 +379,8 @@ def vec(fn, *args, lfull=True, rfull=True):
 def vecc(fn, lfull=True, rfull=True):
     # vecc: vec curried
     return lambda *args: vec(fn, *args, lfull=lfull, rfull=rfull)
+
+
+def where(x):
+    # where: ngn/k's &
+    return flatten([[i] * e for i, e in enumerate(x)])
