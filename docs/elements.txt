@@ -1,6 +1,7 @@
 #  1 length
 %  2 moduluo
 &  2 bitwise and
+'  Q Map over left argument
 (  1 prefixes
 )  1 suffixes
 *  2 power
@@ -52,7 +53,6 @@ l  2 lcm
 n  2 floor div
 o  2 split at occurence
 r  2 range inclusive
-ṙ  2 range exclusive
 s  2 split into chunks
 t  2 tail
 u  2 find for each
@@ -65,9 +65,9 @@ z  2 zip
 |  2 bitwise or
 }  1 increment
 ~  1 bitwise not
+¨  Q Map over right argument
 ¬  1 not
 ±  1 sign
-•  2 cartesian product
 Ç  1 split into chunks of length 2
 Ð  1 double
 ×  2 mul
@@ -85,6 +85,7 @@ z  2 zip
 Ȧ  1 any
 Π  1 product
 Σ  1 sum
+ᵖ  Q Map over prefixes
 Ḃ  1 from binary
 Ḅ  1 bit
 Ḋ  1 from digits
@@ -95,6 +96,7 @@ z  2 zip
 Ḳ  1 sum depth 1
 ḷ  2 find all
 Ṅ  1 negate
+ṙ  2 range exclusive
 Ṛ  1 reciprocal
 Ṡ  1 reverse sort
 Ṣ  1 sublists
@@ -105,6 +107,7 @@ z  2 zip
 ị  2 find
 Ọ  1 reverse every other
 ọ  2 order
+•  2 cartesian product
 ₀  0 100 / 1st arg
 ₁  0 [0,1] / 2nd arg
 ₂  0 10 / 3rd arg
@@ -142,6 +145,3 @@ z  2 zip
 ⍪  2 prepend
 ⍳  1 iota
 ⍴  2 reshape
-¨  Q Map over right argument
-'  Q Map over left argument
-ᵖ  Q Map over prefixes
