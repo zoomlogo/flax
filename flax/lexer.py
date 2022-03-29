@@ -1,7 +1,6 @@
 # lexer: holds the flax lexer
 import collections
 import enum
-import string
 
 from flax.builtins import *
 

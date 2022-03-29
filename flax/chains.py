@@ -250,7 +250,7 @@ def quick_chain(arity, min_length):
         >= min_length,
         qlink=lambda links, outer_links, i: [
             attrdict(
-                arity=arity, call=lambda x=None, y=None: variadic_chain(links, x, y)
+                arity=arity, call=lambda w=None, x=None: variadic_chain(links, (w, x))
             )
         ],
     )
