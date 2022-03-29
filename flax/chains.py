@@ -41,7 +41,7 @@ def apply_at(link, indicies, *args):
     indicies = flatten(iterable(indicies))
     for i in indicies:
         i = int(i)
-        x[i % len(x)] = variadic_link(link, (x[i % len(x)]))
+        x[i % len(x)] = variadic_link(link, (w, x[i % len(x)]))
     return x
 
 

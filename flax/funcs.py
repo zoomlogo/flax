@@ -212,7 +212,7 @@ def join(w, x):
     # join: w in between each elements of x
     w = itertools.cycle(iterable(w))
     x = iterable(x)
-    return flatten(zip(x, y))
+    return flatten(zip(x, w))
 
 
 def mold(w, x):
