@@ -1,7 +1,7 @@
 #  1 length
 %  2 moduluo
 &  2 bitwise and
-'  Q Map over left argument
+'  Q map / zipwith
 (  1 prefixes
 )  1 suffixes
 *  2 power
@@ -40,6 +40,7 @@ X  1 split into 2
 Y  1 elements at even indicies
 Z  1 transpose
 ^  2 bitwise xor
+`  Q scanl1
 a  2
 b  2
 c  2 binomial coefficient
@@ -65,9 +66,14 @@ z  2 zip
 |  2 bitwise or
 }  1 increment
 ~  1 bitwise not
-¨  Q Map over right argument
+¨  Q quick map
 ¬  1 not
+°  Q apply at
 ±  1 sign
+²  Q previous chain as dyad
+³  Q next chain as nilad
+´  Q foldl1
+¹  Q previous chain as monad
 Ç  1 split into chunks of length 2
 Ð  1 double
 ×  2 mul
@@ -83,9 +89,31 @@ z  2 zip
 Ż  1 prepend zero
 ż  2 transpose with filler
 Ȧ  1 any
+ˀ  Q ternary if
+ˇ  Q apply transpose apply again
+˘  Q self args / monad as dyad using left
+˙  Q links as nilad
+˜  Q swap args / monad as dyad using right
+˝  Q foldl
+ˢ  Q sort
 Π  1 product
 Σ  1 sum
+ᐣ  Q compose swap
+ᙾ  Q while not unique
+ᴰ  Q 2 links as dyad
+ᴹ  Q 2 links as monad
+ᴺ  Q all neighbours
+ᵀ  Q truthy indices after applying
+ᵂ  Q while
+ᵈ  Q 3 links as dyad
+ᵍ  Q filter drop
+ᵐ  Q 3 links as monad
+ᵔ  Q apply to neighbours
 ᵖ  Q Map over prefixes
+ᵝ  S call self
+ᵠ  Q 4 links as dyad
+ᶠ  Q filter keep
+ᶲ  Q 4 links as monad
 Ḃ  1 from binary
 Ḅ  1 bit
 Ḋ  1 from digits
@@ -107,7 +135,18 @@ z  2 zip
 ị  2 find
 Ọ  1 reverse every other
 ọ  2 order
+‘  Q each right
+’  Q each left
 •  2 cartesian product
+‶  Q foldr
+⁰  Q previous chain as nilad
+⁴  Q next chain as monad
+⁵  Q next chain as dyad
+⁷  S set register
+⁺  Q max
+⁻  Q min
+⁼  Q is equal after applying
+ⁿ  Q repeat n times
 ₀  0 100 / 1st arg
 ₁  0 [0,1] / 2nd arg
 ₂  0 10 / 3rd arg
@@ -139,6 +178,7 @@ z  2 zip
 ⋈  2 pair
 ⌈  1 ceil
 ⌊  1 floor
+⌜  Q outer product
 ⌽  1 reverse
 ⍋  1 grade up
 ⍒  1 grade down
