@@ -3,6 +3,8 @@
 #  1 length
 %  2 moduluo
 _∞ 0 infinity
+∞  1 to infinite list
+_N 0 infinite list of natural numbers
 &  2 bitwise and
 '  Q map / zipwith
 (  1 prefixes
