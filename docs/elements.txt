@@ -53,7 +53,7 @@
 ;Ḃ 1 bounce depth 1
 ;Ṗ 1 primes
 ;Ṡ 1 csc
-;Ṣ 1 sublists of permutations
+;$ 1 sublists of permutations
 ;Ṫ 1 cot
 ;Ạ 1 arcsin
 ;√ 1 integer square root
@@ -180,7 +180,7 @@ z  2 zip
 Ƥ  1 print as characters
 Ȧ  1 any
 ˀ  Q ternary if
-ˇ  Q apply transpose apply again
+ᵗ  Q apply transpose apply again
 ˘  Q self args / monad as dyad using left
 ˙  Q links as nilad
 ˜  Q swap args / monad as dyad using right
@@ -226,7 +226,7 @@ z  2 zip
 ṙ  2 range exclusive
 Ṛ  1 reciprocal
 Ṡ  1 reverse sort
-Ṣ  1 sublists
+$  1 sublists
 Ṫ  1 indicies of truthy
 Ẏ  1 elements at odd indicies
 Ẓ  1 zip with filler 0
