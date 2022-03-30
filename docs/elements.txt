@@ -1,3 +1,4 @@
+!  1 factorial
 "  S string delimeter
 #  1 length
 %  2 moduluo
