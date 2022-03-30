@@ -1,3 +1,4 @@
+"  S string delimeter
 #  1 length
 %  2 moduluo
 &  2 bitwise and
@@ -8,7 +9,18 @@
 +  2 add
 ,  2 append
 -  2 sub
+.  S decimal point
 /  2 repeat
+0  S zero
+1  S one
+2  S two
+3  S three
+4  S four
+5  S five
+6  S six
+7  S seven
+8  S eight
+9  S nine
 :* 2 matrix power
 :< 2 bitshift left
 :> 2 bitshift right
@@ -74,6 +86,8 @@ W  1
 X  1 split into 2
 Y  1 elements at even indicies
 Z  1 transpose
+[  S start list
+]  S end list
 ^  2 bitwise xor
 _( 0 "()"
 _+ 0 [1,-1]
@@ -121,6 +135,7 @@ f  2 filter drop
 g  2 gcd
 h  2 head
 i  2 index into
+j  S complex number delimeter
 l  2 lcm
 n  2 floor div
 o  2 split at occurence
@@ -139,6 +154,7 @@ z  2 zip
 ~  1 bitwise not
 ¨  Q quick map
 ¬  1 not
+¯  S negative number
 °  Q apply at
 ±  1 sign
 ²  Q previous chain as dyad
@@ -238,6 +254,8 @@ z  2 zip
 ₇  0 get register
 ₈  0 read a character
 ₉  0 read a line
+₊  S next as string
+₋  S next 2 as string
 ₍  0 chains left argument
 ₎  0 chains right argument
 ∆  1 maximum
@@ -263,6 +281,7 @@ z  2 zip
 ⌽  1 reverse
 ⍋  1 grade up
 ⍒  1 grade down
+⍝  S comment
 ⍪  2 prepend
 ⍳  1 iota
 ⍴  2 reshape
