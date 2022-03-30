@@ -2,6 +2,7 @@
 "  S string delimeter
 #  1 length
 %  2 moduluo
+_∞ 0 infinity
 &  2 bitwise and
 '  Q map / zipwith
 (  1 prefixes
