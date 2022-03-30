@@ -88,6 +88,7 @@ X  1 split into 2
 Y  1 elements at even indicies
 Z  1 transpose
 [  S start list
+\  1 unrepeat
 ]  S end list
 ^  2 bitwise xor
 _( 0 "()"
