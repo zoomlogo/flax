@@ -9,6 +9,41 @@
 ,  2 append
 -  2 sub
 /  2 repeat
+:* 2 matrix power
+:< 2 bitshift left
+:> 2 bitshift right
+:j 2 to complex
+:• 2 matrix multiplication
+;A 1 arccos
+;B 1 bounce
+;C 1 cos
+;D 1 determinant
+;F 1 prime factors
+;G 1 graph adjacency matrix
+;I 1 identity matrix
+;J 1 split complex
+;L 1 natural log
+;M 1 mean
+;P 1 polyroots
+;R 1 range from 2.. n
+;S 1 sin
+;T 1 build a matrix with 1s at indicies
+;T 1 tan
+;c 1 nth catalan number
+;l 1 nth lucas number
+;r 1 range from 0...n
+;° 1 degrees to radians
+;² 1 is perfect square
+;Ċ 1 sec
+;Ġ 1 graph distance matrix
+;Ȧ 1 arctan
+;Ḃ 1 bounce depth 1
+;Ṗ 1 primes
+;Ṡ 1 csc
+;Ṣ 1 sublists of permutations
+;Ṫ 1 cot
+;Ạ 1 arcsin
+;√ 1 integer square root
 <  2 less
 =  2 equal
 >  2 more
@@ -40,6 +75,42 @@ X  1 split into 2
 Y  1 elements at even indicies
 Z  1 transpose
 ^  2 bitwise xor
+_( 0 "()"
+_+ 0 [1,-1]
+_- 0 [-1,1]
+_/ 0 "/\\"
+_0 0 [0,0]
+_1 0 [1,1]
+_2 0 [2,2]
+_< 0 "<>"
+_A 0 "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+_D 0 [[0,1],[1,0],[0,-1],[-1,0]]
+_H 0 "Hello, World!"
+_P 0 phi
+_R 0 printable ascii
+_S 0 ඞ
+_V 0 "AEIOU"
+_V 0 "AEIOUY"
+_W 0 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"
+_[ 0 "[]"
+_a 0 "abcdefghijklmnopqrstuvwxyz"
+_d 0 [[1,1],[1,0],[1,-1],[0,1],[0,0],[0,-1],[-1,1],[-1,0],[-1,-1]]
+_e 0 e
+_h 0 "hello world"
+_p 0 pi
+_v 0 "aeiou"
+_v 0 "aeiouy"
+_x 0 "0123456789abcdef"
+_{ 0 "{}"
+_Ạ 0 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+_₀ 0 128
+_₁ 0 256
+_₂ 0 512
+_₃ 0 1024
+_₄ 0 2048
+_₅ 0 4096
+_₆ 0 8192
+_₇ 0 4294967296
 `  Q scanl1
 a  2
 b  2
@@ -79,7 +150,7 @@ z  2 zip
 ×  2 mul
 ÷  2 divide
 Ă  1 any and all
-Ċ  1 cube
+Ċ  1
 ċ  2 count occerence
 Ġ  1 group adjacent equal
 Ń  1 split on newlines
@@ -88,6 +159,7 @@ z  2 zip
 Š  1 join on spaces
 Ż  1 prepend zero
 ż  2 transpose with filler
+Ƥ  1 print as characters
 Ȧ  1 any
 ˀ  Q ternary if
 ˇ  Q apply transpose apply again
@@ -111,6 +183,14 @@ z  2 zip
 ᵔ  Q apply to neighbours
 ᵖ  Q Map over prefixes
 ᵝ  Q call self
+ᵟ` Q scanr1
+ᵟ´ Q foldr1
+ᵟ˝ Q foldr
+ᵟᵂ Q cumulative while
+ᵟᵍ Q filter drop of permutations
+ᵟᶠ Q filter keep of permutations
+ᵟ‶ Q scanr
+ᵟⁿ Q cumulative repeat n times
 ᵠ  Q 4 links as dyad
 ᶠ  Q filter keep
 ᶲ  Q 4 links as monad
@@ -124,6 +204,7 @@ z  2 zip
 Ḳ  1 sum depth 1
 ḷ  2 find all
 Ṅ  1 negate
+Ṗ  1 print
 ṙ  2 range exclusive
 Ṛ  1 reciprocal
 Ṡ  1 reverse sort
