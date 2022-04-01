@@ -37,9 +37,11 @@ if sys.argv:
     if "C" in sys.argv[0]:
         flax.common.PRINT_CHARS = True
     if "p" in sys.argv[0]:
-        flax.common.mp.dps = 100
+        flax.common.mp.dps = 64
     if "P" in sys.argv[0]:
         flax.common.DISABLE_GRID = True
+    if "M" in sys.argv[0]:
+        flax.common.INF_MORE = True
     sys.argv = sys.argv[1:]
 
 # run
@@ -67,8 +69,8 @@ else:
             args = [
                 a.strip() for a in input_session.prompt(">>> ").split("|") if a != ""
             ]
-            args = [eval(arg) for arg in sys.argv]
-            args = [to_chars(arg) if type(arg) == str else arg for arg in sys.argv]
+            args = [eval(arg) for arg in args]
+            args = [to_chars(arg) if type(arg) == str else arg for arg in args]
             flax_run(code, args)
     except KeyboardInterrupt:
         error("KeyboardInterrupt", 130)
