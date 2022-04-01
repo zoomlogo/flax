@@ -18,6 +18,7 @@ class attrdict(dict):
         dict.__init__(self, *args, **kwargs)
         self.__dict__ = self
 
+
 # infinite list
 class ilist:
     def __init__(self, l):
@@ -31,6 +32,7 @@ class ilist:
 mpf = mp.mpf
 mpc = mp.mpc
 inf = mp.inf
+
 
 def is_list(x):
     # is_list: is a list or infinite list?
@@ -68,9 +70,14 @@ def flax_string(x):
             return str(x).replace("-", "¯").replace("inf", "∞")
     else:
         if type(x) == ilist:
-            return "[" + ",".join(flax_string(next(x)) for _ in range(32 if INF_MORE else 10)) + "...]"
+            return (
+                "["
+                + ",".join(flax_string(next(x)) for _ in range(32 if INF_MORE else 10))
+                + "...]"
+            )
         else:
             return "[" + ",".join(flax_string(e) for e in x) + "]"
+
 
 def flax_print(x):
     # flax_print: print x using formatting
