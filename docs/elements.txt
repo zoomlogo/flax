@@ -86,7 +86,7 @@ S  1 sort
 T  1 tail
 U  1 unique
 V  1 is prime
-W  1
+W  1 where
 X  1 split into 2
 Y  1 elements at even indicies
 Z  1 transpose
