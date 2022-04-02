@@ -1,4 +1,5 @@
 # common: Holds the attrdict and the common stuff
+import itertools
 import more_itertools
 from mpmath import mp
 
@@ -26,6 +27,31 @@ class ilist:
 
     def __next__(self):
         return next(self.list)
+
+    @staticmethod
+    def positive_integers():
+        def wrapper():
+            i = 1
+            while True:
+                yield i
+                i += 1
+
+        return ilist(wrapper())
+
+    @staticmethod
+    def primes():
+        def wrapper():
+            i = 2
+            while True:
+                if mp.isprime(i):
+                    yield i
+                i += 1
+
+        return ilist(wrapper())
+
+    @staticmethod
+    def to_ilist(x):
+        return ilist(itertools.cycle([x] if not is_list(x) else x))
 
 
 # helpful
