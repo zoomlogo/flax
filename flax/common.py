@@ -19,6 +19,7 @@ class attrdict(dict):
         dict.__init__(self, *args, **kwargs)
         self.__dict__ = self
 
+
 # helpful
 mpf = mp.mpf
 mpc = mp.mpc
