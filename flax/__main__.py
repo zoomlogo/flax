@@ -62,9 +62,7 @@ else:
     try:
         while True:
             code = input("      ")
-            args = [
-                a.strip() for a in input(">>> ").split("|") if a != ""
-            ]
+            args = [a.strip() for a in input(">>> ").split("|") if a != ""]
             args = [eval(arg) for arg in args]
             args = [to_chars(arg) if type(arg) == str else arg for arg in args]
             flax_run(code, args)
