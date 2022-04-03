@@ -19,51 +19,10 @@ class attrdict(dict):
         dict.__init__(self, *args, **kwargs)
         self.__dict__ = self
 
-
-# infinite list
-class ilist:
-    def __init__(self, l):
-        self.list = l
-
-    def __next__(self):
-        return next(self.list)
-
-    @staticmethod
-    def positive_integers():
-        def wrapper():
-            i = 1
-            while True:
-                yield i
-                i += 1
-
-        return ilist(wrapper())
-
-    @staticmethod
-    def primes():
-        def wrapper():
-            i = 2
-            while True:
-                if mp.isprime(i):
-                    yield i
-                i += 1
-
-        return ilist(wrapper())
-
-    @staticmethod
-    def to_ilist(x):
-        return ilist(itertools.cycle([x] if not is_list(x) else x))
-
-
 # helpful
 mpf = mp.mpf
 mpc = mp.mpc
 inf = mp.inf
-
-
-def is_list(x):
-    # is_list: is a list or infinite list?
-    return type(x) in [list, ilist]
-
 
 # flax functions
 def flax_indent(x):
@@ -87,7 +46,7 @@ def flax_indent(x):
 
 def flax_string(x):
     # flax_string: convert x into flax representation
-    if not is_list(x):
+    if type(x) != list:
         if type(x) == mpc:
             return "j".join([flax_string(x.real), flax_string(x.imag)])
         elif type(x) == int or type(x) == mpf and x != inf and int(x) == x:

@@ -103,7 +103,6 @@ _< 0 "<>"
 _A 0 "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 _D 0 [[0,1],[1,0],[0,-1],[-1,0]]
 _H 0 "Hello, World!"
-_N 0 infinite list of natural numbers
 _P 0 phi
 _R 0 printable ascii
 _S 0 ඞ
@@ -120,7 +119,6 @@ _v 0 "aeiou"
 _v 0 "aeiouy"
 _x 0 "0123456789abcdef"
 _{ 0 "{}"
-_Ṗ 0 infinite list of primes
 _Ạ 0 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 _₀ 0 128
 _₁ 0 256
@@ -267,7 +265,6 @@ z  2 zip
 ∇  1 minimum
 ∊  2 in
 √  1 square root
-∞  1 to infinite list
 ∧  2 and
 ∨  2 or
 ≠  2 not equal
