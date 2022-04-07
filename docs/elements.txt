@@ -170,7 +170,7 @@ z  2 zip
 ×  2 mul
 ÷  2 divide
 Ă  1 any and all
-Ċ  1
+Ċ  1 choose random
 ċ  2 count occerence
 Ġ  1 group adjacent equal
 Ń  1 split on newlines
