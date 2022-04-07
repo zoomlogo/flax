@@ -42,7 +42,7 @@ $  1 sublists
 ;P 1 polyroots
 ;R 1 range from 2.. n
 ;S 1 sin
-;T 1 build a matrix with 1s at indicies
+;1 1 build a matrix with 1s at indicies
 ;T 1 tan
 ;c 1 nth catalan number
 ;l 1 nth lucas number
