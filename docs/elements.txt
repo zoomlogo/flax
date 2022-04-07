@@ -131,7 +131,7 @@ _₇ 0 4294967296
 _∞ 0 infinity
 `  Q scanl1
 a  2
-b  2
+b  2 base conversion
 c  2 binomial coefficient
 d  2 divmod
 e  2 join each of one to other
