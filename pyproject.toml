@@ -12,7 +12,6 @@ flax = "flax"
 python = ">3.9"
 mpmath = "*"
 more_itertools = "*"
-prompt_toolkit = "*"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"
