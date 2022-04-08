@@ -141,15 +141,18 @@ h  2 head
 i  2 index into
 j  S complex number delimeter
 l  2 lcm
+m  2 min
 n  2 floor div
 o  2 split at occurence
+p  2
+q  2
 r  2 range inclusive
 s  2 split into chunks
 t  2 tail
 u  2 find for each
 v  2 or
 w  2 windows
-x  2
+x  2 max
 y  2 join
 z  2 zip
 {  1 decrement
