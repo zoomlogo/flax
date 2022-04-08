@@ -39,6 +39,7 @@ __all__ = [
     "split_at",
     "sublists",
     "suffixes",
+    "to_base",
     "to_bin",
     "to_chars",
     "to_digits",
@@ -336,6 +337,20 @@ def suffixes(x):
         res.append(x[i:])
     return res[::-1]
 
+
+def to_base(w, x):
+    # to_base: convert x into base w
+    if x == 0:
+        return [0]
+    res = []
+    sign = 1
+    if x < 0:
+        x = abs(x)
+        sign = -1
+    while x:
+        res.append(x % w)
+        x = x // w
+    return [r * sign for r in res][::-1]
 
 def to_bin(x):
     # to_bin: return the binary representation of x

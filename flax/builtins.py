@@ -95,6 +95,20 @@ atoms = {
     ),
     "Z": attrdict(arity=1, call=lambda x: list(map(list, zip(*iterable(x))))),
     "\\": attrdict(arity=1, call=unrepeat),
+    "^": attrdict(arity=1, call=vecc(operator.xor)),
+    "a": attrdict(arity=2, call=vecc(lambda w, x: w and x)),
+    "b": attrdict(arity=2, call=vecc(to_base)),
+    "c": attrdict(arity=2, call=vecc(mp.binomial)),
+    "d": attrdict(arity=2, call=lambda w, x: [iterable(w) + iterable(e) for e in iterable(x)]),
+    "f": attrdict(arity=2, call=lambda w, x: [e for e in iterable(x) if e not in iterable(w)]),
+    "g": attrdict(arity=2, call=vecc(mp.gcd)),
+    "h": attrdict(arity=2, call=vecc(lambda w, x: iterable(x)[:w], rfull=False)),
+    "i": attrdict(arity=2, call=vecc(index_into, rfull=False)),
+    "l": attrdict(arity=2, call=vecc(mp.lcm)),
+    "m": attrdict(arity=2, call=vecc(lambda w, x: max(w, x))),
+    "n": attrdict(arity=2, call=vecc(operator.floordiv)),
+    "o": attrdict(arity=2, call=split_at),
+    "r": attrdict(arity=2, call=vecc(lambda w, x: where(where([w, x])))),
 }
 
 quicks = {}
