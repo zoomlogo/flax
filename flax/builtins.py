@@ -99,8 +99,12 @@ atoms = {
     "a": attrdict(arity=2, call=vecc(lambda w, x: w and x)),
     "b": attrdict(arity=2, call=vecc(to_base)),
     "c": attrdict(arity=2, call=vecc(mp.binomial)),
-    "d": attrdict(arity=2, call=lambda w, x: [iterable(w) + iterable(e) for e in iterable(x)]),
-    "f": attrdict(arity=2, call=lambda w, x: [e for e in iterable(x) if e not in iterable(w)]),
+    "d": attrdict(
+        arity=2, call=lambda w, x: [iterable(w) + iterable(e) for e in iterable(x)]
+    ),
+    "f": attrdict(
+        arity=2, call=lambda w, x: [e for e in iterable(x) if e not in iterable(w)]
+    ),
     "g": attrdict(arity=2, call=vecc(mp.gcd)),
     "h": attrdict(arity=2, call=vecc(lambda w, x: iterable(x)[:w], rfull=False)),
     "i": attrdict(arity=2, call=vecc(index_into, rfull=False)),

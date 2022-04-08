@@ -352,6 +352,7 @@ def to_base(w, x):
         x = x // w
     return [r * sign for r in res][::-1]
 
+
 def to_bin(x):
     # to_bin: return the binary representation of x
     return [-i if x < 0 else i for i in map(int, bin(x)[3 if x < 0 else 2 :])]
