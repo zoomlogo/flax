@@ -112,7 +112,7 @@ atoms = {
     "m": attrdict(arity=2, call=vecc(lambda w, x: max(w, x))),
     "n": attrdict(arity=2, call=vecc(operator.floordiv)),
     "o": attrdict(arity=2, call=split_at),
-    "r": attrdict(arity=2, call=vecc(lambda w, x: where(where([w, x])))),
+    "r": attrdict(arity=2, call=vecc(lambda w, x: list(range(w, x+1)))),
 }
 
 quicks = {}
