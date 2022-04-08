@@ -42,6 +42,7 @@ __all__ = [
     "to_bin",
     "to_chars",
     "to_digits",
+    "unrepeat",
     "vec",
     "vecc",
     "where",
@@ -351,6 +352,11 @@ def to_digits(x):
     return [
         -int(i) if x < 0 else int(i) for i in str(x)[1 if x < 0 else 0 :] if i != "."
     ]
+
+
+def unrepeat(x):
+    # unrepeat: find the pattern in x
+    return list(map(len, group_equal(x)))
 
 
 def vec(fn, *args, lfull=True, rfull=True):

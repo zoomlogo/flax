@@ -1,18 +1,16 @@
 # error: holds the error handling things
 import sys
-from prompt_toolkit import print_formatted_text, HTML
-
 
 def error(msg, exit_status=1, prefix="ERROR: "):
     # error: errors with msg and optional exit_status
-    print_formatted_text(
-        HTML("<ansired>" + prefix + msg + "</ansired>"), file=sys.stderr
+    print(
+        "\x1b[0;31m" + prefix + msg + "\x1b[0m", file=sys.stderr
     )
     exit(exit_status)
 
 
 def debug(msg, prefix="DEBUG: "):
     # debug: log a debug message to stderr
-    print_formatted_text(
-        HTML("<ansiyellow>" + prefix + msg + "</ansiyellow>"), file=sys.stderr
+    print(
+        "\x1b[0;33m" + prefix + msg + "\x1b[0m", file=sys.stderr
     )

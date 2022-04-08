@@ -66,14 +66,7 @@ def flax_string(x):
         else:
             return str(x).replace("-", "¯").replace("inf", "∞")
     else:
-        if type(x) == ilist:
-            return (
-                "["
-                + ",".join(flax_string(next(x)) for _ in range(32 if INF_MORE else 10))
-                + "...]"
-            )
-        else:
-            return "[" + ",".join(flax_string(e) for e in x) + "]"
+        return "[" + ",".join(flax_string(e) for e in x) + "]"
 
 
 def flax_print(x):

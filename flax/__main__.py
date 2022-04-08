@@ -15,11 +15,11 @@ __all__ = ["flax_run"]
 def flax_run(code, args):
     tokens = tokenise(code)
     if flax.common.DEBUG:
-        debug("tokens: " + tokens)
+        debug("tokens: " + flax.common.flax_string(tokens))
     parsed = parse(tokens)
     if flax.common.DEBUG:
-        debug("parsed: " + parsed)
-        debug("main chain: " + parsed[-1])
+        debug("parsed: " + flax.common.flax_string(parsed))
+        debug("main chain: " + flax.common.flax_string(parsed[-1]))
     flax_print(variadic_chain(parsed[-1] if parsed else "", args))
 
 
