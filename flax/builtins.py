@@ -68,21 +68,31 @@ atoms = {
     "F": attrdict(arity=1, call=flatten),
     "G": attrdict(arity=1, call=group_indicies),
     "H": attrdict(arity=1, call=lambda x: iterable(x).pop(0)),
-    "I": attrdict(arity=1, call=lambda x: list(more_itertools.difference(x, initial=0))),
+    "I": attrdict(
+        arity=1, call=lambda x: list(more_itertools.difference(x, initial=0))
+    ),
     "J": attrdict(arity=1, call=lambda x: list(range(len(x)))),
     "K": attrdict(arity=1, call=lambda x: list(itertools.accumulate(x))),
     "L": attrdict(arity=1, call=lambda x: iterable(x).pop()),
-    "M": attrdict(arity=1, call=vecc(lambda x: x*x)),
+    "M": attrdict(arity=1, call=vecc(lambda x: x * x)),
     "N": attrdict(arity=1, call=lambda x: iterable(x)[:-1]),
     "O": attrdict(arity=1, call=lambda x: x),
     "P": attrdict(arity=1, call=permutations),
     "Q": attrdict(arity=1, call=vecc(lambda x: x / 2)),
-    "R": attrdict(arity=1, call=lambda x: [e[::-1] for e in x] if type(x) == list else to_digits(x)[::-1]),
+    "R": attrdict(
+        arity=1,
+        call=lambda x: [e[::-1] for e in x] if type(x) == list else to_digits(x)[::-1],
+    ),
     "S": attrdict(arity=1, call=lambda x: list(sorted(x))),
     "T": attrdict(arity=1, call=lambda x: iterable(x)[1:]),
     "U": attrdict(arity=1, call=lambda x: list(set(iterable(x, digits=True)))),
     "V": attrdict(arity=1, call=vecc(mp.isprime)),
-    "Y": attrdict(arity=1, call=lambda x: [e for i,e in enumerate(iterable(x, digits=True)) if i % 2 == 0]),
+    "Y": attrdict(
+        arity=1,
+        call=lambda x: [
+            e for i, e in enumerate(iterable(x, digits=True)) if i % 2 == 0
+        ],
+    ),
     "Z": attrdict(arity=1, call=lambda x: list(map(list, zip(*iterable(x))))),
     "\\": attrdict(arity=1, call=unrepeat),
 }
