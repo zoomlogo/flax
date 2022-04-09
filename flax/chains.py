@@ -26,7 +26,6 @@ __all__ = [
     "variadic_chain",
     "variadic_link",
     "while_loop",
-    "while_not_unique",
 ]
 
 
@@ -150,11 +149,14 @@ def fold(links, *args, right=False, initial=False):
     else:
         w = None
 
+    if links[0].arity == 1:
+        return foldfixedpoint(links, x)
+
     if right:
         x = x[::-1]
-        call = lambda w, x: variadic_link(links[0], (x, w), force_dyad=True)
+        call = lambda w, x: variadic_link(links[0], (x, w))
     else:
-        call = lambda w, x: variadic_link(links[0], (w, x), force_dyad=True)
+        call = lambda w, x: variadic_link(links[0], (w, x))
 
     if len(links) == 1:
         if initial:
@@ -170,6 +172,17 @@ def fold(links, *args, right=False, initial=False):
             return [
                 functools.reduce(call, z) for z in sliding_window(links[1].call(), x)
             ]
+
+
+def foldfixedpoint(links, x):
+    # foldfixedpoint: run link over arg until a fixed point is reached
+    call = links[0].call
+    res = x
+    before = call(x)
+    while before != res:
+        res = before
+        before = call(res)
+    return res
 
 
 def max_arity(links):
@@ -281,11 +294,14 @@ def scan(links, *args, right=False, initial=False):
     else:
         w = None
 
+    if links[0].arity == 1:
+        return scanfixedpoint(links, x)
+
     if right:
         x = x[::-1]
-        call = lambda w, x: variadic_link(links[0], (x, w), force_dyad=True)
+        call = lambda w, x: variadic_link(links[0], (x, w))
     else:
-        call = lambda w, x: variadic_link(links[0], (w, x), force_dyad=True)
+        call = lambda w, x: variadic_link(links[0], (w, x))
 
     if len(links) == 1:
         if initial:
@@ -303,6 +319,17 @@ def scan(links, *args, right=False, initial=False):
                 itertools.accumulate(call, z)
                 for z in sliding_window(links[1].call(), x)
             ]
+
+
+def scanfixedpoint(links, x):
+    # scanfixedpoint: run link over arg until a fixed point is reached
+    call = links[0].call
+    res = [x]
+    before = call(x)
+    while before != res[-1]:
+        res.append(before)
+        before = call(res[-1])
+    return res
 
 
 def sort(links, *args, i):
@@ -364,18 +391,4 @@ def while_loop(link, cond, args, cumulative=False):
         if cumulative:
             c_res.append(res)
         x = w
-    return c_res if cumulative else res
-
-
-def while_not_unique(link, x, cumulative=False):
-    # while_not_unique: run link while the result is not equal to the previous result
-    res = link.call(x)
-    before = x
-    if cumulative:
-        c_res = [res]
-    while res != before:
-        before = res
-        res = link.call(res)
-        if cumulative:
-            c_res.append(res)
     return c_res if cumulative else res
