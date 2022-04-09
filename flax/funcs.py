@@ -405,4 +405,4 @@ def vecc(fn, lfull=True, rfull=True):
 
 def where(x):
     # where: ngn/k's &
-    return flatten([[i] * e for i, e in enumerate(x)])
+    return flatten([[i] * e for i, e in enumerate(iterable(x))])
