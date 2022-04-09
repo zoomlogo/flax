@@ -57,7 +57,9 @@ atoms = {
     ",": attrdict(arity=2, call=lambda w, x: iterable(w) + iterable(x)),
     "-": attrdict(arity=2, call=vecc(operator.sub)),
     "/": attrdict(arity=2, call=repeat),
-    ":*": attrdict(arity=2, call=vecc(lambda w, x: (mp.matrix(w) ** x).tolist(), lfull=False)),
+    ":*": attrdict(
+        arity=2, call=vecc(lambda w, x: (mp.matrix(w) ** x).tolist(), lfull=False)
+    ),
     ":<": attrdict(arity=2, call=vecc(operator.ilshift)),
     ":>": attrdict(arity=2, call=vecc(operator.irshift)),
     ":j": attrdict(arity=2, call=vecc(lambda w, x: mpf(w, x))),
@@ -65,15 +67,26 @@ atoms = {
     ";$": attrdict(arity=1, call=lambda x: sublists(permutations(x))),
     ";1": attrdict(arity=1, call=ones),
     ";A": attrdict(arity=1, call=vecc(mp.acos)),
-    ";B": attrdict(arity=1, call=lambda x: iterable(x, digits=True) + iterable(x, digits=True)[::-1]),
+    ";B": attrdict(
+        arity=1,
+        call=lambda x: iterable(x, digits=True) + iterable(x, digits=True)[::-1],
+    ),
     ";C": attrdict(arity=1, call=vecc(mp.cos)),
     ";D": attrdict(arity=1, call=lambda x: mp.det(x)),
     ";F": attrdict(arity=1, call=vecc(prime_factors)),
-    ";G": attrdict(arity=1, call=lambda x: ones(iterable(x) + [iterable(e)[::-1] for e in iterable(x)])),
-    ";I": attrdict(arity=1, call=vecc(lambda x: [[i == j for i in range(x)] for j in range(x)])),
+    ";G": attrdict(
+        arity=1,
+        call=lambda x: ones(iterable(x) + [iterable(e)[::-1] for e in iterable(x)]),
+    ),
+    ";I": attrdict(
+        arity=1, call=vecc(lambda x: [[i == j for i in range(x)] for j in range(x)])
+    ),
     ";J": attrdict(arity=1, call=vecc(lambda x: [mpc(x).real, mpc(x).imag])),
     ";L": attrdict(arity=1, call=vecc(mp.ln)),
-    ";M": attrdict(arity=1, call=lambda x: sum(iterable(x, digits=True)) / len(iterable(x, digits=True))),
+    ";M": attrdict(
+        arity=1,
+        call=lambda x: sum(iterable(x, digits=True)) / len(iterable(x, digits=True)),
+    ),
     ";P": attrdict(arity=1, call=mp.polyroots),
     ";R": attrdict(arity=1, call=vecc(lambda x: list(range(2, x)))),
     ";S": attrdict(arity=1, call=vecc(mp.sin)),
