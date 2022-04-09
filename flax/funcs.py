@@ -26,11 +26,14 @@ __all__ = [
     "iota",
     "iterable",
     "join",
+    "lucas",
     "mold",
     "nprimes",
+    "ones",
     "order",
     "permutations",
     "prefixes",
+    "prime_factors",
     "random",
     "repeat",
     "reshape",
@@ -217,6 +220,15 @@ def join(w, x):
     return flatten(zip(x, w))
 
 
+@functools.cache
+def lucas(x):
+    # lucas: nth lucas number
+    if x < 2:
+        return x + 1
+    else:
+        return lucas(x - 1) + lucas(x - 2)
+
+
 def mold(w, x):
     # mold: mold x to the shape w
     for i in range(len(w)):
@@ -240,6 +252,20 @@ def nprimes(x):
     return res
 
 
+def ones(x, shape=None, upper_level=[]):
+    # ones: matrix with ones at x
+    if not shape:
+        shape = [max(zipped) for zipped in zip(*x)]
+    upper_len = len(upper_level)
+    if upper_len < len(shape) - 1:
+        return [
+            ones(x, shape=shape, upper_level=upper_level + [i])
+            for i in range(shape[upper_len])
+        ]
+    else:
+        return [1 if (upper_level + [i] in x) else 0 for i in range(shape[-1])]
+
+
 def order(w, x):
     # order: how many times does w divide x
     if x == 0 or abs(w) == 1:
@@ -258,7 +284,7 @@ def order(w, x):
 
 def permutations(x):
     # permutations: return all permutations of x
-    return list(map(list, itertools.permutations(x)))
+    return list(map(list, itertools.permutations(iterable(x))))
 
 
 def prefixes(x):
@@ -268,6 +294,28 @@ def prefixes(x):
     for i in range(len(x)):
         res.append(x[: i + 1])
     return res
+
+
+def prime_factors(x):
+    # prime_factors: calculate prime factors of x
+    p = primes()
+    res = []
+    while x != 1:
+        prime = next(p)
+        times = order(prime, x)
+        res.append([prime] * times)
+        for _ in range(times):
+            x = x / prime
+    return res
+
+
+def primes():
+    # primes: an infinite list of primes
+    i = 0
+    while True:
+        if mp.isprime(i):
+            yield i
+        i += 1
 
 
 def random(x):
