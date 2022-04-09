@@ -1,8 +1,8 @@
 # builtins: holds the builtins and some constants for the lexer
-import enum
-import operator
-import more_itertools
 import itertools
+import math
+import more_itertools
+import operator
 
 from flax.common import mpc, mpf, inf, mp, attrdict
 from flax.funcs import *
@@ -105,14 +105,22 @@ atoms = {
     "f": attrdict(
         arity=2, call=lambda w, x: [e for e in iterable(x) if e not in iterable(w)]
     ),
-    "g": attrdict(arity=2, call=vecc(mp.gcd)),
+    "g": attrdict(arity=2, call=vecc(math.gcd)),
     "h": attrdict(arity=2, call=vecc(lambda w, x: iterable(x)[:w], rfull=False)),
     "i": attrdict(arity=2, call=vecc(index_into, rfull=False)),
-    "l": attrdict(arity=2, call=vecc(mp.lcm)),
-    "m": attrdict(arity=2, call=vecc(lambda w, x: max(w, x))),
+    "l": attrdict(arity=2, call=vecc(math.lcm)),
+    "m": attrdict(arity=2, call=vecc(lambda w, x: min(w, x))),
     "n": attrdict(arity=2, call=vecc(operator.floordiv)),
     "o": attrdict(arity=2, call=split_at),
     "r": attrdict(arity=2, call=vecc(lambda w, x: list(range(w, x + 1)))),
+    "s": attrdict(arity=2, call=vecc(split, rfull=False)),
+    "t": attrdict(arity=2, call=vecc(lambda w, x: iterable(x)[w:], rfull=False)),
+    "u": attrdict(arity=2, call=lambda w, x: [find(e, x) for e in iterable(w, range_=True)]),
+    "v": attrdict(arity=2, call=vecc(lambda w, x: w or x)),
+    "w": attrdict(arity=2, call=vecc(sliding_window, rfull=False)),
+    "x": attrdict(arity=2, call=vecc(lambda w, x: max(w, x))),
+    "y": attrdict(arity=2, call=vecc(join, rfull=False)),
+    "z": attrdict(arity=2, call=lambda w, x: list(map(list, zip(w, x)))),
 }
 
 quicks = {}
