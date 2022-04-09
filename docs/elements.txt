@@ -144,8 +144,8 @@ l  2 lcm
 m  2 min
 n  2 floor div
 o  2 split at occurence
-p  2
-q  2
+p  2 pick
+q  2 quit
 r  2 range inclusive
 s  2 split into chunks
 t  2 tail

@@ -3,6 +3,7 @@ import itertools
 import math
 import more_itertools
 import operator
+import random as rrandom
 
 from flax.common import mpc, mpf, inf, mp, attrdict
 from flax.funcs import *
@@ -112,6 +113,8 @@ atoms = {
     "m": attrdict(arity=2, call=vecc(lambda w, x: min(w, x))),
     "n": attrdict(arity=2, call=vecc(operator.floordiv)),
     "o": attrdict(arity=2, call=split_at),
+    "p": attrdict(arity=2, call=lambda w, x: rrandom.choice([w, x])),
+    "q": attrdict(arity=2, call=lambda w, x: exit(0)),
     "r": attrdict(arity=2, call=vecc(lambda w, x: list(range(w, x + 1)))),
     "s": attrdict(arity=2, call=vecc(split, rfull=False)),
     "t": attrdict(arity=2, call=vecc(lambda w, x: iterable(x)[w:], rfull=False)),
@@ -121,6 +124,10 @@ atoms = {
     "x": attrdict(arity=2, call=vecc(lambda w, x: max(w, x))),
     "y": attrdict(arity=2, call=vecc(join, rfull=False)),
     "z": attrdict(arity=2, call=lambda w, x: list(map(list, zip(w, x)))),
+    "{": attrdict(arity=1, call=vecc(lambda x: x - 1)),
+    "|": attrdict(arity=2, call=vecc(operator.or_)),
+    "}": attrdict(arity=1, call=vecc(lambda x: x + 1)),
+    "~": attrdict(arity=1, call=vecc(operator.not_)),
 }
 
 quicks = {}
