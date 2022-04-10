@@ -184,6 +184,7 @@ z  2 zip
 ż  2 transpose with filler
 Ƥ  1 print as characters
 Ȧ  1 any
+ʲ  Q scan fixedpoint
 ˀ  Q ternary if
 ˘  Q self args / monad as dyad using left
 ˙  Q links as nilad
@@ -242,6 +243,7 @@ z  2 zip
 •  2 cartesian product
 ‶  Q foldr
 ⁰  Q previous chain as nilad
+ⁱ  Q fold fixedpoint
 ⁴  Q next chain as monad
 ⁵  Q next chain as dyad
 ⁷  Q set register
