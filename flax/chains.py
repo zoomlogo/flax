@@ -149,14 +149,11 @@ def fold(links, *args, right=False, initial=False):
     else:
         w = None
 
-    if links[0].arity == 1:
-        return foldfixedpoint(links, x)
-
     if right:
         x = x[::-1]
-        call = lambda w, x: variadic_link(links[0], (x, w))
+        call = lambda w, x: variadic_link(links[0], (x, w), force_dyad=True)
     else:
-        call = lambda w, x: variadic_link(links[0], (w, x))
+        call = lambda w, x: variadic_link(links[0], (w, x), force_dyad=True)
 
     if len(links) == 1:
         if initial:
@@ -294,14 +291,11 @@ def scan(links, *args, right=False, initial=False):
     else:
         w = None
 
-    if links[0].arity == 1:
-        return scanfixedpoint(links, x)
-
     if right:
         x = x[::-1]
-        call = lambda w, x: variadic_link(links[0], (x, w))
+        call = lambda w, x: variadic_link(links[0], (x, w), force_dyad=True)
     else:
-        call = lambda w, x: variadic_link(links[0], (w, x))
+        call = lambda w, x: variadic_link(links[0], (w, x), force_dyad=True)
 
     if len(links) == 1:
         if initial:
