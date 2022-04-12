@@ -103,7 +103,13 @@ atoms = {
     ";ċ": attrdict(arity=1, call=vecc(lambda x: 1 / (x + 1) * mp.binomial(2 * x, x))),
     # ";Ġ": attrdict(arity=1, call=vecc(graph_distance)),
     ";Ȧ": attrdict(arity=1, call=vecc(mp.atan)),
-    ";Ḃ": attrdict(arity=1, call=lambda x: [iterable(e, digits=True) + iterable(e, digits=True)[::-1] for e in iterable(x)]),
+    ";Ḃ": attrdict(
+        arity=1,
+        call=lambda x: [
+            iterable(e, digits=True) + iterable(e, digits=True)[::-1]
+            for e in iterable(x)
+        ],
+    ),
     ";Ṗ": attrdict(arity=1, call=vecc(nprimes)),
     ";Ṡ": attrdict(arity=1, call=vecc(mp.csc)),
     ";Ṫ": attrdict(arity=1, call=vecc(mp.cot)),
