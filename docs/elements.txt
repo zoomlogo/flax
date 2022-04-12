@@ -27,6 +27,7 @@ $  1 sublists
 :< 2 bitshift left
 :> 2 bitshift right
 :j 2 to complex
+:Ȧ 2 atan2
 :• 2 matrix multiplication
 ;$ 1 sublists of permutations
 ;1 1 build a matrix with 1s at indicies
@@ -44,12 +45,15 @@ $  1 sublists
 ;R 1 range from 2.. n
 ;S 1 sin
 ;T 1 tan
-;c 1 nth catalan number
+;c 1 sinh
 ;l 1 nth lucas number
 ;r 1 range from 0...n
+;s 1 cosh
+;t 1 tanh
 ;° 1 degrees to radians
 ;² 1 is perfect square
 ;Ċ 1 sec
+;ċ 1 nth catalan number
 ;Ġ 1 graph distance matrix
 ;Ȧ 1 arctan
 ;Ḃ 1 bounce depth 1
