@@ -299,18 +299,18 @@ def scan(links, *args, right=False, initial=False):
 
     if len(links) == 1:
         if initial:
-            return itertools.accumulate(call, x, initial=w)
+            return list(itertools.accumulate(x, call, initial=w))
         else:
-            return itertools.accumulate(call, x)
+            return list(itertools.accumulate(x, call))
     else:
         if initial:
             return [
-                itertools.accumulate(call, z, initial=w)
+                list(itertools.accumulate(z, call, initial=w))
                 for z in sliding_window(links[1].call(), x)
             ]
         else:
             return [
-                itertools.accumulate(call, z)
+                list(itertools.accumulate(z, call))
                 for z in sliding_window(links[1].call(), x)
             ]
 

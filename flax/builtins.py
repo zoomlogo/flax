@@ -173,17 +173,40 @@ atoms = {
     "_2": attrdict(arity=0, call=lambda: [2, 2]),
     "_<": attrdict(arity=0, call=lambda: to_chars("<>")),
     "_A": attrdict(arity=0, call=lambda: to_chars("ABCDEFGHIJKLMNOPQRSTUVWXYZ")),
-    "_D": attrdict(arity=0, call=lambda: [[0,1],[1,0],[0,-1],[-1,0]]),
+    "_D": attrdict(arity=0, call=lambda: [[0, 1], [1, 0], [0, -1], [-1, 0]]),
     "_H": attrdict(arity=0, call=lambda: to_chars("Hello, World!")),
     "_P": attrdict(arity=0, call=lambda: mp.phi),
-    "_R": attrdict(arity=0, call=lambda: to_chars("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~")),
+    "_R": attrdict(
+        arity=0,
+        call=lambda: to_chars(
+            "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
+        ),
+    ),
     "_S": attrdict(arity=0, call=lambda: to_chars("ඞ")),
     "_V": attrdict(arity=0, call=lambda: to_chars("AEIOU")),
     "_Y": attrdict(arity=0, call=lambda: to_chars("AEIOUY")),
-    "_W": attrdict(arity=0, call=lambda: to_chars("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_")),
+    "_W": attrdict(
+        arity=0,
+        call=lambda: to_chars(
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"
+        ),
+    ),
     "_[": attrdict(arity=0, call=lambda: to_chars("[]")),
     "_a": attrdict(arity=0, call=lambda: to_chars("abcdefghijklmnopqrstuvwxyz")),
-    "_d": attrdict(arity=0, call=lambda: [[1,1],[1,0],[1,-1],[0,1],[0,0],[0,-1],[-1,1],[-1,0],[-1,-1]]),
+    "_d": attrdict(
+        arity=0,
+        call=lambda: [
+            [1, 1],
+            [1, 0],
+            [1, -1],
+            [0, 1],
+            [0, 0],
+            [0, -1],
+            [-1, 1],
+            [-1, 0],
+            [-1, -1],
+        ],
+    ),
     "_e": attrdict(arity=0, call=lambda: mp.e),
     "_h": attrdict(arity=0, call=lambda: to_chars("hello world")),
     "_p": attrdict(arity=0, call=lambda: mp.pi),
@@ -191,7 +214,10 @@ atoms = {
     "_y": attrdict(arity=0, call=lambda: to_chars("aeiouy")),
     "_x": attrdict(arity=0, call=lambda: to_chars("0123456789abcdef")),
     "_{": attrdict(arity=0, call=lambda: to_chars("{}")),
-    "_Ạ": attrdict(arity=0, call=lambda: to_chars("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")),
+    "_Ạ": attrdict(
+        arity=0,
+        call=lambda: to_chars("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"),
+    ),
     "_₀": attrdict(arity=0, call=lambda: 128),
     "_₁": attrdict(arity=0, call=lambda: 256),
     "_₂": attrdict(arity=0, call=lambda: 512),
@@ -242,45 +268,74 @@ atoms = {
     "÷": attrdict(arity=2, call=vecc(operator.truediv)),
     "Ă": attrdict(arity=1, call=lambda x: int(iterable(x) > [] and all(flatten(x)))),
     "Ċ": attrdict(arity=1, call=lambda x: rrandom.choice(iterable(x, range_=True))),
-    "ċ": attrdict(arity=2, call=vecc(lambda w, x: iterable(x, digits=True).count(w), rfull=False)),
+    "ċ": attrdict(
+        arity=2, call=vecc(lambda w, x: iterable(x, digits=True).count(w), rfull=False)
+    ),
     "Ġ": attrdict(arity=1, call=group_equal),
     "Ń": attrdict(arity=1, call=lambda x: split_at(10, iterable(x))),
     "Ň": attrdict(arity=1, call=lambda x: join(10, x)),
     "Ś": attrdict(arity=1, call=lambda x: split_at(32, iterable(x))),
     "Š": attrdict(arity=1, call=lambda x: join(32, x)),
     "Ż": attrdict(arity=1, call=lambda x: [0] + iterable(x)),
-    "ż": attrdict(arity=2, call=vecc(lambda w, x: list(map(list, itertools.zip_longest(*iterable(x), fillvalue=w))), rfull=False)),
-    "Ƥ": attrdict(arity=1, call=lambda x: print(end="".join(chr(e) for e in flatten(x))) or x),
+    "ż": attrdict(
+        arity=2,
+        call=vecc(
+            lambda w, x: list(
+                map(list, itertools.zip_longest(*iterable(x), fillvalue=w))
+            ),
+            rfull=False,
+        ),
+    ),
+    "Ƥ": attrdict(
+        arity=1, call=lambda x: print(end="".join(chr(e) for e in flatten(x))) or x
+    ),
     "Ȧ": attrdict(arity=1, call=lambda x: int(any(iterable(x, digits=True)))),
-    "Π": attrdict(arity=1, call=lambda x: functools.reduce(vecc(operator.mul), iterable(x))),
-    "Σ": attrdict(arity=1, call=lambda x: functools.reduce(vecc(operator.add), iterable(x))),
+    "Π": attrdict(
+        arity=1, call=lambda x: functools.reduce(vecc(operator.mul), iterable(x))
+    ),
+    "Σ": attrdict(
+        arity=1, call=lambda x: functools.reduce(vecc(operator.add), iterable(x))
+    ),
     "Ḃ": attrdict(arity=1, call=from_bin),
     "Ḅ": attrdict(arity=1, call=vecc(lambda x: x % 2)),
     "Ḋ": attrdict(arity=1, call=from_digits),
     "Ḍ": attrdict(arity=1, call=vecc(divisors)),
     "ḍ": attrdict(arity=1, call=vecc(lambda w, x: int(x % w == 0))),
-    "Ḟ": attrdict(arity=1, call=lambda x: [i for i,e in enumerate(x) if not e]),
+    "Ḟ": attrdict(arity=1, call=lambda x: [i for i, e in enumerate(x) if not e]),
     "ḟ": attrdict(
         arity=2, call=lambda w, x: [e for e in iterable(x) if e in iterable(w)]
     ),
-    "Ḳ": attrdict(arity=1, call=lambda x: [functools.reduce(vecc(operator.add), iterable(e)) for e in iterable(x)]),
+    "Ḳ": attrdict(
+        arity=1,
+        call=lambda x: [
+            functools.reduce(vecc(operator.add), iterable(e)) for e in iterable(x)
+        ],
+    ),
     "ḷ": attrdict(arity=2, call=vecc(find_all, rfull=False)),
     "Ṅ": attrdict(arity=1, call=vecc(lambda x: -x)),
     "Ṗ": attrdict(arity=1, call=flax_print),
     "ṙ": attrdict(arity=2, call=vecc(lambda w, x: list(range(w + 1, x)))),
     "Ṛ": attrdict(arity=1, call=vecc(lambda x: 1 / x)),
     "S": attrdict(arity=1, call=lambda x: list(reversed(sorted(x)))),
-    "Ṫ": attrdict(arity=1, call=lambda x: [i for i,e in enumerate(x) if e]),
+    "Ṫ": attrdict(arity=1, call=lambda x: [i for i, e in enumerate(x) if e]),
     "Ẏ": attrdict(
         arity=1,
-        call=lambda x: [
-            e for i, e in enumerate(iterable(x, digits=True)) if i % 2
-        ],
+        call=lambda x: [e for i, e in enumerate(iterable(x, digits=True)) if i % 2],
     ),
-    "Ẓ": attrdict(arity=1, call=lambda x: list(map(list, itertools.zip_longest(*iterable(x), fillvalue=0)))),
+    "Ẓ": attrdict(
+        arity=1,
+        call=lambda x: list(
+            map(list, itertools.zip_longest(*iterable(x), fillvalue=0))
+        ),
+    ),
     "Ạ": attrdict(arity=1, call=lambda x: int(all(iterable(x, digits=True)))),
     "ị": attrdict(arity=2, call=vecc(find, rfull=False)),
-    "Ọ": attrdict(arity=1, call=lambda x: [iterable(e)[::-1] if i%2 == 0 else e for i,e in enumerate(iterable(x))]),
+    "Ọ": attrdict(
+        arity=1,
+        call=lambda x: [
+            iterable(e)[::-1] if i % 2 == 0 else e for i, e in enumerate(iterable(x))
+        ],
+    ),
     "ọ": attrdict(arity=2, call=vecc(order)),
     "•": attrdict(arity=2, call=lambda w, x: list(map(list, itertools.product(w, x)))),
     "₀": attrdict(arity=0, call=lambda: 100),
@@ -306,7 +361,13 @@ atoms = {
     "≥": attrdict(arity=2, call=vecc(boolify(operator.ge))),
     "⊂": attrdict(arity=1, call=lambda x: [x]),
     "⊆": attrdict(arity=1, call=lambda x: [x] if type(x) != list or len(x) != 1 else x),
-    "⊏": attrdict(arity=2, call=vecc(lambda w, x: [e for i,e in enumerate(iterable(x)) if i % w == 0], rfull=False)),
+    "⊏": attrdict(
+        arity=2,
+        call=vecc(
+            lambda w, x: [e for i, e in enumerate(iterable(x)) if i % w == 0],
+            rfull=False,
+        ),
+    ),
     "⊢": attrdict(arity=2, call=lambda w, x: x),
     "⊣": attrdict(arity=2, call=lambda w, x: w),
     "⋈": attrdict(arity=2, call=lambda w, x: [w, x]),
@@ -320,7 +381,22 @@ atoms = {
     "⍴": attrdict(arity=2, call=reshape),
 }
 
-quicks = {}
+quicks = {
+    "'": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=links[0].arity or 1,
+                call=lambda w, x=None: [
+                    variadic_link(links[0], (a, b)) for a, b in zip(iterable(w), iterable(x))
+                ]
+                if x is not None
+                else [variadic_link(links[0], (a,)) for a in iterable(w)],
+            )
+        ],
+    ),
+    "`": attrdict(condition=lambda links: links and links[0].arity, qlink=lambda links, outermost_links, i: [attrdict(arity=1, call=lambda x: scan(links, x))]),
+}
 
 train_separators = {
     "ø": (0, True),
