@@ -8,6 +8,7 @@ import operator
 from flax.common import mp, mpc, mpf, inf
 
 __all__ = [
+    "boolify",
     "depth",
     "diagonals",
     "divisors",
@@ -52,6 +53,9 @@ __all__ = [
     "where",
 ]
 
+def boolify(fn):
+    # boolify: return a function which returns a int bool (0/1)
+    return lambda *args: int(fn(*args))
 
 def depth(x):
     # depth: returns the depth of x
@@ -196,7 +200,7 @@ def iota(x):
 
     res = list(map(list, itertools.product(*(list(range(int(a))) for a in x))))
     for e in x:
-        res = split(res, int(e))
+        res = split(int(e), res)
     return res[0]
 
 
