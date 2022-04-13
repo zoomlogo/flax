@@ -1,11 +1,13 @@
 # builtins: holds the builtins and some constants for the lexer
 import itertools
+import functools
+import sys
 import math
 import more_itertools
 import operator
 import random as rrandom
 
-from flax.common import mpc, mpf, inf, mp, attrdict
+from flax.common import flax_print, mpc, mpf, inf, mp, attrdict
 from flax.funcs import *
 from flax.chains import *
 
@@ -232,6 +234,77 @@ atoms = {
     "|": attrdict(arity=2, call=vecc(operator.or_)),
     "}": attrdict(arity=1, call=vecc(lambda x: x + 1)),
     "~": attrdict(arity=1, call=vecc(operator.not_)),
+    "¬": attrdict(arity=1, call=vecc(lambda x: int(not x))),
+    "±": attrdict(arity=1, call=vecc(lambda x: -1 if x < 0 else (0 if x == 0 else 1))),
+    "Ç": attrdict(arity=1, call=lambda x: split(2, iterable(x, range_=True))),
+    "Ð": attrdict(arity=1, call=vecc(lambda x: 2 * x)),
+    "×": attrdict(arity=2, call=vecc(operator.mul)),
+    "÷": attrdict(arity=2, call=vecc(operator.truediv)),
+    "Ă": attrdict(arity=1, call=lambda x: int(iterable(x) > [] and all(flatten(x)))),
+    "Ċ": attrdict(arity=1, call=lambda x: rrandom.choice(iterable(x, range_=True))),
+    "ċ": attrdict(arity=2, call=vecc(lambda w, x: iterable(x, digits=True).count(w), rfull=False)),
+    "Ġ": attrdict(arity=1, call=group_equal),
+    "Ń": attrdict(arity=1, call=lambda x: split_at(10, iterable(x))),
+    "Ň": attrdict(arity=1, call=lambda x: join(10, x)),
+    "Ś": attrdict(arity=1, call=lambda x: split_at(32, iterable(x))),
+    "Š": attrdict(arity=1, call=lambda x: join(32, x)),
+    "Ż": attrdict(arity=1, call=lambda x: [0] + iterable(x)),
+    "ż": attrdict(arity=2, call=vecc(lambda w, x: list(map(list, itertools.zip_longest(*iterable(x), fillvalue=w))), rfull=False)),
+    "Ƥ": attrdict(arity=1, call=lambda x: print(end="".join(chr(e) for e in flatten(x))) or x),
+    "Ȧ": attrdict(arity=1, call=lambda x: int(any(iterable(x, digits=True)))),
+    "Π": attrdict(arity=1, call=lambda x: functools.reduce(vecc(operator.mul), iterable(x))),
+    "Σ": attrdict(arity=1, call=lambda x: functools.reduce(vecc(operator.add), iterable(x))),
+    "Ḃ": attrdict(arity=1, call=from_bin),
+    "Ḅ": attrdict(arity=1, call=vecc(lambda x: x % 2)),
+    "Ḋ": attrdict(arity=1, call=from_digits),
+    "Ḍ": attrdict(arity=1, call=vecc(divisors)),
+    "ḍ": attrdict(arity=1, call=vecc(lambda w, x: int(x % w == 0))),
+    "Ḟ": attrdict(arity=1, call=lambda x: [i for i,e in enumerate(x) if not e]),
+    "ḟ": attrdict(
+        arity=2, call=lambda w, x: [e for e in iterable(x) if e in iterable(w)]
+    ),
+    "Ḳ": attrdict(arity=1, call=lambda x: [functools.reduce(vecc(operator.add), iterable(e)) for e in iterable(x)]),
+    "ḷ": attrdict(arity=2, call=vecc(find_all, rfull=False)),
+    "Ṅ": attrdict(arity=1, call=vecc(lambda x: -x)),
+    "Ṗ": attrdict(arity=1, call=flax_print),
+    "ṙ": attrdict(arity=2, call=vecc(lambda w, x: list(range(w + 1, x)))),
+    "Ṛ": attrdict(arity=1, call=vecc(lambda x: 1 / x)),
+    "S": attrdict(arity=1, call=lambda x: list(reversed(sorted(x)))),
+    "Ṫ": attrdict(arity=1, call=lambda x: [i for i,e in enumerate(x) if e]),
+    "Ẏ": attrdict(
+        arity=1,
+        call=lambda x: [
+            e for i, e in enumerate(iterable(x, digits=True)) if i % 2
+        ],
+    ),
+    "Ẓ": attrdict(arity=1, call=lambda x: list(map(list, itertools.zip_longest(*iterable(x), fillvalue=0)))),
+    "Ạ": attrdict(arity=1, call=lambda x: int(all(iterable(x, digits=True)))),
+    "ị": attrdict(arity=2, call=vecc(find, rfull=False)),
+    "Ọ": attrdict(arity=1, call=lambda x: [iterable(e)[::-1] if i%2 == 0 else e for i,e in enumerate(iterable(x))]),
+    "ọ": attrdict(arity=2, call=vecc(order)),
+    "•": attrdict(arity=2, call=lambda w, x: list(map(list, itertools.product(w, x)))),
+    "₀": attrdict(arity=0, call=lambda: 100),
+    "₁": attrdict(arity=0, call=lambda: [0, 1]),
+    "₂": attrdict(arity=0, call=lambda: 10),
+    "₃": attrdict(arity=0, call=lambda: 16),
+    "₄": attrdict(arity=0, call=lambda: 32),
+    "₅": attrdict(arity=0, call=lambda: 64),
+    "₆": attrdict(arity=0, call=lambda: 26),
+    "₇": attrdict(arity=0, call=lambda: 0),
+    "₈": attrdict(arity=0, call=lambda: ord(sys.stdin.read(0))),
+    "₉": attrdict(arity=0, call=lambda: to_chars(input())),
+    "₍": attrdict(arity=0, call=lambda: 0),
+    "₎": attrdict(arity=0, call=lambda: 0),
+    "∆": attrdict(arity=1, call=lambda x: max(iterable(x, digits=True))),
+    "∇": attrdict(arity=1, call=lambda x: min(iterable(x, digits=True))),
+    "∊": attrdict(arity=2, call=vecc(lambda w, x: int(w in x), rfull=False)),
+    "√": attrdict(arity=1, call=vecc(mp.sqrt)),
+    "≠": attrdict(arity=2, call=vecc(operator.ne)),
+    "≡": attrdict(arity=2, call=lambda w, x: int(w == x)),
+    "≢": attrdict(arity=2, call=lambda w, x: int(w != x)),
+    "≤": attrdict(arity=2, call=vecc(operator.le)),
+    "≥": attrdict(arity=2, call=vecc(operator.ge)),
+    "⊂": attrdict(arity=1, call=iterable),
 }
 
 quicks = {}
