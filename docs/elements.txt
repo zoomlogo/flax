@@ -111,7 +111,7 @@ _P 0 phi
 _R 0 printable ascii
 _S 0 ඞ
 _V 0 "AEIOU"
-_V 0 "AEIOUY"
+_Y 0 "AEIOUY"
 _W 0 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"
 _[ 0 "[]"
 _a 0 "abcdefghijklmnopqrstuvwxyz"
@@ -120,7 +120,7 @@ _e 0 e
 _h 0 "hello world"
 _p 0 pi
 _v 0 "aeiou"
-_v 0 "aeiouy"
+_y 0 "aeiouy"
 _x 0 "0123456789abcdef"
 _{ 0 "{}"
 _Ạ 0 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
