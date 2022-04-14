@@ -455,6 +455,53 @@ quicks = {
             )
         ],
     ),
+    "ˀ": attrdict(
+        condition=lambda links: len(links) == 3,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=max(arities(links)),
+                call=lambda w=None, x=None: (
+                    variadic_link(links[0], (w, x))
+                    if variadic_link(links[2], (w, x))
+                    else variadic_link(links[1], (w, x))
+                ),
+            )
+        ],
+    ),
+    "˘": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=1 if links[0].arity == 2 else (2 if links[0].arity == 1 else 0),
+                call=lambda w=None, x=None: variadic_link(links[0], (w, w))
+                if links[0].arity == 2
+                else variadic_link(links[0], (x,)),
+            )
+        ],
+    ),
+    "˙": quick_chain(0, 2),
+    "˜": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=2 if links[0].arity else 0,
+                call=lambda w=None, x=None: variadic_link(links[0], (x, w))
+                if links[0].arity != 1
+                else links[0].call(w),
+            )
+        ],
+    ),
+    "˝": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(arity=2, call=lambda w, x: fold(links, w, x, initial=True))
+        ],
+    ),
+    "ˢ": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(arity=links[0].arity, call=lambda w, x=None: sort(links, w, x))
+        ]),
 }
 
 train_separators = {

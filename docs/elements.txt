@@ -197,7 +197,7 @@ z  2 zip
 ˢ  Q sort
 Π  1 product
 Σ  1 sum
-ᐣ  Q compose swap
+ᐣ  Q n-compose
 ᴰ  Q 2 links as dyad
 ᴹ  Q 2 links as monad
 ᴺ  Q all neighbours

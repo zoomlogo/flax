@@ -284,7 +284,7 @@ def quick_chain(arity, min_length):
         if arity == 0
         else lambda links: len(links) - sum([leading_nilad(x) for x in suffixes(links)])
         >= min_length,
-        qlink=lambda links, outer_links, i: [
+        qlink=lambda links, outermost_links, i: [
             attrdict(
                 arity=arity, call=lambda w=None, x=None: variadic_chain(links, (w, x))
             )
@@ -341,7 +341,7 @@ def scanfixedpoint(links, *args):
     return res
 
 
-def sort(links, *args, i):
+def sort(links, *args):
     # sort: sort args according to links
     x = iterable(args[-1], digits=True)
     if len(args) == 2:
