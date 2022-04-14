@@ -1,4 +1,5 @@
 !  1 factorial
+φ  1 flatten 1 depth
 "  S string delimeter
 #  1 length
 $  1 sublists
@@ -111,8 +112,8 @@ _P 0 phi
 _R 0 printable ascii
 _S 0 ඞ
 _V 0 "AEIOU"
-_Y 0 "AEIOUY"
 _W 0 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"
+_Y 0 "AEIOUY"
 _[ 0 "[]"
 _a 0 "abcdefghijklmnopqrstuvwxyz"
 _d 0 [[1,1],[1,0],[1,-1],[0,1],[0,0],[0,-1],[-1,1],[-1,0],[-1,-1]]
@@ -120,8 +121,8 @@ _e 0 e
 _h 0 "hello world"
 _p 0 pi
 _v 0 "aeiou"
-_y 0 "aeiouy"
 _x 0 "0123456789abcdef"
+_y 0 "aeiouy"
 _{ 0 "{}"
 _Ạ 0 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 _₀ 0 128
@@ -197,6 +198,7 @@ z  2 zip
 ˢ  Q sort
 Π  1 product
 Σ  1 sum
+φ  1 flatten 1 depth
 ᐣ  Q n-compose
 ᴰ  Q 2 links as dyad
 ᴹ  Q 2 links as monad

@@ -296,6 +296,10 @@ atoms = {
     "Σ": attrdict(
         arity=1, call=lambda x: functools.reduce(vecc(operator.add), iterable(x))
     ),
+    "φ": attrdict(
+        arity=1, call=lambda x: functools.reduce(lambda w, x: iterable(w) + iterable(x), iterable(x), [])
+    ),
+
     "Ḃ": attrdict(arity=1, call=from_bin),
     "Ḅ": attrdict(arity=1, call=vecc(lambda x: x % 2)),
     "Ḋ": attrdict(arity=1, call=from_digits),
