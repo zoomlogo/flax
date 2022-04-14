@@ -388,14 +388,73 @@ quicks = {
             attrdict(
                 arity=links[0].arity or 1,
                 call=lambda w, x=None: [
-                    variadic_link(links[0], (a, b)) for a, b in zip(iterable(w), iterable(x))
+                    variadic_link(links[0], (a, b))
+                    for a, b in zip(iterable(w), iterable(x))
                 ]
                 if x is not None
                 else [variadic_link(links[0], (a,)) for a in iterable(w)],
             )
         ],
     ),
-    "`": attrdict(condition=lambda links: links and links[0].arity, qlink=lambda links, outermost_links, i: [attrdict(arity=1, call=lambda x: scan(links, x))]),
+    "`": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(arity=1, call=lambda x: scan(links, x))
+        ],
+    ),
+    "¨": attrdict(
+        condition=lambda links: len(links) == 2,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=1,
+                call=lambda x: [variadic_chain(links, (e,)) for e in x]
+                if type(x) == list
+                else variadic_chain(links, (x,)),
+            )
+        ],
+    ),
+    "°": attrdict(
+        condition=lambda links: len(links) == 2,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=links[0].arity or 1,
+                call=lambda w, x=None: apply_at(links[0], links[1].call(), w, x),
+            )
+        ],
+    ),
+    "²": attrdict(
+        condition=lambda links: True,
+        qlink=lambda links, outermost_links, i: [
+            create_chain(outermost_links[(i - 1) % len(outermost_links)], 2)
+        ],
+    ),
+    "³": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            create_chain(outermost_links[(i + 1) % len(outermost_links)], 0)
+        ],
+    ),
+    "´": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(arity=1, call=lambda x: fold(links, x))
+        ],
+    ),
+    "¹": attrdict(
+        condition=lambda links: True,
+        qlink=lambda links, outermost_links, i: [
+            create_chain(outermost_links[(i - 1) % len(outermost_links)], 1)
+        ],
+    ),
+    "ʲ": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=links[0].arity or 1,
+                call=lambda w, x=None: scanfixedpoint(links, w, x),
+            )
+        ],
+    ),
 }
 
 train_separators = {

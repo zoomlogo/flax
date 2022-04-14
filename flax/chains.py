@@ -15,12 +15,14 @@ __all__ = [
     "dyadic_chain",
     "ffilter",
     "fold",
+    "foldfixedpoint",
     "max_arity",
     "monadic_chain",
     "niladic_chain",
     "ntimes",
     "quick_chain",
     "scan",
+    "scanfixedpoint",
     "sort",
     "trailing_nilad",
     "variadic_chain",
@@ -31,6 +33,7 @@ __all__ = [
 
 def apply_at(link, indicies, *args):
     # apply_at: apply link at indicies
+    args = list(filter(None.__ne__, args))
     x = iterable(args[-1])
     if len(args) == 2:
         w = args[0]
@@ -171,14 +174,20 @@ def fold(links, *args, right=False, initial=False):
             ]
 
 
-def foldfixedpoint(links, x):
+def foldfixedpoint(links, *args):
     # foldfixedpoint: run link over arg until a fixed point is reached
-    call = links[0].call
+    args = list(filter(None.__ne__, args))
+    x = args[-1]
+    if len(args) == 2:
+        w = args[0]
+    else:
+        w = None
+
     res = x
-    before = call(x)
+    before = variadic_link(links[0], (w, x))
     while before != res:
         res = before
-        before = call(res)
+        before = variadic_link(links[0], (w, x))
     return res
 
 
@@ -315,14 +324,20 @@ def scan(links, *args, right=False, initial=False):
             ]
 
 
-def scanfixedpoint(links, x):
+def scanfixedpoint(links, *args):
     # scanfixedpoint: run link over arg until a fixed point is reached
-    call = links[0].call
+    args = list(filter(None.__ne__, args))
+    x = args[-1]
+    if len(args) == 2:
+        w = args[0]
+    else:
+        w = None
+
     res = [x]
-    before = call(x)
+    before = variadic_link(links[0], (w, x))
     while before != res[-1]:
         res.append(before)
-        before = call(res[-1])
+        before = variadic_link(links[0], (w, x))
     return res
 
 

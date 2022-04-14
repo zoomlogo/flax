@@ -61,7 +61,7 @@ def flax_string(x):
     if type(x) != list:
         if type(x) == mpc:
             return "j".join([flax_string(x.real), flax_string(x.imag)])
-        elif type(x) == int or type(x) == mpf and x != inf and int(x) == x:
+        elif type(x) == int or (x != inf and int(x) == x):
             return str(int(x)).replace("-", "¯").replace("inf", "∞")
         else:
             return str(x).replace("-", "¯").replace("inf", "∞")
