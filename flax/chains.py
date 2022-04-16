@@ -63,7 +63,7 @@ def composed(links, w, x):
         monads = links[:-1]
 
     if dyad.arity != 2:
-        error("Expected dyad for \"ᐣ\"")
+        error('Expected dyad for "ᐣ"')
 
     monads = [monad.call for monad in monads]
     composed_monads = functools.reduce(lambda f, g: lambda w: f(g(w)), monads)
