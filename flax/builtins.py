@@ -617,7 +617,9 @@ quicks = {
     "ᵟ˝": attrdict(
         condition=lambda links: links and links[0].arity,
         qlink=lambda links, outermost_links, i: [
-            attrdict(arity=2, call=lambda w, x: fold(links, w, x, right=True, initial=True))
+            attrdict(
+                arity=2, call=lambda w, x: fold(links, w, x, right=True, initial=True)
+            )
         ],
     ),
     "ᵟᵂ": attrdict(
@@ -625,7 +627,9 @@ quicks = {
         qlink=lambda links, outermost_links, i: [
             attrdict(
                 arity=max(arities(links)),
-                call=lambda w=None, x=None: while_loop(links[0], links[1], (w, x), cumulative=True),
+                call=lambda w=None, x=None: while_loop(
+                    links[0], links[1], (w, x), cumulative=True
+                ),
             )
         ],
     ),
@@ -633,7 +637,8 @@ quicks = {
         condition=lambda links: links,
         qlink=lambda links, outermost_links, i: [
             attrdict(
-                arity=links[0].arity or 1, call=lambda w, x=None: ffilter(links, w, x, permutation=True)
+                arity=links[0].arity or 1,
+                call=lambda w, x=None: ffilter(links, w, x, permutation=True),
             )
         ],
     ),
@@ -641,14 +646,19 @@ quicks = {
         condition=lambda links: links,
         qlink=lambda links, outermost_links, i: [
             attrdict(
-                arity=links[0].arity or 1, call=lambda w, x=None: ffilter(links, w, x, inverse=True, permutation=True)
+                arity=links[0].arity or 1,
+                call=lambda w, x=None: ffilter(
+                    links, w, x, inverse=True, permutation=True
+                ),
             )
         ],
     ),
     "ᵟ‶": attrdict(
         condition=lambda links: links and links[0].arity,
         qlink=lambda links, outermost_links, i: [
-            attrdict(arity=2, call=lambda w, x: scan(links, w, x, right=True, initial=True))
+            attrdict(
+                arity=2, call=lambda w, x: scan(links, w, x, right=True, initial=True)
+            )
         ],
     ),
     "ᵟⁿ": attrdict(
@@ -668,7 +678,8 @@ quicks = {
         condition=lambda links: links,
         qlink=lambda links, outermost_links, i: [
             attrdict(
-                arity=links[0].arity or 1, call=lambda w, x=None: ffilter(links, w, x, inverse=True)
+                arity=links[0].arity or 1,
+                call=lambda w, x=None: ffilter(links, w, x, inverse=True),
             )
         ],
     ),
@@ -678,18 +689,22 @@ quicks = {
         qlink=lambda links, outermost_links, i: [
             attrdict(
                 arity=2,
-                call=lambda w, x: [variadic_link(links[0], (w, e)) for e in iterable(x)]
+                call=lambda w, x: [
+                    variadic_link(links[0], (w, e)) for e in iterable(x)
+                ],
             )
-        ]
+        ],
     ),
     "’": attrdict(
         condition=lambda links: links,
         qlink=lambda links, outermost_links, i: [
             attrdict(
                 arity=2,
-                call=lambda w, x: [variadic_link(links[0], (e, x)) for e in iterable(w)]
+                call=lambda w, x: [
+                    variadic_link(links[0], (e, x)) for e in iterable(w)
+                ],
             )
-        ]
+        ],
     ),
     "‶": attrdict(
         condition=lambda links: links and links[0].arity,
@@ -733,8 +748,10 @@ quicks = {
     "⁶": attrdict(
         condition=lambda links: len(links) == True,
         qlink=lambda links, outermost_links, i: [
-            create_chain(outermost_links[links[0].call() % len(outermost_links)], links[1].call())
-        ]
+            create_chain(
+                outermost_links[links[0].call() % len(outermost_links)], links[1].call()
+            )
+        ],
     ),
     "⁷": attrdict(
         condition=lambda links: links,

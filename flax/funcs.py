@@ -53,9 +53,11 @@ __all__ = [
     "where",
 ]
 
+
 def boolify(fn):
     # boolify: return a function which returns a int bool (0/1)
     return lambda *args: int(fn(*args))
+
 
 def depth(x):
     # depth: returns the depth of x
