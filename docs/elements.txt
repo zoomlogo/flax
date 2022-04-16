@@ -192,7 +192,7 @@ z  2 zip
 ʲ  Q scan fixedpoint
 ˀ  Q ternary if
 ˘  Q self args / monad as dyad using left
-˙  Q links as nilad
+˙  Q 2 links as nilad
 ˜  Q swap args / monad as dyad using right
 ˝  Q foldl
 ˢ  Q sort

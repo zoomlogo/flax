@@ -509,6 +509,86 @@ quicks = {
             attrdict(arity=links[0].arity, call=lambda w, x=None: sort(links, w, x))
         ],
     ),
+    "ᐣ": attrdict(
+        condition=lambda links: links
+        and (
+            links[-1].arity == 0
+            and len(links) == links[-1].call() - 1
+            or len(links) == 3
+        ),
+        qlink=lambda links, outermost_links, i: [
+            attrdict(arity=2, call=lambda w, x: composed(links, w, x))
+        ],
+    ),
+    "ᴰ": quick_chain(2, 2),
+    "ᴹ": quick_chain(1, 2),
+    "ᴺ": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=links[0].arity or 1,
+                call=lambda w, x=None: more_itertools.all_equal(
+                    [variadic_link(links[0], (e, x)) for e in sliding_window(2, w)]
+                ),
+            ),
+        ],
+    ),
+    "ᵀ": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=links[0].arity or 1,
+                call=lambda w, x=None: [
+                    i
+                    for i, e in enumerate(
+                        [variadic_link(links[0], (e, x)) for e in iterable(w)]
+                    )
+                    if e
+                ],
+            )
+        ],
+    ),
+    "ᵂ": attrdict(
+        condition=lambda links: len(links) == 2,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=max(arities(links)),
+                call=lambda w=None, x=None: while_loop(links[0], links[1], (w, x)),
+            )
+        ],
+    ),
+    "ᵈ": quick_chain(2, 3),
+    "ᵍ": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=links[0].arity or 1, call=lambda w, x=None: ffilter(links, w, x)
+            )
+        ],
+    ),
+    "ᵐ": quick_chain(1, 3),
+    "ᵔ": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=links[0].arity or 1,
+                call=lambda w, x=None: [
+                    variadic_link(links[0], (e, x)) for e in sliding_window(2, w)
+                ],
+            ),
+        ],
+    ),
+    "ᵖ": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=links[0].arity or 1,
+                call=lambda w, x=None: [
+                    variadic_chain(links, (e, x)) for e in prefixes(w)
+                ],
+            )
+        ],
+    ),
 }
 
 train_separators = {

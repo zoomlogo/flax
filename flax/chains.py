@@ -4,12 +4,14 @@ import itertools
 
 import flax.common
 from flax.common import attrdict, flax_print, flax_string
-from flax.error import debug
-from flax.funcs import permutations, iterable, sliding_window, split, flatten, suffixes
+from flax.error import debug, error
+from flax.funcs import permutations, iterable, sliding_window, split, flatten, prefixes
+from flax.interpreter import variadic_chain
 
 __all__ = [
     "apply_at",
     "arities",
+    "composed",
     "copy_to",
     "create_chain",
     "dyadic_chain",
@@ -50,6 +52,24 @@ def apply_at(link, indicies, *args):
 def arities(links):
     # arities: return the arities of the links
     return [link.arity for link in links]
+
+
+def composed(links, w, x):
+    # composed: compose links on w and pass it and x to a dyad
+    if links[-1].arity == 0:
+        dyad = links[-2]
+        monads = links[:-2]
+    else:
+        dyad = links[-1]
+        monads = links[:-1]
+
+    if dyad.arity != 2:
+        error("Expected dyad for \"ᐣ\"")
+
+    monads = [monad.call for monad in monads]
+    composed_monads = functools.reduce(lambda f, g: lambda w: f(g(w)), monads)
+
+    return dyad.call(composed_monads(w), x)
 
 
 def copy_to(atom, value):
@@ -280,9 +300,8 @@ def ntimes(links, args, cumulative=False):
 
 def quick_chain(arity, min_length):
     return attrdict(
-        condition=(lambda links: len(links) >= min_length and links[0].arity == 0)
-        if arity == 0
-        else lambda links: len(links) - sum([leading_nilad(x) for x in suffixes(links)])
+        condition=lambda links: len(links)
+        - sum([trailing_nilad(x) for x in prefixes(links)])
         >= min_length,
         qlink=lambda links, outermost_links, i: [
             attrdict(
