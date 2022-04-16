@@ -297,9 +297,11 @@ atoms = {
         arity=1, call=lambda x: functools.reduce(vecc(operator.add), iterable(x))
     ),
     "φ": attrdict(
-        arity=1, call=lambda x: functools.reduce(lambda w, x: iterable(w) + iterable(x), iterable(x), [])
+        arity=1,
+        call=lambda x: functools.reduce(
+            lambda w, x: iterable(w) + iterable(x), iterable(x), []
+        ),
     ),
-
     "Ḃ": attrdict(arity=1, call=from_bin),
     "Ḅ": attrdict(arity=1, call=vecc(lambda x: x % 2)),
     "Ḋ": attrdict(arity=1, call=from_digits),
@@ -505,7 +507,8 @@ quicks = {
         condition=lambda links: links and links[0].arity,
         qlink=lambda links, outermost_links, i: [
             attrdict(arity=links[0].arity, call=lambda w, x=None: sort(links, w, x))
-        ]),
+        ],
+    ),
 }
 
 train_separators = {
