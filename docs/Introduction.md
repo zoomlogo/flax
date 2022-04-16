@@ -2,6 +2,8 @@
 
 ## Installation
 Make sure you have Python 3.9 or above.
+
+Optionally you can use `rlwrap` to get a better REPL.
 ```sh
 git clone https://github.com/PyGamer0/flax
 pip install poetry
