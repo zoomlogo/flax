@@ -6,7 +6,6 @@ import flax.common
 from flax.common import attrdict, flax_print, flax_string
 from flax.error import debug, error
 from flax.funcs import permutations, iterable, sliding_window, split, flatten, prefixes
-from flax.interpreter import variadic_chain
 
 __all__ = [
     "apply_at",
