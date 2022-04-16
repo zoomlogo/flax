@@ -673,18 +673,6 @@ quicks = {
         ],
     ),
     "ᶲ": quick_chain(1, 4),
-    "ⁿ": attrdict(
-        condition=lambda links: len(links) == 2,
-        qlink=lambda links, outermost_links, i: (
-            [links.pop(0)] if len(links) == 2 and links[0].arity == 0 else []
-        )
-        + [
-            attrdict(
-                arity=max_arity(links),
-                call=lambda w=None, x=None: ntimes(links, (w, x)),
-            )
-        ],
-    ),
     "‘": attrdict(
         condition=lambda links: links,
         qlink=lambda links, outermost_links, i: [
@@ -787,6 +775,30 @@ quicks = {
             attrdict(
                 arity=links[0].arity,
                 call=lambda w=None, x=None: int(w == variadic_link(links[0], w, x)),
+            )
+        ],
+    ),
+    "ⁿ": attrdict(
+        condition=lambda links: len(links) == 2,
+        qlink=lambda links, outermost_links, i: (
+            [links.pop(0)] if len(links) == 2 and links[0].arity == 0 else []
+        )
+        + [
+            attrdict(
+                arity=max_arity(links),
+                call=lambda w=None, x=None: ntimes(links, (w, x)),
+            )
+        ],
+    ),
+    "⌜": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=2,
+                call=lambda w, x: [
+                    [variadic_link(links[0], (a, b)) for a in iterable(w, range_=True)]
+                    for b in iterable(x, range_=True)
+                ],
             )
         ],
     ),
