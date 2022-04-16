@@ -1,5 +1,4 @@
 !  1 factorial
-φ  1 flatten 1 depth
 "  S string delimeter
 #  1 length
 $  1 sublists
@@ -247,7 +246,7 @@ z  2 zip
 ‘  Q each right
 ’  Q each left
 •  2 cartesian product
-‶  Q foldr
+‶  Q scanl
 ⁰  Q previous chain as nilad
 ⁱ  Q fold fixedpoint
 ⁴  Q next chain as monad
