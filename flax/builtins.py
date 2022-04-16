@@ -435,7 +435,7 @@ quicks = {
         ],
     ),
     "³": attrdict(
-        condition=lambda links: links,
+        condition=lambda links: True,
         qlink=lambda links, outermost_links, i: [
             create_chain(outermost_links[(i + 1) % len(outermost_links)], 0)
         ],
@@ -707,6 +707,87 @@ quicks = {
         condition=lambda links: links and links[0].arity,
         qlink=lambda links, outermost_links, i: [
             attrdict(arity=2, call=lambda w, x: scan(links, w, x, initial=True))
+        ],
+    ),
+    "⁰": attrdict(
+        condition=lambda links: True,
+        qlink=lambda links, outermost_links, i: [
+            create_chain(outermost_links[(i - 1) % len(outermost_links)], 0)
+        ],
+    ),
+    "ⁱ": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=links[0].arity or 1,
+                call=lambda w, x=None: foldfixedpoint(links, w, x),
+            )
+        ],
+    ),
+    "⁴": attrdict(
+        condition=lambda links: True,
+        qlink=lambda links, outermost_links, i: [
+            create_chain(outermost_links[(i + 1) % len(outermost_links)], 1)
+        ],
+    ),
+    "⁵": attrdict(
+        condition=lambda links: True,
+        qlink=lambda links, outermost_links, i: [
+            create_chain(outermost_links[(i + 1) % len(outermost_links)], 2)
+        ],
+    ),
+    "⁵": attrdict(
+        condition=lambda links: True,
+        qlink=lambda links, outermost_links, i: [
+            create_chain(outermost_links[(i + 1) % len(outermost_links)], 2)
+        ],
+    ),
+    "⁶": attrdict(
+        condition=lambda links: len(links) == True,
+        qlink=lambda links, outermost_links, i: [
+            create_chain(outermost_links[links[0].call() % len(outermost_links)], links[1].call())
+        ]
+    ),
+    "⁷": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=links[0].arity,
+                call=lambda w=None, x=None: copy_to(
+                    atoms["₇"], variadic_link(links[0], w, x)
+                ),
+            )
+        ],
+    ),
+    "⁺": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=links[0].arity,
+                call=lambda w, x=None: max(
+                    iterable(w), key=lambda k: variadic_link(links[0], (k, x))
+                ),
+            )
+        ],
+    ),
+    "⁻": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=links[0].arity,
+                call=lambda w, x=None: min(
+                    iterable(w), key=lambda k: variadic_link(links[0], (k, x))
+                ),
+            )
+        ],
+    ),
+    "⁼": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=links[0].arity,
+                call=lambda w=None, x=None: int(w == variadic_link(links[0], w, x)),
+            )
         ],
     ),
 }

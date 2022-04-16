@@ -251,6 +251,7 @@ z  2 zip
 ⁱ  Q fold fixedpoint
 ⁴  Q next chain as monad
 ⁵  Q next chain as dyad
+⁶  Q chain at
 ⁷  Q set register
 ⁺  Q max
 ⁻  Q min
