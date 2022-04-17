@@ -736,12 +736,6 @@ quicks = {
             create_chain(outermost_links[(i + 1) % len(outermost_links)], 2)
         ],
     ),
-    "⁵": attrdict(
-        condition=lambda links: True,
-        qlink=lambda links, outermost_links, i: [
-            create_chain(outermost_links[(i + 1) % len(outermost_links)], 2)
-        ],
-    ),
     "⁶": attrdict(
         condition=lambda links: len(links) == True,
         qlink=lambda links, outermost_links, i: [
