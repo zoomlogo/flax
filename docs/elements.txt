@@ -186,7 +186,6 @@ z  2 zip
 Š  1 join on spaces
 Ż  1 prepend zero
 ż  2 transpose with filler
-Ƥ  1 print as characters
 Ȧ  1 any
 ʲ  Q scan fixedpoint
 ˀ  Q ternary if

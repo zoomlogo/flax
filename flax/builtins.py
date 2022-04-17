@@ -286,9 +286,6 @@ atoms = {
             rfull=False,
         ),
     ),
-    "Ƥ": attrdict(
-        arity=1, call=lambda x: print(end="".join(chr(e) for e in flatten(x))) or x
-    ),
     "Ȧ": attrdict(arity=1, call=lambda x: int(any(iterable(x, digits=True)))),
     "Π": attrdict(
         arity=1, call=lambda x: functools.reduce(vecc(operator.mul), iterable(x))
