@@ -659,7 +659,7 @@ quicks = {
         ],
     ),
     "ᵟⁿ": attrdict(
-        condition=lambda links: len(links) == 2,
+        condition=lambda links: links and links[0].arity,
         qlink=lambda links, outermost_links, i: (
             [links.pop(0)] if len(links) == 2 and links[0].arity == 0 else []
         )
@@ -793,7 +793,7 @@ quicks = {
         ],
     ),
     "ⁿ": attrdict(
-        condition=lambda links: len(links) == 2,
+        condition=lambda links: links and links[0].arity,
         qlink=lambda links, outermost_links, i: (
             [links.pop(0)] if len(links) == 2 and links[0].arity == 0 else []
         )
