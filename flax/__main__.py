@@ -62,10 +62,10 @@ if read_from_file:
     try:
         if should_encode:
             new_file = sys.argv[0] + ".sbcs"
-            open(new_file, 'w+').write(encode(code))
+            open(new_file, "w+").write(encode(code))
         elif should_decode:
             new_file = sys.argv[0] + ".utf8"
-            open(new_file, 'w+').write(decode(code))
+            open(new_file, "w+").write(decode(code))
         else:
             sys.argv = sys.argv[1:]
             args = [eval(arg) for arg in sys.argv]
