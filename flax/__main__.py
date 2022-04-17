@@ -3,6 +3,7 @@ import sys
 
 from flax.chains import variadic_chain
 from flax.common import flax_print
+from flax.encoding import *
 from flax.error import error, debug
 from flax.funcs import to_chars
 from flax.lexer import tokenise
@@ -25,6 +26,8 @@ def flax_run(code, args):
 
 sys.argv = sys.argv[1:]
 read_from_file = False
+should_encode = False
+should_decode = False
 
 # handle flags
 if sys.argv:
@@ -40,6 +43,13 @@ if sys.argv:
         flax.common.DISABLE_GRID = True
     if "M" in sys.argv[0]:
         flax.common.INF_MORE = True
+    if "e" in sys.argv[0]:
+        read_from_file = True
+        should_encode = True
+    if "D" in sys.argv[0]:
+        read_from_file = True
+        should_decode = True
+        should_encode = False
     sys.argv = sys.argv[1:]
 
 # run
@@ -48,13 +58,19 @@ if read_from_file:
         code = open(sys.argv[0], encoding="utf-8").read()
     except FileNotFoundError:
         error(f'File "{sys.argv[0]}" not found.', 66)
-        exit(66)
 
     try:
-        sys.argv = sys.argv[1:]
-        args = [eval(arg) for arg in sys.argv]
-        args = [to_chars(arg) if type(arg) == str else arg for arg in sys.argv]
-        flax_run(code, args)
+        if should_encode:
+            new_file = sys.argv[0] + ".sbcs"
+            open(new_file, 'w+').write(encode(code))
+        elif should_decode:
+            new_file = sys.argv[0] + ".utf8"
+            open(new_file, 'w+').write(decode(code))
+        else:
+            sys.argv = sys.argv[1:]
+            args = [eval(arg) for arg in sys.argv]
+            args = [to_chars(arg) if type(arg) == str else arg for arg in sys.argv]
+            flax_run(code, args)
     except KeyboardInterrupt:
         error("KeyboardInterrupt", 130)
 else:

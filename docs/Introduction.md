@@ -22,6 +22,8 @@ Flag|Description
 `f`|Read and run a program from a file.
 `p`|Higher precision for floats (100 digits).
 `P`|Disable pretty printing as grids.
+`e`|encode as sbcs
+`D`|decode from sbcs
 
 ## Terminology
 
