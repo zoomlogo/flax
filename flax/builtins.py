@@ -40,8 +40,8 @@ LIST_DELIMETER_R = "]"
 NEGATIVE_SIGN = "¯"
 NEWLINE = "\n"
 STRING_DELIMETER = '"'
-STRING_NEXT_1 = "₊"
-STRING_NEXT_2 = "₋"
+STRING_NEXT_1 = "₋"
+STRING_NEXT_2 = "₊"
 ZERO = "0"
 DIGITS = ZERO + "123456789" + DECIMAL_POINT + COMPLEX_DELIMETER + NEGATIVE_SIGN
 
@@ -95,6 +95,7 @@ atoms = {
     ";S": attrdict(arity=1, call=vecc(mp.sin)),
     ";T": attrdict(arity=1, call=vecc(mp.tan)),
     ";c": attrdict(arity=1, call=vecc(mp.cosh)),
+    ";f": attrdict(arity=1, call=vecc(fibonacci)),
     ";l": attrdict(arity=1, call=vecc(lucas)),
     ";r": attrdict(arity=1, call=vecc(lambda x: list(range(x + 1)))),
     ";s": attrdict(arity=1, call=vecc(mp.sinh)),

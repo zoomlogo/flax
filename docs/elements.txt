@@ -45,10 +45,11 @@ $  1 sublists
 ;R 1 range from 2.. n
 ;S 1 sin
 ;T 1 tan
-;c 1 sinh
+;c 1 cosh
+;f 1 nth fibonacci number
 ;l 1 nth lucas number
 ;r 1 range from 0...n
-;s 1 cosh
+;s 1 sinh
 ;t 1 tanh
 ;° 1 degrees to radians
 ;² 1 is perfect square
@@ -266,8 +267,8 @@ z  2 zip
 ₇  0 get register
 ₈  0 read a character
 ₉  0 read a line
-₊  S next as string
-₋  S next 2 as string
+₊  S next 2 as string
+₋  S next as string
 ₍  0 chains left argument
 ₎  0 chains right argument
 ∆  1 maximum
