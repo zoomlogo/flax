@@ -320,7 +320,7 @@ atoms = {
     "Ṗ": attrdict(arity=1, call=flax_print),
     "ṙ": attrdict(arity=2, call=vecc(lambda w, x: list(range(w + 1, x)))),
     "Ṛ": attrdict(arity=1, call=vecc(lambda x: 1 / x)),
-    "S": attrdict(arity=1, call=lambda x: list(reversed(sorted(x)))),
+    "Ṡ": attrdict(arity=1, call=lambda x: list(reversed(sorted(x)))),
     "Ṫ": attrdict(arity=1, call=lambda x: [i for i, e in enumerate(x) if e]),
     "Ẏ": attrdict(
         arity=1,
@@ -729,12 +729,6 @@ quicks = {
         condition=lambda links: True,
         qlink=lambda links, outermost_links, i: [
             create_chain(outermost_links[(i + 1) % len(outermost_links)], 1)
-        ],
-    ),
-    "⁵": attrdict(
-        condition=lambda links: True,
-        qlink=lambda links, outermost_links, i: [
-            create_chain(outermost_links[(i + 1) % len(outermost_links)], 2)
         ],
     ),
     "⁵": attrdict(

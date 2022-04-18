@@ -1,5 +1,4 @@
 # common: Holds the attrdict and the common stuff
-import itertools
 import more_itertools
 from mpmath import mp
 

@@ -1,11 +1,9 @@
 # funcs: holds the functions used by atoms
 import functools
 import itertools
-import math
 import more_itertools
-import operator
 
-from flax.common import mp, mpc, mpf, inf
+from flax.common import mp, mpc, inf
 
 __all__ = [
     "boolify",
