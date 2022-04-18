@@ -248,7 +248,7 @@ atoms = {
     "q": attrdict(arity=2, call=lambda w, x: exit(0)),
     "r": attrdict(arity=2, call=vecc(lambda w, x: list(range(w, x + 1)))),
     "s": attrdict(arity=2, call=vecc(split, rfull=False)),
-    "t": attrdict(arity=2, call=vecc(lambda w, x: iterable(x)[w - 1 :], rfull=False)),
+    "t": attrdict(arity=2, call=vecc(lambda w, x: iterable(x)[w:], rfull=False)),
     "u": attrdict(
         arity=2, call=lambda w, x: [find(e, x) for e in iterable(w, range_=True)]
     ),
