@@ -1,0 +1,7 @@
+Differences from Jelly¹:
+- Evaluation is right to left like other array languages.
+- Index origin is 0.
+- Some builtins have meaningful glyphs assigned to them.
+- Jelly does not have comments, flax does.
+
+¹ Link: https://github.com/DennisMitchell/jellylanguage
