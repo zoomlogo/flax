@@ -485,6 +485,10 @@ def vecc(fn, lfull=True, rfull=True):
     return lambda *args: vec(fn, *args, lfull=lfull, rfull=rfull)
 
 
-def where(x):
+def where(x, upper_level = []):
     # where: ngn/k's &
-    return flatten([[i] * e for i, e in enumerate(iterable(x))])
+    x = iterable(x)
+    if type(x[0]) != list:
+        return flatten([(upper_level + [i]) * e for i, e in enumerate(x)])
+    else:
+        return [where(e, upper_level + [i]) for i, e in enumerate(x)]
