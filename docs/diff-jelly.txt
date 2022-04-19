@@ -3,5 +3,6 @@ Differences from Jelly¹:
 - Index origin is 0.
 - Some builtins have meaningful glyphs assigned to them.
 - Jelly does not have comments, flax does.
+- No string / character datatype.
 
 ¹ Link: https://github.com/DennisMitchell/jellylanguage
