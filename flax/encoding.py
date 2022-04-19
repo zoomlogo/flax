@@ -3,7 +3,7 @@
 __all__ = ["encode", "decode"]
 
 codepage = "₀₁₂₃₄₅₆₇₈₉\n₊₋∇∆√"
-codepage += "⍋⍒∊⊂⊆⊏≡≢⌈⌊⍴⍳≤≠≥⍪"
+codepage += "⍋⍒∊⊂⊆⊏≡≢⌈⌊⍴⍳≤≠≥⍸"
 codepage += " !\"#$%&'()*+,-./"
 codepage += "0123456789:;<=>?"
 codepage += "@ABCDEFGHIJKLMNO"
@@ -12,11 +12,11 @@ codepage += "`abcdefghijklmno"
 codepage += "pqrstuvwxyz{|}~¯"
 codepage += "₍₎⊢⊣•¬⋈∞´˝±×φ÷ΣΠ"
 codepage += "ÇÐĂĊĠŃŇŚŠŻȦḂḄḊḌḞ"
-codepage += "ḲṄṖṚṠṪẎẒẠỌ¨°ʲˀ˘˜"
-codepage += "ċżḍḟḷṙịọ⁰¹²³⁴⁵⁶⁷"
+codepage += "ḲṄṖṘṚṠṪẎẒẠỌ¨ʲˀ˘˜"
+codepage += "ċżḍḟḷḃṙịọ......⍪"
 codepage += "‶˙ᴰᵈᴹᵐᵠᶲˢᴺᵀᵂᵍᵔᵖᵗ"
-codepage += "ᵝᵟ‘’ⁱᐣ⁺⁻⁼ⁿ⌜....."
-codepage += "................"
+codepage += "ᵝᵟ‘’ⁱᐣ⁺⁻⁼ⁿ⌜°...."
+codepage += "⁰¹²³⁴⁵⁶⁷........"
 codepage += "................"
 
 assert len(codepage) == 256

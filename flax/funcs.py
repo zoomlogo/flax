@@ -2,6 +2,7 @@
 import functools
 import itertools
 import more_itertools
+import operator
 
 from flax.common import mp, mpc, inf
 
@@ -15,6 +16,7 @@ __all__ = [
     "find_all",
     "find_sublist",
     "flatten",
+    "from_base",
     "from_bin",
     "from_digits",
     "grade_down",
@@ -43,6 +45,7 @@ __all__ = [
     "suffixes",
     "to_base",
     "to_bin",
+    "to_braille",
     "to_chars",
     "to_digits",
     "unrepeat",
@@ -114,6 +117,18 @@ def find_sublist(w, x):
 def flatten(x):
     # flatten: flatten x
     return list(more_itertools.collapse(x))
+
+
+def from_base(w, x):
+    # from_base: convert x from base w
+    x = iterable(x, digits=True)
+    sign = -1 if sum(x) < 0 else 1
+    num = 0
+    i = 0
+    for d in x[::-1]:
+        num += abs(d) * w**i
+        i += 1
+    return num * sign
 
 
 def from_bin(x):
@@ -330,7 +345,7 @@ def random(x):
 def repeat(w, x):
     # repeat: repeat x according to w
     zipped = itertools.zip_longest(
-        iterable(y, digits=True), flatten(iterable(x)), fillvalue=1
+        iterable(w, digits=True), flatten(iterable(x)), fillvalue=1
     )
     res = []
     for a, b in zipped:
@@ -356,7 +371,7 @@ def sliding_window(w, x):
     w = int(w)
     if w < 0:
         return vec(
-            lambda a: list(reversed(x)), list(more_itertools.sliding_window(x, -w))
+            lambda e: list(reversed(e)), list(more_itertools.sliding_window(x, -w))
         )
     else:
         return vec(list, list(more_itertools.sliding_window(x, w)))
@@ -378,7 +393,7 @@ def sublists(x):
     for i in range(len(x) + 1):
         for j in range(i):
             sub.append(x[i:j])
-    return lists
+    return sub
 
 
 def suffixes(x):
@@ -408,6 +423,21 @@ def to_base(w, x):
 def to_bin(x):
     # to_bin: return the binary representation of x
     return [-i if x < 0 else i for i in map(int, bin(x)[3 if x < 0 else 2 :])]
+
+
+def to_braille(x):
+    # to_braille: compress boolean matrix x to braille
+    c = [[1, 8], [2, 16], [4, 32], [64, 128]]
+    c = [len(x[0]) // 2 * e for e in c]
+    c = len(x) // 4 * c
+    c = [[c[i][j] * x[i][j] for j in range(len(x[0]))] for i in range(len(x))]
+    c = [c[i : i + 4] for i in range(0, len(x), 4)]
+    c = [functools.reduce(lambda x, y: list(map(operator.add, x, y)), e) for e in c]
+    c = [[c[i][j : j + 2] for j in range(0, len(x), 2)] for i in range(len(c))]
+    c = [[sum(i) for i in e] for e in c]
+    c = [[10240 + c[i][j] for j in range(len(c[0]))] for i in range(len(c))]
+    c = join(10, c)
+    return c
 
 
 def to_chars(x):

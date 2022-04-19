@@ -94,6 +94,7 @@ atoms = {
     ";R": attrdict(arity=1, call=vecc(lambda x: list(range(2, x)))),
     ";S": attrdict(arity=1, call=vecc(mp.sin)),
     ";T": attrdict(arity=1, call=vecc(mp.tan)),
+    ";b": attrdict(arity=1, call=to_braille),
     ";c": attrdict(arity=1, call=vecc(mp.cosh)),
     ";f": attrdict(arity=1, call=vecc(fibonacci)),
     ";l": attrdict(arity=1, call=vecc(lucas)),
@@ -318,6 +319,8 @@ atoms = {
     "ḷ": attrdict(arity=2, call=vecc(find_all, rfull=False)),
     "Ṅ": attrdict(arity=1, call=vecc(lambda x: -x)),
     "Ṗ": attrdict(arity=1, call=flax_print),
+    "Ṙ": attrdict(arity=1, call=lambda x: iterable(x, range_=True)[::-1]),
+    "ḃ": attrdict(arity=2, call=vecc(from_base)),
     "ṙ": attrdict(arity=2, call=vecc(lambda w, x: list(range(w + 1, x)))),
     "Ṛ": attrdict(arity=1, call=vecc(lambda x: 1 / x)),
     "Ṡ": attrdict(arity=1, call=lambda x: list(reversed(sorted(x)))),
@@ -377,12 +380,13 @@ atoms = {
     "⋈": attrdict(arity=2, call=lambda w, x: [w, x]),
     "⌈": attrdict(arity=1, call=vecc(mp.ceil)),
     "⌊": attrdict(arity=1, call=vecc(mp.floor)),
-    "⌽": attrdict(arity=1, call=lambda x: iterable(x, range_=True)[::-1]),
+    "⌽": attrdict(arity=2, call=vecc(lambda w, x: iterable(x, digits=True)[w:] + iterable(x, digits=True)[:w], rfull=False)),
     "⍋": attrdict(arity=1, call=grade_up),
     "⍒": attrdict(arity=1, call=grade_down),
     "⍪": attrdict(arity=2, call=lambda w, x: iterable(x) + iterable(w)),
     "⍳": attrdict(arity=1, call=iota),
     "⍴": attrdict(arity=2, call=reshape),
+    "⍸": attrdict(arity=1, call=lambda x: vec(lambda e: 1 + e, iota(x))),
 }
 
 quicks = {
