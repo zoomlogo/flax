@@ -325,7 +325,7 @@ def prime_factors(x):
         res.append([prime] * times)
         for _ in range(times):
             x = x / prime
-    return res
+    return flatten(res)
 
 
 def primes():
