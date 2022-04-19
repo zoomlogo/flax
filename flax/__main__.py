@@ -9,6 +9,7 @@ from flax.funcs import to_chars
 from flax.lexer import tokenise
 from flax.parser import parse
 import flax.common
+import flax.builtins
 
 __all__ = ["flax_run"]
 
@@ -21,6 +22,11 @@ def flax_run(code, args):
     if flax.common.DEBUG:
         debug("parsed: " + flax.common.flax_string(parsed))
         debug("main chain: " + flax.common.flax_string(parsed[-1]))
+    # run
+    # niladic chains 13 and 15
+    # monadic ones only 15, dyadic nothing
+    flax.builtins.atoms["₎"].call = lambda: args[-1] if len(args) > 0 else 13
+    flax.builtins.atoms["₍"].call = lambda: args[0] if len(args) > 1 else 15
     flax_print(variadic_chain(parsed[-1] if parsed else "", args))
 
 
