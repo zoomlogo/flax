@@ -357,13 +357,12 @@ def reshape(w, x):
     # reshape: reshape x according to the shape w
     w = iterable(w)
     if type(x) != itertools.cycle:
-        if w[0] < 0:
             x = itertools.cycle(iterable(x)[::-1])
-        else:
-            x = itertools.cycle(iterable(x))
 
     if len(w) == 1:
-        return [next(x) for _ in range(abs(w[0]))][::-1]
+        if w[0] < 0:
+            return [next(reversed(x)) for _ in range(-w[0])][::-1]
+        else: return [next(x) for _ in range(w[0])]
     else:
         return [reshape(w[1:], x) for _ in range(w[0])]
 
