@@ -380,7 +380,13 @@ atoms = {
     "⋈": attrdict(arity=2, call=lambda w, x: [w, x]),
     "⌈": attrdict(arity=1, call=vecc(mp.ceil)),
     "⌊": attrdict(arity=1, call=vecc(mp.floor)),
-    "⌽": attrdict(arity=2, call=vecc(lambda w, x: iterable(x, digits=True)[w:] + iterable(x, digits=True)[:w], rfull=False)),
+    "⌽": attrdict(
+        arity=2,
+        call=vecc(
+            lambda w, x: iterable(x, digits=True)[w:] + iterable(x, digits=True)[:w],
+            rfull=False,
+        ),
+    ),
     "⍋": attrdict(arity=1, call=grade_up),
     "⍒": attrdict(arity=1, call=grade_down),
     "⍪": attrdict(arity=2, call=lambda w, x: iterable(x) + iterable(w)),
