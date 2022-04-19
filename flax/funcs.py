@@ -488,7 +488,7 @@ def vecc(fn, lfull=True, rfull=True):
     return lambda *args: vec(fn, *args, lfull=lfull, rfull=rfull)
 
 
-def where(x, upper_level = []):
+def where(x, upper_level=[]):
     # where: ngn/k's &
     x = iterable(x)
     if type(x[0]) != list:
