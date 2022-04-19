@@ -5,3 +5,4 @@ Documentation for flax.
 - [Introduction](./Introduction.md)
 - [Explained Examples](./examples.md)
 - [Elements list](https://PyGamer0.github.io/flax) [(txt)](./elements.txt)
+- [Differences from Jelly](./diff-jelly.txt)
