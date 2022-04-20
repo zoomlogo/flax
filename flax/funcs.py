@@ -360,7 +360,8 @@ def reshape(w, x):
 
     if len(w) == 1:
         i = w[0]
-        while len(x) < i: x += x 
+        while len(x) < i:
+            x += x
         return x[i:] if i < 0 else x[:i]
     else:
         return [reshape(w[1:], x) for _ in range(w[0])]
