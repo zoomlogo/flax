@@ -100,6 +100,9 @@ Code|New λ|Arities
 There are 2 datatypes:
 - Lists
 - Scalars
+  - Integers
+  - Floats
+  - Complex numbers
 
 **NOTE:** A string is just a list of integers.
 
