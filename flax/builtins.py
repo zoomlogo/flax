@@ -135,7 +135,7 @@ atoms = {
         arity=1, call=lambda x: list(more_itertools.difference(x, initial=0))
     ),
     "J": attrdict(arity=1, call=lambda x: list(range(len(x)))),
-    "K": attrdict(arity=1, call=lambda x: list(itertools.accumulate(x))),
+    "K": attrdict(arity=1, call=lambda x: list(itertools.accumulate(iterable(x)))),
     "L": attrdict(arity=1, call=lambda x: iterable(x).pop()),
     "M": attrdict(arity=1, call=vecc(lambda x: x * x)),
     "N": attrdict(arity=1, call=lambda x: iterable(x)[:-1]),
@@ -305,7 +305,7 @@ atoms = {
     "Ḅ": attrdict(arity=1, call=vecc(lambda x: x % 2)),
     "Ḋ": attrdict(arity=1, call=from_digits),
     "Ḍ": attrdict(arity=1, call=vecc(divisors)),
-    "ḍ": attrdict(arity=1, call=vecc(lambda w, x: int(x % w == 0))),
+    "ḍ": attrdict(arity=2, call=vecc(lambda w, x: int(x % w == 0))),
     "Ḟ": attrdict(arity=1, call=lambda x: [i for i, e in enumerate(x) if not e]),
     "ḟ": attrdict(
         arity=2, call=lambda w, x: [e for e in iterable(x) if e in iterable(w)]

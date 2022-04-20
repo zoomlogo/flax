@@ -199,7 +199,7 @@ def group_indicies(x):
 def index_into(w, x):
     # index_into: index into x with w
     x = iterable(x, digits=True)
-    w = int(w) if int(w) == w else w
+    w = int(w) if type(w) != mpc and int(w) == w else w
     if type(w) == int:
         return x[w % len(x)]
     elif type(w) == mpc:

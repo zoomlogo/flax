@@ -16,17 +16,14 @@ __all__ = ["flax_run"]
 # function for running flax
 def flax_run(code, args):
     tokens = tokenise(code)
-    if flax.common.DEBUG:
-        debug("tokens: " + str(tokens))
+    debug("tokens: " + str(tokens))
     parsed = parse(tokens)
-    if flax.common.DEBUG:
-        debug("parsed: " + str(parsed))
-        debug("main chain: " + str(parsed[-1]))
+    debug("parsed: " + str(parsed))
     # run
-    # niladic chains 13 and 15
-    # monadic ones only 15, dyadic nothing
-    flax.builtins.atoms["₎"].call = lambda: args[-1] if len(args) > 0 else 13
-    flax.builtins.atoms["₍"].call = lambda: args[0] if len(args) > 1 else 15
+    # niladic chains 11 and 13
+    # monadic ones only 13, dyadic nothing
+    flax.builtins.atoms["₎"].call = lambda: args[-1] if len(args) > 0 else 11
+    flax.builtins.atoms["₍"].call = lambda: args[0] if len(args) > 1 else 13
     flax_print(variadic_chain(parsed[-1] if parsed else "", args))
 
 
@@ -63,7 +60,7 @@ if read_from_file:
     try:
         code = open(sys.argv[0], encoding="utf-8").read()
     except FileNotFoundError:
-        error(f'File "{sys.argv[0]}" not found.', 66)
+        error(f'file "{sys.argv[0]}" not found.', 66)
 
     try:
         if should_encode:
@@ -78,7 +75,7 @@ if read_from_file:
             args = [to_chars(arg) if type(arg) == str else arg for arg in sys.argv]
             flax_run(code, args)
     except KeyboardInterrupt:
-        error("KeyboardInterrupt", 130)
+        error("kbdi", 130)
 else:
     # repl
     try:
@@ -89,4 +86,4 @@ else:
             args = [to_chars(arg) if type(arg) == str else arg for arg in args]
             flax_run(code, args)
     except KeyboardInterrupt:
-        error("KeyboardInterrupt", 130)
+        error("kbdi", 130)

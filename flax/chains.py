@@ -63,7 +63,7 @@ def composed(links, w, x):
         monads = links[:-1]
 
     if dyad.arity != 2:
-        error('Expected dyad for "ᐣ"')
+        error('expected dyad for "ᐣ"')
 
     monads = [monad.call for monad in monads]
     composed_monads = functools.reduce(lambda f, g: lambda w: f(g(w)), monads)
@@ -103,29 +103,33 @@ def dyadic_chain(chain, w, x):
     else:
         λ = x
 
-    if flax.common.DEBUG:
-        debug("in dyadic chain | w, x ← " + str(w) + ", " + str(x))
+    debug("in dyadic chain | w, x ← " + str(w) + ", " + str(x))
 
     while chain:
-        if flax.common.DEBUG:
-            debug("λ: " + str(λ))
+        debug("λ: " + str(λ))
 
         if arities(chain[-3:]) == [0, 2, 2] and trailing_nilad(chain[:-2]):
+            debug("0,2,2: " + str(chain[-3:]))
             λ = chain[-2].call(chain[-3].call(), chain[-1].call(w + λ))
             chain = chain[:-3]
         elif arities(chain[-2:]) == [2, 2]:
+            debug("2,2: " + str(chain[-2:]))
             λ = chain[-1].call(chain[-2].call(x, w), λ)
             chain = chain[:-2]
         elif arities(chain[-2:]) == [0, 2]:
+            chain("0,2: " + str(chain[-2:]))
             λ = chain[-1].call(chain[-2].call(), λ)
             chain = chain[:-2]
-        elif arities(chain[-2:]) == [0, 2]:
+        elif arities(chain[-2:]) == [2, 0]:
+            chain("2,0: " + str(chain[-2:]))
             λ = chain[-2].call(λ, chain[-1].call())
             chain = chain[:-2]
         elif chain[-1].arity == 2:
+            chain("2: " + str(chain[-1]))
             λ = chain[-1].call(w, λ)
             chain = chain[:-1]
         elif chain[-1].arity == 1:
+            chain("1: " + str(chain[-1]))
             λ = chain[-1].call(λ)
             chain = chain[:-1]
         else:
@@ -236,28 +240,31 @@ def monadic_chain(chain, x):
 
             init = False
 
-            if flax.common.DEBUG:
-                debug("in monadic chain | x ← " + str(x))
+            debug("in monadic chain | x ← " + str(x))
 
         if not chain:
             break
 
-        if flax.common.DEBUG:
-            debug("λ: " + str(λ))
+        debug("λ: " + str(λ))
 
         if arities(chain[-2:]) == [1, 2]:
+            debug("1,2: " + str(chain[-2:]))
             λ = chain[-1].call(chain[-2].call(x), λ)
             chain = chain[:-2]
         elif arities(chain[-2:]) == [0, 2]:
+            debug("0,2: " + str(chain[-2:]))
             λ = chain[-1].call(chain[-2].call(), λ)
             chain = chain[:-2]
-        elif arities(chain[-2:]) == [0, 2]:
+        elif arities(chain[-2:]) == [2, 0]:
+            debug("2,0: " + str(chain[-2:]))
             λ = chain[-2].call(λ, chain[-1].call())
             chain = chain[:-2]
         elif chain[-1].arity == 2:
+            debug("2: " + str(chain[-1]))
             λ = chain[-1].call(x, λ)
             chain = chain[:-1]
         elif chain[-1].arity == 1:
+            debug("1: " + str(chain[-1]))
             if not chain[:-1] and hasattr(chain[-1], "chain"):
                 x = λ
                 chain = chain[-1].chain
@@ -275,8 +282,7 @@ def monadic_chain(chain, x):
 
 def niladic_chain(chain):
     # niladic_chain: evaluate a niladic chain
-    if flax.common.DEBUG:
-        debug("in niladic chain")
+    debug("in niladic chain")
     if not chain or chain[-1].arity > 0:
         return monadic_chain(chain, 0)
     return monadic_chain(chain[:-1], chain[-1].call())

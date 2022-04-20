@@ -1,13 +1,15 @@
 # error: holds the error handling things
 import sys
+import flax.common
 
 
-def error(msg, exit_status=1, prefix="ERROR: "):
+def error(msg, exit_status=1, prefix="'"):
     # error: errors with msg and optional exit_status
-    print("\x1b[0;31m" + prefix + msg + "\x1b[0m", file=sys.stderr)
+    print(prefix + msg, file=sys.stderr)
     exit(exit_status)
 
 
-def debug(msg, prefix="DEBUG: "):
+def debug(msg, prefix='"'):
     # debug: log a debug message to stderr
-    print("\x1b[0;33m" + prefix + msg + "\x1b[0m", file=sys.stderr)
+    if flax.common.DEBUG:
+        print(prefix + msg, file=sys.stderr)
