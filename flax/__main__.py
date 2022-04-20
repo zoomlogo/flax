@@ -17,11 +17,11 @@ __all__ = ["flax_run"]
 def flax_run(code, args):
     tokens = tokenise(code)
     if flax.common.DEBUG:
-        debug("tokens: " + flax.common.flax_string(tokens))
+        debug("tokens: " + str(tokens))
     parsed = parse(tokens)
     if flax.common.DEBUG:
-        debug("parsed: " + flax.common.flax_string(parsed))
-        debug("main chain: " + flax.common.flax_string(parsed[-1]))
+        debug("parsed: " + str(parsed))
+        debug("main chain: " + str(parsed[-1]))
     # run
     # niladic chains 13 and 15
     # monadic ones only 15, dyadic nothing
