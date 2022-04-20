@@ -355,12 +355,13 @@ def repeat(w, x):
 
 def reshape(w, x):
     # reshape: reshape x according to the shape w
-    w = iterable(w)
-    if type(x) != itertools.cycle:
-        x = itertools.cycle(iterable(x))
+    w = flatten(iterable(w))
+    x = iterable(x)
 
     if len(w) == 1:
-        return [next(x) for _ in range(w[0])]
+        i = w[0]
+        while len(x) < i: x += x 
+        return x[i:] if i < 0 else x[:i]
     else:
         return [reshape(w[1:], x) for _ in range(w[0])]
 
