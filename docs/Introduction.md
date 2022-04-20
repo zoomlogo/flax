@@ -54,9 +54,9 @@ Chains are evaluated from right to left.
 Certain rules are followed when chains are processed.
 
 #### Leading constant chains
-A leading constant chain (LCC) is a special type of chain that starts with a nilad and is followed by monads, dyad-nilad pairs, and nilad-dyad pairs.
-Essentially, the nilad must not be paired with a dyad immediately after it.
-You can think of it as a chain that takes no arguments (i.e. is niladic) because it begins with a nilad itself and then follows it with a chain of monadic-like operations.
+A leading constant chain (LCC) is a special type of chain that ends with a nilad and is preceded by monads, dyad-nilad pairs, and nilad-dyad pairs.
+Essentially, the nilad must not be paired with a dyad immediately before it.
+You can think of it as a chain that takes no arguments (i.e. is niladic) because it begins with a nilad itself and then precedes it with a chain of monadic-like operations.
 Certain chaining rules depend on this.
 
 #### Niladic chains
