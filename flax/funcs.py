@@ -353,18 +353,22 @@ def repeat(w, x):
     return res
 
 
-def reshape(w, x):
+def reshape(w, x, level=0):
     # reshape: reshape x according to the shape w
     w = flatten(iterable(w))
     x = iterable(x)
 
     if len(w) == 1:
-        i = w[0]
-        while len(x) < i:
-            x += x
-        return x[i:] if i < 0 else x[:i]
+        reshaped = []
+        x = x[::-1] if w[0] < 0 else x
+        for _ in range(abs(w[0])):
+            reshaped.append(x[0])
+            x.append(x.pop(0))
+        return reshaped[::-1] if w[0] < 0 else reshaped
     else:
-        return [reshape(w[1:], x) for _ in range(w[0])]
+        x = x[::-1] if w[0] < 0 else x
+        reshaped = [reshape(w[1:], x) for _ in range(abs(w[0]))]
+        return reshaped[::-1] if w[0] < 0 else reshaped
 
 
 def sliding_window(w, x):
