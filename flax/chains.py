@@ -104,11 +104,11 @@ def dyadic_chain(chain, w, x):
         λ = x
 
     if flax.common.DEBUG:
-        debug("in dyadic chain | w, x ← " + flax_string(w) + ", " + flax_string(x))
+        debug("in dyadic chain | w, x ← " + str(w) + ", " + str(x))
 
     while chain:
         if flax.common.DEBUG:
-            debug("λ: " + flax_string(λ))
+            debug("λ: " + str(λ))
 
         if arities(chain[-3:]) == [0, 2, 2] and trailing_nilad(chain[:-2]):
             λ = chain[-2].call(chain[-3].call(), chain[-1].call(w + λ))
@@ -237,13 +237,13 @@ def monadic_chain(chain, x):
             init = False
 
             if flax.common.DEBUG:
-                debug("in monadic chain | x ← " + flax_string(x))
+                debug("in monadic chain | x ← " + str(x))
 
         if not chain:
             break
 
         if flax.common.DEBUG:
-            debug("λ: " + flax_string(λ))
+            debug("λ: " + str(λ))
 
         if arities(chain[-2:]) == [1, 2]:
             λ = chain[-1].call(chain[-2].call(x), λ)
