@@ -392,7 +392,7 @@ def sublists(x):
     sub = [[]]
     for i in range(len(x) + 1):
         for j in range(i):
-            sub.append(x[i:j])
+            sub.append(x[j:i])
     return sub
 
 
