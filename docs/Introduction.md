@@ -53,8 +53,8 @@ Chains are evaluated from right to left.
 
 Certain rules are followed when chains are processed.
 
-#### Leading constant chains
-A leading constant chain (LCC) is a special type of chain that ends with a nilad and is preceded by monads, dyad-nilad pairs, and nilad-dyad pairs.
+#### Trailing constant chains
+A trailing constant chain (TCC) is a special type of chain that ends with a nilad and is preceded by monads, dyad-nilad pairs, and nilad-dyad pairs.
 Essentially, the nilad must not be paired with a dyad immediately before it.
 You can think of it as a chain that takes no arguments (i.e. is niladic) because it begins with a nilad itself and then precedes it with a chain of monadic-like operations.
 Certain chaining rules depend on this.
@@ -67,34 +67,34 @@ Certain chaining rules depend on this.
 Now the rest of the chain is evaluated monadically.
 
 #### Monadic chains
-- If the chain starts with an LCC, `... 1` then `λ = 1` and the rest of the chain is evaluated.
-- Otherwise `λ = ⍵` (`⍵` is the right argument).
+- If the chain ends with an TCC, `... 1` then `λ = 1` and the rest of the chain is evaluated.
+- Otherwise `λ = x` (`x` is the right argument).
 
 Now one by one the atoms are considered from right to left, and are applied to the accumulator `λ` according to this table:
 Code|New λ|Arities
 ----|-----|-------
-`F +`|`F(⍵) + λ`| 1, 2
+`F +`|`F(x) + λ`| 1, 2
 `1 +`|`1 + λ`| 0, 2
 `+ 1`|`λ + 1`| 2, 0
-`+`|`⍵ + λ`| 2
+`+`|`x + λ`| 2
 `F`|`F(λ)`| 1
 
 #### Dyadic chains
-- If the chain starts with an LCC `... 1` then `λ = 1`  and the rest of the chain is evaluated.
-- If the chain starts with 3 dyads `+ × ÷` then `λ = ⍺ ÷ ⍵` (`⍺` is the left argument) and the rest of the chain is evaluated.
-- Otherwise `λ = ⍵`.
+- If the chain ends with an TCC `... 1` then `λ = 1`  and the rest of the chain is evaluated.
+- If the chain ends with 3 dyads `+ × ÷` then `λ = w ÷ x` (`w` is the left argument) and the rest of the chain is evaluated.
+- Otherwise `λ = x`.
 
 Now one by one the atoms are considered from right to left, and are applied to the accumulator `λ` according to this table:
 Code|New λ|Arities
 ----|-----|-------
-`1 × +`| `1 × (⍺ + λ)`| 0₁, 2, 2 
-`× +`| `(⍵ × ⍺) + λ`| 2, 2
+`1 × +`| `1 × (w + λ)`| 0₁, 2, 2 
+`× +`| `(x × w) + λ`| 2, 2
 `1 +`|`1 + λ`| 0, 2
 `+ 1`|`λ + 1`| 2, 0
-`+`|`⍺ + λ`| 2
+`+`|`w + λ`| 2
 `F`|`F(λ)`| 1
 
-₁ The rule only applies if the nilad is part of an LCC.
+₁ The rule only applies if the nilad is part of a TCC.
 
 ## Datatypes
 There are 2 datatypes:
