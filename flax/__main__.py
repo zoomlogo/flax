@@ -44,8 +44,6 @@ if sys.argv:
         flax.common.mp.dps = 64
     if "P" in sys.argv[0]:
         flax.common.DISABLE_GRID = True
-    if "M" in sys.argv[0]:
-        flax.common.INF_MORE = True
     if "e" in sys.argv[0]:
         read_from_file = True
         should_encode = True
