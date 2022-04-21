@@ -58,7 +58,7 @@ if read_from_file:
     try:
         code = open(sys.argv[0], encoding="utf-8").read()
     except FileNotFoundError:
-        error(f'file "{sys.argv[0]}" not found.', 66)
+        error(f'fnf "{sys.argv[0]}"', 66)
 
     try:
         if should_encode:
