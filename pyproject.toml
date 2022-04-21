@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "flax"
-version = "0.1.4"
+version = "0.1.5"
 description = "flax tacit language"
 authors = ["PyGamer0"]
 license = "MIT"
