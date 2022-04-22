@@ -2,8 +2,7 @@
 import functools
 import itertools
 
-import flax.common
-from flax.common import attrdict, flax_print, flax_string
+from flax.common import attrdict, flax_print
 from flax.error import debug, error
 from flax.funcs import permutations, iterable, sliding_window, split, flatten, prefixes
 
