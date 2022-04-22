@@ -1,6 +1,6 @@
 /* note: these colors are from defined.nvim */
 @font-face {
-	font-family: 'icfs Web';
+	font-family: 'icfs';
 	font-display: swap;
 	font-weight: 400;
 	font-stretch: normal;
@@ -11,5 +11,5 @@
 body {
   color: #eeeeff;
   background-color: #222226;
-  font-family: 'icfs Web,monospace';
+  font-family: icfs,monospace;
 }
