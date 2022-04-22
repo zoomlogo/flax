@@ -209,7 +209,7 @@ def foldfixedpoint(links, *args):
     before = variadic_link(links[0], (w, x))
     while before != res:
         res = before
-        before = variadic_link(links[0], (w, x))
+        before = variadic_link(links[0], (w, res))
     return res
 
 
@@ -360,7 +360,7 @@ def scanfixedpoint(links, *args):
     before = variadic_link(links[0], (w, x))
     while before != res[-1]:
         res.append(before)
-        before = variadic_link(links[0], (w, x))
+        before = variadic_link(links[0], (w, res[-1]))
     return res
 
 
