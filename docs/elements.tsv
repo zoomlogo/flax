@@ -2,3 +2,40 @@ GLYPH	TYPE	DESCRIPTION	LONG DESCRIPTION
 !	1	factorial	factorial, vectorising
 """"	S	string delimiter	syntactic sugar for a string which is actually a list of numbers
 "#"	1	length	length of a list
+$	1	sublists	sublists of a list
+%	2	modulo	modulo, vectorising
+&	2	bitwise and	bitwise and, vectorising
+'	Q	map / zipwith	map a function over a list or zip 2 lists and perform a dyadic operation on each pair
+(	1	prefixes	prefixes of a list
+)	1	suffixes	suffixes of a list
+*	2	power	raise one number of the power of another, vectorising
++	2	add	addition, vectorising
+,	2	catanate	catanate a number or a list to a list
+-	2	subtract	subtraction, vectorising
+.	S	decimal point	literal decimal point
+/	2	repeat	repeat a value in a list a number of times
+0	S	zero	literal zero
+1	S	one	literal one
+2	S	two	literal two
+3	S	three	literal three
+4	S	four	literal four
+5	S	five	literal five
+6	S	six	literal six
+7	S	seven	literal seven
+8	S	eight	literal eight
+9	S	nine	literal nine
+:*	2	matrix power	matrix power
+:<	2	bitshift left	bitshift left, vectorising
+:>	2	bitshift right	bitshift right, vectorising
+:j	2	to complex	convert 2 numbers to a complex number, vectorising
+:Ȧ	2	atan2	atan2, vectorising
+:•	2	matrix multiplication	matrix multiplication
+;$	1	sublists of permutations	sublists of permutations
+;1	1	ones	build a square matrix with 1s at locations specified
+;A	1	arccos	arccosine, vectorising
+;C	1	cos	cosine, vectorising
+;D	1	determinant	determinant
+;F	1	factors	prime factors, vectorising
+;G	1	graph adjacency matrix	graph adjacency matrix
+;I	1	identity matrix	identity matrix of given size
+;J	1	split complex	split a complex number into its constituents
