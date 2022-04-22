@@ -19,9 +19,13 @@ body {
   border: none;
   color: #eeeeff;
   background-color: #444448;
+  font-family: icfs,monospace;
+  font-size: 16px;
 }
 
 #search-bar::placeholder {
   opacity: 1;
   color: #888892;
+  font-family: icfs,monospace;
+  font-size: 16px;
 }
