@@ -1,4 +1,4 @@
 GLYPH	TYPE	DESCRIPTION	LONG DESCRIPTION
 !	1	factorial	factorial, vectorising
-"""	S	string delimiter	syntactic sugar for a string which is actually a list of numbers
+""""	S	string delimiter	syntactic sugar for a string which is actually a list of numbers
 "#"	1	length	length of a list
