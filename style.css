@@ -18,6 +18,7 @@ body {
 #search-bar {
   border: none;
   color: #eeeeff;
+  padding: 4px;
   background-color: #444448;
   font-family: icfs,monospace;
   font-size: 16px;
