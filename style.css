@@ -15,13 +15,13 @@ body {
   font-size: 20px;
 }
 
-.search-bar {
+#search-bar {
   border: none;
   color: #eeeeff;
   background-color: #444448;
 }
 
-.search-bar::placeholder {
+#search-bar::placeholder {
   opacity: 1;
   color: #888892;
 }
