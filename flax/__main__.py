@@ -2,7 +2,6 @@
 import sys
 
 from flax.chains import variadic_chain
-from flax.common import flax_print
 from flax.encoding import *
 from flax.error import error, debug
 from flax.funcs import to_chars
@@ -24,7 +23,7 @@ def flax_run(code, args):
     # monadic ones only 13, dyadic nothing
     flax.builtins.atoms["₎"].call = lambda: args[-1] if len(args) > 0 else 11
     flax.builtins.atoms["₍"].call = lambda: args[0] if len(args) > 1 else 13
-    flax_print(variadic_chain(parsed[-1] if parsed else "", args))
+    flax.common.flax_print(variadic_chain(parsed[-1] if parsed else "", args))
 
 
 sys.argv = sys.argv[1:]
