@@ -20,3 +20,8 @@ body {
   color: #eeeeff;
   background-color: #444448;
 }
+
+.search-bar::placeholder {
+  opacity: 1;
+  color: #888892;
+}
