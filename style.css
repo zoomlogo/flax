@@ -12,4 +12,11 @@ body {
   color: #eeeeff;
   background-color: #222226;
   font-family: icfs,monospace;
+  font-size: 20px;
+}
+
+.search-bar {
+  border: none;
+  color: #eeeeff;
+  background-color: #444448;
 }
