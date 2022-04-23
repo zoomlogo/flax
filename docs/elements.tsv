@@ -1,7 +1,7 @@
 GLYPH	TYPE	DESCRIPTION	LONG DESCRIPTION
 !	1	factorial	factorial, vectorising
-""""	S	string delimiter	syntactic sugar for a string which is actually a list of numbers
-"#"	1	length	length of a list
+"	S	string delimiter	syntactic sugar for a string which is actually a list of numbers
+#	1	length	length of a list
 $	1	sublists	sublists of a list
 %	2	modulo	modulo, vectorising
 &	2	bitwise and	bitwise and, vectorising
@@ -99,21 +99,21 @@ Z	1	transpose	transpose
 \	1	unrepeat	lengths of runs of equal values
 ]	S	end a list	end a list
 ^	2	bitwise xor	bitwise xor, vectorising
-_(	0	""()""	parenthesis
+_(	0	"()"	parenthesis
 _+	0	[1,¯1]	signs
 _-	0	[¯1,1]	signs, the other way
-_/	0	""/\\""	slashes
+_/	0	"/\\"	slashes
 _0	0	[0,0]	zeros
 _1	0	[1,1]	ones
 _2	0	[2,2]	twos
-_<	0	""<>""	angle brackets
+_<	0	"<>"	angle brackets
 _A	0	"ABCDEFGHIJKLMNOPQRSTUVWXYZ"	capital letters
 _D	0	[[0,1],[1,0],[0,¯1],[¯1,0]]	directions
 _H	0	"Hello, World!"	hello world!
 _P	0	phi	phi
 _R	0	printable ascii	printable ascii
 _S	0	ඞ	A M O G U S
-_V	0	""AEIOU""	vowels
-_W	0	""ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_""	identifier
-_Y	0	""AEIOUY""	vowels with y
-_[	0	""[]""	square brackets
+_V	0	"AEIOU"	vowels
+_W	0	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"	identifier
+_Y	0	"AEIOUY"	vowels with y
+_[	0	"[]"	square brackets
