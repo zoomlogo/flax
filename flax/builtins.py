@@ -165,7 +165,7 @@ atoms = {
     ),
     "Z": attrdict(arity=1, call=lambda x: list(map(list, zip(*iterable(x))))),
     "\\": attrdict(arity=1, call=unrepeat),
-    "^": attrdict(arity=1, call=vecc(operator.xor)),
+    "^": attrdict(arity=2, call=vecc(operator.xor)),
     "_(": attrdict(arity=0, call=lambda: to_chars("()")),
     "_+": attrdict(arity=0, call=lambda: [1, -1]),
     "_-": attrdict(arity=0, call=lambda: [-1, 1]),
