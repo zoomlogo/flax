@@ -198,19 +198,7 @@ def fold(links, *args, right=False, initial=False):
 
 def foldfixedpoint(links, *args):
     # foldfixedpoint: run link over arg until a fixed point is reached
-    args = list(filter(None.__ne__, args))
-    x = args[-1]
-    if len(args) == 2:
-        w = args[0]
-    else:
-        w = None
-
-    res = x
-    before = variadic_link(links[0], (w, x))
-    while before != res:
-        res = before
-        before = variadic_link(links[0], (w, res))
-    return res
+    return scanfixedpoint(links, *args)[-1]
 
 
 def max_arity(links):
@@ -358,7 +346,7 @@ def scanfixedpoint(links, *args):
 
     res = [x]
     before = variadic_link(links[0], (w, x))
-    while before != res[-1]:
+    while not any(map(lambda e: before == e, res)):
         res.append(before)
         before = variadic_link(links[0], (w, res[-1]))
     return res
