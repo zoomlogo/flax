@@ -1,6 +1,11 @@
 !  1 factorial
 "  S string delimeter
 #  1 length
+ø  T start a niladic chain
+µ  T start a monadic chain
+г  T map the monadic chain
+ð  T start a dyadic chain
+ɓ  T start a dyadic chain with arguments reversed
 $  1 sublists
 %  2 moduluo
 &  2 bitwise and
