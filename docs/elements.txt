@@ -1,11 +1,6 @@
 !  1 factorial
 "  S string delimeter
 #  1 length
-ø  T start a niladic chain
-µ  T start a monadic chain
-г  T map the monadic chain
-ð  T start a dyadic chain
-ɓ  T start a dyadic chain with arguments reversed
 $  1 sublists
 %  2 moduluo
 &  2 bitwise and
@@ -53,6 +48,7 @@ $  1 sublists
 ;b 1 boolean matrix to braille
 ;c 1 cosh
 ;f 1 nth fibonacci number
+;j 1 from json
 ;l 1 nth lucas number
 ;r 1 range from 0...n
 ;s 1 sinh
@@ -178,11 +174,14 @@ z  2 zip
 ²  Q previous chain as dyad
 ³  Q next chain as nilad
 ´  Q foldl1
+µ  T start a monadic chain
 ¹  Q previous chain as monad
 Ç  1 split into chunks of length 2
 Ð  1 double
 ×  2 mul
+ð  T start a dyadic chain
 ÷  2 divide
+ø  T start a niladic chain
 Ă  1 any and all
 Ċ  1 choose random
 ċ  2 count occerence
@@ -194,6 +193,7 @@ z  2 zip
 Ż  1 prepend zero
 ż  2 transpose with filler
 Ȧ  1 any
+ɓ  T start a dyadic chain with arguments reversed
 ʲ  Q scan fixedpoint
 ˀ  Q ternary if
 ˘  Q self args / monad as dyad using left
@@ -204,6 +204,7 @@ z  2 zip
 Π  1 product
 Σ  1 sum
 φ  1 flatten 1 depth
+г  T map the monadic chain
 ᐣ  Q n-compose
 ᴰ  Q 2 links as dyad
 ᴹ  Q 2 links as monad

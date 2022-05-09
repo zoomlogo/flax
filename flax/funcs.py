@@ -4,7 +4,7 @@ import itertools
 import more_itertools
 import operator
 
-from flax.common import mp, mpc, inf
+from flax.common import mp, mpc, inf, mpf
 
 __all__ = [
     "boolify",
@@ -27,6 +27,7 @@ __all__ = [
     "iota",
     "iterable",
     "join",
+    "json_decode",
     "lucas",
     "mold",
     "nprimes",
@@ -237,6 +238,21 @@ def join(w, x):
     w = itertools.cycle(iterable(w))
     x = iterable(x)
     return flatten(zip(x, w))
+
+def json_decode(x):
+    # json_decode: convert jsoned x to flax arrays
+    if type(x) == list or type(x) == tuple:
+        return [json_decode(i) for i in x]
+    elif type(x) == str:
+        return [ord(i) for i in x]
+    elif type(x) == dict:
+        return [json_decode(i) for i in x.items()]
+    elif x is None:
+        return inf
+    elif type(x) == bool:
+        return int(x)
+    else:
+        return mpf(x)
 
 
 @functools.cache

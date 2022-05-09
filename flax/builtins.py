@@ -1,6 +1,7 @@
 # builtins: holds the builtins and some constants for the lexer
 import itertools
 import functools
+import json
 import sys
 import math
 import more_itertools
@@ -97,6 +98,9 @@ atoms = {
     ";b": attrdict(arity=1, call=to_braille),
     ";c": attrdict(arity=1, call=vecc(mp.cosh)),
     ";f": attrdict(arity=1, call=vecc(fibonacci)),
+    ";j": attrdict(arity=1, call=lambda x: json_decode(json.loads(
+        "".join(map(chr, flatten(x)))
+    ))),
     ";l": attrdict(arity=1, call=vecc(lucas)),
     ";r": attrdict(arity=1, call=vecc(lambda x: list(range(x + 1)))),
     ";s": attrdict(arity=1, call=vecc(mp.sinh)),
