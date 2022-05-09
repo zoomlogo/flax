@@ -239,6 +239,7 @@ def join(w, x):
     x = iterable(x)
     return flatten(zip(x, w))
 
+
 def json_decode(x):
     # json_decode: convert jsoned x to flax arrays
     if type(x) == list or type(x) == tuple:
