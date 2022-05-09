@@ -22,12 +22,16 @@ def arrayify(arr_list):
 
 def escapes(x):
     # escapes: convert x to a list of numbers and parse escape sequences
+    x = x.replace("\\\\", "\\")
     x = x.replace("\\n", "\n")
     x = x.replace('\\"', '"')
     x = x.replace("\\t", "\t")
     x = x.replace("\\v", "\v")
-    x = x.replace("\\[", "\x1b")
+    x = x.replace("\\e", "\x1b")
     x = x.replace("\\a", "\a")
+    x = x.replace("\\r", "\r")
+    x = x.replace("\\b", "\b")
+    x = x.replace("\\f", "\f")
     return [ord(i) for i in x]
 
 
