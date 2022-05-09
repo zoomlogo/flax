@@ -16,11 +16,19 @@ def arrayify(arr_list):
         elif x[0] == TOKEN_TYPE.LIST:
             array.append(arrayify(x[1]))
         elif x[0] == TOKEN_TYPE.STRING:
-            # handle backslashes
-            array.append(
-                [ord(c) for c in x[1].replace("\\n", "\n").replace("\\'", "'")]
-            )
+            array.append(escapes(x[1]))
     return array
+
+
+def escapes(x):
+    # escapes: convert x to a list of numbers and parse escape sequences
+    x = x.replace("\\n", "\n")
+    x = x.replace('\\"', '"')
+    x = x.replace("\\t", "\t")
+    x = x.replace("\\v", "\v")
+    x = x.replace("\\[", "\x1b")
+    x = x.replace("\\a", "\a")
+    return [ord(i) for i in x]
 
 
 def numberify(x):
@@ -85,10 +93,7 @@ def parse(tokens):
                     stack.append(
                         attrdict(
                             arity=0,
-                            call=lambda s=token[1]: [
-                                ord(x)
-                                for x in s.replace("\\n", "\n").replace("\\'", "'")
-                            ],
+                            call=lambda x=token[1]: escapes(x),
                             glyph=token[1],
                         )
                     )
