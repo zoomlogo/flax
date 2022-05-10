@@ -33,20 +33,22 @@ should_decode = False
 
 # handle flags
 if sys.argv:
-    if "d" in sys.argv[0]:
+    flags = sys.argv[0]
+    if "d" in flags:
         flax.common.DEBUG = True
-    if "f" in sys.argv[0]:
+    if "f" in flags:
         read_from_file = True
-    if "C" in sys.argv[0]:
+    if "C" in flags:
         flax.common.PRINT_CHARS = True
-    if "p" in sys.argv[0]:
-        flax.common.mp.dps = 64
-    if "P" in sys.argv[0]:
+    if "p" in flags:
+        sys.argv = sys.argv[1:]
+        flax.common.mp.dps = int(sys.argv[0])
+    if "P" in flags:
         flax.common.DISABLE_GRID = True
-    if "e" in sys.argv[0]:
+    if "e" in flags:
         read_from_file = True
         should_encode = True
-    if "D" in sys.argv[0]:
+    if "D" in flags:
         read_from_file = True
         should_decode = True
         should_encode = False
