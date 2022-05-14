@@ -79,6 +79,7 @@ def diagonals(x, antidiagonals=False):
 
     return anti if antidiagonals else diag
 
+
 def divisors(x):
     # divisors: returns the factors of x
     return [a for a in range(1, int(x) + 1) if x % a == 0]
