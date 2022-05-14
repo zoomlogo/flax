@@ -118,6 +118,8 @@ atoms = {
             for e in iterable(x)
         ],
     ),
+    ";Ḋ": attrdict(arity=1, call=lambda x: diagonals(x, antidiagonals=True)),
+    ";Ḍ": attrdict(arity=1, call=lambda x: diagonals(x)),
     ";Ṗ": attrdict(arity=1, call=vecc(nprimes)),
     ";Ṡ": attrdict(arity=1, call=vecc(mp.csc)),
     ";Ṫ": attrdict(arity=1, call=vecc(mp.cot)),
