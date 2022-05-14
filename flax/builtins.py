@@ -246,7 +246,7 @@ atoms = {
     ),
     "g": attrdict(arity=2, call=vecc(math.gcd)),
     "h": attrdict(arity=2, call=vecc(lambda w, x: iterable(x)[:w], rfull=False)),
-    "i": attrdict(arity=2, call=vecc(index_into, rfull=False)),
+    "i": attrdict(arity=2, call=vecc(index_into, lfull=False)),
     "l": attrdict(arity=2, call=vecc(math.lcm)),
     "m": attrdict(arity=2, call=vecc(lambda w, x: min(w, x))),
     "n": attrdict(arity=2, call=vecc(operator.floordiv)),
@@ -322,7 +322,7 @@ atoms = {
             functools.reduce(vecc(operator.add), iterable(e)) for e in iterable(x)
         ],
     ),
-    "ḷ": attrdict(arity=2, call=vecc(find_all, rfull=False)),
+    "ḷ": attrdict(arity=2, call=vecc(find_all, lfull=False)),
     "Ṅ": attrdict(arity=1, call=vecc(lambda x: -x)),
     "Ṗ": attrdict(arity=1, call=flax_print),
     "Ṙ": attrdict(arity=1, call=lambda x: iterable(x, range_=True)[::-1]),
@@ -342,7 +342,7 @@ atoms = {
         ),
     ),
     "Ạ": attrdict(arity=1, call=lambda x: int(all(iterable(x, digits=True)))),
-    "ị": attrdict(arity=2, call=vecc(find, rfull=False)),
+    "ị": attrdict(arity=2, call=vecc(find, lfull=False)),
     "Ọ": attrdict(
         arity=1,
         call=lambda x: [
