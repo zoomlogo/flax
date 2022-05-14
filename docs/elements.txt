@@ -60,6 +60,8 @@ $  1 sublists
 ;Ġ 1 graph distance matrix
 ;Ȧ 1 arctan
 ;Ḃ 1 bounce depth 1
+;Ḋ 1 anti diagonals
+;Ḍ 1 diagonals
 ;Ṗ 1 primes
 ;Ṡ 1 csc
 ;Ṫ 1 cot

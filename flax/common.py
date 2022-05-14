@@ -17,7 +17,6 @@ __all__ = [
 DEBUG = False
 PRINT_CHARS = False
 DISABLE_GRID = False
-NSTR_ENABLE = False
 
 # Set mp context defaults
 mp.dps = 20  # 20 by default, sets to 100 by flag

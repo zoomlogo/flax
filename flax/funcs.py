@@ -66,7 +66,7 @@ def depth(x):
     return 0 if type(x) != list else (1 if not x else max([depth(a) for a in x]) + 1)
 
 
-def diagonals(x, anti=False):
+def diagonals(x, antidiagonals=False):
     # diagonals: returns the diagonals or the anti-diagonals of x
     diag = [[] for _ in range(len(x) + len(x[0]) - 1)]
     anti = [[] for _ in range(len(diag))]
@@ -77,6 +77,7 @@ def diagonals(x, anti=False):
             diag[i + j].append(x[j][i])
             anti[i - j - min_d].append(x[j][i])
 
+    return anti if antidiagonals else diag
 
 def divisors(x):
     # divisors: returns the factors of x
@@ -93,24 +94,24 @@ def fibonacci(x):
 
 
 def find(w, x):
-    # find: find the occurence of x in w
+    # find: find the occurence of w in x
     try:
-        return iterable(w, digits=True).index(x)
+        return iterable(x, digits=True).index(w)
     except ValueError:
         return []
 
 
 def find_all(w, x):
-    # find_all: returns all indicies of occurences of x in w
-    return [i for i, e in enumerate(w) if e == x]
+    # find_all: returns all indicies of occurences of w in x
+    return [i for i, e in enumerate(x) if e == w]
 
 
 def find_sublist(w, x):
-    # find_sublist: find the occurence of the sublist x in w
-    w = iterable(w, digits=True)
+    # find_sublist: find the occurence of the sublist w in x
     x = iterable(x, digits=True)
-    for i in range(len(w)):
-        if w[i : i + len(x)] == x:
+    w = iterable(w, digits=True)
+    for i in range(len(x)):
+        if x[i : i + len(w)] == w:
             return i
     return []
 
@@ -198,15 +199,15 @@ def group_indicies(x):
 
 
 def index_into(w, x):
-    # index_into: index into x with w
-    x = iterable(x, digits=True)
-    w = int(w) if type(w) != mpc and int(w) == w else w
-    if type(w) == int:
-        return x[w % len(x)]
-    elif type(w) == mpc:
-        return index_into(w.real, index_into(w.imag, x))
+    # index_into: index into w with x
+    w = iterable(w, digits=True)
+    x = int(x) if type(x) != mpc and int(x) == x else x
+    if type(x) == int:
+        return w[x % len(w)]
+    elif type(x) == mpc:
+        return index_into(x.real, index_into(x.imag, w))
     else:
-        return [index_into(mp.floor(w), x), index_into(mp.ceil(w), x)]
+        return [index_into(mp.floor(x), w), index_into(mp.ceil(x), w)]
 
 
 def iota(x):
