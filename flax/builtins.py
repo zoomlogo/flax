@@ -331,6 +331,7 @@ atoms = {
     "Ṛ": attrdict(arity=1, call=vecc(lambda x: 1 / x)),
     "Ṡ": attrdict(arity=1, call=lambda x: list(reversed(sorted(x)))),
     "Ṫ": attrdict(arity=1, call=lambda x: [i for i, e in enumerate(x) if e]),
+    "ẇ": attrdict(arity=2, call=find_sublist),
     "Ẏ": attrdict(
         arity=1,
         call=lambda x: [e for i, e in enumerate(iterable(x, digits=True)) if i % 2],

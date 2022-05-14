@@ -248,6 +248,7 @@ z  2 zip
 Ṛ  1 reciprocal
 Ṡ  1 reverse sort
 Ṫ  1 indicies of truthy
+ẇ  2 find sublist
 Ẏ  1 elements at odd indicies
 Ẓ  1 zip with filler 0
 Ạ  1 all
