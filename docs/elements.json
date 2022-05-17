@@ -222,7 +222,7 @@
   {
     "element": ";R",
     "arity": "1",
-    "description": "range from 2.. n"
+    "description": "range from 2..n"
   },
   {
     "element": ";S",
@@ -242,7 +242,7 @@
   {
     "element": ";c",
     "arity": "1",
-    "description": "cosh"
+    "description": "cos"
   },
   {
     "element": ";f",
