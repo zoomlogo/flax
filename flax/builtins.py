@@ -420,7 +420,7 @@ quicks = {
     "`": attrdict(
         condition=lambda links: links and links[0].arity,
         qlink=lambda links, outermost_links, i: [
-            attrdict(arity=1, call=lambda x: scan(links, x))
+            attrdict(arity=1, call=lambda x: scan(links, x, right=True))
         ],
     ),
     "¨": attrdict(
@@ -458,7 +458,7 @@ quicks = {
     "´": attrdict(
         condition=lambda links: links and links[0].arity,
         qlink=lambda links, outermost_links, i: [
-            attrdict(arity=1, call=lambda x: fold(links, x))
+            attrdict(arity=1, call=lambda x: fold(links, x, right=True))
         ],
     ),
     "¹": attrdict(
@@ -515,7 +515,7 @@ quicks = {
     "˝": attrdict(
         condition=lambda links: links and links[0].arity,
         qlink=lambda links, outermost_links, i: [
-            attrdict(arity=2, call=lambda w, x: fold(links, w, x, initial=True))
+            attrdict(arity=2, call=lambda w, x: fold(links, w, x, initial=True, right=True))
         ],
     ),
     "ˢ": attrdict(
@@ -620,20 +620,20 @@ quicks = {
     "ᵟ`": attrdict(
         condition=lambda links: links and links[0].arity,
         qlink=lambda links, outermost_links, i: [
-            attrdict(arity=1, call=lambda x: scan(links, x, right=True))
+            attrdict(arity=1, call=lambda x: scan(links, x))
         ],
     ),
     "ᵟ´": attrdict(
         condition=lambda links: links and links[0].arity,
         qlink=lambda links, outermost_links, i: [
-            attrdict(arity=1, call=lambda x: fold(links, x, right=True))
+            attrdict(arity=1, call=lambda x: fold(links, x))
         ],
     ),
     "ᵟ˝": attrdict(
         condition=lambda links: links and links[0].arity,
         qlink=lambda links, outermost_links, i: [
             attrdict(
-                arity=2, call=lambda w, x: fold(links, w, x, right=True, initial=True)
+                arity=2, call=lambda w, x: fold(links, w, x, initial=True)
             )
         ],
     ),
@@ -672,7 +672,7 @@ quicks = {
         condition=lambda links: links and links[0].arity,
         qlink=lambda links, outermost_links, i: [
             attrdict(
-                arity=2, call=lambda w, x: scan(links, w, x, right=True, initial=True)
+                arity=2, call=lambda w, x: scan(links, w, x, initial=True)
             )
         ],
     ),
@@ -724,7 +724,7 @@ quicks = {
     "‶": attrdict(
         condition=lambda links: links and links[0].arity,
         qlink=lambda links, outermost_links, i: [
-            attrdict(arity=2, call=lambda w, x: scan(links, w, x, initial=True))
+            attrdict(arity=2, call=lambda w, x: scan(links, w, x, initial=True, right=True))
         ],
     ),
     "⁰": attrdict(
