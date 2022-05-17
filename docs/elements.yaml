@@ -1,0 +1,1246 @@
+- element: "!"
+  arity: "1"
+  description: factorial
+
+- element: '"'
+  arity: S
+  description: string delimeter
+
+- element: "#"
+  arity: "1"
+  description: length
+
+- element: $
+  arity: "1"
+  description: sublists
+
+- element: "%"
+  arity: "2"
+  description: modulo
+
+- element: "&"
+  arity: "2"
+  description: bitwise and
+
+- element: "'"
+  arity: Q
+  description: map / zipwith
+
+- element: (
+  arity: "1"
+  description: prefixes
+
+- element: )
+  arity: "1"
+  description: suffixes
+
+- element: "*"
+  arity: "2"
+  description: power
+
+- element: +
+  arity: "2"
+  description: add
+
+- element: ","
+  arity: "2"
+  description: append
+
+- element: "-"
+  arity: "2"
+  description: sub
+
+- element: .
+  arity: S
+  description: decimal point
+
+- element: /
+  arity: "2"
+  description: repeat
+
+- element: "0"
+  arity: S
+  description: zero
+
+- element: "1"
+  arity: S
+  description: one
+
+- element: "2"
+  arity: S
+  description: two
+
+- element: "3"
+  arity: S
+  description: three
+
+- element: "4"
+  arity: S
+  description: four
+
+- element: "5"
+  arity: S
+  description: five
+
+- element: "6"
+  arity: S
+  description: six
+
+- element: "7"
+  arity: S
+  description: seven
+
+- element: "8"
+  arity: S
+  description: eight
+
+- element: "9"
+  arity: S
+  description: nine
+
+- element: :*
+  arity: "2"
+  description: matrix power
+
+- element: :<
+  arity: "2"
+  description: bitshift left
+
+- element: :>
+  arity: "2"
+  description: bitshift right
+
+- element: :j
+  arity: "2"
+  description: to complex
+
+- element: :Ȧ
+  arity: "2"
+  description: atan2
+
+- element: :•
+  arity: "2"
+  description: matrix multiplication
+
+- element: ;$
+  arity: "1"
+  description: sublists of permutations
+
+- element: ;1
+  arity: "1"
+  description: build a matrix with 1s at indicies
+
+- element: ;A
+  arity: "1"
+  description: arccos
+
+- element: ;B
+  arity: "1"
+  description: bounce
+
+- element: ;C
+  arity: "1"
+  description: cos
+
+- element: ;D
+  arity: "1"
+  description: determinant
+
+- element: ;F
+  arity: "1"
+  description: prime factors
+
+- element: ;G
+  arity: "1"
+  description: graph adjacency matrix
+
+- element: ;I
+  arity: "1"
+  description: identity matrix
+
+- element: ;J
+  arity: "1"
+  description: split complex
+
+- element: ;L
+  arity: "1"
+  description: natural log
+
+- element: ;M
+  arity: "1"
+  description: mean
+
+- element: ;P
+  arity: "1"
+  description: polyroots
+
+- element: ;R
+  arity: "1"
+  description: range from 2.. n
+
+- element: ;S
+  arity: "1"
+  description: sin
+
+- element: ;T
+  arity: "1"
+  description: tan
+
+- element: ;b
+  arity: "1"
+  description: boolean matrix to braille
+
+- element: ;c
+  arity: "1"
+  description: cosh
+
+- element: ;f
+  arity: "1"
+  description: nth fibonacci number
+
+- element: ;j
+  arity: "1"
+  description: from json
+
+- element: ;l
+  arity: "1"
+  description: nth lucas number
+
+- element: ;r
+  arity: "1"
+  description: range from 0...n
+
+- element: ;s
+  arity: "1"
+  description: sinh
+
+- element: ;t
+  arity: "1"
+  description: tanh
+
+- element: ;°
+  arity: "1"
+  description: degrees to radians
+
+- element: ;²
+  arity: "1"
+  description: is perfect square
+
+- element: ;Ċ
+  arity: "1"
+  description: sec
+
+- element: ;ċ
+  arity: "1"
+  description: nth catalan number
+
+- element: ;Ġ
+  arity: "1"
+  description: graph distance matrix
+
+- element: ;Ȧ
+  arity: "1"
+  description: arctan
+
+- element: ;Ḃ
+  arity: "1"
+  description: bounce depth 1
+
+- element: ;Ḋ
+  arity: "1"
+  description: anti diagonals
+
+- element: ;Ḍ
+  arity: "1"
+  description: diagonals
+
+- element: ;Ṗ
+  arity: "1"
+  description: primes
+
+- element: ;Ṡ
+  arity: "1"
+  description: csc
+
+- element: ;Ṫ
+  arity: "1"
+  description: cot
+
+- element: ;Ạ
+  arity: "1"
+  description: arcsin
+
+- element: ;√
+  arity: "1"
+  description: integer square root
+
+- element: <
+  arity: "2"
+  description: less
+
+- element: =
+  arity: "2"
+  description: equal
+
+- element: ">"
+  arity: "2"
+  description: more
+
+- element: "?"
+  arity: "1"
+  description: random floats
+
+- element: A
+  arity: "1"
+  description: absolute value
+
+- element: B
+  arity: "1"
+  description: to binary
+
+- element: C
+  arity: "1"
+  description: complement
+
+- element: D
+  arity: "1"
+  description: to digits
+
+- element: E
+  arity: "1"
+  description: all equal
+
+- element: F
+  arity: "1"
+  description: flatten
+
+- element: G
+  arity: "1"
+  description: group equal elements by indicies
+
+- element: H
+  arity: "1"
+  description: head popping
+
+- element: I
+  arity: "1"
+  description: increments
+
+- element: J
+  arity: "1"
+  description: range of length
+
+- element: K
+  arity: "1"
+  description: cumulative sum
+
+- element: L
+  arity: "1"
+  description: last popping
+
+- element: M
+  arity: "1"
+  description: square
+
+- element: N
+  arity: "1"
+  description: neck
+
+- element: O
+  arity: "1"
+  description: identity
+
+- element: P
+  arity: "1"
+  description: permutations
+
+- element: Q
+  arity: "1"
+  description: half
+
+- element: R
+  arity: "1"
+  description: reverse on depth 1
+
+- element: S
+  arity: "1"
+  description: sort
+
+- element: T
+  arity: "1"
+  description: tail
+
+- element: U
+  arity: "1"
+  description: unique
+
+- element: V
+  arity: "1"
+  description: is prime
+
+- element: W
+  arity: "1"
+  description: where
+
+- element: X
+  arity: "1"
+  description: split into 2
+
+- element: Y
+  arity: "1"
+  description: elements at even indicies
+
+- element: Z
+  arity: "1"
+  description: transpose
+
+- element: "["
+  arity: S
+  description: start list
+
+- element: \
+  arity: "1"
+  description: unrepeat
+
+- element: "]"
+  arity: S
+  description: end list
+
+- element: ^
+  arity: "2"
+  description: bitwise xor
+
+- element: _(
+  arity: "0"
+  description: '"()"'
+
+- element: _+
+  arity: "0"
+  description: "[1,-1]"
+
+- element: _-
+  arity: "0"
+  description: "[-1,1]"
+
+- element: _/
+  arity: "0"
+  description: '"/\\"'
+
+- element: _0
+  arity: "0"
+  description: "[0,0]"
+
+- element: _1
+  arity: "0"
+  description: "[1,1]"
+
+- element: _2
+  arity: "0"
+  description: "[2,2]"
+
+- element: _<
+  arity: "0"
+  description: '"<>"'
+
+- element: _A
+  arity: "0"
+  description: '"ABCDEFGHIJKLMNOPQRSTUVWXYZ"'
+
+- element: _D
+  arity: "0"
+  description: "[[0,1],[1,0],[0,-1],[-1,0]]"
+
+- element: _H
+  arity: "0"
+  description: '"Hello, World!"'
+
+- element: _P
+  arity: "0"
+  description: phi
+
+- element: _R
+  arity: "0"
+  description: printable ascii
+
+- element: _S
+  arity: "0"
+  description: ඞ
+
+- element: _V
+  arity: "0"
+  description: '"AEIOU"'
+
+- element: _W
+  arity: "0"
+  description: '"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"'
+
+- element: _Y
+  arity: "0"
+  description: '"AEIOUY"'
+
+- element: _[
+  arity: "0"
+  description: '"[]"'
+
+- element: _a
+  arity: "0"
+  description: '"abcdefghijklmnopqrstuvwxyz"'
+
+- element: _d
+  arity: "0"
+  description: "[[1,1],[1,0],[1,-1],[0,1],[0,0],[0,-1],[-1,1],[-1,0],[-1,-1]]"
+
+- element: _e
+  arity: "0"
+  description: e
+
+- element: _h
+  arity: "0"
+  description: '"hello world"'
+
+- element: _p
+  arity: "0"
+  description: pi
+
+- element: _v
+  arity: "0"
+  description: '"aeiou"'
+
+- element: _x
+  arity: "0"
+  description: '"0123456789abcdef"'
+
+- element: _y
+  arity: "0"
+  description: '"aeiouy"'
+
+- element: _{
+  arity: "0"
+  description: '"{}"'
+
+- element: _Ạ
+  arity: "0"
+  description: '"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"'
+
+- element: _₀
+  arity: "0"
+  description: "128"
+
+- element: _₁
+  arity: "0"
+  description: "256"
+
+- element: _₂
+  arity: "0"
+  description: "512"
+
+- element: _₃
+  arity: "0"
+  description: "1024"
+
+- element: _₄
+  arity: "0"
+  description: "2048"
+
+- element: _₅
+  arity: "0"
+  description: "4096"
+
+- element: _₆
+  arity: "0"
+  description: "8192"
+
+- element: _₇
+  arity: "0"
+  description: "4294967296"
+
+- element: _∞
+  arity: "0"
+  description: infinity
+
+- element: "`"
+  arity: Q
+  description: scanr1
+
+- element: a
+  arity: "2"
+  description: and
+
+- element: b
+  arity: "2"
+  description: to base
+
+- element: c
+  arity: "2"
+  description: binomial coefficient
+
+- element: d
+  arity: "2"
+  description: divmod
+
+- element: e
+  arity: "2"
+  description: join each of one to other
+
+- element: f
+  arity: "2"
+  description: filter drop
+
+- element: g
+  arity: "2"
+  description: gcd
+
+- element: h
+  arity: "2"
+  description: head
+
+- element: i
+  arity: "2"
+  description: index into
+
+- element: j
+  arity: S
+  description: complex number delimeter
+
+- element: l
+  arity: "2"
+  description: lcm
+
+- element: m
+  arity: "2"
+  description: min
+
+- element: n
+  arity: "2"
+  description: floor div
+
+- element: o
+  arity: "2"
+  description: split at occurence
+
+- element: p
+  arity: "2"
+  description: pick
+
+- element: q
+  arity: "2"
+  description: quit
+
+- element: r
+  arity: "2"
+  description: range inclusive
+
+- element: s
+  arity: "2"
+  description: split into chunks
+
+- element: t
+  arity: "2"
+  description: tail
+
+- element: u
+  arity: "2"
+  description: find for each
+
+- element: v
+  arity: "2"
+  description: or
+
+- element: w
+  arity: "2"
+  description: windows
+
+- element: x
+  arity: "2"
+  description: max
+
+- element: y
+  arity: "2"
+  description: join
+
+- element: z
+  arity: "2"
+  description: zip
+
+- element: "{"
+  arity: "1"
+  description: decrement
+
+- element: "|"
+  arity: "2"
+  description: bitwise or
+
+- element: "}"
+  arity: "1"
+  description: increment
+
+- element: "~"
+  arity: "1"
+  description: bitwise not
+
+- element: ¨
+  arity: Q
+  description: quick map
+
+- element: ¬
+  arity: "1"
+  description: not
+
+- element: ¯
+  arity: S
+  description: negative number
+
+- element: °
+  arity: Q
+  description: apply at
+
+- element: ±
+  arity: "1"
+  description: sign
+
+- element: ²
+  arity: Q
+  description: previous chain as dyad
+
+- element: ³
+  arity: Q
+  description: next chain as nilad
+
+- element: ´
+  arity: Q
+  description: foldr1
+
+- element: µ
+  arity: T
+  description: start a monadic chain
+
+- element: ¹
+  arity: Q
+  description: previous chain as monad
+
+- element: Ç
+  arity: "1"
+  description: split into chunks of length 2
+
+- element: Ð
+  arity: "1"
+  description: double
+
+- element: ×
+  arity: "2"
+  description: mul
+
+- element: ð
+  arity: T
+  description: start a dyadic chain
+
+- element: ÷
+  arity: "2"
+  description: divide
+
+- element: ø
+  arity: T
+  description: start a niladic chain
+
+- element: Ă
+  arity: "1"
+  description: any and all
+
+- element: Ċ
+  arity: "1"
+  description: choose random
+
+- element: ċ
+  arity: "2"
+  description: count occerence
+
+- element: Ġ
+  arity: "1"
+  description: group adjacent equal
+
+- element: Ń
+  arity: "1"
+  description: split on newlines
+
+- element: Ň
+  arity: "1"
+  description: join on newlines
+
+- element: Ś
+  arity: "1"
+  description: split on spaces
+
+- element: Š
+  arity: "1"
+  description: join on spaces
+
+- element: Ż
+  arity: "1"
+  description: prepend zero
+
+- element: ż
+  arity: "2"
+  description: transpose with filler
+
+- element: Ȧ
+  arity: "1"
+  description: any
+
+- element: ɓ
+  arity: T
+  description: start a dyadic chain with arguments reversed
+
+- element: ʲ
+  arity: Q
+  description: scan fixedpoint
+
+- element: ˀ
+  arity: Q
+  description: ternary if
+
+- element: ˘
+  arity: Q
+  description: self args / monad as dyad using left
+
+- element: ˙
+  arity: Q
+  description: 2 links as nilad
+
+- element: ˜
+  arity: Q
+  description: swap args / monad as dyad using right
+
+- element: ˝
+  arity: Q
+  description: foldr
+
+- element: ˢ
+  arity: Q
+  description: sort
+
+- element: Π
+  arity: "1"
+  description: product
+
+- element: Σ
+  arity: "1"
+  description: sum
+
+- element: φ
+  arity: "1"
+  description: flatten 1 depth
+
+- element: г
+  arity: T
+  description: map the monadic chain
+
+- element: ᐣ
+  arity: Q
+  description: n-compose
+
+- element: ᴰ
+  arity: Q
+  description: 2 links as dyad
+
+- element: ᴹ
+  arity: Q
+  description: 2 links as monad
+
+- element: ᴺ
+  arity: Q
+  description: all neighbours
+
+- element: ᵀ
+  arity: Q
+  description: truthy indices after applying
+
+- element: ᵂ
+  arity: Q
+  description: while
+
+- element: ᵈ
+  arity: Q
+  description: 3 links as dyad
+
+- element: ᵍ
+  arity: Q
+  description: filter drop
+
+- element: ᵐ
+  arity: Q
+  description: 3 links as monad
+
+- element: ᵔ
+  arity: Q
+  description: apply to neighbours
+
+- element: ᵖ
+  arity: Q
+  description: Map over prefixes
+
+- element: ᵗ
+  arity: Q
+  description: apply transpose apply again
+
+- element: ᵝ
+  arity: Q
+  description: call self
+
+- element: ᵟ`
+  arity: Q
+  description: scanl1
+
+- element: ᵟ´
+  arity: Q
+  description: foldl1
+
+- element: ᵟ˝
+  arity: Q
+  description: foldl
+
+- element: ᵟᵂ
+  arity: Q
+  description: cumulative while
+
+- element: ᵟᵍ
+  arity: Q
+  description: filter drop of permutations
+
+- element: ᵟᶠ
+  arity: Q
+  description: filter keep of permutations
+
+- element: ᵟ‶
+  arity: Q
+  description: scanl
+
+- element: ᵟⁿ
+  arity: Q
+  description: cumulative repeat n times
+
+- element: ᵠ
+  arity: Q
+  description: 4 links as dyad
+
+- element: ᶠ
+  arity: Q
+  description: filter keep
+
+- element: ᶲ
+  arity: Q
+  description: 4 links as monad
+
+- element: Ḃ
+  arity: "1"
+  description: from binary
+
+- element: ḃ
+  arity: "2"
+  description: from base
+
+- element: Ḅ
+  arity: "1"
+  description: bit
+
+- element: Ḋ
+  arity: "1"
+  description: from digits
+
+- element: Ḍ
+  arity: "1"
+  description: divisors
+
+- element: ḍ
+  arity: "2"
+  description: is divisible
+
+- element: Ḟ
+  arity: "1"
+  description: indices of falsey
+
+- element: ḟ
+  arity: "2"
+  description: filter keep
+
+- element: Ḳ
+  arity: "1"
+  description: sum depth 1
+
+- element: ḷ
+  arity: "2"
+  description: find all
+
+- element: Ṅ
+  arity: "1"
+  description: negate
+
+- element: Ṗ
+  arity: "1"
+  description: print
+
+- element: Ṙ
+  arity: "1"
+  description: reverse
+
+- element: ṙ
+  arity: "2"
+  description: range exclusive
+
+- element: Ṛ
+  arity: "1"
+  description: reciprocal
+
+- element: Ṡ
+  arity: "1"
+  description: reverse sort
+
+- element: Ṫ
+  arity: "1"
+  description: indicies of truthy
+
+- element: ẇ
+  arity: "2"
+  description: find sublist
+
+- element: Ẏ
+  arity: "1"
+  description: elements at odd indicies
+
+- element: Ẓ
+  arity: "1"
+  description: zip with filler 0
+
+- element: Ạ
+  arity: "1"
+  description: all
+
+- element: ị
+  arity: "2"
+  description: find
+
+- element: Ọ
+  arity: "1"
+  description: reverse every other
+
+- element: ọ
+  arity: "2"
+  description: order
+
+- element: ‘
+  arity: Q
+  description: each right
+
+- element: ’
+  arity: Q
+  description: each left
+
+- element: •
+  arity: "2"
+  description: cartesian product
+
+- element: ‶
+  arity: Q
+  description: scanr
+
+- element: ⁰
+  arity: Q
+  description: previous chain as nilad
+
+- element: ⁱ
+  arity: Q
+  description: fold fixedpoint
+
+- element: ⁴
+  arity: Q
+  description: next chain as monad
+
+- element: ⁵
+  arity: Q
+  description: next chain as dyad
+
+- element: ⁶
+  arity: Q
+  description: chain at
+
+- element: ⁷
+  arity: Q
+  description: set register
+
+- element: ⁺
+  arity: Q
+  description: max
+
+- element: ⁻
+  arity: Q
+  description: min
+
+- element: ⁼
+  arity: Q
+  description: is equal after applying
+
+- element: ⁿ
+  arity: Q
+  description: repeat n times
+
+- element: ₀
+  arity: "0"
+  description: 100 / 1st arg
+
+- element: ₁
+  arity: "0"
+  description: "[0,1] / 2nd arg"
+
+- element: ₂
+  arity: "0"
+  description: 10 / 3rd arg
+
+- element: ₃
+  arity: "0"
+  description: 16 / 4th arg
+
+- element: ₄
+  arity: "0"
+  description: 32 / 5th arg
+
+- element: ₅
+  arity: "0"
+  description: 64 / 6th arg
+
+- element: ₆
+  arity: "0"
+  description: 26 / 7th arg
+
+- element: ₇
+  arity: "0"
+  description: get register
+
+- element: ₈
+  arity: "0"
+  description: read a character
+
+- element: ₉
+  arity: "0"
+  description: read a line
+
+- element: ₊
+  arity: S
+  description: next 2 as string
+
+- element: ₋
+  arity: S
+  description: next as string
+
+- element: ₍
+  arity: "0"
+  description: chains left argument
+
+- element: ₎
+  arity: "0"
+  description: chains right argument
+
+- element: ∆
+  arity: "1"
+  description: maximum
+
+- element: ∇
+  arity: "1"
+  description: minimum
+
+- element: ∊
+  arity: "2"
+  description: in
+
+- element: √
+  arity: "1"
+  description: square root
+
+- element: ≠
+  arity: "2"
+  description: not equal
+
+- element: ≡
+  arity: "2"
+  description: strictly equal
+
+- element: ≢
+  arity: "2"
+  description: strictly not equal
+
+- element: ≤
+  arity: "2"
+  description: less or equal
+
+- element: ≥
+  arity: "2"
+  description: more or equal
+
+- element: ⊂
+  arity: "1"
+  description: enclose
+
+- element: ⊆
+  arity: "1"
+  description: enclose if not
+
+- element: ⊏
+  arity: "2"
+  description: everyth element
+
+- element: ⊢
+  arity: "2"
+  description: right
+
+- element: ⊣
+  arity: "2"
+  description: left
+
+- element: ⋈
+  arity: "2"
+  description: pair
+
+- element: ⌈
+  arity: "1"
+  description: ceil
+
+- element: ⌊
+  arity: "1"
+  description: floor
+
+- element: ⌜
+  arity: Q
+  description: outer product
+
+- element: ⌽
+  arity: "2"
+  description: rotate
+
+- element: ⍋
+  arity: "1"
+  description: grade up
+
+- element: ⍒
+  arity: "1"
+  description: grade down
+
+- element: ⍝
+  arity: S
+  description: comment
+
+- element: ⍪
+  arity: "2"
+  description: prepend
+
+- element: ⍳
+  arity: "1"
+  description: iota
+
+- element: ⍴
+  arity: "2"
+  description: reshape
+
+- element: ⍸
+  arity: "1"
+  description: range from 1...n
+
+- element: ""
+  description: ""
