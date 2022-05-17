@@ -192,7 +192,7 @@
 
 - element: ;c
   arity: "1"
-  description: cosh
+  description: cos
 
 - element: ;f
   arity: "1"
