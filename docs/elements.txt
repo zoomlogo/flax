@@ -138,7 +138,7 @@ _₅ 0 4096
 _₆ 0 8192
 _₇ 0 4294967296
 _∞ 0 infinity
-`  Q scanl1
+`  Q scanr1
 a  2 and
 b  2 to base
 c  2 binomial coefficient
@@ -175,7 +175,7 @@ z  2 zip
 ±  1 sign
 ²  Q previous chain as dyad
 ³  Q next chain as nilad
-´  Q foldl1
+´  Q foldr1
 µ  T start a monadic chain
 ¹  Q previous chain as monad
 Ç  1 split into chunks of length 2
@@ -201,7 +201,7 @@ z  2 zip
 ˘  Q self args / monad as dyad using left
 ˙  Q 2 links as nilad
 ˜  Q swap args / monad as dyad using right
-˝  Q foldl
+˝  Q foldr
 ˢ  Q sort
 Π  1 product
 Σ  1 sum
@@ -220,13 +220,13 @@ z  2 zip
 ᵖ  Q Map over prefixes
 ᵗ  Q apply transpose apply again
 ᵝ  Q call self
-ᵟ` Q scanr1
-ᵟ´ Q foldr1
-ᵟ˝ Q foldr
+ᵟ` Q scanl1
+ᵟ´ Q foldl1
+ᵟ˝ Q foldl
 ᵟᵂ Q cumulative while
 ᵟᵍ Q filter drop of permutations
 ᵟᶠ Q filter keep of permutations
-ᵟ‶ Q scanr
+ᵟ‶ Q scanl
 ᵟⁿ Q cumulative repeat n times
 ᵠ  Q 4 links as dyad
 ᶠ  Q filter keep
@@ -258,7 +258,7 @@ z  2 zip
 ‘  Q each right
 ’  Q each left
 •  2 cartesian product
-‶  Q scanl
+‶  Q scanr
 ⁰  Q previous chain as nilad
 ⁱ  Q fold fixedpoint
 ⁴  Q next chain as monad
