@@ -176,7 +176,7 @@
 
 - element: ;R
   arity: "1"
-  description: range from 2.. n
+  description: range from 2..n
 
 - element: ;S
   arity: "1"
