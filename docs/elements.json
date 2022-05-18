@@ -1553,9 +1553,5 @@
     "element": "⍸",
     "arity-type": "1",
     "description": "range from 1...n"
-  },
-  {
-    "element": "",
-    "description": ""
   }
 ]
