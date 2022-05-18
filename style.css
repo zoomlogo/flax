@@ -36,7 +36,7 @@ body {
   box-shadow: 4px 4px #333337;
 }
 
-.el {
+.el-item {
   font-family: icfs,monospace;
   font-size: 16px;
   outline: none;
