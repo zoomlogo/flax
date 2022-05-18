@@ -26,7 +26,7 @@ const filter_search = () => {
     let d = row.getElementsByTagName("td")[1];
     if (d) {
       let value = (d.textContent || d.innerText).toLowerCase();
-      if (value.indexOf(filter) > -1) {
+      if (value.includes(filter)) {
         row.style.display = "block";
       } else {
         row.style.display = "none";
