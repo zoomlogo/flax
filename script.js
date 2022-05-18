@@ -9,7 +9,7 @@ const getJSON = async url => {
 console.log("Fetching Data...");
 getJSON("https://raw.githubusercontent.com/PyGamer0/flax/main/docs/elements.json").then(elements => {
   var el = document.getElementById("el");
-  console.log(elements[0]);
-  /* elements.forEach(element => {
-  }); */
+  elements.forEach(element => {
+    console.log("<div id=\"el-item\">" + element["element"] + "</div><");
+  });
 });
