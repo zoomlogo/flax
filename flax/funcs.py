@@ -456,9 +456,9 @@ def to_braille(x):
     c = [len(x[0]) // 2 * e for e in c]
     c = len(x) // 4 * c
     c = [[c[i][j] * x[i][j] for j in range(len(c[0]))] for i in range(len(c))]
-    c = [c[i : i + 4] for i in range(0, len(c), 4)]
+    c = [c[i : i + 4] for i in range(0, len(x), 4)]
     c = [functools.reduce(lambda x, y: list(map(operator.add, x, y)), e) for e in c]
-    c = [[c[i][j : j + 2] for j in range(0, len(c), 2)] for i in range(len(c))]
+    c = [[c[i][j : j + 2] for j in range(0, len(x), 2)] for i in range(len(c))]
     c = [[sum(i) for i in e] for e in c]
     c = [[10240 + c[i][j] for j in range(len(c[0]))] for i in range(len(c))]
     c = join(10, c)
