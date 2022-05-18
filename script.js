@@ -21,7 +21,8 @@ const filter_search = () => {
   let table = document.getElementById("el");
   let rows = table.getElementsByTagName("tr");
 
-  rows.forEach(row => {
+  for (let i = 0; i < rows.length(); i++) {
+    let row = rows[i];
     let d = row.getElementsByTagName("td")[1];
     if (d) {
       let value = (d.textContent || d.innerText).toLowerCase();
@@ -30,5 +31,5 @@ const filter_search = () => {
       else
         row.style.display = "none";
     }
-  })
+  }
 }
