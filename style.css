@@ -20,12 +20,8 @@ table {
   font-size: 16px;
   border: none;
   color: #eeeeff;
-  background-color: #555559;
-  width: 100%;
-}
-
-th {
   background-color: #444448;
+  width: 100%;
 }
 
 #search-bar {
