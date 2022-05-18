@@ -16,12 +16,14 @@ getJSON("https://raw.githubusercontent.com/PyGamer0/flax/main/docs/elements.json
       td.innerText = element[key];
       tr.appendChild(td);
     }
-    tr.addEventListener("onclick", () => {
-      navigator.clipboard.writeText(element["element"]).then(() => { console.log("Copied!"); })
+    tr.addEventListener("click", () => {
+      console.log("Copying...");
+      navigator.clipboard.writeText(element["element"]).then(() => { console.log("Copied!"); });
     });
     el.appendChild(tr);
   });
 });
+console.log("Fetched!");
 
 /* search function */
 const filter_search = () => {
