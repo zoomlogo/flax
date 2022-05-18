@@ -10,7 +10,13 @@ console.log("Fetching Data...");
 getJSON("https://raw.githubusercontent.com/PyGamer0/flax/main/docs/elements.json").then(elements => {
   let el = document.getElementById("el");
   elements.forEach(element => {
-    el.insertAdjacentHTML('beforeend', "<tr><td>" + element["element"] + "</td><td>" + element["description"] + "</td><td>" + element["arity-type"] + "</td></tr>");
+    let tr = document.createElement('tr');
+    for (let key of ['element', 'description', 'arity-type']) {
+      let td = document.createElement('td')
+      td.innerText = element[key];
+      tr.appendChild(td);
+    }
+    el.appendChild(tr);
   });
 });
 
