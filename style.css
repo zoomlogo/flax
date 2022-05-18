@@ -29,11 +29,11 @@ td {
 }
 
 td:nth-child(1) {
-  width: 2vw
+  width: 4vw
 }
 
 td:nth-child(2) {
-  width: 96vw;
+  width: 94vw;
 }
 
 td:nth-child(3) {
