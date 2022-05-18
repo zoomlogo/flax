@@ -27,9 +27,9 @@ const filter_search = () => {
     if (d) {
       let value = (d.textContent || d.innerText).toLowerCase();
       if (value.includes(filter)) {
-        row.style.display = "block";
+        row.hidden = false;
       } else {
-        row.style.display = "none";
+        row.hidden = true;
       }
     }
   }
