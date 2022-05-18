@@ -1,4 +1,4 @@
-"element","arity","description"
+"element","arity-type","description"
 "!","1","factorial"
 """","S","string delimeter"
 "#","1","length"
