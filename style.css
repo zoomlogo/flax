@@ -28,6 +28,18 @@ td {
   border-bottom: 2px solid #222226;
 }
 
+td:nth-child(1) {
+  width: 2vw
+}
+
+td:nth-child(2) {
+  width: 96vw;
+}
+
+td:nth-child(3) {
+  width: 2vw;
+}
+
 #search-bar {
   border: none;
   color: #eeeeff;
