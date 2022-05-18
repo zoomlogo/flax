@@ -21,7 +21,7 @@ const filter_search = () => {
   let table = document.getElementById("el");
   let rows = table.getElementsByTagName("tr");
 
-  for (let i = 0; i < rows.length(); i++) {
+  for (let i = 0; i < rows.length; i++) {
     let row = rows[i];
     let d = row.getElementsByTagName("td")[1];
     if (d) {
