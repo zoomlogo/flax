@@ -116,19 +116,19 @@ def dyadic_chain(chain, w, x):
             λ = chain[-1].call(chain[-2].call(x, w), λ)
             chain = chain[:-2]
         elif arities(chain[-2:]) == [0, 2]:
-            chain("0,2: " + str(chain[-2:]))
+            debug("0,2: " + str(chain[-2:]))
             λ = chain[-1].call(chain[-2].call(), λ)
             chain = chain[:-2]
         elif arities(chain[-2:]) == [2, 0]:
-            chain("2,0: " + str(chain[-2:]))
+            debug("2,0: " + str(chain[-2:]))
             λ = chain[-2].call(λ, chain[-1].call())
             chain = chain[:-2]
         elif chain[-1].arity == 2:
-            chain("2: " + str(chain[-1]))
+            debug("2: " + str(chain[-1]))
             λ = chain[-1].call(w, λ)
             chain = chain[:-1]
         elif chain[-1].arity == 1:
-            chain("1: " + str(chain[-1]))
+            debug("1: " + str(chain[-1]))
             λ = chain[-1].call(λ)
             chain = chain[:-1]
         else:
