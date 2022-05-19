@@ -494,7 +494,7 @@ def vec(fn, *args, lfull=True, rfull=True):
     dw, dx = depth(w), depth(x)
     if lfull and rfull:
         if dw == dx:
-            return [vec(fn, a, b) for a, b in zip(w, x)] if dw != 0 else fn(w, x)
+            return [vec(fn, a, b) for a, b in zip(w, x)] + max([w, x], key=len)[min([len(w), len(x)]):] if dw != 0 else fn(w, x)
         else:
             return [vec(fn, w, b) for b in x] if dw < dx else [vec(fn, a, x) for a in w]
     elif (not lfull) and rfull:
