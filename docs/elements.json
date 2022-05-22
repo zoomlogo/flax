@@ -16,7 +16,7 @@
   },
   {
     "element": "$",
-    "arity-type": "1",
+    "arity-type": "Q",
     "description": "2 links as monad"
   },
   {
@@ -978,6 +978,11 @@
     "element": "Ś",
     "arity-type": "1",
     "description": "split on spaces"
+  },
+  {
+    "element": "Ŝ",
+    "arity-type": "1",
+    "description": "sublists"
   },
   {
     "element": "Š",
