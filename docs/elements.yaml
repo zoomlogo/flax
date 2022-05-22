@@ -782,6 +782,10 @@
   arity-type: "1"
   description: split on spaces
 
+- element: Ŝ
+  arity-type: "1"
+  description: sublists
+
 - element: Š
   arity-type: "1"
   description: join on spaces

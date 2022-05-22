@@ -50,7 +50,6 @@ DIGITS = ZERO + "123456789" + DECIMAL_POINT + COMPLEX_DELIMETER + NEGATIVE_SIGN
 atoms = {
     "!": attrdict(arity=1, call=vecc(mp.factorial)),
     "#": attrdict(arity=1, call=len),
-    "$": attrdict(arity=1, call=sublists),
     "%": attrdict(arity=2, call=vecc(operator.mod)),
     "&": attrdict(arity=2, call=vecc(operator.and_)),
     "(": attrdict(arity=1, call=prefixes),
@@ -283,6 +282,7 @@ atoms = {
     "Ń": attrdict(arity=1, call=lambda x: split_at(10, iterable(x))),
     "Ň": attrdict(arity=1, call=lambda x: join(10, x)),
     "Ś": attrdict(arity=1, call=lambda x: split_at(32, iterable(x))),
+    "Ŝ": attrdict(arity=1, call=sublists),
     "Š": attrdict(arity=1, call=lambda x: join(32, x)),
     "Ż": attrdict(arity=1, call=lambda x: [0] + iterable(x)),
     "ż": attrdict(
