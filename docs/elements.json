@@ -17,7 +17,7 @@
   {
     "element": "$",
     "arity-type": "1",
-    "description": "sublists"
+    "description": "2 links as monad"
   },
   {
     "element": "%",
@@ -850,6 +850,21 @@
     "description": "bitwise not"
   },
   {
+    "element": "¢",
+    "arity-type": "Q",
+    "description": "2 links as dyad"
+  },
+  {
+    "element": "£",
+    "arity-type": "Q",
+    "description": "4 links as monad"
+  },
+  {
+    "element": "¥",
+    "arity-type": "Q",
+    "description": "3 links as monad"
+  },
+  {
     "element": "¨",
     "arity-type": "Q",
     "description": "quick map"
@@ -1050,16 +1065,6 @@
     "description": "n-compose"
   },
   {
-    "element": "ᴰ",
-    "arity-type": "Q",
-    "description": "2 links as dyad"
-  },
-  {
-    "element": "ᴹ",
-    "arity-type": "Q",
-    "description": "2 links as monad"
-  },
-  {
     "element": "ᴺ",
     "arity-type": "Q",
     "description": "all neighbours"
@@ -1075,19 +1080,9 @@
     "description": "while"
   },
   {
-    "element": "ᵈ",
-    "arity-type": "Q",
-    "description": "3 links as dyad"
-  },
-  {
     "element": "ᵍ",
     "arity-type": "Q",
     "description": "filter drop"
-  },
-  {
-    "element": "ᵐ",
-    "arity-type": "Q",
-    "description": "3 links as monad"
   },
   {
     "element": "ᵔ",
@@ -1150,19 +1145,9 @@
     "description": "cumulative repeat n times"
   },
   {
-    "element": "ᵠ",
-    "arity-type": "Q",
-    "description": "4 links as dyad"
-  },
-  {
     "element": "ᶠ",
     "arity-type": "Q",
     "description": "filter keep"
-  },
-  {
-    "element": "ᶲ",
-    "arity-type": "Q",
-    "description": "4 links as monad"
   },
   {
     "element": "Ḃ",
@@ -1423,6 +1408,16 @@
     "element": "₎",
     "arity-type": "0",
     "description": "chains right argument"
+  },
+  {
+    "element": "€",
+    "arity-type": "Q",
+    "description": "4 links as dyad"
+  },
+  {
+    "element": "₹",
+    "arity-type": "Q",
+    "description": "3 links as dyad"
   },
   {
     "element": "∆",
