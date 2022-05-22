@@ -109,7 +109,7 @@ def dyadic_chain(chain, w, x):
 
         if arities(chain[-3:]) == [0, 2, 2] and trailing_nilad(chain[:-2]):
             debug("0,2,2: " + str(chain[-3:]))
-            λ = chain[-2].call(chain[-3].call(), chain[-1].call(w + λ))
+            λ = chain[-2].call(chain[-3].call(), chain[-1].call(w, λ))
             chain = chain[:-3]
         elif arities(chain[-2:]) == [2, 2]:
             debug("2,2: " + str(chain[-2:]))
