@@ -11,7 +11,7 @@
   description: length
 
 - element: $
-  arity-type: "1"
+  arity-type: Q
   description: 2 links as monad
 
 - element: "%"

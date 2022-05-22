@@ -403,6 +403,7 @@ atoms = {
 }
 
 quicks = {
+    "$": quick_chain(1, 2),
     "'": attrdict(
         condition=lambda links: links,
         qlink=lambda links, outermost_links, i: [
@@ -500,6 +501,9 @@ quicks = {
             )
         ],
     ),
+    "¢": quick_chain(2, 2),
+    "£": quick_chain(1, 4),
+    "¥": quick_chain(1, 3),
     "˙": quick_chain(0, 2),
     "˜": attrdict(
         condition=lambda links: links,
@@ -537,8 +541,6 @@ quicks = {
             attrdict(arity=2, call=lambda w, x: composed(links, w, x))
         ],
     ),
-    "ᴰ": quick_chain(2, 2),
-    "ᴹ": quick_chain(1, 2),
     "ᴺ": attrdict(
         condition=lambda links: links,
         qlink=lambda links, outermost_links, i: [
@@ -574,7 +576,6 @@ quicks = {
             )
         ],
     ),
-    "ᵈ": quick_chain(2, 3),
     "ᵍ": attrdict(
         condition=lambda links: links,
         qlink=lambda links, outermost_links, i: [
@@ -583,7 +584,6 @@ quicks = {
             )
         ],
     ),
-    "ᵐ": quick_chain(1, 3),
     "ᵔ": attrdict(
         condition=lambda links: links,
         qlink=lambda links, outermost_links, i: [
@@ -686,7 +686,6 @@ quicks = {
             )
         ],
     ),
-    "ᵠ": quick_chain(2, 4),
     "ᶠ": attrdict(
         condition=lambda links: links,
         qlink=lambda links, outermost_links, i: [
@@ -696,7 +695,6 @@ quicks = {
             )
         ],
     ),
-    "ᶲ": quick_chain(1, 4),
     "‘": attrdict(
         condition=lambda links: links,
         qlink=lambda links, outermost_links, i: [
@@ -816,6 +814,8 @@ quicks = {
             )
         ],
     ),
+    "€": quick_chain(2, 4),
+    "₹": quick_chain(2, 3),
     "⌜": attrdict(
         condition=lambda links: links,
         qlink=lambda links, outermost_links, i: [
