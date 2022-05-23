@@ -459,7 +459,7 @@ def to_braille(x):
         res += a % 4 // 3 * [-~len(i) // 2 * [10240]]
         b = 0
         for j in i:
-            res[-1][b//2] |= j << (6429374 >> a % 4 * 6 + b % 2 * 3 & 7)
+            res[-1][b // 2] |= j << (6429374 >> a % 4 * 6 + b % 2 * 3 & 7)
             b += 1
     return join(10, res)
 
