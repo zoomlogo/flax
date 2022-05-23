@@ -452,17 +452,16 @@ def to_bin(x):
 
 def to_braille(x):
     # to_braille: compress boolean matrix x to braille
-    c = [[1, 8], [2, 16], [4, 32], [64, 128]]
-    c = [len(x[0]) // 2 * e for e in c]
-    c = len(x) // 4 * c
-    c = [[c[i][j] * x[i][j] for j in range(len(c[0]))] for i in range(len(c))]
-    c = [c[i : i + 4] for i in range(0, len(x), 4)]
-    c = [functools.reduce(lambda x, y: list(map(operator.add, x, y)), e) for e in c]
-    c = [[c[i][j : j + 2] for j in range(0, len(x), 2)] for i in range(len(c))]
-    c = [[sum(i) for i in e] for e in c]
-    c = [[10240 + c[i][j] for j in range(len(c[0]))] for i in range(len(c))]
-    c = join(10, c)
-    return c
+    res = []
+    a = 0
+    for i in x:
+        a -= 1
+        res += a % 4 // 3 * [-~len(i) // 2 * [10240]]
+        b = 0
+        for j in i:
+            res[-1][b//2] |= j << (6429374 >> a % 4 * 6 + b % 2 * 3 & 7)
+            b += 1
+    return join(10, res)
 
 
 def to_chars(x):
