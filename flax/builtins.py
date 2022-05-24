@@ -151,7 +151,7 @@ atoms = {
         arity=1,
         call=lambda x: [e[::-1] for e in x] if type(x) == list else to_digits(x)[::-1],
     ),
-    "S": attrdict(arity=1, call=lambda x: list(sorted(x))),
+    "S": attrdict(arity=1, call=lambda x: list(sorted(iterable(x)))),
     "T": attrdict(arity=1, call=lambda x: iterable(x)[1:]),
     "U": attrdict(arity=1, call=lambda x: list(set(iterable(x, digits=True)))),
     "V": attrdict(arity=1, call=vecc(mp.isprime)),
@@ -329,7 +329,7 @@ atoms = {
     "ḃ": attrdict(arity=2, call=vecc(from_base)),
     "ṙ": attrdict(arity=2, call=vecc(lambda w, x: list(range(w + 1, x)))),
     "Ṛ": attrdict(arity=1, call=vecc(lambda x: 1 / x)),
-    "Ṡ": attrdict(arity=1, call=lambda x: list(reversed(sorted(x)))),
+    "Ṡ": attrdict(arity=1, call=lambda x: list(reversed(sorted(iterable(x))))),
     "Ṫ": attrdict(arity=1, call=lambda x: [i for i, e in enumerate(x) if e]),
     "ẇ": attrdict(arity=2, call=find_sublist),
     "Ẏ": attrdict(
