@@ -40,9 +40,10 @@ td:nth-child(3) {
   width: 2vw;
 }
 
-a, a:hover, a:visited {
+a, a:hover, a:visited, a:active {
   color: #eeeeff;
   background-color: #222226;
+  text-decoration: none;
 }
 
 #search-bar {
