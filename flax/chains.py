@@ -140,6 +140,7 @@ def dyadic_chain(chain, w, x):
 
 def ffilter(links, *args, inverse=False, permutation=False):
     # ffilter: filter with optional inverse or permuting the argument
+    args = list(filter(None.__ne__, args))
     x = iterable(args[-1], range_=True)
     if len(args) == 2:
         w = args[0]
@@ -168,6 +169,7 @@ def ffilter(links, *args, inverse=False, permutation=False):
 
 def fold(links, *args, right=False, initial=False):
     # fold: fold over args
+    args = list(filter(None.__ne__, args))
     x = iterable(args[-1])
     if len(args) == 2:
         w = args[0]
@@ -305,6 +307,7 @@ def quick_chain(arity, min_length):
 
 def scan(links, *args, right=False, initial=False):
     # scan: scan over args
+    args = list(filter(None.__ne__, args))
     x = iterable(args[-1])
     if len(args) == 2:
         w = args[0]
@@ -354,6 +357,7 @@ def scanfixedpoint(links, *args):
 
 def sort(links, *args):
     # sort: sort args according to links
+    args = list(filter(None.__ne__, args))
     x = iterable(args[-1], digits=True)
     if len(args) == 2:
         w = args[0]
