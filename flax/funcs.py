@@ -2,7 +2,6 @@
 import functools
 import itertools
 import more_itertools
-import operator
 
 from flax.common import mp, mpc, inf, mpf
 
