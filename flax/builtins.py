@@ -69,6 +69,7 @@ atoms = {
     ":•": attrdict(arity=2, call=lambda w, x: (mp.matrix(w) * mp.matrix(x)).tolist()),
     ";$": attrdict(arity=1, call=lambda x: sublists(permutations(x))),
     ";1": attrdict(arity=1, call=ones),
+    ";?": attrdict(arity=1, call=vecc(random)),
     ";A": attrdict(arity=1, call=vecc(mp.acos)),
     ";B": attrdict(
         arity=1,
@@ -127,7 +128,6 @@ atoms = {
     "<": attrdict(arity=2, call=vecc(boolify(operator.lt))),
     "=": attrdict(arity=2, call=vecc(boolify(operator.eq))),
     ">": attrdict(arity=2, call=vecc(boolify(operator.gt))),
-    "?": attrdict(arity=1, call=vecc(random)),
     "A": attrdict(arity=1, call=vecc(abs)),
     "B": attrdict(arity=1, call=vecc(to_bin)),
     "C": attrdict(arity=1, call=vecc(lambda x: 1 - x)),
@@ -418,6 +418,19 @@ quicks = {
             )
         ],
     ),
+    "?": attrdict(
+        condition=lambda links: len(links) == 3,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=max(arities(links)),
+                call=lambda w=None, x=None: (
+                    variadic_link(links[0], (w, x))
+                    if variadic_link(links[2], (w, x))
+                    else variadic_link(links[1], (w, x))
+                ),
+            )
+        ],
+    ),
     "`": attrdict(
         condition=lambda links: links and links[0].arity,
         qlink=lambda links, outermost_links, i: [
@@ -477,19 +490,6 @@ quicks = {
             )
         ],
     ),
-    "ˀ": attrdict(
-        condition=lambda links: len(links) == 3,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(
-                arity=max(arities(links)),
-                call=lambda w=None, x=None: (
-                    variadic_link(links[0], (w, x))
-                    if variadic_link(links[2], (w, x))
-                    else variadic_link(links[1], (w, x))
-                ),
-            )
-        ],
-    ),
     "˘": attrdict(
         condition=lambda links: links,
         qlink=lambda links, outermost_links, i: [
@@ -528,17 +528,6 @@ quicks = {
         condition=lambda links: links and links[0].arity,
         qlink=lambda links, outermost_links, i: [
             attrdict(arity=links[0].arity, call=lambda w, x=None: sort(links, w, x))
-        ],
-    ),
-    "ᐣ": attrdict(
-        condition=lambda links: links
-        and (
-            links[-1].arity == 0
-            and len(links) == links[-1].call() - 1
-            or len(links) == 3
-        ),
-        qlink=lambda links, outermost_links, i: [
-            attrdict(arity=2, call=lambda w, x: composed(links, w, x))
         ],
     ),
     "ᴺ": attrdict(
@@ -816,6 +805,17 @@ quicks = {
     ),
     "€": quick_chain(2, 4),
     "₹": quick_chain(2, 3),
+    "↤": attrdict(
+        condition=lambda links: links
+        and (
+            links[-1].arity == 0
+            and len(links) == links[-1].call() - 1
+            or len(links) == 3
+        ),
+        qlink=lambda links, outermost_links, i: [
+            attrdict(arity=2, call=lambda w, x: composed(links, w, x))
+        ],
+    ),
     "⌜": attrdict(
         condition=lambda links: links,
         qlink=lambda links, outermost_links, i: [

@@ -130,6 +130,10 @@
   arity-type: "1"
   description: build a matrix with 1s at indicies
 
+- element: ";?"
+  arity-type: "1"
+  description: n random floats
+
 - element: ;A
   arity-type: "1"
   description: arccos
@@ -287,8 +291,8 @@
   description: more
 
 - element: "?"
-  arity-type: "1"
-  description: random floats
+  arity-type: Q
+  description: ternary if
 
 - element: A
   arity-type: "1"
@@ -810,10 +814,6 @@
   arity-type: Q
   description: scan fixedpoint
 
-- element: ˀ
-  arity-type: Q
-  description: ternary if
-
 - element: ˘
   arity-type: Q
   description: self args / monad as dyad using left
@@ -849,10 +849,6 @@
 - element: г
   arity-type: T
   description: map the monadic chain
-
-- element: ᐣ
-  arity-type: Q
-  description: n-compose
 
 - element: ᴺ
   arity-type: Q
@@ -1137,6 +1133,10 @@
 - element: ₹
   arity-type: Q
   description: 3 links as dyad
+
+- element: ↤
+  arity-type: Q
+  description: n-compose
 
 - element: ∆
   arity-type: "1"
