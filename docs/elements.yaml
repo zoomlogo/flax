@@ -842,6 +842,43 @@
   arity-type: "1"
   description: sum
 
+- element: β
+  arity-type: Q
+  description: call self
+
+- element: δ`
+  arity-type: Q
+  description: scanl1
+
+- element: δ´
+  arity-type: Q
+  description: foldl1
+
+- element: δ˝
+  arity-type: Q
+  description: foldl
+
+- element: δᵂ
+  arity-type: Q
+  description: cumulative while
+
+- element: δᵍ
+  arity-type: Q
+  description: filter drop of permutations
+
+- element: δᶠ
+  arity-type: Q
+  description: filter keep of permutations
+
+- element: δ‶
+  arity-type: Q
+  description: scanl
+
+- element: δⁿ
+  arity-type: Q
+  description: cumulative repeat n times
+
+
 - element: φ
   arity-type: "1"
   description: flatten 1 depth
@@ -873,46 +910,6 @@
 - element: ᵖ
   arity-type: Q
   description: Map over prefixes
-
-- element: ᵗ
-  arity-type: Q
-  description: apply transpose apply again
-
-- element: ᵝ
-  arity-type: Q
-  description: call self
-
-- element: ᵟ`
-  arity-type: Q
-  description: scanl1
-
-- element: ᵟ´
-  arity-type: Q
-  description: foldl1
-
-- element: ᵟ˝
-  arity-type: Q
-  description: foldl
-
-- element: ᵟᵂ
-  arity-type: Q
-  description: cumulative while
-
-- element: ᵟᵍ
-  arity-type: Q
-  description: filter drop of permutations
-
-- element: ᵟᶠ
-  arity-type: Q
-  description: filter keep of permutations
-
-- element: ᵟ‶
-  arity-type: Q
-  description: scanl
-
-- element: ᵟⁿ
-  arity-type: Q
-  description: cumulative repeat n times
 
 - element: ᶠ
   arity-type: Q
@@ -1213,6 +1210,10 @@
 - element: ⌽
   arity-type: "2"
   description: rotate
+
+- element: ⍉
+  arity-type: Q
+  description: apply transpose apply again
 
 - element: ⍋
   arity-type: "1"

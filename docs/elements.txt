@@ -210,6 +210,7 @@ z       2          zip
 ˢ       Q          sort
 Π       1          product
 Σ       1          sum
+β       Q          call self
 φ       1          flatten 1 depth
 г       T          map the monadic chain
 ᴺ       Q          all neighbours
@@ -218,9 +219,7 @@ z       2          zip
 ᵍ       Q          filter drop
 ᵔ       Q          apply to neighbours
 ᵖ       Q          Map over prefixes
-ᵗ       Q          apply transpose apply again
-ᵝ       Q          call self
-ᵟ`      Q          scanl1
+δ`      Q          scanl1
 ᵟ´      Q          foldl1
 ᵟ˝      Q          foldl
 ᵟᵂ      Q          cumulative while
@@ -303,6 +302,7 @@ z       2          zip
 ⌊       1          floor
 ⌜       Q          outer product
 ⌽       2          rotate
+⍉       Q          apply transpose apply again
 ⍋       1          grade up
 ⍒       1          grade down
 ⍝       S          comment

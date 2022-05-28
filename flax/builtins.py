@@ -530,6 +530,77 @@ quicks = {
             attrdict(arity=links[0].arity, call=lambda w, x=None: sort(links, w, x))
         ],
     ),
+    "β": attrdict(
+        condition=lambda links: True,
+        qlink=lambda links, outermost_links, i: [create_chain(outermost_links[i])],
+    ),
+    "δ`": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(arity=1, call=lambda x: scan(links, x))
+        ],
+    ),
+    "δ´": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(arity=1, call=lambda x: fold(links, x))
+        ],
+    ),
+    "δ˝": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(arity=2, call=lambda w, x: fold(links, w, x, initial=True))
+        ],
+    ),
+    "δᵂ": attrdict(
+        condition=lambda links: len(links) == 2,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=max(arities(links)),
+                call=lambda w=None, x=None: while_loop(
+                    links[0], links[1], (w, x), cumulative=True
+                ),
+            )
+        ],
+    ),
+    "δᵍ": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=links[0].arity or 1,
+                call=lambda w, x=None: ffilter(links, w, x, permutation=True),
+            )
+        ],
+    ),
+    "δᶠ": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=links[0].arity or 1,
+                call=lambda w, x=None: ffilter(
+                    links, w, x, inverse=True, permutation=True
+                ),
+            )
+        ],
+    ),
+    "δ‶": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(arity=2, call=lambda w, x: scan(links, w, x, initial=True))
+        ],
+    ),
+    "δⁿ": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, outermost_links, i: (
+            [links.pop(0)] if len(links) == 2 and links[0].arity == 0 else []
+        )
+        + [
+            attrdict(
+                arity=max_arity(links),
+                call=lambda w=None, x=None: ntimes(links, (w, x), cumulative=True),
+            )
+        ],
+    ),
     "ᴺ": attrdict(
         condition=lambda links: links,
         qlink=lambda links, outermost_links, i: [
@@ -592,86 +663,6 @@ quicks = {
                 call=lambda w, x=None: [
                     variadic_chain(links, (e, x)) for e in prefixes(w)
                 ],
-            )
-        ],
-    ),
-    "ᵗ": attrdict(
-        condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(
-                arity=1,
-                call=lambda x: links[0].call(list(map(list, zip(*links[0].call(x))))),
-            )
-        ],
-    ),
-    "ᵝ": attrdict(
-        condition=lambda links: True,
-        qlink=lambda links, outermost_links, i: [create_chain(outermost_links[i])],
-    ),
-    "ᵟ`": attrdict(
-        condition=lambda links: links and links[0].arity,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(arity=1, call=lambda x: scan(links, x))
-        ],
-    ),
-    "ᵟ´": attrdict(
-        condition=lambda links: links and links[0].arity,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(arity=1, call=lambda x: fold(links, x))
-        ],
-    ),
-    "ᵟ˝": attrdict(
-        condition=lambda links: links and links[0].arity,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(arity=2, call=lambda w, x: fold(links, w, x, initial=True))
-        ],
-    ),
-    "ᵟᵂ": attrdict(
-        condition=lambda links: len(links) == 2,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(
-                arity=max(arities(links)),
-                call=lambda w=None, x=None: while_loop(
-                    links[0], links[1], (w, x), cumulative=True
-                ),
-            )
-        ],
-    ),
-    "ᵟᵍ": attrdict(
-        condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(
-                arity=links[0].arity or 1,
-                call=lambda w, x=None: ffilter(links, w, x, permutation=True),
-            )
-        ],
-    ),
-    "ᵟᶠ": attrdict(
-        condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(
-                arity=links[0].arity or 1,
-                call=lambda w, x=None: ffilter(
-                    links, w, x, inverse=True, permutation=True
-                ),
-            )
-        ],
-    ),
-    "ᵟ‶": attrdict(
-        condition=lambda links: links and links[0].arity,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(arity=2, call=lambda w, x: scan(links, w, x, initial=True))
-        ],
-    ),
-    "ᵟⁿ": attrdict(
-        condition=lambda links: links and links[0].arity,
-        qlink=lambda links, outermost_links, i: (
-            [links.pop(0)] if len(links) == 2 and links[0].arity == 0 else []
-        )
-        + [
-            attrdict(
-                arity=max_arity(links),
-                call=lambda w=None, x=None: ntimes(links, (w, x), cumulative=True),
             )
         ],
     ),
@@ -825,6 +816,15 @@ quicks = {
                     [variadic_link(links[0], (a, b)) for a in iterable(w, range_=True)]
                     for b in iterable(x, range_=True)
                 ],
+            )
+        ],
+    ),
+    "⍉": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=1,
+                call=lambda x: links[0].call(list(map(list, zip(*links[0].call(x))))),
             )
         ],
     ),
