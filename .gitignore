@@ -1,6 +1,7 @@
 __pycache__/
 flax.egg-info/
 *.flx
+dist/
 
 **/node_modules
 **/package-lock.json
