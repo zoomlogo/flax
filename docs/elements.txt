@@ -1,3 +1,4 @@
+ELEMENT ARITY-TYPE DESCRIPTION
 !       1          factorial
 "       S          string delimeter
 #       1          length
@@ -31,6 +32,7 @@ $       Q          2 links as monad
 :•      2          matrix multiplication
 ;$      1          sublists of permutations
 ;1      1          build a matrix with 1s at indicies
+;?      1          n random floats
 ;A      1          arccos
 ;B      1          bounce
 ;C      1          cos
@@ -70,13 +72,12 @@ $       Q          2 links as monad
 <       2          less
 =       2          equal
 >       2          more
-?       1          random floats
+?       Q          ternary if
 A       1          absolute value
 B       1          to binary
 C       1          complement
 D       1          to digits
 E       1          all equal
-ELEMENT ARITY-TYPE DESCRIPTION
 F       1          flatten
 G       1          group equal elements by indicies
 H       1          head popping
@@ -202,7 +203,6 @@ z       2          zip
 Ȧ       1          any
 ɓ       T          start a dyadic chain with arguments reversed
 ʲ       Q          scan fixedpoint
-ˀ       Q          ternary if
 ˘       Q          self args / monad as dyad using left
 ˙       Q          2 links as nilad
 ˜       Q          swap args / monad as dyad using right
@@ -211,6 +211,14 @@ z       2          zip
 Π       1          product
 Σ       1          sum
 β       Q          call self
+δ`      Q          scanl1
+δ´      Q          foldl1
+δ˝      Q          foldl
+δᵂ      Q          cumulative while
+δᵍ      Q          filter drop of permutations
+δᶠ      Q          filter keep of permutations
+δ‶      Q          scanl
+δⁿ      Q          cumulative repeat n times
 φ       1          flatten 1 depth
 г       T          map the monadic chain
 ᴺ       Q          all neighbours
@@ -219,14 +227,6 @@ z       2          zip
 ᵍ       Q          filter drop
 ᵔ       Q          apply to neighbours
 ᵖ       Q          Map over prefixes
-δ`      Q          scanl1
-ᵟ´      Q          foldl1
-ᵟ˝      Q          foldl
-ᵟᵂ      Q          cumulative while
-ᵟᵍ      Q          filter drop of permutations
-ᵟᶠ      Q          filter keep of permutations
-ᵟ‶      Q          scanl
-ᵟⁿ      Q          cumulative repeat n times
 ᶠ       Q          filter keep
 Ḃ       1          from binary
 ḃ       2          from base

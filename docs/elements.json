@@ -165,6 +165,11 @@
     "description": "build a matrix with 1s at indicies"
   },
   {
+    "element": ";?",
+    "arity-type": "1",
+    "description": "n random floats"
+  },
+  {
     "element": ";A",
     "arity-type": "1",
     "description": "arccos"
@@ -361,8 +366,8 @@
   },
   {
     "element": "?",
-    "arity-type": "1",
-    "description": "random floats"
+    "arity-type": "Q",
+    "description": "ternary if"
   },
   {
     "element": "A",
@@ -1015,11 +1020,6 @@
     "description": "scan fixedpoint"
   },
   {
-    "element": "ˀ",
-    "arity-type": "Q",
-    "description": "ternary if"
-  },
-  {
     "element": "˘",
     "arity-type": "Q",
     "description": "self args / monad as dyad using left"
@@ -1055,6 +1055,51 @@
     "description": "sum"
   },
   {
+    "element": "β",
+    "arity-type": "Q",
+    "description": "call self"
+  },
+  {
+    "element": "δ`",
+    "arity-type": "Q",
+    "description": "scanl1"
+  },
+  {
+    "element": "δ´",
+    "arity-type": "Q",
+    "description": "foldl1"
+  },
+  {
+    "element": "δ˝",
+    "arity-type": "Q",
+    "description": "foldl"
+  },
+  {
+    "element": "δᵂ",
+    "arity-type": "Q",
+    "description": "cumulative while"
+  },
+  {
+    "element": "δᵍ",
+    "arity-type": "Q",
+    "description": "filter drop of permutations"
+  },
+  {
+    "element": "δᶠ",
+    "arity-type": "Q",
+    "description": "filter keep of permutations"
+  },
+  {
+    "element": "δ‶",
+    "arity-type": "Q",
+    "description": "scanl"
+  },
+  {
+    "element": "δⁿ",
+    "arity-type": "Q",
+    "description": "cumulative repeat n times"
+  },
+  {
     "element": "φ",
     "arity-type": "1",
     "description": "flatten 1 depth"
@@ -1063,11 +1108,6 @@
     "element": "г",
     "arity-type": "T",
     "description": "map the monadic chain"
-  },
-  {
-    "element": "ᐣ",
-    "arity-type": "Q",
-    "description": "n-compose"
   },
   {
     "element": "ᴺ",
@@ -1098,56 +1138,6 @@
     "element": "ᵖ",
     "arity-type": "Q",
     "description": "Map over prefixes"
-  },
-  {
-    "element": "ᵗ",
-    "arity-type": "Q",
-    "description": "apply transpose apply again"
-  },
-  {
-    "element": "ᵝ",
-    "arity-type": "Q",
-    "description": "call self"
-  },
-  {
-    "element": "ᵟ`",
-    "arity-type": "Q",
-    "description": "scanl1"
-  },
-  {
-    "element": "ᵟ´",
-    "arity-type": "Q",
-    "description": "foldl1"
-  },
-  {
-    "element": "ᵟ˝",
-    "arity-type": "Q",
-    "description": "foldl"
-  },
-  {
-    "element": "ᵟᵂ",
-    "arity-type": "Q",
-    "description": "cumulative while"
-  },
-  {
-    "element": "ᵟᵍ",
-    "arity-type": "Q",
-    "description": "filter drop of permutations"
-  },
-  {
-    "element": "ᵟᶠ",
-    "arity-type": "Q",
-    "description": "filter keep of permutations"
-  },
-  {
-    "element": "ᵟ‶",
-    "arity-type": "Q",
-    "description": "scanl"
-  },
-  {
-    "element": "ᵟⁿ",
-    "arity-type": "Q",
-    "description": "cumulative repeat n times"
   },
   {
     "element": "ᶠ",
@@ -1425,6 +1415,11 @@
     "description": "3 links as dyad"
   },
   {
+    "element": "↤",
+    "arity-type": "Q",
+    "description": "n-compose"
+  },
+  {
     "element": "∆",
     "arity-type": "1",
     "description": "maximum"
@@ -1518,6 +1513,11 @@
     "element": "⌽",
     "arity-type": "2",
     "description": "rotate"
+  },
+  {
+    "element": "⍉",
+    "arity-type": "Q",
+    "description": "apply transpose apply again"
   },
   {
     "element": "⍋",
