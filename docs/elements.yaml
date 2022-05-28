@@ -810,10 +810,6 @@
   arity-type: T
   description: start a dyadic chain with arguments reversed
 
-- element: ʲ
-  arity-type: Q
-  description: scan fixedpoint
-
 - element: ˘
   arity-type: Q
   description: self args / monad as dyad using left
@@ -1031,10 +1027,6 @@
   arity-type: Q
   description: previous chain as nilad
 
-- element: ⁱ
-  arity-type: Q
-  description: fold fixedpoint
-
 - element: ⁴
   arity-type: Q
   description: next chain as monad
@@ -1210,6 +1202,14 @@
 - element: ⌽
   arity-type: "2"
   description: rotate
+
+- element: ⌿
+  arity-type: Q
+  description: fold fixedpoint
+
+- element: ⍀
+  arity-type: Q
+  description: scan fixedpoint
 
 - element: ⍉
   arity-type: Q

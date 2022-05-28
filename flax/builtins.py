@@ -481,15 +481,6 @@ quicks = {
             create_chain(outermost_links[(i - 1) % len(outermost_links)], 1)
         ],
     ),
-    "ʲ": attrdict(
-        condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(
-                arity=links[0].arity or 1,
-                call=lambda w, x=None: scanfixedpoint(links, w, x),
-            )
-        ],
-    ),
     "˘": attrdict(
         condition=lambda links: links,
         qlink=lambda links, outermost_links, i: [
@@ -711,15 +702,6 @@ quicks = {
             create_chain(outermost_links[(i - 1) % len(outermost_links)], 0)
         ],
     ),
-    "ⁱ": attrdict(
-        condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(
-                arity=links[0].arity or 1,
-                call=lambda w, x=None: foldfixedpoint(links, w, x),
-            )
-        ],
-    ),
     "⁴": attrdict(
         condition=lambda links: True,
         qlink=lambda links, outermost_links, i: [
@@ -816,6 +798,24 @@ quicks = {
                     [variadic_link(links[0], (a, b)) for a in iterable(w, range_=True)]
                     for b in iterable(x, range_=True)
                 ],
+            )
+        ],
+    ),
+    "⌿": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=links[0].arity or 1,
+                call=lambda w, x=None: foldfixedpoint(links, w, x),
+            )
+        ],
+    ),
+    "⍀": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=links[0].arity or 1,
+                call=lambda w, x=None: scanfixedpoint(links, w, x),
             )
         ],
     ),
