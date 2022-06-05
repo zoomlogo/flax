@@ -72,7 +72,7 @@ def main():
             else:
                 sys.argv = sys.argv[1:]
                 args = [eval(arg) for arg in sys.argv]
-                args = [to_chars(arg) if type(arg) == str else arg for arg in sys.argv]
+                args = [to_chars(arg) if type(arg) == str else arg for arg in args]
                 flax_run(code, args)
         except KeyboardInterrupt:
             error("kbdi", 130)
