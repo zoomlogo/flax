@@ -66,11 +66,20 @@ def flax_string(x):
     else:
         return "[" + ",".join(flax_string(e) for e in x) + "]"
 
+def _flax_print_flatten(x):
+    # _flax_print_flatten: flatten x and join by newlines
+    try:
+        if type(x[0]) == list:
+            return "\n".join([_flax_print_flatten(i) for i in x])
+        else:
+            return "".join([chr(int(i)) for i in x])
+    except TypeError:
+        return chr(int(x))
 
 def flax_print(x):
     # flax_print: print x using formatting
     if PRINT_CHARS:
-        print(end="".join(chr(c) for c in more_itertools.collapse(x)))
+        print(end=_flax_print_flatten(x))
     else:
         s = flax_string(x)
         print(s if DISABLE_GRID else flax_indent(s))
