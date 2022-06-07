@@ -66,6 +66,7 @@ def flax_string(x):
     else:
         return "[" + ",".join(flax_string(e) for e in x) + "]"
 
+
 def _flax_print_flatten(x):
     # _flax_print_flatten: flatten x and join by newlines
     try:
@@ -75,6 +76,7 @@ def _flax_print_flatten(x):
             return "".join([chr(int(i)) for i in x])
     except TypeError:
         return chr(int(x))
+
 
 def flax_print(x):
     # flax_print: print x using formatting
