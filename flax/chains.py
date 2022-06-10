@@ -314,28 +314,18 @@ def scan(links, *args, right=False, initial=False):
     else:
         w = None
 
-    if right:
-        x = x[::-1]
-        call = lambda w, x: variadic_link(links[0], (x, w), force_dyad=True)
-    else:
-        call = lambda w, x: variadic_link(links[0], (w, x), force_dyad=True)
+    call = lambda w, x: variadic_link(links[0], (w, x), force_dyad=True)
+
 
     if len(links) == 1:
-        if initial:
-            return list(itertools.accumulate(x, call, initial=w))
-        else:
-            return list(itertools.accumulate(x, call))
+        res = itertools.accumulate(x, lambda w, x: iterable(w) + iterable(x))
+        return [fold(links, i, w, right=right, initial=initial) for i in res]
     else:
-        if initial:
-            return [
-                list(itertools.accumulate(z, call, initial=w))
-                for z in sliding_window(links[1].call(), x)
-            ]
-        else:
-            return [
-                list(itertools.accumulate(z, call))
-                for z in sliding_window(links[1].call(), x)
-            ]
+        #TODO: fix this part
+        res = sliding_window(links[1].call(), x)
+        res = [itertools.accumulate(i, lambda w, x: iterable(w) + iterable(x)) for i in res]
+        res = [[fold(links, j, w, right=right, initial=initial) for j in i] for i in res]
+        return res
 
 
 def scanfixedpoint(links, *args):
