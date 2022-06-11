@@ -14,6 +14,7 @@ __all__ = [
     "create_chain",
     "dyadic_chain",
     "ffilter",
+    "fix_args",
     "fold",
     "foldfixedpoint",
     "max_arity",
@@ -165,6 +166,17 @@ def ffilter(links, *args, inverse=False, permutation=False):
                 x,
             )
         )
+
+
+def fix_args(f):
+    def wrapper(*args):
+        if len(args) == 0:
+            return f(None, None)
+        elif len(args) == 1:
+            return f(None, args[-1])
+        else:
+            return f(args[0], args[1])
+    return wrapper
 
 
 def fold(links, *args, right=False, initial=False):
