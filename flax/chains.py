@@ -176,6 +176,7 @@ def fix_args(f):
             return f(None, args[-1])
         else:
             return f(args[0], args[1])
+
     return wrapper
 
 

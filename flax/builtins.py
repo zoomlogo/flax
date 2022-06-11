@@ -409,13 +409,15 @@ quicks = {
         qlink=lambda links, outermost_links, i: [
             attrdict(
                 arity=links[0].arity or 1,
-                call=fix_args(lambda w, x: [
-                    variadic_link(links[0], (i, j))
-                    for i, j in zip(iterable(w), iterable(x))
-                ]
-                if w is not None
-                else [variadic_link(links[0], (i,)) for i in iterable(x)],
-            ))
+                call=fix_args(
+                    lambda w, x: [
+                        variadic_link(links[0], (i, j))
+                        for i, j in zip(iterable(w), iterable(x))
+                    ]
+                    if w is not None
+                    else [variadic_link(links[0], (i,)) for i in iterable(x)],
+                ),
+            )
         ],
     ),
     "?": attrdict(
@@ -423,11 +425,13 @@ quicks = {
         qlink=lambda links, outermost_links, i: [
             attrdict(
                 arity=max(arities(links)),
-                call=fix_args(lambda w, x: (
-                    variadic_link(links[0], (w, x))
-                    if variadic_link(links[2], (w, x))
-                    else variadic_link(links[1], (w, x))
-                )),
+                call=fix_args(
+                    lambda w, x: (
+                        variadic_link(links[0], (w, x))
+                        if variadic_link(links[2], (w, x))
+                        else variadic_link(links[1], (w, x))
+                    )
+                ),
             )
         ],
     ),
@@ -486,10 +490,12 @@ quicks = {
         qlink=lambda links, outermost_links, i: [
             attrdict(
                 arity=1 if links[0].arity == 2 else (2 if links[0].arity == 1 else 0),
-                call=fix_args(lambda w, x: variadic_link(links[0], (x, x))
-                if links[0].arity == 2
-                else variadic_link(links[0], (w,)),
-            ))
+                call=fix_args(
+                    lambda w, x: variadic_link(links[0], (x, x))
+                    if links[0].arity == 2
+                    else variadic_link(links[0], (w,)),
+                ),
+            )
         ],
     ),
     "¢": quick_chain(2, 2),
@@ -501,10 +507,12 @@ quicks = {
         qlink=lambda links, outermost_links, i: [
             attrdict(
                 arity=2 if links[0].arity else 0,
-                call=fix_args(lambda w, x: variadic_link(links[0], (x, w))
-                if links[0].arity != 1
-                else links[0].call(x),
-            ))
+                call=fix_args(
+                    lambda w, x: variadic_link(links[0], (x, w))
+                    if links[0].arity != 1
+                    else links[0].call(x),
+                ),
+            )
         ],
     ),
     "˝": attrdict(
@@ -518,7 +526,9 @@ quicks = {
     "ˢ": attrdict(
         condition=lambda links: links and links[0].arity,
         qlink=lambda links, outermost_links, i: [
-            attrdict(arity=links[0].arity, call=fix_args(lambda w, x: sort(links, w, x)))
+            attrdict(
+                arity=links[0].arity, call=fix_args(lambda w, x: sort(links, w, x))
+            )
         ],
     ),
     "β": attrdict(
@@ -548,10 +558,12 @@ quicks = {
         qlink=lambda links, outermost_links, i: [
             attrdict(
                 arity=max(arities(links)),
-                call=fix_args(lambda w, x: while_loop(
-                    links[0], links[1], (w, x), cumulative=True
+                call=fix_args(
+                    lambda w, x: while_loop(
+                        links[0], links[1], (w, x), cumulative=True
+                    ),
                 ),
-            ))
+            )
         ],
     ),
     "δᵍ": attrdict(
@@ -568,9 +580,9 @@ quicks = {
         qlink=lambda links, outermost_links, i: [
             attrdict(
                 arity=links[0].arity or 1,
-                call=fix_args(lambda w, x: ffilter(
-                    links, w, x, inverse=True, permutation=True
-                )),
+                call=fix_args(
+                    lambda w, x: ffilter(links, w, x, inverse=True, permutation=True)
+                ),
             )
         ],
     ),
@@ -597,9 +609,11 @@ quicks = {
         qlink=lambda links, outermost_links, i: [
             attrdict(
                 arity=links[0].arity or 1,
-                call=fix_args(lambda w, x: more_itertools.all_equal(
-                    [variadic_link(links[0], (w, i)) for i in sliding_window(2, x)]
-                )),
+                call=fix_args(
+                    lambda w, x: more_itertools.all_equal(
+                        [variadic_link(links[0], (w, i)) for i in sliding_window(2, x)]
+                    )
+                ),
             ),
         ],
     ),
@@ -608,14 +622,16 @@ quicks = {
         qlink=lambda links, outermost_links, i: [
             attrdict(
                 arity=links[0].arity or 1,
-                call=fix_args(lambda w, x: [
-                    i
-                    for i, e in enumerate(
-                        [variadic_link(links[0], (w, i)) for i in iterable(x)]
-                    )
-                    if e
-                ],
-            ))
+                call=fix_args(
+                    lambda w, x: [
+                        i
+                        for i, e in enumerate(
+                            [variadic_link(links[0], (w, i)) for i in iterable(x)]
+                        )
+                        if e
+                    ],
+                ),
+            )
         ],
     ),
     "ᵂ": attrdict(
@@ -631,7 +647,8 @@ quicks = {
         condition=lambda links: links,
         qlink=lambda links, outermost_links, i: [
             attrdict(
-                arity=links[0].arity or 1, call=fix_args(lambda w, x: ffilter(links, w, x))
+                arity=links[0].arity or 1,
+                call=fix_args(lambda w, x: ffilter(links, w, x)),
             )
         ],
     ),
@@ -640,9 +657,11 @@ quicks = {
         qlink=lambda links, outermost_links, i: [
             attrdict(
                 arity=links[0].arity or 1,
-                call=fix_args(lambda w, x: [
-                    variadic_link(links[0], (w, i)) for i in sliding_window(2, x)
-                ]),
+                call=fix_args(
+                    lambda w, x: [
+                        variadic_link(links[0], (w, i)) for i in sliding_window(2, x)
+                    ]
+                ),
             ),
         ],
     ),
@@ -651,10 +670,10 @@ quicks = {
         qlink=lambda links, outermost_links, i: [
             attrdict(
                 arity=links[0].arity or 1,
-                call=fix_args(lambda w, x: [
-                    variadic_chain(links, (w, i)) for i in prefixes(x)
-                ],
-            ))
+                call=fix_args(
+                    lambda w, x: [variadic_chain(links, (w, i)) for i in prefixes(x)],
+                ),
+            )
         ],
     ),
     "ᶠ": attrdict(
@@ -727,10 +746,10 @@ quicks = {
         qlink=lambda links, outermost_links, i: [
             attrdict(
                 arity=links[0].arity,
-                call=fix_args(lambda w, x: copy_to(
-                    atoms["₇"], variadic_link(links[0], w, x)
+                call=fix_args(
+                    lambda w, x: copy_to(atoms["₇"], variadic_link(links[0], w, x)),
                 ),
-            ))
+            )
         ],
     ),
     "⁺": attrdict(
@@ -738,9 +757,11 @@ quicks = {
         qlink=lambda links, outermost_links, i: [
             attrdict(
                 arity=links[0].arity,
-                call=fix_args(lambda w, x: max(
-                    iterable(x), key=lambda k: variadic_link(links[0], (w, k))
-                )),
+                call=fix_args(
+                    lambda w, x: max(
+                        iterable(x), key=lambda k: variadic_link(links[0], (w, k))
+                    )
+                ),
             )
         ],
     ),
@@ -749,9 +770,11 @@ quicks = {
         qlink=lambda links, outermost_links, i: [
             attrdict(
                 arity=links[0].arity,
-                call=fix_args(lambda w, x: min(
-                    iterable(x), key=lambda k: variadic_link(links[0], (w, k))
-                )),
+                call=fix_args(
+                    lambda w, x: min(
+                        iterable(x), key=lambda k: variadic_link(links[0], (w, k))
+                    )
+                ),
             )
         ],
     ),
