@@ -493,7 +493,7 @@ quicks = {
                 call=fix_args(
                     lambda w, x: variadic_link(links[0], (x, x))
                     if links[0].arity == 2
-                    else variadic_link(links[0], (w,)),
+                    else variadic_link(links[0], (x,)),
                 ),
             )
         ],
@@ -510,7 +510,7 @@ quicks = {
                 call=fix_args(
                     lambda w, x: variadic_link(links[0], (x, w))
                     if links[0].arity != 1
-                    else links[0].call(x),
+                    else links[0].call(w),
                 ),
             )
         ],
