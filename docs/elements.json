@@ -1017,7 +1017,7 @@
   {
     "element": "˘",
     "arity-type": "Q",
-    "description": "self args / monad as dyad using left"
+    "description": "self args / monad as dyad using right"
   },
   {
     "element": "˙",
@@ -1027,7 +1027,7 @@
   {
     "element": "˜",
     "arity-type": "Q",
-    "description": "swap args / monad as dyad using right"
+    "description": "swap args / monad as dyad using left"
   },
   {
     "element": "˝",
