@@ -114,7 +114,7 @@ def dyadic_chain(chain, w, x):
             chain = chain[:-3]
         elif arities(chain[-2:]) == [2, 2]:
             debug("2,2: " + str(chain[-2:]))
-            λ = chain[-1].call(chain[-2].call(x, w), λ)
+            λ = chain[-1].call(chain[-2].call(w, x), λ)
             chain = chain[:-2]
         elif arities(chain[-2:]) == [0, 2]:
             debug("0,2: " + str(chain[-2:]))

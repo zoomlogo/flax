@@ -88,7 +88,7 @@ Now one by one the atoms are considered from right to left, and are applied to t
 Code|New λ|Arities
 ----|-----|-------
 `1 × +`| `1 × (w + λ)`| 0₁, 2, 2 
-`× +`| `(x × w) + λ`| 2, 2
+`× +`| `(w × x) + λ`| 2, 2
 `1 +`|`1 + λ`| 0, 2
 `+ 1`|`λ + 1`| 2, 0
 `+`|`w + λ`| 2
