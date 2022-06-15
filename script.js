@@ -1,29 +1,60 @@
 console.log("Loaded!");
 
-const getJSON = async url => {
+const getJSON = async (url) => {
   const response = await fetch(url);
   return response.json();
-}
+};
 
 /* load json */
 console.log("Fetching Data...");
-getJSON("https://raw.githubusercontent.com/PyGamer0/flax/main/docs/elements.json").then(elements => {
+getJSON(
+  "https://raw.githubusercontent.com/PyGamer0/flax/main/docs/elements.json"
+).then((elements) => {
   let el = document.getElementById("el");
-  elements.forEach(element => {
-    let tr = document.createElement('tr');
-    for (let key of ['element', 'description', 'arity-type']) {
-      let td = document.createElement('td')
+  elements.forEach((element) => {
+    let tr = document.createElement("tr");
+
+    let tooltip = document.createElement("span");
+    tooltip.innerHTML = "Copied!";
+    tooltip.classList.add("tooltip"); //idk why but this works
+    tr.appendChild(tooltip);
+
+    for (let key of ["element", "description", "arity-type"]) {
+      let td = document.createElement("td");
       td.innerText = element[key];
       tr.appendChild(td);
     }
     tr.addEventListener("click", () => {
       console.log("Copying...");
-      navigator.clipboard.writeText(element["element"]).then(() => { console.log("Copied!"); });
+      tooltip.style.visibility = "visible";
+      setTimeout(() => {
+        fade(tooltip);
+      }, 300);
+
+      navigator.clipboard.writeText(element["element"]).then(() => {
+        console.log("Copied!");
+      });
     });
     el.appendChild(tr);
   });
 });
 console.log("Fetched!");
+
+/* fadeout function for tooltip */
+function fade(elem) {
+  var fadeEffect = setInterval(function () {
+    if (!elem.style.opacity) {
+      elem.style.opacity = 1;
+    }
+    if (elem.style.opacity > 0.1) {
+      elem.style.opacity -= 0.1;
+    } else {
+      clearInterval(fadeEffect);
+      elem.style.opacity = "";
+      elem.style.visibility = "";
+    }
+  }, 50);
+}
 
 /* search function */
 const filter_search = () => {
@@ -44,4 +75,4 @@ const filter_search = () => {
       }
     }
   }
-}
+};
