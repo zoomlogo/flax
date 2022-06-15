@@ -1,24 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
     <title>flax</title>
     <link rel="stylesheet" href="style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
     <script src="./script.js"></script>
     <div style="display: flex; flex-direction: row">
-      <a href="https://github.com/PyGamer0/flax">flax element search</a>
+      <a href="https://github.com/PyGamer0/flax" id="header">flax element search</a>
       <input type="text" id="search-bar" placeholder="Search..." style="flex: 1" onkeyup="filter_search()" />
     </div>
-    <select>
+    <label>Type: <select>
       <option value="0">Nilads</option>
       <option value="1">Monads</option>
       <option value="2">Dyads</option>
       <option value="Q">Quicks</option>
       <option value="S">Syntax</option>
       <option value="T">Chain separators</option>
-    </select>
+    </select></label>
     <br>
     <table id="el">
     </table>
