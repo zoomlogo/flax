@@ -5,11 +5,88 @@
 
 feel free to suggest element ideas on the SE chatroom.
 
-- add
-- subtract
-- multiply
-- divide
-- power
+- left arguement of chain
+- right argument of chain
+- 10
+- 16
+- 26
+- 32
+- 100
+- 256
+- read a character from stdin
+- read a line from stdin
+
+- logical not
+- square root
+- factorial
+- abs
+- int → bin
+- bin → int
+- complement
+- int → digits
+- digits → int
+- all equal
+- flatten
 - half
-- square
+- forward differences
 - double
+- range of len
+- length
+- head (popping)
+- tail
+- last (popping)
+- neck
+- sum
+- product
+- negate
+- maximal indicies
+- minimal indicies
+- truthy element indicies
+- falsely element indicies
+- reverse
+- reverse of each
+- enclose / wrap
+- enclose if not enclosed already
+- randomly choose
+- transpose
+- bitwise not
+- identity
+- square
+- any
+- all
+- any and all
+- range
+- range from 1
+- minimum
+- maximum
+- sort
+- grade up
+- grade down
+- length of each
+- is prime
+- bit
+- ceil
+- floor
+- enumerate
+- group indicies by their corresponding values
+- reciprocal
+- print
+- sublists (without empty list)
+- shuffle
+- permutations
+- prepend a zero
+- cumulative sum
+- sum over each
+- increment
+- decrement
+- prefixes
+- suffixes
+- unique elements
+- sign
+- chunks of length 2
+- flatten over each
+- factors / divisors
+- elements at even indicies
+- elements at odd indicies
+- reverse every other element
+- zip with filler zero
