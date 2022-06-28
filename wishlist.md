@@ -90,3 +90,69 @@ feel free to suggest element ideas on the SE chatroom.
 - elements at odd indicies
 - reverse every other element
 - zip with filler zero
+
+- addition
+- subtraction
+- multiplication
+- division
+- modulus
+- bitwise and
+- bitwise or
+- bitwise xor
+- bitwise not
+- and
+- or
+- not
+- greater than
+- lesser than
+- equal to
+- not equal to
+- greater than or equal to
+- lesser than or equal to
+- match
+- not match
+- exponentiation
+- pair
+- concat
+- reversed concat
+- integer → base
+- base → integer
+- combinations `nCr`
+- divmod
+- element of
+- remove elements of one that are not in the other
+- remove elements of one that are in the other
+- GCD
+- LCM
+- find
+- find all
+- find sublist
+- logarithm
+- every nth element
+- cartesian product
+- split into chunks
+- trim all elements of one from the other
+- transpose with filler
+- absolute difference
+- is divisible
+- index into
+- left argument
+- right argument
+- how much times is one divisible by the other
+- split at occurences
+- count occurence
+- head
+- tail
+- cartesian power
+- rotate
+- windows
+- zip
+- maximum
+- minimum
+- join each of one to another
+- quit
+- pick one of the arguments randomly
+- find for each element
+- join
+- exclusive range
+- dot product
