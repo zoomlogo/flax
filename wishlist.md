@@ -324,6 +324,7 @@ OTHER DYADIC DIAGRAPHS
 - split before truthy indices
 - split at first occurence
 - map: inputs → outputs; w consists of [inputs,outputs], x is to be converted
+- ring translate
 
 QUICKY DIAGRAPHS
 - foldl1
