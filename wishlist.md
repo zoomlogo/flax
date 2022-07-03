@@ -168,6 +168,7 @@ SINGLE BYTE DYADS
 - dot product padding 0
 - select elements from one with indicies that are truthy elements in the other
 - base decompression
+- distance between points
 
 QUICKS
 - two links as monad
@@ -223,6 +224,7 @@ NILADIC DIAGRAPHS
 - zeros; [0,0]
 - ones; [1,1]
 - twos; [2,2]
+- [[0,1],[1,0]]
 - directions; [[0,1],[1,0],[0,-1],[-1,0]]
 - directions; [[1,1],[1,0],[1,-1],[0,1],[0,0],[0,-1],[-1,1],[-1,0],[-1,-1]]
 - parenthesis; [40,41]
