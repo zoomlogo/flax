@@ -4,7 +4,7 @@
 **NOTE**: This is a planning file which will be removed when the revamp is done.
 
 feel free to suggest element ideas on the SE chatroom.
-
+```
 - left arguement of chain
 - right argument of chain
 - 10
@@ -156,3 +156,4 @@ feel free to suggest element ideas on the SE chatroom.
 - join
 - exclusive range
 - dot product
+```
