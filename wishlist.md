@@ -12,6 +12,7 @@ SINGLE BYES NILADS
 - 16
 - 26
 - 32
+- 64
 - 100
 - 256
 - read a character from stdin
@@ -94,6 +95,8 @@ SINGLE BYTE MONADS
 - reverse every other element
 - zip with filler zero
 - where
+- powerset
+- all equal returning the element
 
 SINGLE BYTE DYADS
 - addition
@@ -162,6 +165,8 @@ SINGLE BYTE DYADS
 - exclusive range
 - combinations without replacement
 - dot product padding 0
+- select elements from one with indicies that are truthy elements in the other
+- base decompression
 
 QUICKS
 - two links as monad
@@ -241,6 +246,11 @@ NILADIC DIAGRAPHS
 - pi
 - 360
 - 128
+- 512
+- 1024
+- 2048
+- 65536
+- infinity
 
 MATHY MONADIC DIAGRAPHS
 - integer square root
@@ -272,6 +282,7 @@ MATHY MONADIC DIAGRAPHS
 - antidiagonals
 - main diagonal
 - main antidiagonal
+- polyroots
 
 MATHY DYADIC DIAGRPAHS
 - nPr
@@ -301,6 +312,7 @@ OTHER MONADIC DIAGRAPHS
 - swap case
 - upper case
 - depth
+- apl style output
 
 OTHER DYADIC DIAGRAPHS
 - multiset intersection
@@ -311,6 +323,7 @@ OTHER DYADIC DIAGRAPHS
 - trim from left
 - split before truthy indices
 - split at first occurence
+- map: inputs → outputs; w consists of [inputs,outputs], x is to be converted
 
 QUICKY DIAGRAPHS
 - foldl1
