@@ -160,7 +160,53 @@ SINGLE BYTE DYADS
 - find for each element
 - join
 - exclusive range
+- combinations without replacement
 - dot product padding 0
+
+QUICKS
+- two links as monad
+- two links as dyad
+- three links as monad
+- three links as dyad
+- four links as monad
+- four links as dyad
+- map; zipwith
+- each left
+- each right
+- quick map
+- map over permutations
+- map over prefixes
+- ternary if
+- while
+- repeat
+- apply at
+- self arguments; monad as dyad using right argument
+- swap arguments; monad as dyad using left argument
+- sort by
+- max by
+- min by
+- truthy indicies after applying
+- all neighbours
+- apply to neighbours
+- filter keep
+- filter drop
+- is equal after applying
+- call this link with same arity
+- call next chain as nilad
+- call next chain as monad
+- call next chain as dyad
+- call previous chain as nilad
+- call previous chain as monad
+- call previous chain as dyad
+- call chain at, as
+- foldr1
+- foldr
+- scanr1
+- scanr
+- fold fixedpoint
+- scan fixedpoint
+- set register
+- apply, then transpose, apply again
 
 NILADIC DIAGRAPHS
 - [1,2]
@@ -260,60 +306,17 @@ OTHER DYADIC DIAGRAPHS
 - multiset intersection
 - multiset difference
 - multiset union
-- combinations without replacement
 - mutlidimensional index into
 - trim from right
 - trim from left
 - split before truthy indices
 - split at first occurence
 
-QUICKS (INCLUDES DIAGRAPHS)
-- two links as monad
-- two links as dyad
-- three links as monad
-- three links as dyad
-- four links as monad
-- four links as dyad
-- map; zipwith
-- each left
-- each right
-- quick map
-- map over permutations
-- map over prefixes
-- ternary if
-- while
-- repeat
-- cumulative while
-- cumulative repeat
-- apply at
-- self arguments; monad as dyad using right argument
-- swap arguments; monad as dyad using left argument
-- sort by
-- max by
-- min by
-- truthy indicies after applying
-- all neighbours
-- filter keep
-- filter drop
-- is equal after applying
-- call this link with same arity
-- call next chain as nilad
-- call next chain as monad
-- call next chain as dyad
-- call previous chain as nilad
-- call previous chain as monad
-- call previous chain as dyad
-- call chain at, as
-- foldr1
-- foldr
+QUICKY DIAGRAPHS
 - foldl1
 - foldl
-- scanr1
-- scanr
 - scanl1
 - scanl
-- fold fixedpoint
-- scan fixedpoint
-- set register
-- apply, then transpose, apply again
+- cumulative while
+- cumulative repeat
 ```
