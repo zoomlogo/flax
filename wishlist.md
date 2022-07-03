@@ -88,6 +88,7 @@ SINGLE BYTE MONADS
 - unique elements
 - sign
 - chunks of length 2
+- split into 2 chunks
 - flatten over each
 - factors / divisors
 - elements at even indicies
