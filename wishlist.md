@@ -98,6 +98,7 @@ SINGLE BYTE MONADS
 - where
 - powerset
 - all equal returning the element
+- keep only elements without duplicates
 
 SINGLE BYTE DYADS
 - addition
