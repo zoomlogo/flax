@@ -5,6 +5,7 @@
 
 feel free to suggest element ideas on the SE chatroom.
 ```
+SINGLE BYES NILADS
 - left arguement of chain
 - right argument of chain
 - 10
@@ -15,7 +16,9 @@ feel free to suggest element ideas on the SE chatroom.
 - 256
 - read a character from stdin
 - read a line from stdin
+- get register
 
+SINGLE BYTE MONADS
 - logical not
 - square root
 - factorial
@@ -90,7 +93,9 @@ feel free to suggest element ideas on the SE chatroom.
 - elements at odd indicies
 - reverse every other element
 - zip with filler zero
+- where
 
+SINGLE BYTE DYADS
 - addition
 - subtraction
 - multiplication
@@ -117,7 +122,7 @@ feel free to suggest element ideas on the SE chatroom.
 - reversed concat
 - integer → base
 - base → integer
-- combinations `nCr`
+- nCr
 - divmod
 - element of
 - remove elements of one that are not in the other
@@ -155,5 +160,160 @@ feel free to suggest element ideas on the SE chatroom.
 - find for each element
 - join
 - exclusive range
-- dot product
+- dot product padding 0
+
+NILADIC DIAGRAPHS
+- [1,2]
+- 2³²
+- signs; [1,-1]
+- signs; [-1,1]
+- bits; [0,1]
+- zeros; [0,0]
+- ones; [1,1]
+- twos; [2,2]
+- directions; [[0,1],[1,0],[0,-1],[-1,0]]
+- directions; [[1,1],[1,0],[1,-1],[0,1],[0,0],[0,-1],[-1,1],[-1,0],[-1,-1]]
+- parenthesis; [40,41]
+- square brackets; [91,93]
+- slashes; [47,92]
+- angle brackets; [60,62]
+- curly brackets; [123,125]
+- capital letters
+- small letters
+- capital consonants
+- small consonants
+- capital vowels
+- small vowels
+- capital y-vowels
+- small y-vowels
+- digits
+- hex digits
+- octal digits
+- codepage
+- euler's number
+- phi (golden ratio)
+- pi
+- 360
+- 128
+
+MATHY MONADIC DIAGRAPHS
+- integer square root
+- arccosine
+- arcsine
+- arctangent
+- arcsecant
+- arccosecant
+- arccotangent
+- sine
+- cosine
+- tangent
+- cosecant
+- secant
+- cotangent
+- count primes
+- n primes
+- prime factors
+- natural logarithm
+- nth catan number
+- nth lucas number
+- nth fibonacci number
+- trace
+- radians → degrees
+- degrees → radians
+- is square
+- determinant
+- diagonals
+- antidiagonals
+- main diagonal
+- main antidiagonal
+
+MATHY DYADIC DIAGRPAHS
+- nPr
+- dot product padding 1
+- matrix multiplication
+- matrix power
+- arctangent2
+- convolution
+- to complex number
+- bit shift left
+- bit shift right
+- round
+
+OTHER MONADIC DIAGRAPHS
+- bounce over each
+- bounce
+- is palindrome
+- GET request
+- multidimensional enumerate
+- multidimensional group
+- multidimensional maximal indicies
+- multidimensional truthy
+- make a booleans matrix with ones at specified locations
+- unordered pairs
+- run length encode
+- run length decode
+- swap case
+- upper case
+- depth
+
+OTHER DYADIC DIAGRAPHS
+- multiset intersection
+- multiset difference
+- multiset union
+- combinations without replacement
+- mutlidimensional index into
+- trim from right
+- trim from left
+- split before truthy indices
+- split at first occurence
+
+QUICKS (INCLUDES DIAGRAPHS)
+- two links as monad
+- two links as dyad
+- three links as monad
+- three links as dyad
+- four links as monad
+- four links as dyad
+- map; zipwith
+- each left
+- each right
+- quick map
+- map over permutations
+- map over prefixes
+- ternary if
+- while
+- repeat
+- cumulative while
+- cumulative repeat
+- apply at
+- self arguments; monad as dyad using right argument
+- swap arguments; monad as dyad using left argument
+- sort by
+- max by
+- min by
+- truthy indicies after applying
+- all neighbours
+- filter keep
+- filter drop
+- is equal after applying
+- call this link with same arity
+- call next chain as nilad
+- call next chain as monad
+- call next chain as dyad
+- call previous chain as nilad
+- call previous chain as monad
+- call previous chain as dyad
+- call chain at, as
+- foldr1
+- foldr
+- foldl1
+- foldl
+- scanr1
+- scanr
+- scanl1
+- scanl
+- fold fixedpoint
+- scan fixedpoint
+- set register
+- apply, then transpose, apply again
 ```
