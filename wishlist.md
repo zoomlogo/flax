@@ -44,7 +44,6 @@ SINGLE BYTE MONADS
 - product
 - negate
 - maximal indicies
-- minimal indicies
 - truthy element indicies
 - falsely element indicies
 - reverse
@@ -73,6 +72,7 @@ SINGLE BYTE MONADS
 - floor
 - enumerate
 - group indicies by their corresponding values
+- group adjacent equal elements
 - reciprocal
 - print
 - sublists (without empty list)
