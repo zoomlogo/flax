@@ -215,6 +215,7 @@ QUICKS
 - scan fixedpoint
 - set register
 - apply, then transpose, apply again
+- n-compose
 
 NILADIC DIAGRAPHS
 - [1,2]
