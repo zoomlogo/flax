@@ -2,7 +2,7 @@
 
 __all__ = ["encode", "decode"]
 
-codepage  = "⁰¹²³⁴⁵⁶⁷⁸⁹¶₹«»≡≢"
+codepage = "⁰¹²³⁴⁵⁶⁷⁸⁹¶₹«»≡≢"
 codepage += "лнпя‘’¢£¥€⌿⍀≥≠≤±"
 codepage += " !\"#$%&'()*+,-./"
 codepage += "0123456789:;<=>?"
