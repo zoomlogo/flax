@@ -5,6 +5,18 @@
 
 feel free to suggest element ideas on the SE chatroom.
 ```
+SYNTAX
+- ¯0123456789j. number
+- [] explicit list syntax
+
+CHAIN SEPARATORS
+- л start a new niladic chain
+- п start a new monadic chain
+- н start a new dyadic chain
+- я start a new dyadic chain with reversed arguments
+- ( start a new monadic chain which maps over the previous one
+- ) start a new monadic chain which filters over the previous one
+
 SINGLE BYES NILADS
 - ⁰ 10
 - ¹ 16
