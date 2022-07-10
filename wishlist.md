@@ -6,18 +6,18 @@
 feel free to suggest element ideas on the SE chatroom.
 ```
 SINGLE BYES NILADS
-- left arguement of chain
-- right argument of chain
-- 10
-- 16
-- 26
-- 32
-- 64
-- 100
-- 256
-- read a character from stdin
-- read a line from stdin
-- get register
+- ⁰ 10
+- ¹ 16
+- ² 26
+- ³ 32
+- ⁴ 64
+- ⁵ 100
+- ⁷ 256
+- ⁸ left arguement of chain
+- ⁹ right argument of chain
+- ς read a character from stdin
+- σ read a line from stdin
+- ∃ get register
 
 SINGLE BYTE MONADS
 - logical not
@@ -213,7 +213,7 @@ QUICKS
 - scanr
 - fold fixedpoint
 - scan fixedpoint
-- set register
+- ∀ set register
 - apply, then transpose, apply again
 - n-compose
 
