@@ -32,85 +32,85 @@ SINGLE BYES NILADS
 - ∃ get register
 
 SINGLE BYTE MONADS
-- ¬ logical not
-- √ square root
-- ! factorial
-- A abs
-- B int → bin
-- Ḃ bin → int
-- C complement
-- D int → digits
-- Ḋ digits → int
-- E all equal
-- F flatten
-- H half
-- I forward differences
-- Ḣ double
-- J range of len
-- # length
-- H head (popping)
-- T tail
-- L last (popping)
-- N neck
-- ∑ sum
-- ∏ product
-- Ṅ negate
-- M maximal indicies
-- Ṫ truthy element indicies
-- Ḟ falsely element indicies
-- R reverse
-- Ṙ reverse of each
-- ⊂ enclose / wrap
-- ⊆ enclose if not enclosed already
-- Ċ randomly choose
-- Z transpose
-- ~ bitwise not
-- O identity
-- υ square
-- Ȧ any
-- ζ all
-- ξ any and all
-- ι range
-- κ range from 1
-- ∵ minimum
-- ∴ maximum
-- Ṡ sort
-- ⍋ grade up
-- ⍒ grade down
-- Ŀ length of each
-- V is prime
-- β bit
-- ⌈ ceil
-- ⌊ floor
-- Ė enumerate
-- G group indicies by their corresponding values
-- Ġ group adjacent equal elements
-- ½ reciprocal
-- Ṗ print
-- S sublists (without empty list)
-- Ω shuffle
-- P permutations
-- Ż prepend a zero
-- K cumulative sum
-- ⊃ sum over each
-- } increment
-- { decrement
-- ← prefixes
-- → suffixes
-- U unique elements
-- ± sign
-- Q chunks of length 2
-- X split into 2 chunks
-- χ flatten over each
-- Ȯ factors / divisors
-- Y elements at even indicies
-- Ẏ elements at odd indicies
-- μ reverse every other element
-- ∂ zip with filler zero
-- W where
-- ρ powerset
-- ε all equal returning the element
-- Ẇ keep only elements without duplicates
+- logical not
+- square root
+- factorial
+- abs
+- int → bin
+- bin → int
+- complement
+- int → digits
+- digits → int
+- all equal
+- flatten
+- half
+- forward differences
+- double
+- range of len
+- length
+- head (popping)
+- tail
+- last (popping)
+- neck
+- sum
+- product
+- negate
+- maximal indicies
+- truthy element indicies
+- falsely element indicies
+- reverse
+- reverse of each
+- enclose / wrap
+- enclose if not enclosed already
+- randomly choose
+- transpose
+- bitwise not
+- identity
+- square
+- any
+- all
+- any and all
+- range
+- range from 1
+- minimum
+- maximum
+- sort
+- grade up
+- grade down
+- length of each
+- is prime
+- bit
+- ceil
+- floor
+- enumerate
+- group indicies by their corresponding values
+- group adjacent equal elements
+- reciprocal
+- print
+- sublists (without empty list)
+- shuffle
+- permutations
+- prepend a zero
+- cumulative sum
+- sum over each
+- increment
+- decrement
+- prefixes
+- suffixes
+- unique elements
+- sign
+- chunks of length 2
+- split into 2 chunks
+- flatten over each
+- factors / divisors
+- elements at even indicies
+- elements at odd indicies
+- reverse every other element
+- zip with filler zero
+- where
+- powerset
+- all equal returning the element
+- keep only elements without duplicates
 
 SINGLE BYTE DYADS
 - addition
