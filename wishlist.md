@@ -32,41 +32,42 @@ SINGLE BYES NILADS
 - ∃ get register
 
 SINGLE BYTE MONADS
-- logical not
-- square root
-- factorial
-- abs
-- int → bin
-- bin → int
-- complement
-- int → digits
-- digits → int
-- all equal
-- flatten
-- half
-- forward differences
-- double
-- range of len
-- length
-- head (popping)
-- tail
-- last (popping)
-- neck
-- sum
-- product
-- negate
-- maximal indicies
-- truthy element indicies
-- falsely element indicies
-- reverse
-- reverse of each
-- enclose / wrap
-- enclose if not enclosed already
-- randomly choose
-- transpose
-- bitwise not
-- identity
-- square
+- A abs
+- B int → bin
+- Ḃ bin → int
+- C complement
+- Ċ randomly choose
+- D int → digits
+- Ḋ digits → int
+- E all equal
+- F flatten
+- Ḟ falsely element indicies
+- H half
+- Ḣ double
+- I forward differences
+- J range of len
+- L length
+- Ŀ length of each
+- Ṫ truthy element indicies
+- M square
+- Ṁ maximal indicies
+- N negate
+- O identity
+- R reverse
+- Ṙ reverse of each
+- Z transpose
+- ! factorial
+- ¬ logical not
+- √ square root
+- Σ sum
+- Π product
+- ⊂ enclose / wrap
+- ⊆ enclose if not enclosed already
+- ⊃ head (popping)
+- ⊇ tail
+- ⊐ last (popping)
+- ⊒ neck
+- ~ bitwise not
 - any
 - all
 - any and all
@@ -77,7 +78,6 @@ SINGLE BYTE MONADS
 - sort
 - grade up
 - grade down
-- length of each
 - is prime
 - bit
 - ceil
