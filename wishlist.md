@@ -46,6 +46,7 @@ SINGLE BYTE MONADS
 - Ḣ double
 - I forward differences
 - J range of len
+- K cumulative sum
 - L length
 - Ŀ length of each
 - Ṫ truthy element indicies
@@ -55,7 +56,10 @@ SINGLE BYTE MONADS
 - O identity
 - R reverse
 - Ṙ reverse of each
+- S sublists (without empty list)
+- W where
 - Z transpose
+- Ż prepend a zero
 - ! factorial
 - ¬ logical not
 - √ square root
@@ -79,22 +83,19 @@ SINGLE BYTE MONADS
 - grade up
 - grade down
 - is prime
-- bit
-- ceil
-- floor
+- ½ bit
+- ⌈ ceil
+- ⌊ floor
 - enumerate
 - group indicies by their corresponding values
 - group adjacent equal elements
 - reciprocal
 - print
-- sublists (without empty list)
 - shuffle
 - permutations
-- prepend a zero
-- cumulative sum
 - sum over each
-- increment
-- decrement
+- → increment
+- ← decrement
 - prefixes
 - suffixes
 - unique elements
@@ -107,7 +108,6 @@ SINGLE BYTE MONADS
 - elements at odd indicies
 - reverse every other element
 - zip with filler zero
-- where
 - powerset
 - all equal returning the element
 - keep only elements without duplicates
