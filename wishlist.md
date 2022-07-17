@@ -53,7 +53,6 @@ SINGLE BYTE MONADS
 - K cumulative sum
 - L length
 - Ŀ length of each
-- Ṫ truthy element indicies
 - M square
 - Ṁ maximal indicies
 - N negate
@@ -61,10 +60,12 @@ SINGLE BYTE MONADS
 - Ȯ factors / divisors
 - P permutations
 - Ṗ shuffle
+- Q reverse every other element
 - R reverse
 - Ṙ reverse of each
 - S sublists (without empty list)
 - Ṡ sum over each
+- Ṫ truthy element indicies
 - U unique elements
 - V is prime
 - W where
@@ -92,7 +93,6 @@ SINGLE BYTE MONADS
 - ι range
 - κ range from 1
 - ξ zip with filler zero
-- σ reverse every other element
 - χ all
 - ψ any and all
 - ϕ flatten one level
@@ -146,6 +146,7 @@ SINGLE BYTE DYADS
 - t tail
 - ṫ trim all elements of one from the other
 - u find for each element
+- v join each of one to another
 - w windows
 - ẇ combinations without replacement
 - x maximum
@@ -181,7 +182,6 @@ SINGLE BYTE DYADS
 - ⊢ right argument
 - # reshape
 - δ distance between points
-- ς join each of one to another
 
 QUICKS
 - $ two links as monad
