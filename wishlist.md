@@ -133,6 +133,7 @@ SINGLE BYTE DYADS
 - l LCM
 - ŀ logarithm
 - m minimum
+- ṁ mold
 - n every nth element
 - o split at occurences
 - ȯ count occurence
@@ -178,6 +179,7 @@ SINGLE BYTE DYADS
 - ∘ cartesian product
 - ⊣ left argument
 - ⊢ right argument
+- # reshape
 - δ distance between points
 - ς join each of one to another
 
@@ -192,22 +194,22 @@ QUICKS
 - ’ each left
 - ‘ each right
 - ¨ quick map
-- map over permutations
+- ρ map over permutations
 - ⊸ map over prefixes
 - ? ternary if
 - ω while
 - ⍤ repeat
-- apply at
-- self arguments; monad as dyad using right argument
-- swap arguments; monad as dyad using left argument
-- sort by
-- max by
-- min by
-- truthy indicies after applying
+- @ apply at
+- ˘ self arguments; monad as dyad using right argument
+- ˜ swap arguments; monad as dyad using left argument
+- ` sort by
+- ⌉ max by
+- ⌋ min by
+- τ truthy indicies after applying
 - α all neighbours
 - υ apply to neighbours
-- filter keep
-- filter drop
+- ⊥ filter keep
+- ⊤ filter drop
 - ⁼ is equal after applying
 - β call this link with same arity
 - call next chain as nilad
@@ -217,15 +219,15 @@ QUICKS
 - call previous chain as monad
 - call previous chain as dyad
 - call chain at, as
-- foldr1
-- foldr
-- scanr1
-- scanr
-- fold fixedpoint
-- scan fixedpoint
+- / foldr1
+- ⌿ foldr
+- \ scanr1
+- ⍀ scanr
+- ´ fold fixedpoint
+- ˝ scan fixedpoint
 - ∀ set register
-- apply, then transpose, apply again
-- n-compose
+- ∝ apply, then transpose, apply again
+- ⟜ n-compose
 
 NILADIC DIAGRAPHS
 - [1,2]
