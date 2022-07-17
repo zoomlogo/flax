@@ -33,6 +33,7 @@ SINGLE BYES NILADS
 
 SINGLE BYTE MONADS
 - A abs
+- Ȧ any
 - B int → bin
 - Ḃ bin → int
 - C complement
@@ -40,8 +41,11 @@ SINGLE BYTE MONADS
 - D int → digits
 - Ḋ digits → int
 - E all equal
+- Ė all equal returning the element
 - F flatten
 - Ḟ falsely element indicies
+- G group indicies by their corresponding values
+- Ġ group adjacent equal elements
 - H half
 - Ḣ double
 - I forward differences
@@ -54,9 +58,13 @@ SINGLE BYTE MONADS
 - Ṁ maximal indicies
 - N negate
 - O identity
+- P permutations
+- Ṗ shuffle
 - R reverse
 - Ṙ reverse of each
 - S sublists (without empty list)
+- Ṡ sort
+- V is prime
 - W where
 - Z transpose
 - Ż prepend a zero
@@ -72,27 +80,20 @@ SINGLE BYTE MONADS
 - ⊐ last (popping)
 - ⊒ neck
 - ~ bitwise not
-- any
-- all
-- any and all
-- range
-- range from 1
-- minimum
-- maximum
-- sort
-- grade up
-- grade down
-- is prime
+- ι range
+- κ range from 1
+- χ all
+- ψ any and all
+- ∵ minimum
+- ∴ maximum
+- ⍋ grade up
+- ⍒ grade down
+- ¼ reciprocal
 - ½ bit
 - ⌈ ceil
 - ⌊ floor
 - enumerate
-- group indicies by their corresponding values
-- group adjacent equal elements
-- reciprocal
 - print
-- shuffle
-- permutations
 - sum over each
 - → increment
 - ← decrement
@@ -109,7 +110,6 @@ SINGLE BYTE MONADS
 - reverse every other element
 - zip with filler zero
 - powerset
-- all equal returning the element
 - keep only elements without duplicates
 
 SINGLE BYTE DYADS
