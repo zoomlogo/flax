@@ -15,8 +15,8 @@ codepage += "ṪẆẊẎŻȧḃċḋėḟġḣŀṁṅ"
 codepage += "ȯṗṙṡṫẇẋẏż→←↑↓∥∦¬"
 codepage += "´˝˘¨˜¯¼½¾×⁼∞∝∀∃÷"
 codepage += "∘○⟜⊸∊∴∵∂⊂⊃⊆⊇⊏⊐⊑⊒"
-codepage += "αβγδεζηθικλνξπρ"
-codepage += "ςστυφχψωϕΔ⌈⌊⌉⌋ØÆŒ"
+codepage += "αβγδεζηθικλνξπρς"
+codepage += "στυφχψωϕΔΞ⌈⌊⌉⌋ØÆŒ"
 codepage += "√ΣΠ⊢⊣⊤⊥∧∨∪∩⍋⍒⍤æœ"
 
 assert len(codepage) == 256
