@@ -110,78 +110,76 @@ SINGLE BYTE MONADS
 - { prefixes
 - } suffixes
 - ± sign
-- ∘ powerset
+- ○ powerset
 
 SINGLE BYTE DYADS
-- addition
-- subtraction
-- multiplication
-- division
-- modulus
-- bitwise and
-- bitwise or
-- bitwise xor
-- bitwise not
-- and
-- or
-- not
-- greater than
-- lesser than
-- equal to
-- not equal to
-- greater than or equal to
-- lesser than or equal to
-- match
-- not match
-- exponentiation
-- pair
-- concat
-- reversed concat
-- integer → base
-- base → integer
-- nCr
-- divmod
-- element of
-- remove elements of one that are not in the other
-- remove elements of one that are in the other
-- GCD
-- LCM
-- find
-- find all
-- find sublist
-- logarithm
-- every nth element
-- cartesian product
-- split into chunks
-- trim all elements of one from the other
-- transpose with filler
-- absolute difference
-- is divisible
-- index into
-- left argument
-- right argument
-- how much times is one divisible by the other
-- split at occurences
-- count occurence
-- head
-- tail
-- cartesian power
-- rotate
-- windows
-- zip
-- maximum
-- minimum
-- join each of one to another
-- quit
-- pick one of the arguments randomly
-- find for each element
-- join
-- exclusive range
-- combinations without replacement
-- dot product padding 0
-- select elements from one with indicies that are truthy elements in the other
-- base decompression
-- distance between points
+- a absolute difference
+- ȧ pick one of the arguments randomly
+- b integer → base
+- ḃ base → integer
+- c nCr
+- ċ split into chunks
+- d divmod
+- ḋ is divisible
+- e exclusive range
+- ė base decompression
+- f remove elements of one that are not in the other
+- ḟ remove elements of one that are in the other
+- g GCD
+- ġ dot product padding 0
+- h head
+- ḣ how much times is one divisible by the other
+- i index into
+- l LCM
+- ŀ logarithm
+- m minimum
+- n every nth element
+- o split at occurences
+- ȯ count occurence
+- p pair
+- ṗ cartesian power
+- q quit
+- r rotate
+- s find sublist
+- ṡ select elements from one with indicies that are truthy elements in the other
+- t tail
+- ṫ trim all elements of one from the other
+- u find for each element
+- w windows
+- ẇ combinations without replacement
+- x maximum
+- y join
+- z zip
+- ż transpose with filler
+- + addition
+- - subtraction
+- × multiplication
+- ÷ division
+- | residue
+- & bitwise and
+- % bitwise or
+- ^ bitwise xor
+- ∧ and
+- ∨ or
+- > greater than
+- < lesser than
+- = equal to
+- ≠ not equal to
+- ≥ greater than or equal to
+- ≤ lesser than or equal to
+- ≡ match
+- ≢ not match
+- * exponentiation
+- , concat
+- ; reversed concat
+- ∊ element of
+- ⊏ find
+- ⊑ find all
+- ∘ cartesian product
+- ⊣ left argument
+- ⊢ right argument
+- δ distance between points
+- ς join each of one to another
 
 QUICKS
 - two links as monad
