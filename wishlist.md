@@ -182,21 +182,21 @@ SINGLE BYTE DYADS
 - ς join each of one to another
 
 QUICKS
-- two links as monad
-- two links as dyad
-- three links as monad
-- three links as dyad
-- four links as monad
-- four links as dyad
-- map; zipwith
-- each left
-- each right
-- quick map
+- $ two links as monad
+- ¢ two links as dyad
+- £ three links as monad
+- ¥ three links as dyad
+- € four links as monad
+- ₹ four links as dyad
+- ' map; zipwith
+- ’ each left
+- ‘ each right
+- ¨ quick map
 - map over permutations
-- map over prefixes
-- ternary if
-- while
-- repeat
+- ⊸ map over prefixes
+- ? ternary if
+- ω while
+- ⍤ repeat
 - apply at
 - self arguments; monad as dyad using right argument
 - swap arguments; monad as dyad using left argument
@@ -204,12 +204,12 @@ QUICKS
 - max by
 - min by
 - truthy indicies after applying
-- all neighbours
-- apply to neighbours
+- α all neighbours
+- υ apply to neighbours
 - filter keep
 - filter drop
-- is equal after applying
-- call this link with same arity
+- ⁼ is equal after applying
+- β call this link with same arity
 - call next chain as nilad
 - call next chain as monad
 - call next chain as dyad
