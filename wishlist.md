@@ -58,14 +58,21 @@ SINGLE BYTE MONADS
 - Ṁ maximal indicies
 - N negate
 - O identity
+- Ȯ factors / divisors
 - P permutations
 - Ṗ shuffle
 - R reverse
 - Ṙ reverse of each
 - S sublists (without empty list)
-- Ṡ sort
+- Ṡ sum over each
+- U unique elements
 - V is prime
 - W where
+- Ẇ keep only elements without duplicates
+- X split into 2 chunks
+- Ẋ chunks of length 2
+- Y elements at even indicies
+- Ẏ elements at odd indicies
 - Z transpose
 - Ż prepend a zero
 - ! factorial
@@ -80,10 +87,15 @@ SINGLE BYTE MONADS
 - ⊐ last (popping)
 - ⊒ neck
 - ~ bitwise not
+- γ print
+- ε enumerate
 - ι range
 - κ range from 1
+- ξ zip with filler zero
+- σ reverse every other element
 - χ all
 - ψ any and all
+- ϕ flatten one level
 - ∵ minimum
 - ∴ maximum
 - ⍋ grade up
@@ -92,25 +104,13 @@ SINGLE BYTE MONADS
 - ½ bit
 - ⌈ ceil
 - ⌊ floor
-- enumerate
-- print
-- sum over each
 - → increment
 - ← decrement
-- prefixes
-- suffixes
-- unique elements
-- sign
-- chunks of length 2
-- split into 2 chunks
-- flatten over each
-- factors / divisors
-- elements at even indicies
-- elements at odd indicies
-- reverse every other element
-- zip with filler zero
-- powerset
-- keep only elements without duplicates
+- ∂ sort
+- { prefixes
+- } suffixes
+- ± sign
+- ∘ powerset
 
 SINGLE BYTE DYADS
 - addition
