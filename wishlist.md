@@ -196,6 +196,7 @@ QUICKS
 - ’ each left
 - ‘ each right
 - ¨ quick map
+- flat map
 - ρ map over permutations
 - ⊸ map over prefixes
 - ? ternary if
@@ -205,6 +206,7 @@ QUICKS
 - ˘ self arguments; monad as dyad using right argument
 - ˜ swap arguments; monad as dyad using left argument
 - ` sort by
+- group by
 - ⌉ max by
 - ⌋ min by
 - τ truthy indicies after applying
@@ -352,4 +354,6 @@ QUICKY DIAGRAPHS
 - scanl
 - cumulative while
 - cumulative repeat
+- apply at even indicies
+- apply at odd indicies
 ```
