@@ -182,6 +182,8 @@ SINGLE BYTE DYADS
 - ⊢ right argument
 - # reshape
 - δ distance between points
+- ↑ take
+- ↓ drop
 
 QUICKS
 - $ two links as monad
