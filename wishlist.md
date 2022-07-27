@@ -291,7 +291,7 @@ MATHY MONADIC DIAGRAPHS
 - n primes
 - prime factors
 - natural logarithm
-- nth catan number
+- nth catalan number
 - nth lucas number
 - nth fibonacci number
 - trace
