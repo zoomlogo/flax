@@ -5,6 +5,8 @@
 
 feel free to suggest element ideas on the SE chatroom.
 ```
+unused (reserved): «»:T_k˙İṄṅṙẋẏ∥∦¾
+
 SYNTAX
 - ¯0123456789j. number
 - () explicit list syntax
