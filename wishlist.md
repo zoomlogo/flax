@@ -195,7 +195,7 @@ QUICKS
 - ’ each left
 - ‘ each right
 - ¨ quick map
-- flat map
+- ζ flat map
 - ρ map over permutations
 - ⊸ map over prefixes
 - ? ternary if
@@ -205,7 +205,7 @@ QUICKS
 - ˘ self arguments; monad as dyad using right argument
 - ˜ swap arguments; monad as dyad using left argument
 - ` sort by
-- group by
+- η group by
 - ⌉ max by
 - ⌋ min by
 - τ truthy indicies after applying
@@ -215,13 +215,13 @@ QUICKS
 - ⊤ filter drop
 - ⁼ is equal after applying
 - β call this link with same arity
-- call next chain as nilad
-- call next chain as monad
-- call next chain as dyad
-- call previous chain as nilad
-- call previous chain as monad
-- call previous chain as dyad
-- call chain at, as
+- θ call next chain as nilad
+- λ call next chain as monad
+- ν call next chain as dyad
+- σ call previous chain as nilad
+- ς call previous chain as monad
+- π call previous chain as dyad
+- φ call chain at, as
 - / foldr1
 - ⌿ foldr
 - \ scanr1
