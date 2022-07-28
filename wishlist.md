@@ -99,6 +99,7 @@ SINGLE BYTE MONADS
 - ∴ maximum
 - ⍋ grade up
 - ⍒ grade down
+- ∞ to infinite list
 - ¼ reciprocal
 - ½ bit
 - ⌈ ceil
@@ -234,7 +235,7 @@ QUICKS
 - ∝ apply, then transpose, apply again
 - ⟜ n-compose
 
-NILADIC DIAGRAPHS
+NILADIC DIAGRAPHS Ø
 - [1,2]
 - 2³²
 - signs; [1,-1]
@@ -274,7 +275,7 @@ NILADIC DIAGRAPHS
 - 65536
 - infinity
 
-MATHY MONADIC DIAGRAPHS
+MATHY MONADIC DIAGRAPHS Æ
 - integer square root
 - arccosine
 - arcsine
@@ -306,7 +307,7 @@ MATHY MONADIC DIAGRAPHS
 - main antidiagonal
 - polyroots
 
-MATHY DYADIC DIAGRPAHS
+MATHY DYADIC DIAGRPAHS æ
 - nPr
 - dot product padding 1
 - matrix multiplication
@@ -318,7 +319,7 @@ MATHY DYADIC DIAGRPAHS
 - bit shift right
 - round
 
-OTHER MONADIC DIAGRAPHS
+OTHER MONADIC DIAGRAPHS Œ
 - bounce over each
 - bounce
 - is palindrome
@@ -339,7 +340,7 @@ OTHER MONADIC DIAGRAPHS
 - depth
 - apl style output
 
-OTHER DYADIC DIAGRAPHS
+OTHER DYADIC DIAGRAPHS œ
 - multiset intersection
 - multiset difference
 - multiset union
@@ -351,7 +352,7 @@ OTHER DYADIC DIAGRAPHS
 - map: inputs → outputs; w consists of [inputs,outputs], x is to be converted
 - ring translate
 
-QUICKY DIAGRAPHS
+QUICKY DIAGRAPHS Δ
 - foldl1
 - foldl
 - scanl1
