@@ -27,8 +27,6 @@ SINGLE BYES NILADS
 - ⁷ 256
 - ⁸ left arguement of chain
 - ⁹ right argument of chain
-- ς read a character from stdin
-- σ read a line from stdin
 - ∃ get register
 
 SINGLE BYTE MONADS
@@ -332,6 +330,9 @@ OTHER MONADIC DIAGRAPHS
 - run length decode
 - swap case
 - upper case
+- lower case
+- title case
+- capitalise
 - depth
 - apl style output
 
