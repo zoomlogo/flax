@@ -8,6 +8,7 @@ feel free to suggest element ideas on the SE chatroom.
 SYNTAX
 - ¯0123456789j. number
 - () explicit list syntax
+- " string (actually list of ints)
 
 CHAIN SEPARATORS
 - ø start a new niladic chain
