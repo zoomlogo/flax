@@ -162,6 +162,8 @@ SINGLE BYTE DYADS
 - ^ bitwise xor
 - ∧ and
 - ∨ or
+- ∩ itersection
+- ∪ union
 - > greater than
 - < lesser than
 - = equal to
