@@ -5,7 +5,7 @@
 
 feel free to suggest element ideas on the SE chatroom.
 ```
-unused (reserved): «»:T_k˙İṄṅṙẋẏ∥∦¾
+unused (reserved): «»:T_kİṄṅṙẋẏ∥∦¾
 
 SYNTAX
 - ¯0123456789j. number
@@ -236,6 +236,7 @@ QUICKS
 - ∀ set register
 - ∝ apply, then transpose, apply again
 - ⟜ n-compose
+- ˙ inverse
 
 NILADIC DIAGRAPHS Ø
 - [1,2]
