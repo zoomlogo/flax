@@ -239,76 +239,76 @@ QUICKS
 - ˙ inverse
 
 NILADIC DIAGRAPHS Ø
-- [1,2]
-- 2³²
-- signs; [1,-1]
-- signs; [-1,1]
-- bits; [0,1]
-- zeros; [0,0]
-- ones; [1,1]
-- twos; [2,2]
-- [[0,1],[1,0]]
-- directions; [[0,1],[1,0],[0,-1],[-1,0]]
-- directions; [[1,1],[1,0],[1,-1],[0,1],[0,0],[0,-1],[-1,1],[-1,0],[-1,-1]]
-- parenthesis; [40,41]
-- square brackets; [91,93]
-- slashes; [47,92]
-- angle brackets; [60,62]
-- curly brackets; [123,125]
-- capital letters
-- small letters
-- capital consonants
-- small consonants
-- capital vowels
-- small vowels
-- capital y-vowels
-- small y-vowels
-- digits
-- hex digits
-- octal digits
-- codepage
-- euler's number
-- phi (golden ratio)
-- pi
-- 360
-- 128
-- 512
-- 1024
-- 2048
-- 65536
-- infinity
+- Ø+ signs; [1,-1]
+- Ø- signs; [-1,1]
+- Ø⁰ bits; [0,1]
+- Ø¹ [[0,1],[1,0]]
+- Ø² 2³²
+- Ø³ [1,2]
+- Ø⁴ 360
+- Ø⁵ 128
+- Ø⁶ 512
+- Ø⁷ 1024
+- Ø⁸ 2048
+- Ø⁹ 65536
+- Ø0 zeros; [0,0]
+- Ø1 ones; [1,1]
+- Ø2 twos; [2,2]
+- Ød directions; [[0,1],[1,0],[0,-1],[-1,0]]
+- Øx directions; [[1,1],[1,0],[1,-1],[0,1],[0,0],[0,-1],[-1,1],[-1,0],[-1,-1]]
+- Ø( parenthesis; [40,41]
+- Ø[ square brackets; [91,93]
+- Ø/ slashes; [47,92]
+- Ø< angle brackets; [60,62]
+- Ø{ curly brackets; [123,125]
+- ØA capital letters
+- Øa small letters
+- ØB capital consonants
+- Øb small consonants
+- ØV capital vowels
+- Øv small vowels
+- ØY capital y-vowels
+- Øy small y-vowels
+- ØD digits
+- ØX hex digits
+- ØO octal digits
+- Øc codepage
+- Øe euler's number
+- Øφ phi (golden ratio)
+- Øπ pi
+- Ø∞ infinity
 
 MATHY MONADIC DIAGRAPHS Æ
-- integer square root
-- arccosine
-- arcsine
-- arctangent
-- arcsecant
-- arccosecant
-- arccotangent
-- sine
-- cosine
-- tangent
-- cosecant
-- secant
-- cotangent
-- count primes
-- n primes
-- prime factors
-- natural logarithm
-- nth catalan number
-- nth lucas number
-- nth fibonacci number
-- trace
-- radians → degrees
-- degrees → radians
-- is square
-- determinant
-- diagonals
-- antidiagonals
-- main diagonal
-- main antidiagonal
-- polyroots
+- Æ integer square root
+- Æ arccosine
+- Æ arcsine
+- Æ arctangent
+- Æ arcsecant
+- Æ arccosecant
+- Æ arccotangent
+- Æ sine
+- Æ cosine
+- Æ tangent
+- Æ cosecant
+- Æ secant
+- Æ cotangent
+- Æ count primes
+- Æ n primes
+- Æ prime factors
+- Æ natural logarithm
+- Æ nth catalan number
+- Æ nth lucas number
+- Æ nth fibonacci number
+- Æ trace
+- Æ radians → degrees
+- Æ degrees → radians
+- Æ is square
+- Æ determinant
+- Æ diagonals
+- Æ antidiagonals
+- Æ main diagonal
+- Æ main antidiagonal
+- Æ polyroots
 
 MATHY DYADIC DIAGRPAHS æ
 - nPr
