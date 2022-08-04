@@ -245,7 +245,6 @@ NILADIC DIAGRAPHS Ø
 - Ø¹ [[0,1],[1,0]]
 - Ø² 2³²
 - Ø³ [1,2]
-- Ø⁴ 360
 - Ø⁵ 128
 - Ø⁶ 512
 - Ø⁷ 1024
@@ -256,6 +255,7 @@ NILADIC DIAGRAPHS Ø
 - Ø2 twos; [2,2]
 - Ød directions; [[0,1],[1,0],[0,-1],[-1,0]]
 - Øx directions; [[1,1],[1,0],[1,-1],[0,1],[0,0],[0,-1],[-1,1],[-1,0],[-1,-1]]
+- Øτ 360
 - Ø( parenthesis; [40,41]
 - Ø[ square brackets; [91,93]
 - Ø/ slashes; [47,92]
@@ -279,48 +279,49 @@ NILADIC DIAGRAPHS Ø
 - Ø∞ infinity
 
 MATHY MONADIC DIAGRAPHS Æ
-- Æ integer square root
-- Æ arccosine
-- Æ arcsine
-- Æ arctangent
-- Æ arcsecant
-- Æ arccosecant
-- Æ arccotangent
-- Æ sine
-- Æ cosine
-- Æ tangent
-- Æ cosecant
-- Æ secant
-- Æ cotangent
-- Æ count primes
-- Æ n primes
-- Æ prime factors
-- Æ natural logarithm
-- Æ nth catalan number
-- Æ nth lucas number
-- Æ nth fibonacci number
+- Æ√ integer square root
+- ÆĊ arccosine
+- ÆṠ arcsine
+- ÆṪ arctangent
+- Æċ arcsecant
+- Æṡ arccosecant
+- Æṫ arccotangent
+- ÆS sine
+- ÆC cosine
+- ÆT tangent
+- Æs cosecant
+- Æc secant
+- Æt cotangent
+- Æp count primes
+- Æn n primes
+- ÆF prime factors
+- ÆL natural logarithm
+- ÆĿ exp
+- Æŀ nth catalan number
+- Æl nth lucas number
+- Æf nth fibonacci number
 - Æ trace
-- Æ radians → degrees
-- Æ degrees → radians
-- Æ is square
-- Æ determinant
-- Æ diagonals
-- Æ antidiagonals
-- Æ main diagonal
-- Æ main antidiagonal
-- Æ polyroots
+- Æ² is square
+- ÆA antidiagonals
+- ÆȦ diagonals
+- ÆD determinant
+- ÆR polyroots
+- Æd radians → degrees
+- Æḋ degrees → radians
+- Æ\ leading diagonal
+- Æ/ trailing diagonal
 
 MATHY DYADIC DIAGRPAHS æ
-- nPr
-- dot product padding 1
-- matrix multiplication
-- matrix power
-- arctangent2
-- convolution
-- to complex number
-- bit shift left
-- bit shift right
-- round
+- æP nPr
+- æ∘ dot product padding 1
+- æ× matrix multiplication
+- æ* matrix power
+- æṫ arctangent2
+- æc convolution
+- æi to complex number
+- æ« bit shift left
+- æ» bit shift right
+- ær round
 
 OTHER MONADIC DIAGRAPHS Œ
 - bounce over each
