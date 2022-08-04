@@ -324,45 +324,45 @@ MATHY DYADIC DIAGRPAHS æ
 - ær round
 
 OTHER MONADIC DIAGRAPHS Œ
-- bounce over each
-- bounce
-- is palindrome
-- GET request
-- multidimensional enumerate
-- multidimensional group
-- multidimensional maximal indicies
-- multidimensional truthy
-- make a booleans matrix with ones at specified locations
-- unordered pairs
-- run length encode
-- run length decode
-- swap case
-- upper case
-- lower case
-- title case
-- capitalise
-- depth
-- apl style output
+- ŒḂ bounce over each
+- ŒB bounce
+- ŒP is palindrome
+- ŒĠ GET request
+- ŒE multidimensional enumerate
+- ŒG multidimensional group
+- ŒM multidimensional maximal indicies
+- ŒṪ multidimensional truthy
+- Œ1 make a booleans matrix with ones at specified locations
+- Œp unordered pairs
+- Œe run length encode
+- Œd run length decode
+- Œ$ swap case
+- ŒU upper case
+- ŒL lower case
+- ŒT title case
+- ŒC capitalise
+- ŒD depth
+- ŒṖ apl style print
 
 OTHER DYADIC DIAGRAPHS œ
-- multiset intersection
-- multiset difference
-- multiset union
-- mutlidimensional index into
-- trim from right
-- trim from left
-- split before truthy indices
-- split at first occurence
-- map: inputs → outputs; w consists of [inputs,outputs], x is to be converted
-- ring translate
+- œ∩ multiset intersection
+- œ- multiset difference
+- œ∪ multiset union
+- œi mutlidimensional index into
+- œŀ trim from right
+- œl trim from left
+- œt split before truthy indices
+- œo split at first occurence
+- œm map: inputs → outputs; w consists of [inputs,outputs], x is to be converted
+- œr ring translate
 
 QUICKY DIAGRAPHS Δ
-- foldl1
-- foldl
-- scanl1
-- scanl
-- cumulative while
-- cumulative repeat
-- apply at even indicies
-- apply at odd indicies
+- Δ/ foldl1
+- Δ⌿ foldl
+- Δ\ scanl1
+- Δ⍀ scanl
+- Δω cumulative while
+- Δ⍤ cumulative repeat
+- Δe apply at even indicies
+- Δo apply at odd indicies
 ```
