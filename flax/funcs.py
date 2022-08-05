@@ -5,9 +5,11 @@ import more_itertools
 
 from flax.common import mp, mpc, inf, mpf
 
+
 def boolify(f):
     """boolify: wrapper around boolean functions to only return 1/0"""
     return lambda *args: int(f(*args))
+
 
 def depth(x):
     """depth: how deeply x is nested"""
@@ -18,6 +20,7 @@ def depth(x):
             return 1
         else:
             return max([depth(i) for i in x]) + 1
+
 
 def diagonals(x, antidiagonals=False):
     """diagonals: returns all diagonals or antidiagonals of x"""
