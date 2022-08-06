@@ -35,6 +35,7 @@ def diagonals(x, antidiagonals=False):
 
     return anti if antidiagonals else diag
 
+
 def divisors(x):
     """divisors: returns the factors of x"""
     return [i for i in range(1, int(x) + 1) if x % i == 0]
@@ -350,9 +351,9 @@ def sliding_window(w, x):
     x = iterable(x)
     w = int(w)
     if w < 0:
-        return list(map(
-            lambda e: list(reversed(e)), list(more_itertools.sliding_window(x, -w))
-        ))
+        return list(
+            map(lambda e: list(reversed(e)), list(more_itertools.sliding_window(x, -w)))
+        )
     else:
         return list(map(list, list(more_itertools.sliding_window(x, w))))
 
@@ -434,6 +435,7 @@ def to_digits(x):
 def unrepeat(x):
     """unrepeat: find the pattern in x"""
     return list(map(len, group_equal(x)))
+
 
 def where(x, upper_level=[]):
     """where: ngn/k's &:"""
