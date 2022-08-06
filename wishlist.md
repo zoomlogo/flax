@@ -8,7 +8,7 @@ feel free to suggest element ideas on the SE chatroom.
 NOT IN CODEPAGE
 - · comment
 
-unused (reserved): «»:T_kİṄṅṙẋẏ∥∦¾
+unused (reserved): «»:T_kİṄṅṙẋẏ∥∦¾↑↓
 
 SYNTAX
 - ¯0123456789j. number
@@ -189,8 +189,6 @@ SINGLE BYTE DYADS
 - ⊢ right argument
 - # reshape
 - δ distance between points
-- ↑ take
-- ↓ drop
 
 QUICKS
 - $ two links as monad
@@ -303,7 +301,7 @@ MATHY MONADIC DIAGRAPHS Æ
 - Æŀ nth catalan number
 - Æl nth lucas number
 - Æf nth fibonacci number
-- Æ trace
+- Æτ trace
 - Æ² is square
 - ÆA antidiagonals
 - ÆȦ diagonals
@@ -313,6 +311,7 @@ MATHY MONADIC DIAGRAPHS Æ
 - Æḋ degrees → radians
 - Æ\ leading diagonal
 - Æ/ trailing diagonal
+- Æj conjugate
 
 MATHY DYADIC DIAGRPAHS æ
 - æP nPr
@@ -354,6 +353,7 @@ OTHER DYADIC DIAGRAPHS œ
 - œ- multiset difference
 - œ∪ multiset union
 - œi mutlidimensional index into
+- œs multidimensional sublist index of
 - œŀ trim from right
 - œl trim from left
 - œt split before truthy indices

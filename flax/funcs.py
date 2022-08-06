@@ -2,32 +2,38 @@
 import functools
 import itertools
 import more_itertools
+from random import randrange
 
 from flax.common import mp, mpc, inf, mpf
 
 __all__ = [
+    "base",
+    "base_i",
+    "binary",
+    "binary_i",
     "boolify",
     "depth",
     "diagonals",
+    "digits",
+    "digits_i",
     "divisors",
     "fibonacci",
     "find",
     "find_all",
     "find_sublist",
     "flatten",
-    "from_base",
-    "from_bin",
-    "from_digits",
     "grade_down",
     "grade_up",
     "group_equal",
     "group_indicies",
     "index_into",
     "iota",
+    "iota1",
     "iterable",
     "join",
     "json_decode",
     "lucas",
+    "maximal_indicies",
     "mold",
     "nprimes",
     "ones",
@@ -38,23 +44,62 @@ __all__ = [
     "random",
     "repeat",
     "reshape",
+    "shuffle",
     "sliding_window",
     "split",
     "split_at",
     "sublists",
     "suffixes",
-    "to_base",
-    "to_bin",
     "to_braille",
     "to_chars",
-    "to_digits",
     "unrepeat",
     "where",
 ]
 
+def base(w, x):
+    """base: convert x from base w"""
+    x = iterable(x, digits=True)
+    sign = -1 if sum(x) < 0 else 1
+    num = 0
+    i = 0
+    for d in x[::-1]:
+        num += abs(d) * w**i
+        i += 1
+    return num * sign
+
+def base_i(w, x):
+    """base_i: convert x into base w"""
+    if x == 0:
+        return [0]
+    res = []
+    sign = 1
+    if x < 0:
+        x = abs(x)
+        sign = -1
+    while x:
+        res.append(x % w)
+        x = x // w
+    return [r * sign for r in res][::-1]
+
+def binary(x):
+    """binary: converts x to binary"""
+    return [-i if x < 0 else i for i in map(int, bin(x)[3 if x < 0 else 2 :])]
+
+def binary_i(x):
+    """binary_i: convert x from binary"""
+    x = iterable(x, digits=True)
+    sign = -1 if sum(x) < 0 else 1
+    num = 0
+    i = 0
+    for b in x[::-1]:
+        num += abs(b) * 2**i
+        i += 1
+    return num * sign
+
 
 def boolify(f):
     """boolify: wrapper around boolean functions to only return 1/0"""
+    # do i need this function?
     return lambda *args: int(f(*args))
 
 
@@ -81,6 +126,24 @@ def diagonals(x, antidiagonals=False):
             anti[i - j - min_d].append(x[j][i])
 
     return anti if antidiagonals else diag
+
+def digits(x):
+    """digits: turn x into a list of digits"""
+    return [
+        -int(i) if x < 0 else int(i) for i in str(x)[1 if x < 0 else 0 :] if i != "."
+    ]
+
+def digits_i(x):
+    """digits_i: convert x from digits"""
+    x = iterable(x, range_=True)
+    sign = -1 if sum(x) < 0 else 1
+    num = 0
+    i = 0
+    for b in x[::-1]:
+        num += abs(b) * 10**i
+        i += 1
+    return num * sign
+
 
 
 def divisors(x):
@@ -125,40 +188,6 @@ def flatten(x):
     return list(more_itertools.collapse(x))
 
 
-def from_base(w, x):
-    """from_base: convert x from base w"""
-    x = iterable(x, digits=True)
-    sign = -1 if sum(x) < 0 else 1
-    num = 0
-    i = 0
-    for d in x[::-1]:
-        num += abs(d) * w**i
-        i += 1
-    return num * sign
-
-
-def from_bin(x):
-    """from_bin: convert x from binary"""
-    x = iterable(x, digits=True)
-    sign = -1 if sum(x) < 0 else 1
-    num = 0
-    i = 0
-    for b in x[::-1]:
-        num += abs(b) * 2**i
-        i += 1
-    return num * sign
-
-
-def from_digits(x):
-    """from_digits: convert x from digits"""
-    x = iterable(x, range_=True)
-    sign = -1 if sum(x) < 0 else 1
-    num = 0
-    i = 0
-    for b in x[::-1]:
-        num += abs(b) * 10**i
-        i += 1
-    return num * sign
 
 
 def grade_down(x):
@@ -224,6 +253,15 @@ def iota(x):
         res = split(int(e), res)
     return res[0]
 
+def iota1(x):
+    """iota1: iota but 1 based"""
+    if type(x) != list:
+        return [i + 1 for i in range(int(x))]
+
+    res = list(map(list, itertools.product(*([i + 1 for i in range(int(a))] for a in x))))
+    for e in x:
+        res = split(int(e), res)
+    return res[0]
 
 def iterable(x, digits=False, range_=False):
     """iterable: make sure x is a list"""
@@ -231,7 +269,7 @@ def iterable(x, digits=False, range_=False):
         if range_:
             return list(range(int(x)))
         elif digits:
-            return to_digits(x)
+            return digits(x)
         else:
             return [x]
     else:
@@ -269,6 +307,9 @@ def lucas(x):
     else:
         return lucas(x - 1) + lucas(x - 2)
 
+def maximal_indicies(x):
+    """maximal_indicies: indicies of elements with the maximal value"""
+    return [i for i, e in enumerate(x) if e == max(x)]
 
 def mold(w, x):
     """mold: mold x to the shape w"""
@@ -392,6 +433,13 @@ def reshape(w, x, level=0):
         reshaped = [reshape(w[1:], x) for _ in range(abs(w[0]))]
         return reshaped[::-1] if w[0] < 0 else reshaped
 
+def shuffle(x):
+    """shuffle: return a random permutation of x"""
+    res = x[:]
+    for i in range(len(iterable(x, digits=True)) - 1, 0, -1):
+        j = randrange(i + 1)
+        res[i], res[j] = res[j], res[i]
+
 
 def sliding_window(w, x):
     """sliding_window: windows of x of length w"""
@@ -432,27 +480,6 @@ def suffixes(x):
         res.append(x[i:])
     return res[::-1]
 
-
-def to_base(w, x):
-    """to_base: convert x into base w"""
-    if x == 0:
-        return [0]
-    res = []
-    sign = 1
-    if x < 0:
-        x = abs(x)
-        sign = -1
-    while x:
-        res.append(x % w)
-        x = x // w
-    return [r * sign for r in res][::-1]
-
-
-def to_bin(x):
-    """to_bin: return the binary representation of x"""
-    return [-i if x < 0 else i for i in map(int, bin(x)[3 if x < 0 else 2 :])]
-
-
 def to_braille(x):
     """to_braille: compress boolean matrix x to braille"""
     res = []
@@ -472,11 +499,6 @@ def to_chars(x):
     return [ord(a) for a in x]
 
 
-def to_digits(x):
-    """to_digits: turn x into a list of digits"""
-    return [
-        -int(i) if x < 0 else int(i) for i in str(x)[1 if x < 0 else 0 :] if i != "."
-    ]
 
 
 def unrepeat(x):
