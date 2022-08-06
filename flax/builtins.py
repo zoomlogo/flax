@@ -45,11 +45,9 @@ ZERO = "0"
 DIGITS = ZERO + "123456789" + DECIMAL_POINT + COMPLEX_DELIMETER + NEGATIVE_SIGN
 
 # dicts
-atoms = {
-}
+atoms = {}
 
-quicks = {
-}
+quicks = {}
 
 train_separators = {
     "ø": (0, True),
