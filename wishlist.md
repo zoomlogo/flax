@@ -5,6 +5,9 @@
 
 feel free to suggest element ideas on the SE chatroom.
 ```
+NOT IN CODEPAGE
+- · comment
+
 unused (reserved): «»:T_kİṄṅṙẋẏ∥∦¾
 
 SYNTAX
@@ -343,6 +346,8 @@ OTHER MONADIC DIAGRAPHS Œ
 - ŒC capitalise
 - ŒD depth
 - ŒṖ apl style print
+- Œb print a boolean matrix as braille
+- ŒJ json decode
 
 OTHER DYADIC DIAGRAPHS œ
 - œ∩ multiset intersection

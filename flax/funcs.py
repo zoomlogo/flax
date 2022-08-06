@@ -1,4 +1,4 @@
-# funcs: holds the functions used by atoms
+"""funcs: holds the functions used by atoms"""
 import functools
 import itertools
 import more_itertools
@@ -49,24 +49,28 @@ __all__ = [
     "to_chars",
     "to_digits",
     "unrepeat",
-    "vec",
-    "vecc",
     "where",
 ]
 
 
-def boolify(fn):
-    # boolify: return a function which returns a int bool (0/1)
-    return lambda *args: int(fn(*args))
+def boolify(f):
+    """boolify: wrapper around boolean functions to only return 1/0"""
+    return lambda *args: int(f(*args))
 
 
 def depth(x):
-    # depth: returns the depth of x
-    return 0 if type(x) != list else (1 if not x else max([depth(a) for a in x]) + 1)
+    """depth: how deeply x is nested"""
+    if type(x) != list:
+        return 0
+    else:
+        if not x:
+            return 1
+        else:
+            return max([depth(i) for i in x]) + 1
 
 
 def diagonals(x, antidiagonals=False):
-    # diagonals: returns the diagonals or the anti-diagonals of x
+    """diagonals: returns all diagonals or antidiagonals of x"""
     diag = [[] for _ in range(len(x) + len(x[0]) - 1)]
     anti = [[] for _ in range(len(diag))]
     min_d = -len(x) + 1
@@ -80,13 +84,13 @@ def diagonals(x, antidiagonals=False):
 
 
 def divisors(x):
-    # divisors: returns the factors of x
-    return [a for a in range(1, int(x) + 1) if x % a == 0]
+    """divisors: returns the factors of x"""
+    return [i for i in range(1, int(x) + 1) if x % i == 0]
 
 
 @functools.cache
 def fibonacci(x):
-    # fibonacci: return the x'th fibonacci number
+    """fibonacci: return the x'th fibonacci number"""
     if x < 2:
         return x
     else:
@@ -94,7 +98,7 @@ def fibonacci(x):
 
 
 def find(w, x):
-    # find: find the occurence of w in x
+    """find: find the occurence of w in x"""
     try:
         return iterable(x, digits=True).index(w)
     except ValueError:
@@ -102,12 +106,12 @@ def find(w, x):
 
 
 def find_all(w, x):
-    # find_all: returns all indicies of occurences of w in x
+    """find_all: returns all indicies of occurences of w in x"""
     return [i for i, e in enumerate(x) if e == w]
 
 
 def find_sublist(w, x):
-    # find_sublist: find the occurence of the sublist w in x
+    """find_sublist: find the occurence of the sublist w in x"""
     x = iterable(x, digits=True)
     w = iterable(w, digits=True)
     for i in range(len(x)):
@@ -117,12 +121,12 @@ def find_sublist(w, x):
 
 
 def flatten(x):
-    # flatten: flatten x
+    """flatten: flatten x"""
     return list(more_itertools.collapse(x))
 
 
 def from_base(w, x):
-    # from_base: convert x from base w
+    """from_base: convert x from base w"""
     x = iterable(x, digits=True)
     sign = -1 if sum(x) < 0 else 1
     num = 0
@@ -134,7 +138,7 @@ def from_base(w, x):
 
 
 def from_bin(x):
-    # from_bin: convert x from binary
+    """from_bin: convert x from binary"""
     x = iterable(x, digits=True)
     sign = -1 if sum(x) < 0 else 1
     num = 0
@@ -146,7 +150,7 @@ def from_bin(x):
 
 
 def from_digits(x):
-    # from_digits: convert x from digits:
+    """from_digits: convert x from digits"""
     x = iterable(x, range_=True)
     sign = -1 if sum(x) < 0 else 1
     num = 0
@@ -158,36 +162,36 @@ def from_digits(x):
 
 
 def grade_down(x):
-    # grade_down: grade x in descending order
+    """grade_down: grade x in descending order"""
     x = iterable(x, digits=True)
     grades = []
-    for a in reversed(sorted(x)):
-        grades.append(find_all(x, a))
+    for i in reversed(sorted(x)):
+        grades.append(find_all(x, i))
     return flatten(grades)
 
 
 def grade_up(x):
-    # grade_up: grade x in ascending order
+    """grade_up: grade x in ascending order"""
     x = iterable(x, digits=True)
     grades = []
-    for a in sorted(x):
-        grades.append(find_all(x, a))
+    for i in sorted(x):
+        grades.append(find_all(x, i))
     return flatten(grades)
 
 
 def group_equal(x):
-    # group_equal: group equal adjacent elements
+    """group_equal: group equal adjacent elements"""
     res = []
-    for e in x:
-        if res and res[-1][0] == e:
-            res[-1].append(e)
+    for i in x:
+        if res and res[-1][0] == i:
+            res[-1].append(i)
         else:
-            res.append([e])
+            res.append([i])
     return res
 
 
 def group_indicies(x):
-    # group_indicies: groups indicies with equal values
+    """group_indicies: groups indicies with equal values"""
     res = {}
     for i, e in enumerate(x):
         e = str(e)
@@ -199,7 +203,7 @@ def group_indicies(x):
 
 
 def index_into(w, x):
-    # index_into: index into w with x
+    """index_into: index into w with x"""
     w = iterable(w, digits=True)
     x = int(x) if type(x) != mpc and int(x) == x else x
     if type(x) == int:
@@ -211,7 +215,7 @@ def index_into(w, x):
 
 
 def iota(x):
-    # iota: APL's ⍳ and BQN's ↕
+    """iota: APL's ⍳ and BQN's ↕"""
     if type(x) != list:
         return list(range(int(x)))
 
@@ -222,7 +226,7 @@ def iota(x):
 
 
 def iterable(x, digits=False, range_=False):
-    # iterable: make sure x is a list
+    """iterable: make sure x is a list"""
     if type(x) != list:
         if range_:
             return list(range(int(x)))
@@ -235,14 +239,14 @@ def iterable(x, digits=False, range_=False):
 
 
 def join(w, x):
-    # join: w in between each elements of x
+    """join: w in between each elements of x"""
     w = itertools.cycle(iterable(w))
     x = iterable(x)
     return flatten(zip(x, w))
 
 
 def json_decode(x):
-    # json_decode: convert jsoned x to flax arrays
+    """json_decode: convert jsoned x to flax arrays"""
     if type(x) == list or type(x) == tuple:
         return [json_decode(i) for i in x]
     elif type(x) == str:
@@ -259,7 +263,7 @@ def json_decode(x):
 
 @functools.cache
 def lucas(x):
-    # lucas: nth lucas number
+    """lucas: nth lucas number"""
     if x < 2:
         return x + 1
     else:
@@ -267,7 +271,7 @@ def lucas(x):
 
 
 def mold(w, x):
-    # mold: mold x to the shape w
+    """mold: mold x to the shape w"""
     for i in range(len(w)):
         if type(w[i]) == list:
             mold(x, w[i])
@@ -279,7 +283,7 @@ def mold(w, x):
 
 
 def nprimes(x):
-    # nprimes: return x primes
+    """nprimes: return x primes"""
     res = []
     i = 2
     while len(res) != x:
@@ -290,7 +294,7 @@ def nprimes(x):
 
 
 def ones(x, shape=None, upper_level=[]):
-    # ones: matrix with ones at x
+    """ones: matrix with ones at x"""
     if not shape:
         shape = [max(zipped) for zipped in zip(*x)]
     upper_len = len(upper_level)
@@ -304,7 +308,7 @@ def ones(x, shape=None, upper_level=[]):
 
 
 def order(w, x):
-    # order: how many times does w divide x
+    """order: how many times does w divide x"""
     if x == 0 or abs(w) == 1:
         return inf
     elif w == 0:
@@ -320,12 +324,12 @@ def order(w, x):
 
 
 def permutations(x):
-    # permutations: return all permutations of x
+    """permutations: return all permutations of x"""
     return list(map(list, itertools.permutations(iterable(x))))
 
 
 def prefixes(x):
-    # prefixes: return all prefixes of x
+    """prefixes: return all prefixes of x"""
     x = iterable(x, digits=True)
     res = []
     for i in range(len(x)):
@@ -334,7 +338,7 @@ def prefixes(x):
 
 
 def prime_factors(x):
-    # prime_factors: calculate prime factors of x
+    """prime_factors: calculate prime factors of x"""
     p = primes()
     res = []
     while x != 1:
@@ -347,7 +351,7 @@ def prime_factors(x):
 
 
 def primes():
-    # primes: an infinite list of primes
+    """primes: an infinite list of primes"""
     i = 0
     while True:
         if mp.isprime(i):
@@ -356,12 +360,12 @@ def primes():
 
 
 def random(x):
-    # random: return x random floats
+    """random: return x random floats"""
     return [mp.rand() for _ in range(x)]
 
 
 def repeat(w, x):
-    # repeat: repeat x according to w
+    """repeat: repeat x according to w"""
     zipped = itertools.zip_longest(
         iterable(w, digits=True), flatten(iterable(x)), fillvalue=1
     )
@@ -372,7 +376,7 @@ def repeat(w, x):
 
 
 def reshape(w, x, level=0):
-    # reshape: reshape x according to the shape w
+    """reshape: reshape x according to the shape w"""
     w = flatten(iterable(w))
     x = iterable(x)
 
@@ -390,30 +394,30 @@ def reshape(w, x, level=0):
 
 
 def sliding_window(w, x):
-    # sliding_window: windows of x of length w
+    """sliding_window: windows of x of length w"""
     x = iterable(x)
     w = int(w)
     if w < 0:
-        return vec(
-            lambda e: list(reversed(e)), list(more_itertools.sliding_window(x, -w))
+        return list(
+            map(lambda e: list(reversed(e)), list(more_itertools.sliding_window(x, -w)))
         )
     else:
-        return vec(list, list(more_itertools.sliding_window(x, w)))
+        return list(map(list, list(more_itertools.sliding_window(x, w))))
 
 
 def split(w, x):
-    # split: split x into chunks of w
+    """split: split x into chunks of w"""
     return list(more_itertools.chunked(x, w))
 
 
 def split_at(w, x):
-    # split_at: split x at occurences of w
+    """split_at: split x at occurences of w"""
     return list(more_itertools.split_at(x, lambda a: a == w))
 
 
 def sublists(x):
-    # sublists: return all sublists of x
-    sub = [[]]
+    """sublists: return all sublists of x"""
+    sub = []
     for i in range(len(x) + 1):
         for j in range(i):
             sub.append(x[j:i])
@@ -421,7 +425,7 @@ def sublists(x):
 
 
 def suffixes(x):
-    # suffixes: return the suffixes of x
+    """suffixes: return the suffixes of x"""
     x = iterable(x, digits=True)
     res = []
     for i in range(len(x)):
@@ -430,7 +434,7 @@ def suffixes(x):
 
 
 def to_base(w, x):
-    # to_base: convert x into base w
+    """to_base: convert x into base w"""
     if x == 0:
         return [0]
     res = []
@@ -445,12 +449,12 @@ def to_base(w, x):
 
 
 def to_bin(x):
-    # to_bin: return the binary representation of x
+    """to_bin: return the binary representation of x"""
     return [-i if x < 0 else i for i in map(int, bin(x)[3 if x < 0 else 2 :])]
 
 
 def to_braille(x):
-    # to_braille: compress boolean matrix x to braille
+    """to_braille: compress boolean matrix x to braille"""
     res = []
     a = 0
     for i in x:
@@ -464,57 +468,24 @@ def to_braille(x):
 
 
 def to_chars(x):
-    # to_chars: convert x to list of ints
+    """to_chars: convert x to list of ints"""
     return [ord(a) for a in x]
 
 
 def to_digits(x):
-    # to_digits: turn x into a list of digits
+    """to_digits: turn x into a list of digits"""
     return [
         -int(i) if x < 0 else int(i) for i in str(x)[1 if x < 0 else 0 :] if i != "."
     ]
 
 
 def unrepeat(x):
-    # unrepeat: find the pattern in x
+    """unrepeat: find the pattern in x"""
     return list(map(len, group_equal(x)))
 
 
-def vec(fn, *args, lfull=True, rfull=True):
-    # vec: vectorise fn over it's args
-    if len(args) == 1:
-        return (
-            [vec(fn, a) for a in args[0]]
-            if depth(args[0]) != 0 and rfull
-            else fn(args[0])
-        )
-    w, x = args[0], args[1]
-    dw, dx = depth(w), depth(x)
-    if lfull and rfull:
-        if dw == dx:
-            return (
-                [vec(fn, a, b) for a, b in zip(w, x)]
-                + max([w, x], key=len)[min([len(w), len(x)]) :]
-                if dw != 0
-                else fn(w, x)
-            )
-        else:
-            return [vec(fn, w, b) for b in x] if dw < dx else [vec(fn, a, x) for a in w]
-    elif (not lfull) and rfull:
-        return [vec(fn, w, b, lfull=lfull) for b in x] if dx > 0 else fn(w, x)
-    elif lfull and (not rfull):
-        return [vec(fn, a, x, rfull=rfull) for a in w] if dw > 0 else fn(w, x)
-    else:
-        return fn(w, x)
-
-
-def vecc(fn, lfull=True, rfull=True):
-    # vecc: vec curried
-    return lambda *args: vec(fn, *args, lfull=lfull, rfull=rfull)
-
-
 def where(x, upper_level=[]):
-    # where: ngn/k's &
+    """where: ngn/k's &:"""
     x = iterable(x)
     if type(x[0]) != list:
         return flatten([(upper_level + [i]) * e for i, e in enumerate(x)])
