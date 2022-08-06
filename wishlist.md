@@ -5,6 +5,9 @@
 
 feel free to suggest element ideas on the SE chatroom.
 ```
+NOT IN CODEPAGE
+- · comment
+
 unused (reserved): «»:T_kİṄṅṙẋẏ∥∦¾
 
 SYNTAX
