@@ -159,6 +159,7 @@ def divisors(x):
     """divisors: returns the factors of x"""
     return [i for i in range(1, int(x) + 1) if x % i == 0]
 
+
 def enumerate_md(x, upper_level=[]):
     for i, e in enumerate(x):
         if type(e) != list:
@@ -184,16 +185,17 @@ def find(w, x):
         return []
 
 
-
 def find_all(w, x):
     """find_all: returns all indicies of occurences of w in x"""
     return [i for i, e in enumerate(x) if e == w]
+
 
 def find_md(w, x):
     for i, e in enumerate_md(x):
         if e == w:
             return i
     return []
+
 
 def find_sublist(w, x):
     """find_sublist: find the occurence of the sublist w in x"""
@@ -250,6 +252,7 @@ def group_indicies(x, md=False):
         else:
             res[e] = [i]
     return [res[k] for k in sorted(res, key=eval)]
+
 
 def index_into(w, x):
     """index_into: index into w with x"""
@@ -336,6 +339,7 @@ def maximal_indicies(x):
     """maximal_indicies: indicies of elements with the maximal value"""
     return [i for i, e in enumerate(x) if e == max(x)]
 
+
 def maximal_indicies_md(x, m=None, upper_level=[]):
     x = iterable(x, digits=True)
     if m is None:
@@ -361,6 +365,7 @@ def mold(w, x):
             x.append(item)
     return w
 
+
 def multiset_difference(w, x):
     """multiset_difference: multiset difference"""
     res = iterable(w)[::-1]
@@ -368,6 +373,7 @@ def multiset_difference(w, x):
         if i in res:
             res.remove(i)
     return res[::-1]
+
 
 def multiset_intersection(w, x):
     """multiset_intersection: multiset intersection"""
@@ -379,9 +385,11 @@ def multiset_intersection(w, x):
             x.remove(i)
     return res
 
+
 def multiset_union(w, x):
     """multiset_union: multiset union"""
     return iterable(w) + multiset_difference(x, w)
+
 
 def nprimes(x):
     """nprimes: return x primes"""
