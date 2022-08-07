@@ -2,6 +2,7 @@
 import functools
 import itertools
 import more_itertools
+import copy
 from random import randrange
 
 from flax.common import mp, mpc, inf, mpf
@@ -35,6 +36,9 @@ __all__ = [
     "lucas",
     "maximal_indicies",
     "mold",
+    "multiset_difference",
+    "multiset_intersection",
+    "multiset_union",
     "nprimes",
     "ones",
     "order",
@@ -155,6 +159,13 @@ def divisors(x):
     """divisors: returns the factors of x"""
     return [i for i in range(1, int(x) + 1) if x % i == 0]
 
+def enumerate_md(x, upper_level=[]):
+    for i, e in enumerate(x):
+        if type(e) != list:
+            yield [upper_level + [i], e]
+        else:
+            yield from enumerate_md(e, upper_level + [i])
+
 
 @functools.cache
 def fibonacci(x):
@@ -173,10 +184,16 @@ def find(w, x):
         return []
 
 
+
 def find_all(w, x):
     """find_all: returns all indicies of occurences of w in x"""
     return [i for i, e in enumerate(x) if e == w]
 
+def find_md(w, x):
+    for i, e in enumerate_md(x):
+        if e == w:
+            return i
+    return []
 
 def find_sublist(w, x):
     """find_sublist: find the occurence of the sublist w in x"""
@@ -222,17 +239,17 @@ def group_equal(x):
     return res
 
 
-def group_indicies(x):
+def group_indicies(x, md=False):
     """group_indicies: groups indicies with equal values"""
     res = {}
-    for i, e in enumerate(x):
+    enum = enumerate_md(x) if md else enumerate(x)
+    for i, e in enum:
         e = str(e)
         if e in res:
             res[e].append(i)
         else:
             res[e] = [i]
     return [res[k] for k in sorted(res, key=eval)]
-
 
 def index_into(w, x):
     """index_into: index into w with x"""
@@ -270,7 +287,7 @@ def iota1(x):
     return res[0]
 
 
-def iterable(x, digits=False, range_=False):
+def iterable(x, digits=False, range_=False, copy_=False):
     """iterable: make sure x is a list"""
     if type(x) != list:
         if range_:
@@ -280,7 +297,7 @@ def iterable(x, digits=False, range_=False):
         else:
             return [x]
     else:
-        return x
+        return copy.deepcopy(x) if copy_ else x
 
 
 def join(w, x):
@@ -319,6 +336,19 @@ def maximal_indicies(x):
     """maximal_indicies: indicies of elements with the maximal value"""
     return [i for i, e in enumerate(x) if e == max(x)]
 
+def maximal_indicies_md(x, m=None, upper_level=[]):
+    x = iterable(x, digits=True)
+    if m is None:
+        m = max(flatten(x) or [0])
+    res = []
+    for i, e in enumerate(x):
+        if type(e) != list:
+            if e == m:
+                res.append(upper_level + [i])
+            else:
+                res.extend(maximal_indicies_md(e, m, upper_level + [i]))
+    return res
+
 
 def mold(w, x):
     """mold: mold x to the shape w"""
@@ -331,6 +361,27 @@ def mold(w, x):
             x.append(item)
     return w
 
+def multiset_difference(w, x):
+    """multiset_difference: multiset difference"""
+    res = iterable(w)[::-1]
+    for i in iterable(x):
+        if i in res:
+            res.remove(i)
+    return res[::-1]
+
+def multiset_intersection(w, x):
+    """multiset_intersection: multiset intersection"""
+    x = iterable(x, copy_=True)
+    res = []
+    for i in iterable(w):
+        if i in x:
+            res.append(i)
+            x.remove(i)
+    return res
+
+def multiset_union(w, x):
+    """multiset_union: multiset union"""
+    return iterable(w) + multiset_difference(x, w)
 
 def nprimes(x):
     """nprimes: return x primes"""
@@ -445,10 +496,10 @@ def reshape(w, x, level=0):
 
 def shuffle(x):
     """shuffle: return a random permutation of x"""
-    res = x[:]
-    for i in range(len(iterable(x, digits=True)) - 1, 0, -1):
+    x = iterable(x, copy_=True, digits=True)
+    for i in range(len(x) - 1, 0, -1):
         j = randrange(i + 1)
-        res[i], res[j] = res[j], res[i]
+        x[i], x[j] = x[j], x[i]
 
 
 def sliding_window(w, x):
