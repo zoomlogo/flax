@@ -18,8 +18,7 @@ __all__ = [
     "digits",
     "digits_i",
     "divisors",
-    "enumerate_md"
-    "fibonacci",
+    "enumerate_md" "fibonacci",
     "find",
     "find_md",
     "find_all",
