@@ -18,8 +18,10 @@ __all__ = [
     "digits",
     "digits_i",
     "divisors",
+    "enumerate_md"
     "fibonacci",
     "find",
+    "find_md",
     "find_all",
     "find_sublist",
     "flatten",
@@ -35,6 +37,7 @@ __all__ = [
     "json_decode",
     "lucas",
     "maximal_indicies",
+    "maximal_indicies_md",
     "mold",
     "multiset_difference",
     "multiset_intersection",
@@ -161,6 +164,7 @@ def divisors(x):
 
 
 def enumerate_md(x, upper_level=[]):
+    """enumerate_md: enumerate multidimensionally"""
     for i, e in enumerate(x):
         if type(e) != list:
             yield [upper_level + [i], e]
@@ -191,6 +195,7 @@ def find_all(w, x):
 
 
 def find_md(w, x):
+    """find_md: find multidimensionally"""
     for i, e in enumerate_md(x):
         if e == w:
             return i
@@ -341,6 +346,7 @@ def maximal_indicies(x):
 
 
 def maximal_indicies_md(x, m=None, upper_level=[]):
+    """maximal_indicies_md: multidimensional indicies of maximal elements"""
     x = iterable(x, digits=True)
     if m is None:
         m = max(flatten(x) or [0])
