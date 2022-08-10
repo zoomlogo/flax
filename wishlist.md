@@ -8,7 +8,7 @@ feel free to suggest element ideas on the SE chatroom.
 NOT IN CODEPAGE
 - · comment
 
-unused (reserved): «»:T_kİṄṅṙẋẏ∥∦¾↑↓
+unused (reserved): «»:T_İṄṅṙẋẏ∥∦¾↑↓
 
 SYNTAX
 - ¯0123456789j. number
@@ -135,6 +135,7 @@ SINGLE BYTE DYADS
 - h head
 - ḣ how much times is one divisible by the other
 - i index into
+- k split at
 - l LCM
 - ŀ logarithm
 - m minimum
