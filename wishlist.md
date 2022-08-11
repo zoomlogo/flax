@@ -280,6 +280,8 @@ NILADIC DIAGRAPHS Ø
 - Øe euler's number
 - Øφ phi (golden ratio)
 - Øπ pi
+- Øδ silver ratio
+- Øγ euler's constant
 - Ø∞ infinity
 
 MATHY MONADIC DIAGRAPHS Æ
