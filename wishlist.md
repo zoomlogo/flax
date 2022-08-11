@@ -274,6 +274,8 @@ NILADIC DIAGRAPHS Ø
 - ØD digits
 - ØX hex digits
 - ØO octal digits
+- Øα alphabet
+- ØW word
 - Øc codepage
 - Øe euler's number
 - Øφ phi (golden ratio)
