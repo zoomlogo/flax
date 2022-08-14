@@ -40,6 +40,7 @@ class TOKEN_TYPE(enum.Enum):
     NEWLINE = 6
     LIST = 7
 
+
 # helpful
 mpf = mp.mpf
 mpc = mp.mpc
