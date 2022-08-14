@@ -76,7 +76,6 @@ g4 -> g($,4)
 unparseable nilads are pusedo-stranded when they are next to dyads, otherwise they trigger a hidden dyad component associated with monads, these are preparsed after the lexer:
 0 4 5g -> [0,4,5]g
 
-NILADIC:
 the ending most nilad becomes the accumulator:
 1 -> $ = 1
 
