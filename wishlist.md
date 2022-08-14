@@ -8,12 +8,14 @@ feel free to suggest element ideas on the SE chatroom.
 NOT IN CODEPAGE
 - · comment
 
-unused (reserved): «»:T_İṄṅṙẋẏ∥∦¾↑↓
+unused (reserved): «»TİṄṅṙẋẏ∥∦¾↑↓
 
 SYNTAX
 - ¯0123456789j. number
 - () explicit list syntax
 - " string (actually list of ints)
+- _ next character's value
+- : next two character's value
 
 CHAIN SEPARATORS
 - ø start a new niladic chain

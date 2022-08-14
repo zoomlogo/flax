@@ -8,7 +8,7 @@ import more_itertools
 import operator
 import random as rrandom
 
-from flax.common import flax_print, mpc, mpf, inf, mp, attrdict
+from flax.common import *
 from flax.funcs import *
 from flax.chains import *
 
@@ -43,9 +43,13 @@ NEWLINE = "\n"
 STRING_DELIMETER = '"'
 ZERO = "0"
 DIGITS = ZERO + "123456789" + DECIMAL_POINT + COMPLEX_DELIMETER + NEGATIVE_SIGN
+STRING_NEXT_1 = "_"
+STRING_NEXT_2 = ":"
 
 # dicts
 atoms = {}
+
+transpiled_atoms = {}
 
 quicks = {}
 
@@ -53,7 +57,7 @@ train_separators = {
     "ø": (0, True),
     "µ": (1, True),
     "[": (1, True),
-    "]": (1, True),  # impl
+    "]": (1, True),
     "ð": (2, True),
     "ɓ": (2, False),
 }

@@ -7,6 +7,7 @@ __all__ = [
     "flax_indent",
     "flax_print",
     "flax_string",
+    "TOKEN_TYPE",
     "inf",
     "mp",
     "mpc",
@@ -19,7 +20,7 @@ PRINT_CHARS = False
 DISABLE_GRID = False
 
 # Set mp context defaults
-mp.dps = 20  # 20 by default, sets to 100 by flag
+mp.dps = 20  # 20 by default, set to anything via flag
 mp.pretty = True
 
 # attrdict
@@ -28,6 +29,16 @@ class attrdict(dict):
         dict.__init__(self, *args, **kwargs)
         self.__dict__ = self
 
+
+# lexer
+class TOKEN_TYPE(enum.Enum):
+    NUMBER = 1
+    STRING = 2
+    TRAIN_SEPARATOR = 3
+    ATOM = 4
+    QUICK = 5
+    NEWLINE = 6
+    LIST = 7
 
 # helpful
 mpf = mp.mpf
@@ -40,14 +51,14 @@ def flax_indent(x):
     res = ""
     level = 0
     for i in range(len(x)):
-        if x[i] == "[":
-            if i != 0 and x[i - 1] == ",":
-                res += "\n" + " " * level + "["
+        if x[i] == "(":
+            if i != 0 and x[i - 1] == " ":
+                res += "\n" + " " * level + "("
             else:
-                res += "["
+                res += "("
             level += 1
-        elif x[i] == "]":
-            res += "]"
+        elif x[i] == ")":
+            res += ")"
             level -= 1
         else:
             res += x[i]
@@ -64,7 +75,7 @@ def flax_string(x):
         else:
             return str(x).replace("-", "¯").replace("inf", "∞")
     else:
-        return "[" + ",".join(flax_string(e) for e in x) + "]"
+        return "(" + " ".join(flax_string(e) for e in x) + ")"
 
 
 def _flax_print_flatten(x):
