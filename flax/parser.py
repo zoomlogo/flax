@@ -8,7 +8,7 @@ from flax.lexer import *
 
 
 def arrayify(arr_list):
-    # arrayify: convert to python list
+    """arrayify: convert to python list"""
     array = []
     for x in arr_list:
         if x[0] == TOKEN_TYPE.NUMBER:
@@ -21,7 +21,7 @@ def arrayify(arr_list):
 
 
 def escapes(x):
-    # escapes: convert x to a list of numbers and parse escape sequences
+    """escapes: convert x to a list of numbers and parse escape sequences"""
     x = x.replace("\\\\", "\\")
     x = x.replace("\\n", "\n")
     x = x.replace('\\"', '"')
@@ -36,7 +36,7 @@ def escapes(x):
 
 
 def numberify(x):
-    # numberify: convert to a mp number / python number
+    """numberify: convert to a mp number / python number"""
     number = x.replace("¯", "-")
     if "j" in number:
         if len(number) == 1:
@@ -69,7 +69,7 @@ def numberify(x):
 
 
 def parse(tokens):
-    # parse: parse and group tokens
+    """parse: parse and group tokens"""
     tokens = split_on_newlines(tokens)
     tokens = [*filter([].__ne__, tokens)]
     trains = [[] for _ in tokens]
@@ -126,7 +126,7 @@ def parse(tokens):
 
 
 def split_on_newlines(tokens):
-    # split_on_newlines: split tokens on newlines
+    """split_on_newlines: split tokens on newlines"""
     lines = []
     current = []
     for token in tokens:
@@ -140,7 +140,7 @@ def split_on_newlines(tokens):
 
 
 def split_on_separators(tokens):
-    # split_on_separators: split tokens on chain separators
+    """split_on_separators: split tokens on chain separators"""
     separators = []
     current = []
     for token in tokens:

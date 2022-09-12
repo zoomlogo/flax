@@ -27,6 +27,7 @@ __all__ = [
     "ZERO",
     "DIGITS",
     "atoms",
+    "transpiled_atoms",
     "quicks",
     "train_separators",
 ]

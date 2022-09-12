@@ -48,7 +48,7 @@ inf = mp.inf
 
 # flax functions
 def flax_indent(x):
-    # flax_indent: indent x
+    """flax_indent: indent x"""
     res = ""
     level = 0
     for i in range(len(x)):
@@ -67,7 +67,7 @@ def flax_indent(x):
 
 
 def flax_string(x):
-    # flax_string: convert x into flax representation
+    """flax_string: convert x into flax representation"""
     if type(x) != list:
         if type(x) == mpc:
             return "j".join([flax_string(x.real), flax_string(x.imag)])
@@ -80,7 +80,7 @@ def flax_string(x):
 
 
 def _flax_print_flatten(x):
-    # _flax_print_flatten: flatten x and join by newlines
+    """_flax_print_flatten: flatten x and join by newlines"""
     try:
         if type(x[0]) == list:
             return "\n".join([_flax_print_flatten(i) for i in x])
@@ -91,7 +91,7 @@ def _flax_print_flatten(x):
 
 
 def flax_print(x):
-    # flax_print: print x using formatting
+    """flax_print: print x using formatting"""
     if PRINT_CHARS:
         print(end=_flax_print_flatten(x))
     else:

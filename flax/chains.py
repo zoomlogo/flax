@@ -1,4 +1,4 @@
-# chains: holds the functions used by quicks and the chains
+"""chains: holds the functions used by quicks and the chains"""
 import functools
 import itertools
 
@@ -33,7 +33,7 @@ __all__ = [
 
 
 def apply_at(link, indicies, *args):
-    # apply_at: apply link at indicies
+    """apply_at: apply link at indicies"""
     args = list(filter(None.__ne__, args))
     x = iterable(args[-1])
     if len(args) == 2:
@@ -49,12 +49,12 @@ def apply_at(link, indicies, *args):
 
 
 def arities(links):
-    # arities: return the arities of the links
+    """arities: return the arities of the links"""
     return [link.arity for link in links]
 
 
 def composed(links, w, x):
-    # composed: compose links on w and pass it and x to a dyad
+    """composed: compose links on w and pass it and x to a dyad"""
     if links[-1].arity == 0:
         dyad = links[-2]
         monads = links[:-2]
@@ -72,13 +72,13 @@ def composed(links, w, x):
 
 
 def copy_to(atom, value):
-    # copy_to: copy value into the atom
+    """copy_to: copy value into the atom"""
     atom.call = lambda: value
     return value
 
 
 def create_chain(chain, arity=-1, isForward=True):
-    # create_chain: make a new chain
+    """create_chain: make a new chain"""
     return attrdict(
         arity=arity,
         chain=chain,
@@ -89,7 +89,7 @@ def create_chain(chain, arity=-1, isForward=True):
 
 
 def dyadic_chain(chain, w, x):
-    # dyadic_chain: evaluate a dyadic chain
+    """dyadic_chain: evaluate a dyadic chain"""
     for link in chain:
         if link.arity < 0:
             link.arity = 2
@@ -140,7 +140,7 @@ def dyadic_chain(chain, w, x):
 
 
 def ffilter(links, *args, inverse=False, permutation=False):
-    # ffilter: filter with optional inverse or permuting the argument
+    """ffilter: filter with optional inverse or permuting the argument"""
     args = list(filter(None.__ne__, args))
     x = iterable(args[-1], range_=True)
     if len(args) == 2:
@@ -181,7 +181,7 @@ def fix_args(f):
 
 
 def fold(links, *args, right=False, initial=False):
-    # fold: fold over args
+    """fold: fold over args"""
     args = list(filter(None.__ne__, args))
     x = iterable(args[-1])
     if len(args) == 2:
@@ -212,12 +212,12 @@ def fold(links, *args, right=False, initial=False):
 
 
 def foldfixedpoint(links, *args):
-    # foldfixedpoint: run link over arg until a fixed point is reached
+    """foldfixedpoint: run link over arg until a fixed point is reached"""
     return scanfixedpoint(links, *args)[-1]
 
 
 def max_arity(links):
-    # max_arity: return the maximum arity of the links
+    """max_arity: return the maximum arity of the links"""
     return (
         max(arities(links))
         if min(arities(links)) > -1
@@ -226,7 +226,7 @@ def max_arity(links):
 
 
 def monadic_chain(chain, x):
-    # monadic_chain: evaluate a monadic chain
+    """monadic_chain: evaluate a monadic chain"""
     init = True
 
     λ = x
@@ -283,7 +283,7 @@ def monadic_chain(chain, x):
 
 
 def niladic_chain(chain):
-    # niladic_chain: evaluate a niladic chain
+    """niladic_chain: evaluate a niladic chain"""
     debug("in niladic chain")
     if not chain or chain[-1].arity > 0:
         return monadic_chain(chain, 0)
@@ -291,7 +291,7 @@ def niladic_chain(chain):
 
 
 def ntimes(links, args, cumulative=False):
-    # ntimes: repeat link n times
+    """ntimes: repeat link n times"""
     times = int(links[1].call()) if len(links) == 2 else int(input())
     res, x = args
     if cumulative:
@@ -319,7 +319,7 @@ def quick_chain(arity, min_length):
 
 
 def scan(links, *args, right=False, initial=False):
-    # scan: scan over args
+    """scan: scan over args"""
     args = list(filter(None.__ne__, args))
     x = iterable(args[-1])
     if len(args) == 2:
@@ -345,7 +345,7 @@ def scan(links, *args, right=False, initial=False):
 
 
 def scanfixedpoint(links, *args):
-    # scanfixedpoint: run link over arg until a fixed point is reached
+    """scanfixedpoint: run link over arg until a fixed point is reached"""
     args = list(filter(None.__ne__, args))
     x = args[-1]
     if len(args) == 2:
@@ -362,7 +362,7 @@ def scanfixedpoint(links, *args):
 
 
 def sort(links, *args):
-    # sort: sort args according to links
+    """sort: sort args according to links"""
     args = list(filter(None.__ne__, args))
     x = iterable(args[-1], digits=True)
     if len(args) == 2:
@@ -379,7 +379,7 @@ def sort(links, *args):
 
 
 def trailing_nilad(chain):
-    # trailing_nilad: if the chain is a trailing constant chain
+    """trailing_nilad: if the chain is a trailing constant chain"""
     return chain and arities(chain[::-1]) + [1] < [0, 2] * len(chain)
 
 
@@ -394,7 +394,7 @@ def variadic_chain(chain, args):
 
 
 def variadic_link(link, args, force_dyad=False):
-    # call link with args
+    """call link with args"""
     args = list(filter(None.__ne__, args))
     if link.arity == -1:
         link.arity = len(args)
@@ -411,7 +411,7 @@ def variadic_link(link, args, force_dyad=False):
 
 
 def while_loop(link, cond, args, cumulative=False):
-    # while_loop: while condition is true apply link
+    """while_loop: while condition is true apply link"""
     res, x = args
     if cumulative:
         c_res = [res]

@@ -9,7 +9,7 @@ __all__ = ["TOKEN_TYPE", "tokenise"]
 
 
 def tokenise(program):
-    # tokenise: convert program into tokens
+    """tokenise: convert program into tokens"""
     tokens = []
     program = collections.deque(program)
 
