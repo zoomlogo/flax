@@ -4,7 +4,7 @@ import itertools
 
 from flax.common import attrdict, flax_print
 from flax.error import debug, error
-from flax.funcs import permutations, iterable, sliding_window, split, flatten, prefixes
+from flax.funcs import depth, permutations, iterable, sliding_window, split, flatten, prefixes
 
 __all__ = [
     "apply_at",
@@ -13,12 +13,14 @@ __all__ = [
     "copy_to",
     "create_chain",
     "dyadic_chain",
+    "dyadic_link",
     "ffilter",
     "fix_args",
     "fold",
     "foldfixedpoint",
     "max_arity",
     "monadic_chain",
+    "monadic_link",
     "niladic_chain",
     "ntimes",
     "quick_chain",
@@ -95,7 +97,7 @@ def dyadic_chain(chain, w, x):
             link.arity = 2
 
     if chain and arities(chain[-3:]) == [2, 2, 2]:
-        λ = chain[-1].call(w, x)
+        λ = dyadic_link(chain[-1], w, x)
         chain = chain[:-1]
     elif trailing_nilad(chain):
         λ = chain[-1].call()
@@ -110,33 +112,54 @@ def dyadic_chain(chain, w, x):
 
         if arities(chain[-3:]) == [0, 2, 2] and trailing_nilad(chain[:-2]):
             debug("0,2,2: " + str(chain[-3:]))
-            λ = chain[-2].call(chain[-3].call(), chain[-1].call(w, λ))
+            λ = dyadic_link(chain[-2], chain[-3].call(), dyadic_link(chain[-1], w, λ))
             chain = chain[:-3]
         elif arities(chain[-2:]) == [2, 2]:
             debug("2,2: " + str(chain[-2:]))
-            λ = chain[-1].call(chain[-2].call(w, x), λ)
+            λ = dyadic_link(chain[-1], dyadic_link(chain[-2], w, x), λ)
             chain = chain[:-2]
         elif arities(chain[-2:]) == [0, 2]:
             debug("0,2: " + str(chain[-2:]))
-            λ = chain[-1].call(chain[-2].call(), λ)
+            λ = dyadic_link(chain[-1], chain[-2].call(), λ)
             chain = chain[:-2]
         elif arities(chain[-2:]) == [2, 0]:
             debug("2,0: " + str(chain[-2:]))
-            λ = chain[-2].call(λ, chain[-1].call())
+            λ = dyadic_link(chain[-2],λ, chain[-1].call())
             chain = chain[:-2]
         elif chain[-1].arity == 2:
             debug("2: " + str(chain[-1]))
-            λ = chain[-1].call(w, λ)
+            λ = dyadic_link(chain[-1],w, λ)
             chain = chain[:-1]
         elif chain[-1].arity == 1:
             debug("1: " + str(chain[-1]))
-            λ = chain[-1].call(λ)
+            λ = monadic_link(chain[-1],λ)
             chain = chain[:-1]
         else:
             flax_print(λ)
             λ = chain[-1].call()
             chain = chain[:-1]
     return λ
+
+def dyadic_link(link, w, x, flat_w=False, flat_x=False):
+    """dyadic_link: call a link dyadically with arguments, handling vectorisation"""
+    flat_w = flat_w or not hasattr(link, 'dw')
+    flat_x = flat_x or not hasattr(link, 'dx')
+
+    dw = flat_w or depth(w)
+    dx = flat_x or depth(x)
+
+    if (flat_w or link.dw == dw) and (flat_x or link.dx == dx):
+        return link.call(w, x)
+    elif not flat_w and link.dw > dw:
+        return dyadic_link(link, [w], x)
+    elif not flat_x and link.dx > dx:
+        return dyadic_link(link, w, [x])
+    elif not flat_x and (flat_w or dw - dx < link.dw - link.dx):
+        return [dyadic_link(link, w, i) for i in x]
+    elif not flat_w and (flat_x or dw - dx > link.dw - link.dx):
+        return [dyadic_link(link, i, x) for i in w]
+    else:
+        return [dyadic_link(link, i, j) for i, j in zip(w, x)] + w[len(x):] + x[len(w):]
 
 
 def ffilter(links, *args, inverse=False, permutation=False):
@@ -251,19 +274,19 @@ def monadic_chain(chain, x):
 
         if arities(chain[-2:]) == [1, 2]:
             debug("1,2: " + str(chain[-2:]))
-            λ = chain[-1].call(chain[-2].call(x), λ)
+            λ = dyadic_link(chain[-1],monadic_link(chain[-2],x), λ)
             chain = chain[:-2]
         elif arities(chain[-2:]) == [0, 2]:
             debug("0,2: " + str(chain[-2:]))
-            λ = chain[-1].call(chain[-2].call(), λ)
+            λ = dyadic_link(chain[-1],chain[-2].call(), λ)
             chain = chain[:-2]
         elif arities(chain[-2:]) == [2, 0]:
             debug("2,0: " + str(chain[-2:]))
-            λ = chain[-2].call(λ, chain[-1].call())
+            λ = dyadic_link(chain[-2],λ, chain[-1].call())
             chain = chain[:-2]
         elif chain[-1].arity == 2:
             debug("2: " + str(chain[-1]))
-            λ = chain[-1].call(x, λ)
+            λ = dyadic_link(chain[-1],x, λ)
             chain = chain[:-1]
         elif chain[-1].arity == 1:
             debug("1: " + str(chain[-1]))
@@ -272,7 +295,7 @@ def monadic_chain(chain, x):
                 chain = chain[-1].chain
                 init = True
             else:
-                λ = chain[-1].call(λ)
+                λ = monadic_link(chain[-1],λ)
                 chain = chain[:-1]
         else:
             flax_print(λ)
@@ -280,6 +303,17 @@ def monadic_chain(chain, x):
             chain = chain[:-1]
 
     return λ
+
+def monadic_link(link, x, flat=False):
+    """monadic_link: evaluate a link monadically with argument, handling vectorisation"""
+    flat = flat or not hasattr(link, 'dx')
+    dx = flat or depth(x)
+    if flat or link.dx == dx:
+        return link.call(x)
+    elif link.dx > dx:
+        return monadic_link(link, [x])
+    else:
+        return [monadic_link(link, i) for i in x]
 
 
 def niladic_chain(chain):
