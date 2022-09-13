@@ -11,7 +11,7 @@ NOT IN CODEPAGE
 unused (reserved): «»TİṄṅṙẋẏ∥∦¾↑↓
 
 SYNTAX
-- ¯0123456789j. number
+- ¯0123456789i. number
 - () explicit list syntax
 - " string (actually list of ints)
 - _ next character's value
@@ -136,7 +136,7 @@ SINGLE BYTE DYADS
 - ġ dot product padding 0
 - h head
 - ḣ how much times is one divisible by the other
-- i index into
+- j index into
 - k split at
 - l LCM
 - ŀ logarithm

@@ -108,7 +108,7 @@ Syntax|Description|Example
 ------|-----------|-------
 `"`|Start / End a string|`"Hello!"`
 `012456789`|A number|`12`
-`j`|Defines a complex number. By default it is `0j1`.|`2j`
+`i`|Defines a complex number. By default it is `0i1`.|`2i`
 `.`|Defines a decimal number. By default it is `0.5`|`.2`
 `()`|Start / End a list|`(1 2 (3 4))`
 `_`|Next character's value|`_f`

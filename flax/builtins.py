@@ -6,7 +6,7 @@ import sys
 import math
 import more_itertools
 import operator
-import random as rrandom
+import random as Random
 
 from flax.common import *
 from flax.funcs import *
@@ -34,7 +34,7 @@ __all__ = [
 
 # constants
 COMMENT = "·"
-COMPLEX_DELIMETER = "j"
+COMPLEX_DELIMETER = "i"
 DECIMAL_POINT = "."
 DIAGRAPHS = "ØÆŒæœΔ"
 LIST_DELIMETER_L = "("
