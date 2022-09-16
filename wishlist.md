@@ -88,9 +88,9 @@ SINGLE BYTE MONADS
 - Π product
 - ⊂ enclose / wrap
 - ⊆ enclose if not enclosed already
-- ⊃ head (popping)
+- ⊃ head
 - ⊇ tail
-- ⊐ last (popping)
+- ⊐ last
 - ⊒ neck
 - ~ bitwise not
 - γ print

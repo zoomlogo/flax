@@ -110,6 +110,44 @@ atoms = {
         ),
     ),
     "Ẋ": attrdict(arity=1, call=lambda x: split(2, x)),
+    "Y": attrdict(arity=1, call=lambda x: [e for i, e in enumerate(iterable(x)) if i % 2 == 0]),
+    "Ẏ": attrdict(arity=1, call=lambda x: [e for i, e in enumerate(iterable(x)) if i % 2]),
+    "Z": attrdict(arity=1, call=transpose),
+    "Ż": attrdict(arity=1, call=lambda x: [0] + iterable(x)),
+    "!": attrdict(arity=1, dx=0, call=math.factorial),
+    "¬": attrdict(arity=1, dx=0, call=boolify(Op.not_)),
+    "√": attrdict(arity=1, dx=0, call=mp.sqrt),
+    "⊂": attrdict(arity=1, call=lambda x: [x]),
+    "⊆": attrdict(arity=1, call=lambda x: [x] if x != iterable(x) or len(x) != 1 else x),
+    "⊃": attrdict(arity=1, call=lambda x: iterable(x)[0]), #err
+    "⊇": attrdict(arity=1, call=lambda x: iterable(x)[1:]),
+    "⊐": attrdict(arity=1, call=lambda x: iterable(x)[-1]), #err
+    "⊒": attrdict(arity=1, call=lambda x: iterable(x)[:-1]),
+    "~": attrdict(arity=1, dx=0, call=Op.inv),
+    "γ": attrdict(arity=1, call=flax_print),
+    "ε": attrdict(arity=1, call=lambda x: list(enumerate(x))),
+    "ι": attrdict(arity=1, call=iota),
+    "κ": attrdict(arity=1, call=iota1),
+    "ξ": attrdict(arity=1, call=lambda x: transpose(x, filler=0)),
+    "χ": attrdict(arity=1, call=lambda x: int(all(iterable(x)))),
+    "ψ": attrdict(arity=1, call=lambda x: int(iterable(x) > [] and all(flatten(x)))),
+    "ϕ": attrdict(arity=1, dx=2, call=flatten),
+    "∵": attrdict(arity=1, call=lambda x: min(iterable(x)) if iterable(x) else 0),
+    "∴": attrdict(arity=1, call=lambda x: max(iterable(x)) if iterable(x) else 0),
+    "⍋": attrdict(arity=1, call=grade_up),
+    "⍒": attrdict(arity=1, call=grade_down),
+    # "∞": attrdict(arity=1, ),
+    "¼": attrdict(arity=1, dx=0, call=lambda x: 1 / x),
+    "½": attrdict(arity=1, dx=0, call=lambda x: x % 2),
+    "⌈": attrdict(arity=1, dx=0, call=mp.ceil),
+    "⌊": attrdict(arity=1, dx=0, call=mp.floor),
+    "→": attrdict(arity=1, dx=0, call=lambda x: x + 1),
+    "←": attrdict(arity=1, dx=0, call=lambda x: x - 1),
+    "∂": attrdict(arity=1, call=lambda x: list(sorted(iterable(x)))),
+    "{": attrdict(arity=1, call=prefixes),
+    "}": attrdict(arity=1, call=suffixes),
+    "±": attrdict(arity=1, dx=0, call=mp.sign),
+    "○": attrdict(arity=1, call=lambda x: list(map(list, mit.powerset(iterable(x))))),
 }
 
 transpiled_atoms = {
@@ -118,6 +156,8 @@ transpiled_atoms = {
     "Ŀ": [],
     "Ṙ": [],
     "Ṡ": [],
+    "Σ": [],
+    "Π": [],
 }
 
 quicks = {}
