@@ -223,7 +223,7 @@ def grade_down(x):
     x = iterable(x, digits=True)
     grades = []
     for i in reversed(sorted(x)):
-        grades.append(find_all(i,x))
+        grades.append(find_all(i, x))
     return flatten(grades)
 
 
@@ -232,7 +232,7 @@ def grade_up(x):
     x = iterable(x, digits=True)
     grades = []
     for i in sorted(x):
-        grades.append(find_all(i,x))
+        grades.append(find_all(i, x))
     return flatten(grades)
 
 
@@ -576,9 +576,15 @@ def to_chars(x):
     """to_chars: convert x to list of ints"""
     return [ord(a) for a in x]
 
+
 def transpose(x, filler=None):
     """transpose: transpose x"""
-    return list(map(lambda x: list(filter(None.__ne__, x)), itertools.zip_longest(*map(iterable, x), fillvalue=filler)))
+    return list(
+        map(
+            lambda x: list(filter(None.__ne__, x)),
+            itertools.zip_longest(*map(iterable, x), fillvalue=filler),
+        )
+    )
 
 
 def unrepeat(x):
