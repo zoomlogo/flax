@@ -8,7 +8,7 @@ feel free to suggest element ideas on the SE chatroom.
 NOT IN CODEPAGE
 - · comment
 
-unused (reserved): «»TİṄṅṙẋẏ∥∦¾↑↓
+unused (reserved): «»TİṄẆṅṙẋẏ∥∦¾↑↓
 
 SYNTAX
 - ¯0123456789i. number
@@ -75,7 +75,6 @@ SINGLE BYTE MONADS
 - U unique elements
 - V is prime
 - W where
-- Ẇ keep only elements without duplicates
 - X split into 2 chunks
 - Ẋ chunks of length 2
 - Y elements at even indicies

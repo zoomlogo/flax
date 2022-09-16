@@ -1,5 +1,6 @@
 # common: Holds the attrdict and the common stuff
 import more_itertools
+import enum
 from mpmath import mp
 
 __all__ = [

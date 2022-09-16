@@ -25,7 +25,7 @@ __all__ = [
     "ffilter",
     "fix_args",
     "fold",
-    "foldfixedpoint",
+    "fold_fixedpoint",
     "max_arity",
     "monadic_chain",
     "monadic_link",
@@ -33,7 +33,7 @@ __all__ = [
     "ntimes",
     "quick_chain",
     "scan",
-    "scanfixedpoint",
+    "scan_fixedpoint",
     "sort",
     "trailing_nilad",
     "variadic_chain",
@@ -245,8 +245,8 @@ def fold(links, *args, right=False, initial=False):
             ]
 
 
-def foldfixedpoint(links, *args):
-    """foldfixedpoint: run link over arg until a fixed point is reached"""
+def fold_fixedpoint(links, *args):
+    """fold_fixedpoint: run link over arg until a fixed point is reached"""
     return scanfixedpoint(links, *args)[-1]
 
 
@@ -390,8 +390,8 @@ def scan(links, *args, right=False, initial=False):
         return res
 
 
-def scanfixedpoint(links, *args):
-    """scanfixedpoint: run link over arg until a fixed point is reached"""
+def scan_fixedpoint(links, *args):
+    """scan_fixedpoint: run link over arg until a fixed point is reached"""
     args = list(filter(None.__ne__, args))
     x = args[-1]
     if len(args) == 2:

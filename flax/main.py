@@ -20,9 +20,9 @@ def flax_run(code, args):
     debug("parsed: " + str(parsed))
     # run
     # niladic chains 11 and 13
-    # monadic ones only 13, dyadic nothing
-    flax.builtins.atoms["₎"].call = lambda: args[-1] if len(args) > 0 else 11
-    flax.builtins.atoms["₍"].call = lambda: args[0] if len(args) > 1 else 13
+    # monadic ones only 11, dyadic nothing
+    flax.builtins.atoms["⁸"].call = lambda: args[0] if len(args) > 1 else 11
+    flax.builtins.atoms["⁹"].call = lambda: args[-1] if len(args) > 0 else 13
     flax.common.flax_print(variadic_chain(parsed[-1] if parsed else "", args))
 
 

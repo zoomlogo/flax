@@ -18,7 +18,8 @@ __all__ = [
     "digits",
     "digits_i",
     "divisors",
-    "enumerate_md" "fibonacci",
+    "enumerate_md",
+    "fibonacci",
     "find",
     "find_md",
     "find_all",
@@ -513,6 +514,7 @@ def shuffle(x):
     for i in range(len(x) - 1, 0, -1):
         j = randrange(i + 1)
         x[i], x[j] = x[j], x[i]
+    return x
 
 
 def sliding_window(w, x):
@@ -529,7 +531,7 @@ def sliding_window(w, x):
 
 def split(w, x):
     """split: split x into chunks of w"""
-    return list(more_itertools.chunked(x, w))
+    return list(more_itertools.chunked(iterable(x), w))
 
 
 def split_at(w, x):
