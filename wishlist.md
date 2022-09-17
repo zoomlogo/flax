@@ -136,7 +136,7 @@ SINGLE BYTE DYADS
 - h head
 - ḣ how much times is one divisible by the other
 - j index into
-- k split at
+- k split into
 - l LCM
 - ŀ logarithm
 - m minimum

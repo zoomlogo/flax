@@ -13,6 +13,7 @@ __all__ = [
     "binary",
     "binary_i",
     "boolify",
+    "cartesian_product",
     "depth",
     "diagonals",
     "digits",
@@ -55,6 +56,7 @@ __all__ = [
     "sliding_window",
     "split",
     "split_at",
+    "split_into",
     "sublists",
     "suffixes",
     "to_braille",
@@ -67,7 +69,7 @@ __all__ = [
 
 def base(w, x):
     """base: convert x from base w"""
-    x = iterable(x, digits=True)
+    x = iterable(x, digits_=True)
     sign = -1 if sum(x) < 0 else 1
     num = 0
     i = 0
@@ -99,7 +101,7 @@ def binary(x):
 
 def binary_i(x):
     """binary_i: convert x from binary"""
-    x = iterable(x, digits=True)
+    x = iterable(x, digits_=True)
     sign = -1 if sum(x) < 0 else 1
     num = 0
     i = 0
@@ -113,6 +115,11 @@ def boolify(f):
     """boolify: wrapper around boolean functions to only return 1/0"""
     # do i need this function?
     return lambda *args: int(f(*args))
+
+
+def cartesian_product(w, x):
+    """cartesian_product: find the cartesian product of w and x"""
+    return list(map(list, itertools.product(w, x)))
 
 
 def depth(x):
@@ -185,7 +192,7 @@ def fibonacci(x):
 def find(w, x):
     """find: find the occurence of w in x"""
     try:
-        return iterable(x, digits=True).index(w)
+        return iterable(x, digits_=True).index(w)
     except ValueError:
         return []
 
@@ -205,8 +212,8 @@ def find_md(w, x):
 
 def find_sublist(w, x):
     """find_sublist: find the occurence of the sublist w in x"""
-    x = iterable(x, digits=True)
-    w = iterable(w, digits=True)
+    x = iterable(x, digits_=True)
+    w = iterable(w, digits_=True)
     for i in range(len(x)):
         if x[i : i + len(w)] == w:
             return i
@@ -220,7 +227,7 @@ def flatten(x):
 
 def grade_down(x):
     """grade_down: grade x in descending order"""
-    x = iterable(x, digits=True)
+    x = iterable(x, digits_=True)
     grades = []
     for i in reversed(sorted(x)):
         grades.append(find_all(i, x))
@@ -229,7 +236,7 @@ def grade_down(x):
 
 def grade_up(x):
     """grade_up: grade x in ascending order"""
-    x = iterable(x, digits=True)
+    x = iterable(x, digits_=True)
     grades = []
     for i in sorted(x):
         grades.append(find_all(i, x))
@@ -262,14 +269,14 @@ def group_indicies(x, md=False):
 
 def index_into(w, x):
     """index_into: index into w with x"""
-    w = iterable(w, digits=True)
-    x = int(x) if type(x) != mpc and int(x) == x else x
+    w = iterable(w, digits_=True)
+    x = int(x) if type(x) != mpc and type(x) != list and int(x) == x else x
     if type(x) == int:
         return w[x % len(w)]
     elif type(x) == mpc:
-        return index_into(x.real, index_into(x.imag, w))
+        return index_into(index_into(w, x.real), x.imag)
     else:
-        return [index_into(mp.floor(x), w), index_into(mp.ceil(x), w)]
+        return [index_into(w, mp.floor(x)), index_into(w, mp.ceil(x))]
 
 
 def iota(x):
@@ -296,7 +303,7 @@ def iota1(x):
     return res[0]
 
 
-def iterable(x, digits=False, range_=False, copy_=False):
+def iterable(x, digits_=False, range_=False, copy_=False):
     """iterable: make sure x is a list"""
     if type(x) != list:
         if range_:
@@ -348,7 +355,7 @@ def maximal_indicies(x):
 
 def maximal_indicies_md(x, m=None, upper_level=[]):
     """maximal_indicies_md: multidimensional indicies of maximal elements"""
-    x = iterable(x, digits=True)
+    x = iterable(x, digits_=True)
     if m is None:
         m = max(flatten(x) or [0])
     res = []
@@ -446,7 +453,7 @@ def permutations(x):
 
 def prefixes(x):
     """prefixes: return all prefixes of x"""
-    x = iterable(x, digits=True)
+    x = iterable(x, digits_=True)
     res = []
     for i in range(len(x)):
         res.append(x[: i + 1])
@@ -483,7 +490,7 @@ def random(x):
 def repeat(w, x):
     """repeat: repeat x according to w"""
     zipped = itertools.zip_longest(
-        iterable(w, digits=True), flatten(iterable(x)), fillvalue=1
+        iterable(w, digits_=True), flatten(iterable(x)), fillvalue=1
     )
     res = []
     for a, b in zipped:
@@ -511,7 +518,7 @@ def reshape(w, x, level=0):
 
 def shuffle(x):
     """shuffle: return a random permutation of x"""
-    x = iterable(x, copy_=True, digits=True)
+    x = iterable(x, copy_=True, digits_=True)
     for i in range(len(x) - 1, 0, -1):
         j = randrange(i + 1)
         x[i], x[j] = x[j], x[i]
@@ -539,6 +546,10 @@ def split_at(w, x):
     """split_at: split x at occurences of w"""
     return list(more_itertools.split_at(x, lambda a: a == w))
 
+def split_into(w, x):
+    """split_into: split x into sizes defined by w"""
+    return list(more_itertools.split_into(x, w))
+
 
 def sublists(x):
     """sublists: return all sublists of x"""
@@ -551,7 +562,7 @@ def sublists(x):
 
 def suffixes(x):
     """suffixes: return the suffixes of x"""
-    x = iterable(x, digits=True)
+    x = iterable(x, digits_=True)
     res = []
     for i in range(len(x)):
         res.append(x[i:])

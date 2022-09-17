@@ -71,7 +71,7 @@ def flax_string(x):
     """flax_string: convert x into flax representation"""
     if type(x) != list:
         if type(x) == mpc:
-            return "j".join([flax_string(x.real), flax_string(x.imag)])
+            return "i".join([flax_string(x.real), flax_string(x.imag)])
         elif type(x) == int or (x != inf and int(x) == x):
             return str(int(x)).replace("-", "¯").replace("inf", "∞")
         else:

@@ -38,11 +38,11 @@ def escapes(x):
 def numberify(x):
     """numberify: convert to a mp number / python number"""
     number = x.replace("¯", "-")
-    if "j" in number:
+    if "i" in number:
         if len(number) == 1:
             return mpc(0, 1)
         else:
-            parts = number.split("j")
+            parts = number.split("i")
             if parts[0] == "":
                 parts[0] = "0"
             if parts[1] == "":
