@@ -546,6 +546,7 @@ def split_at(w, x):
     """split_at: split x at occurences of w"""
     return list(more_itertools.split_at(x, lambda a: a == w))
 
+
 def split_into(w, x):
     """split_into: split x into sizes defined by w"""
     return list(more_itertools.split_into(x, w))

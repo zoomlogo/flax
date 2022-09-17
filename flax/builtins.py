@@ -138,8 +138,18 @@ atoms = {
     "χ": attrdict(arity=1, call=lambda x: int(all(iterable(x)))),
     "ψ": attrdict(arity=1, call=lambda x: int(iterable(x) > [] and all(flatten(x)))),
     "ϕ": attrdict(arity=1, dx=2, call=flatten),
-    "∵": attrdict(arity=1, call=lambda x: min(iterable(x, digits_=True)) if iterable(x, digits_=True) else 0),
-    "∴": attrdict(arity=1, call=lambda x: max(iterable(x, digits_=True)) if iterable(x, digits_=True) else 0),
+    "∵": attrdict(
+        arity=1,
+        call=lambda x: min(iterable(x, digits_=True))
+        if iterable(x, digits_=True)
+        else 0,
+    ),
+    "∴": attrdict(
+        arity=1,
+        call=lambda x: max(iterable(x, digits_=True))
+        if iterable(x, digits_=True)
+        else 0,
+    ),
     "⍋": attrdict(arity=1, call=grade_up),
     "⍒": attrdict(arity=1, call=grade_down),
     # "∞": attrdict(arity=1, ),
@@ -154,7 +164,6 @@ atoms = {
     "}": attrdict(arity=1, call=suffixes),
     "±": attrdict(arity=1, dx=0, call=mp.sign),
     "○": attrdict(arity=1, call=lambda x: list(map(list, mit.powerset(iterable(x))))),
-
     "a": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: abs(w - x)),
     "ȧ": attrdict(arity=2, call=lambda w, x: Random.choice([w, x])),
     "b": attrdict(arity=2, dw=0, dx=0, call=base_i),
@@ -165,8 +174,12 @@ atoms = {
     "ḋ": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: int(x % w == 0)),
     "e": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: list(range(w, x))),
     # "ė": attrdict(arity=2, ),
-    "f": attrdict(arity=2, call=lambda w, x: [i for i in iterable(x) if i in iterable(w)]),
-    "ḟ": attrdict(arity=2, call=lambda w, x: [i for i in iterable(x) if i not in iterable(w)]),
+    "f": attrdict(
+        arity=2, call=lambda w, x: [i for i in iterable(x) if i in iterable(w)]
+    ),
+    "ḟ": attrdict(
+        arity=2, call=lambda w, x: [i for i in iterable(x) if i not in iterable(w)]
+    ),
     "g": attrdict(arity=2, dw=0, dx=0, call=math.gcd),
     "ġ": attrdict(arity=2, dw=1, dx=1, call=mit.dotproduct),
     "h": attrdict(arity=2, dw=0, call=lambda w, x: iterable(x)[:w]),
@@ -177,11 +190,17 @@ atoms = {
     "ŀ": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: mp.log(x, w)),
     "m": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: min([w, x])),
     "ṁ": attrdict(arity=2, call=mold),
-    "n": attrdict(arity=2, dw=0, call=lambda w, x: [e for i, e in enumerate(iterable(x)) if i % w == 0]),
+    "n": attrdict(
+        arity=2,
+        dw=0,
+        call=lambda w, x: [e for i, e in enumerate(iterable(x)) if i % w == 0],
+    ),
     "o": attrdict(arity=2, dw=0, call=split_at),
     "ȯ": attrdict(arity=2, dw=0, call=lambda w, x: iterable(x, digits_=True).count(w)),
     "p": attrdict(arity=2, call=lambda w, x: [w, x]),
-    "ṗ": attrdict(arity=2, dw=0, call=lambda w, x: functools.reduce(cartesian_product, [x] * w)),
+    "ṗ": attrdict(
+        arity=2, dw=0, call=lambda w, x: functools.reduce(cartesian_product, [x] * w)
+    ),
     "q": attrdict(arity=2, call=lambda w, x: exit(0)),
 }
 
