@@ -89,7 +89,9 @@ atoms = {
     ),
     "N": attrdict(arity=1, dx=0, call=Op.neg),
     "O": attrdict(arity=1, call=lambda x: x),
-    "Ȯ": attrdict(arity=1, dx=0, call=lambda x: [i for i in range(1, int(x) + 1) if x % i == 0]),
+    "Ȯ": attrdict(
+        arity=1, dx=0, call=lambda x: [i for i in range(1, int(x) + 1) if x % i == 0]
+    ),
     "P": attrdict(arity=1, call=permutations),
     "Ṗ": attrdict(arity=1, call=shuffle),
     "Q": attrdict(
@@ -202,18 +204,33 @@ atoms = {
         arity=2, dw=0, call=lambda w, x: functools.reduce(cartesian_product, [x] * w)
     ),
     "q": attrdict(arity=2, call=lambda w, x: exit(0)),
-    "r": attrdict(arity=2, dw=0, call=lambda w, x: iterable(x, digits_=True)[w:] + iterable(x, digits_=True)[:w]),
+    "r": attrdict(
+        arity=2,
+        dw=0,
+        call=lambda w, x: iterable(x, digits_=True)[w:] + iterable(x, digits_=True)[:w],
+    ),
     "s": attrdict(arity=2, call=find_sublist),
-    "ṡ": attrdict(arity=2, call=lambda w, x: [index_into(x, i) for i, e in enumerate(iterable(w)) if e]),
+    "ṡ": attrdict(
+        arity=2,
+        call=lambda w, x: [index_into(x, i) for i, e in enumerate(iterable(w)) if e],
+    ),
     "t": attrdict(arity=2, dw=0, call=lambda w, x: iterable(x)[w:]),
     # "ṫ": attrdict(arity=2, call=),
-    "u": attrdict(arity=2, call=lambda w, x: [find(w, i) for i in iterable(x, range_=True)]),
+    "u": attrdict(
+        arity=2, call=lambda w, x: [find(w, i) for i in iterable(x, range_=True)]
+    ),
     "v": attrdict(arity=2, dw=1, call=lambda w, x: [[i] + iterable(x) for i in w]),
     "w": attrdict(arity=2, dw=0, call=sliding_window),
-    "ẇ": attrdict(arity=2, dw=0, call=lambda w, x: list(map(list, mit.distinct_combinations(x, w)))),
+    "ẇ": attrdict(
+        arity=2,
+        dw=0,
+        call=lambda w, x: list(map(list, mit.distinct_combinations(x, w))),
+    ),
     "x": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: max([w, x])),
     "y": attrdict(arity=2, dw=0, call=join),
-    "z": attrdict(arity=2, call=lambda w, x: list(map(list, zip(iterable(w), iterable(x))))),
+    "z": attrdict(
+        arity=2, call=lambda w, x: list(map(list, zip(iterable(w), iterable(x))))
+    ),
     "ż": attrdict(arity=2, dw=0, call=lambda w, x: transpose(x, filler=w)),
     "+": attrdict(arity=2, dw=0, dx=0, call=Op.add),
     "-": attrdict(arity=2, dw=0, dx=0, call=Op.sub),
@@ -243,7 +260,12 @@ atoms = {
     "⊣": attrdict(arity=2, call=lambda w, x: w),
     "⊢": attrdict(arity=2, call=lambda w, x: x),
     "#": attrdict(arity=2, dw=1, call=reshape),
-    "δ": attrdict(arity=2, dw=1, dx=1, call=lambda w, x: mp.sqrt(sum(map(lambda i: i * i, map(Op.sub, w, x))))),
+    "δ": attrdict(
+        arity=2,
+        dw=1,
+        dx=1,
+        call=lambda w, x: mp.sqrt(sum(map(lambda i: i * i, map(Op.sub, w, x)))),
+    ),
 }
 
 transpiled_atoms = {
