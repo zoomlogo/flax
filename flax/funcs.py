@@ -18,7 +18,6 @@ __all__ = [
     "diagonals",
     "digits",
     "digits_i",
-    "divisors",
     "enumerate_md",
     "fibonacci",
     "find",
@@ -113,13 +112,12 @@ def binary_i(x):
 
 def boolify(f):
     """boolify: wrapper around boolean functions to only return 1/0"""
-    # do i need this function?
     return lambda *args: int(f(*args))
 
 
-def cartesian_product(w, x):
-    """cartesian_product: find the cartesian product of w and x"""
-    return list(map(list, itertools.product(w, x)))
+def cartesian_product(*args):
+    """cartesian_product: find the cartesian product"""
+    return list(map(list, itertools.product(*args)))
 
 
 def depth(x):
@@ -164,11 +162,6 @@ def digits_i(x):
         num += abs(b) * 10**i
         i += 1
     return num * sign
-
-
-def divisors(x):
-    """divisors: returns the factors of x"""
-    return [i for i in range(1, int(x) + 1) if x % i == 0]
 
 
 def enumerate_md(x, upper_level=[]):
@@ -284,7 +277,7 @@ def iota(x):
     if type(x) != list:
         return list(range(int(x)))
 
-    res = list(map(list, itertools.product(*(list(range(int(a))) for a in x))))
+    res = cartesian_product(*(list(range(int(a))) for a in x))
     for e in x:
         res = split(int(e), res)
     return res[0]
@@ -295,9 +288,7 @@ def iota1(x):
     if type(x) != list:
         return [i + 1 for i in range(int(x))]
 
-    res = list(
-        map(list, itertools.product(*([i + 1 for i in range(int(a))] for a in x)))
-    )
+    res = cartesian_product(*([i + 1 for i in range(int(a))] for a in x))
     for e in x:
         res = split(int(e), res)
     return res[0]
@@ -498,9 +489,9 @@ def repeat(w, x):
     return res
 
 
-def reshape(w, x, level=0):
+def reshape(w, x):
     """reshape: reshape x according to the shape w"""
-    w = flatten(iterable(w))
+    w = iterable(w)
     x = iterable(x)
 
     if len(w) == 1:
