@@ -8,7 +8,7 @@ feel free to suggest element ideas on the SE chatroom.
 NOT IN CODEPAGE
 - · comment
 
-unused (reserved): «»TİṄẆṅṙẋẏ∥∦¾↑↓
+unused (reserved): «»TİṄẆṅṙẋẏ∥∦↑↓
 
 SYNTAX
 - ¯0123456789i. number
@@ -240,6 +240,7 @@ QUICKS
 - ∝ apply, then transpose, apply again
 - ⟜ n-compose
 - ˙ inverse
+- ¾ apply monads to both dyadic arguments (x (mdQ) y = mx d my)
 
 NILADIC DIAGRAPHS Ø
 - Ø+ signs; [1,-1]
