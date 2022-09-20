@@ -33,7 +33,7 @@ __all__ = [
 ]
 
 # constants
-COMMENT = "·"
+COMMENT = "‟"
 COMPLEX_DELIMETER = "i"
 DECIMAL_POINT = "."
 DIAGRAPHS = "ØÆŒæœΔ"
@@ -60,6 +60,7 @@ atoms = {
     "⁸": attrdict(arity=0, call=lambda: 0),
     "⁹": attrdict(arity=0, call=lambda: 0),
     "∃": attrdict(arity=0, call=lambda: 0),
+
     "A": attrdict(arity=1, dx=0, call=abs),
     "Ȧ": attrdict(arity=1, call=lambda x: int(any(iterable(x)))),
     "B": attrdict(arity=1, dx=0, call=binary),
@@ -88,6 +89,7 @@ atoms = {
         call=lambda x: [i for i, e in enumerate(iterable(x)) if e == max(iterable(x))],
     ),
     "N": attrdict(arity=1, dx=0, call=Op.neg),
+    "Ṅ": attrdict(arity=1, dx=0, call=mp.sign),
     "O": attrdict(arity=1, call=lambda x: x),
     "Ȯ": attrdict(
         arity=1, dx=0, call=lambda x: [i for i in range(1, int(x) + 1) if x % i == 0]
@@ -120,7 +122,7 @@ atoms = {
     ),
     "Z": attrdict(arity=1, call=transpose),
     "Ż": attrdict(arity=1, call=lambda x: [0] + iterable(x)),
-    "!": attrdict(arity=1, dx=0, call=mp.factorial),
+    "!": attrdict(arity=1, dx=0, call=lambda x: -mp.gamma(abs(x) + 1) if x < 0 else mp.gamma(x + 1)),
     "¬": attrdict(arity=1, dx=0, call=boolify(Op.not_)),
     "√": attrdict(arity=1, dx=0, call=mp.sqrt),
     "⊂": attrdict(arity=1, call=lambda x: [x]),
@@ -164,8 +166,9 @@ atoms = {
     "∂": attrdict(arity=1, call=lambda x: list(sorted(iterable(x)))),
     "{": attrdict(arity=1, call=prefixes),
     "}": attrdict(arity=1, call=suffixes),
-    "±": attrdict(arity=1, dx=0, call=mp.sign),
     "○": attrdict(arity=1, call=lambda x: list(map(list, mit.powerset(iterable(x))))),
+    "↶": attrdict(arity=1, call=lambda x: transpose(x)[::-1]),
+
     "a": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: abs(w - x)),
     "ȧ": attrdict(arity=2, call=lambda w, x: Random.choice([w, x])),
     "b": attrdict(arity=2, dw=0, dx=0, call=base_i),
@@ -199,16 +202,12 @@ atoms = {
     ),
     "o": attrdict(arity=2, dw=0, call=split_at),
     "ȯ": attrdict(arity=2, dw=0, call=lambda w, x: iterable(x, digits_=True).count(w)),
-    "p": attrdict(arity=2, call=lambda w, x: [w, x]),
     "ṗ": attrdict(
         arity=2, dw=0, call=lambda w, x: functools.reduce(cartesian_product, [x] * w)
     ),
+    "p": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: mp.factorial(w) / mp.factorial(w - x)),
     "q": attrdict(arity=2, call=lambda w, x: exit(0)),
-    "r": attrdict(
-        arity=2,
-        dw=0,
-        call=lambda w, x: iterable(x, digits_=True)[w:] + iterable(x, digits_=True)[:w],
-    ),
+    "r": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: list(range(w, x + 1))),
     "s": attrdict(arity=2, call=find_sublist),
     "ṡ": attrdict(
         arity=2,
@@ -227,6 +226,7 @@ atoms = {
         call=lambda w, x: list(map(list, mit.distinct_combinations(x, w))),
     ),
     "x": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: max([w, x])),
+    "ẋ": attrdict(arity=2, call=lambda w, x: [w, x]),
     "y": attrdict(arity=2, dw=0, call=join),
     "z": attrdict(
         arity=2, call=lambda w, x: list(map(list, zip(iterable(w), iterable(x))))
@@ -234,6 +234,7 @@ atoms = {
     "ż": attrdict(arity=2, dw=0, call=lambda w, x: transpose(x, filler=w)),
     "+": attrdict(arity=2, dw=0, dx=0, call=Op.add),
     "-": attrdict(arity=2, dw=0, dx=0, call=Op.sub),
+    "±": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: [w + x, w - x]),
     "×": attrdict(arity=2, dw=0, dx=0, call=Op.mul),
     "÷": attrdict(arity=2, dw=0, dx=0, call=Op.truediv),
     "|": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: x % w),
@@ -251,6 +252,7 @@ atoms = {
     "≥": attrdict(arity=2, dw=0, dx=0, call=boolify(Op.le)),
     "≡": attrdict(arity=2, call=lambda w, x: int(w == x)),
     "≢": attrdict(arity=2, call=lambda w, x: int(w != x)),
+    "≈": attrdict(arity=2, call=lambda w, x: len(w) == len(x) if type(w) == type(x) == list else abs(w - x) <= 1),
     ",": attrdict(arity=2, call=lambda w, x: [w] + [x]),
     ",": attrdict(arity=2, call=lambda w, x: [x] + [w]),
     "∊": attrdict(arity=2, dw=0, call=lambda w, x: w in iterable(x, digits_=True)),
@@ -265,6 +267,16 @@ atoms = {
         dw=1,
         dx=1,
         call=lambda w, x: mp.sqrt(sum(map(lambda i: i * i, map(Op.sub, w, x)))),
+    ),
+    "»": attrdict(
+        arity=2,
+        dw=0,
+        call=lambda w, x: iterable(x, digits_=True)[w:] + iterable(x, digits_=True)[:w],
+    ),
+    "«": attrdict(
+        arity=2,
+        dw=0,
+        call=lambda w, x: iterable(x, digits_=True)[-w:] + iterable(x, digits_=True)[:-w],
     ),
 }
 

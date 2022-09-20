@@ -6,7 +6,7 @@
 feel free to suggest element ideas on the SE chatroom.
 ```
 NOT IN CODEPAGE
-- · comment
+- ‟ comment
 
 unused (reserved): TİẆṅṙẏ↑↓
 
