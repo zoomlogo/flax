@@ -1,5 +1,5 @@
 # element wishlist 
-*(no i totally stole this from vyxal)*
+*(no i totally didn't steal this from vyxal)*
 
 **NOTE**: This is a planning file which will be removed when the revamp is done.
 
@@ -8,7 +8,7 @@ feel free to suggest element ideas on the SE chatroom.
 NOT IN CODEPAGE
 - · comment
 
-unused (reserved): «»TİṄẆṅṙẋẏ∥∦↑↓
+unused (reserved): TİẆṅṙẏ↑↓
 
 SYNTAX
 - ¯0123456789i. number
@@ -62,6 +62,7 @@ SINGLE BYTE MONADS
 - M square
 - Ṁ maximal indicies
 - N negate
+- Ṅ sign
 - O identity
 - Ȯ factors / divisors
 - P permutations
@@ -81,7 +82,7 @@ SINGLE BYTE MONADS
 - Ẏ elements at odd indicies
 - Z transpose
 - Ż prepend a zero
-- ! factorial
+- ! factorial / gamma
 - ¬ logical not
 - √ square root
 - Σ sum
@@ -115,8 +116,8 @@ SINGLE BYTE MONADS
 - ∂ sort
 - { prefixes
 - } suffixes
-- ± sign
 - ○ powerset
+- ↶ rotate matrix by 90 degrees
 
 SINGLE BYTE DYADS
 - a absolute difference
@@ -144,10 +145,10 @@ SINGLE BYTE DYADS
 - n every nth element
 - o split at occurences
 - ȯ count occurence
-- p pair
+- p nPr
 - ṗ cartesian power
 - q quit
-- r rotate
+- r inclusive range
 - s find sublist
 - ṡ select elements from one with indicies that are truthy elements in the other
 - t tail
@@ -157,11 +158,13 @@ SINGLE BYTE DYADS
 - w windows
 - ẇ combinations without replacement
 - x maximum
+- ẋ pair
 - y join
 - z zip
 - ż transpose with filler
 - + addition
 - - subtraction
+- ± plus minus
 - × multiplication
 - ÷ division
 - | residue
@@ -180,6 +183,7 @@ SINGLE BYTE DYADS
 - ≤ lesser than or equal to
 - ≡ match
 - ≢ not match
+- ≈ is similar
 - * exponentiation
 - , concat
 - ; reversed concat
@@ -191,6 +195,8 @@ SINGLE BYTE DYADS
 - ⊢ right argument
 - # reshape
 - δ distance between points
+- « rotate left
+- » rotate right
 
 QUICKS
 - $ two links as monad
@@ -319,9 +325,11 @@ MATHY MONADIC DIAGRAPHS Æ
 - Æ\ leading diagonal
 - Æ/ trailing diagonal
 - Æj conjugate
+- Æσ standard deviation
+- Æm mean
+- Æṁ median
 
 MATHY DYADIC DIAGRPAHS æ
-- æP nPr
 - æ∘ dot product padding 1
 - æ× matrix multiplication
 - æ* matrix power
