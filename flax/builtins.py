@@ -60,7 +60,6 @@ atoms = {
     "⁸": attrdict(arity=0, call=lambda: 0),
     "⁹": attrdict(arity=0, call=lambda: 0),
     "∃": attrdict(arity=0, call=lambda: 0),
-
     "A": attrdict(arity=1, dx=0, call=abs),
     "Ȧ": attrdict(arity=1, call=lambda x: int(any(iterable(x)))),
     "B": attrdict(arity=1, dx=0, call=binary),
@@ -122,7 +121,11 @@ atoms = {
     ),
     "Z": attrdict(arity=1, call=transpose),
     "Ż": attrdict(arity=1, call=lambda x: [0] + iterable(x)),
-    "!": attrdict(arity=1, dx=0, call=lambda x: -mp.gamma(abs(x) + 1) if x < 0 else mp.gamma(x + 1)),
+    "!": attrdict(
+        arity=1,
+        dx=0,
+        call=lambda x: -mp.gamma(abs(x) + 1) if x < 0 else mp.gamma(x + 1),
+    ),
     "¬": attrdict(arity=1, dx=0, call=boolify(Op.not_)),
     "√": attrdict(arity=1, dx=0, call=mp.sqrt),
     "⊂": attrdict(arity=1, call=lambda x: [x]),
@@ -168,7 +171,6 @@ atoms = {
     "}": attrdict(arity=1, call=suffixes),
     "○": attrdict(arity=1, call=lambda x: list(map(list, mit.powerset(iterable(x))))),
     "↶": attrdict(arity=1, call=lambda x: transpose(x)[::-1]),
-
     "a": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: abs(w - x)),
     "ȧ": attrdict(arity=2, call=lambda w, x: Random.choice([w, x])),
     "b": attrdict(arity=2, dw=0, dx=0, call=base_i),
@@ -205,7 +207,9 @@ atoms = {
     "ṗ": attrdict(
         arity=2, dw=0, call=lambda w, x: functools.reduce(cartesian_product, [x] * w)
     ),
-    "p": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: mp.factorial(w) / mp.factorial(w - x)),
+    "p": attrdict(
+        arity=2, dw=0, dx=0, call=lambda w, x: mp.factorial(w) / mp.factorial(w - x)
+    ),
     "q": attrdict(arity=2, call=lambda w, x: exit(0)),
     "r": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: list(range(w, x + 1))),
     "s": attrdict(arity=2, call=find_sublist),
@@ -252,7 +256,12 @@ atoms = {
     "≥": attrdict(arity=2, dw=0, dx=0, call=boolify(Op.le)),
     "≡": attrdict(arity=2, call=lambda w, x: int(w == x)),
     "≢": attrdict(arity=2, call=lambda w, x: int(w != x)),
-    "≈": attrdict(arity=2, call=lambda w, x: len(w) == len(x) if type(w) == type(x) == list else abs(w - x) <= 1),
+    "≈": attrdict(
+        arity=2,
+        call=lambda w, x: len(w) == len(x)
+        if type(w) == type(x) == list
+        else abs(w - x) <= 1,
+    ),
     ",": attrdict(arity=2, call=lambda w, x: [w] + [x]),
     ",": attrdict(arity=2, call=lambda w, x: [x] + [w]),
     "∊": attrdict(arity=2, dw=0, call=lambda w, x: w in iterable(x, digits_=True)),
@@ -276,7 +285,8 @@ atoms = {
     "«": attrdict(
         arity=2,
         dw=0,
-        call=lambda w, x: iterable(x, digits_=True)[-w:] + iterable(x, digits_=True)[:-w],
+        call=lambda w, x: iterable(x, digits_=True)[-w:]
+        + iterable(x, digits_=True)[:-w],
     ),
 }
 
