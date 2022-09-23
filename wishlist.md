@@ -8,7 +8,7 @@ feel free to suggest element ideas on the SE chatroom.
 NOT IN CODEPAGE
 - ‟ comment
 
-unused (reserved): TİẆṅṙẏ↑↓
+unused (reserved): TİẆṅṙẏΛ
 
 SYNTAX
 - ¯0123456789i. number
@@ -36,6 +36,7 @@ SINGLE BYES NILADS
 - ⁸ left arguement of chain
 - ⁹ right argument of chain
 - ∃ get register
+- ⍬ empty list
 
 SINGLE BYTE MONADS
 - A abs
@@ -104,8 +105,8 @@ SINGLE BYTE MONADS
 - ϕ flatten one level
 - ∵ minimum
 - ∴ maximum
-- ⍋ grade up
-- ⍒ grade down
+- ↑ grade up
+- ↓ grade down
 - ∞ to infinite list
 - ¼ reciprocal
 - ½ bit
@@ -245,7 +246,7 @@ QUICKS
 - ∀ set register
 - ∝ apply, then transpose, apply again
 - ⟜ n-compose
-- ˙ inverse
+- ˙ fork
 - ¾ apply monads to both dyadic arguments (x (mdQ) y = mx d my)
 
 NILADIC DIAGRAPHS Ø

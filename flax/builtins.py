@@ -60,6 +60,7 @@ atoms = {
     "⁸": attrdict(arity=0, call=lambda: 0),
     "⁹": attrdict(arity=0, call=lambda: 0),
     "∃": attrdict(arity=0, call=lambda: 0),
+    "⍬": attrdict(arity=0, call=lambda: []),
     "A": attrdict(arity=1, dx=0, call=abs),
     "Ȧ": attrdict(arity=1, call=lambda x: int(any(iterable(x)))),
     "B": attrdict(arity=1, dx=0, call=binary),
@@ -157,8 +158,8 @@ atoms = {
         if iterable(x, digits_=True)
         else 0,
     ),
-    "⍋": attrdict(arity=1, call=grade_up),
-    "⍒": attrdict(arity=1, call=grade_down),
+    "↑": attrdict(arity=1, call=grade_up),
+    "↓": attrdict(arity=1, call=grade_down),
     # "∞": attrdict(arity=1, ),
     "¼": attrdict(arity=1, dx=0, call=lambda x: 1 / x),
     "½": attrdict(arity=1, dx=0, call=lambda x: x % 2),
