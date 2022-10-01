@@ -60,6 +60,7 @@ atoms = {
     "⁸": attrdict(arity=0, call=lambda: 0),
     "⁹": attrdict(arity=0, call=lambda: 0),
     "∃": attrdict(arity=0, call=lambda: 0),
+    "⊶": attrdict(arity=0, call=lambda: [0, 1]),
     "⍬": attrdict(arity=0, call=lambda: []),
     "A": attrdict(arity=1, dx=0, call=abs),
     "Ȧ": attrdict(arity=1, call=lambda x: int(any(iterable(x)))),
@@ -303,7 +304,30 @@ transpiled_atoms = {
     "∪": [],
 }
 
-quicks = {}
+quicks = {
+    "$": quick_chain(1, 2),
+    "¢": quick_chain(2, 2),
+    "£": quick_chain(1, 3),
+    "¥": quick_chain(2, 3),
+    "€": quick_chain(1, 4),
+    "₹": quick_chain(2, 4),
+    "'": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, *_: [
+            attrdict(
+                arity=links[0].arity or 1,
+                call=fix_args(
+                    lambda w, x: [
+                        variadic_link(links[0], (i, j))
+                        for i, j in zip(iterable(w), iterable(x))
+                    ]
+                    if w is not None else
+                    [variadic_link(links[0], (i,)) for i in iterable(x)]
+                )
+            )
+        ]
+    ),
+}
 
 train_separators = {
     "ø": (0, True),

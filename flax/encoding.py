@@ -17,7 +17,7 @@ codepage += "´˝˘¨˜¯¼½¾×⁼∞∝∀∃÷"
 codepage += "∘○⟜⊸∊∴∵∂⊂⊃⊆⊇⊏⊐⊑⊒"
 codepage += "αβγδεζηθικλνξπρς"
 codepage += "στυφχψωϕΔ⌈⌊⌉⌋ØÆŒ"
-codepage += "√ΣΠ⊢⊣⊤⊥∧∨∪∩⍋⍒⍤æœ"
+codepage += "√ΣΠ⊢⊣⊤⊥∧∨∪∩⊶⍬⍤æœ"
 
 assert len(codepage) == 256
 

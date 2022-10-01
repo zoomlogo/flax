@@ -449,11 +449,11 @@ def variadic_link(link, args, force_dyad=False):
         return link.call()
     elif link.arity == 1:
         if force_dyad:
-            return [args[0], link.call(args[1])]
+            return [args[0], monadic_link(link, args[1])]
         else:
-            return link.call(args[0])
+            return monadic_link(link, args[0])
     elif link.arity == 2:
-        return link.call(args[0], args[1])
+        return dyadic_link(link, args[0], args[1])
 
 
 def while_loop(link, cond, args, cumulative=False):
