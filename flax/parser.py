@@ -80,9 +80,9 @@ def parse(tokens):
         for subtrain in subtrains:
             stack = []
             arity, is_forward = train_separators.get(str(subtrain[0][1]), (-1, True))
-            if arity == 1 and subtrain[0][1] == "[":
+            if arity == 1 and subtrain[0][1] == "(":
                 subtrain.insert(1, [TOKEN_TYPE.QUICK, "'"])
-            if arity == 1 and subtrain[0][1] == "]":
+            if arity == 1 and subtrain[0][1] == ")":
                 subtrain.insert(1, [TOKEN_TYPE.QUICK, "⊥"])
             if arity != -1:
                 subtrain = subtrain[1:]

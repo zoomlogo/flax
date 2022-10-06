@@ -12,7 +12,7 @@ unused (reserved): TİẆṅṙẏΛ
 
 SYNTAX
 - ¯0123456789i. number
-- () explicit list syntax
+- [] explicit list syntax
 - " string (actually list of ints)
 - _ next character's value
 - : next two character's value
@@ -22,8 +22,8 @@ CHAIN SEPARATORS
 - µ start a new monadic chain
 - ð start a new dyadic chain
 - ɓ start a new dyadic chain with reversed arguments
-- [ start a new monadic chain which maps over the previous one
-- ] start a new monadic chain which filters over the previous one
+- ( start a new monadic chain which maps over the previous one
+- ) start a new monadic chain which filters over the previous one
 
 SINGLE BYES NILADS
 - ⁰ 10
