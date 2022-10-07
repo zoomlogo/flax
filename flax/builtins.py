@@ -321,11 +321,11 @@ quicks = {
                         variadic_link(links[0], (i, j))
                         for i, j in zip(iterable(w), iterable(x))
                     ]
-                    if w is not None else
-                    [variadic_link(links[0], (i,)) for i in iterable(x)]
-                )
+                    if w is not None
+                    else [variadic_link(links[0], (i,)) for i in iterable(x)]
+                ),
             )
-        ]
+        ],
     ),
 }
 
