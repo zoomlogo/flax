@@ -44,7 +44,7 @@ __all__ = [
 
 def apply_at(link, indicies, *args):
     """apply_at: apply link at indicies"""
-    args = list(filter(None.__ne__, args))
+    args = [i for i in args if i is not None]
     x = iterable(args[-1])
     if len(args) == 2:
         w = args[0]
@@ -175,7 +175,7 @@ def dyadic_link(link, w, x, flat_w=False, flat_x=False):
 
 def ffilter(links, *args, inverse=False, permutation=False):
     """ffilter: filter with optional inverse or permuting the argument"""
-    args = list(filter(None.__ne__, args))
+    args = [i for i in args if i is not None]
     x = iterable(args[-1], range_=True)
     if len(args) == 2:
         w = args[0]
@@ -216,7 +216,7 @@ def fix_args(f):
 
 def fold(links, *args, right=False, initial=False):
     """fold: fold over args"""
-    args = list(filter(None.__ne__, args))
+    args = [i for i in args if i is not None]
     x = iterable(args[-1])
     if len(args) == 2:
         w = args[0]
@@ -366,7 +366,7 @@ def quick_chain(arity, min_length):
 
 def scan(links, *args, right=False, initial=False):
     """scan: scan over args"""
-    args = list(filter(None.__ne__, args))
+    args = [i for i in args if i is not None]
     x = iterable(args[-1])
     if len(args) == 2:
         w = args[0]
@@ -392,7 +392,7 @@ def scan(links, *args, right=False, initial=False):
 
 def scan_fixedpoint(links, *args):
     """scan_fixedpoint: run link over arg until a fixed point is reached"""
-    args = list(filter(None.__ne__, args))
+    args = [i for i in args if i is not None]
     x = args[-1]
     if len(args) == 2:
         w = args[0]
@@ -409,7 +409,7 @@ def scan_fixedpoint(links, *args):
 
 def sort(links, *args):
     """sort: sort args according to links"""
-    args = list(filter(None.__ne__, args))
+    args = [i for i in args if i is not None]
     x = iterable(args[-1], digits=True)
     if len(args) == 2:
         w = args[0]
@@ -430,7 +430,7 @@ def trailing_nilad(chain):
 
 
 def variadic_chain(chain, args):
-    args = list(filter(None.__ne__, args))
+    args = [i for i in args if i is not None]
     if len(args) == 0:
         return niladic_chain(chain)
     elif len(args) == 1:
@@ -441,7 +441,7 @@ def variadic_chain(chain, args):
 
 def variadic_link(link, args, force_dyad=False):
     """call link with args"""
-    args = list(filter(None.__ne__, args))
+    args = [i for i in args if i is not None]
     if link.arity == -1:
         link.arity = len(args)
 
