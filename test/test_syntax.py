@@ -53,3 +53,14 @@ def test_lists():
     assert run("[1+2]") == [1, 2]  # any delimeter
     assert run("[[1 2],[3 4]]") == [[1, 2], [3, 4]]
     assert run('["Hi" 1]') == [[72, 105], 1]
+
+
+def test_nilads():
+    assert run("⁰") == 10
+    assert run("¹") == 16
+    assert run("²") == 26
+    assert run("³") == 32
+    assert run("⁴") == 64
+    assert run("⁵") == 100
+    assert run("⁶") == 256
+    assert run("⁷") == -2
