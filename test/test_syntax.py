@@ -65,6 +65,8 @@ def test_nilads():
     assert run("⁶") == 256
     assert run("⁷") == -2
 
+
+def test_nilads_8_9():
     assert run("⁸") == 13
     assert run("⁹") == 11
     assert run("⁸", 3) == 13
@@ -72,6 +74,8 @@ def test_nilads():
     assert run("⁸", 3, 4) == 3
     assert run("⁹", 3, 4) == 4
 
+
+def test_nilads_o():
     assert run("∃") == 0
     assert run("⍬") == []
     assert run("⊶") == [0, 1]
