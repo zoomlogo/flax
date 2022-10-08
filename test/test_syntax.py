@@ -45,3 +45,11 @@ def test_string():
 def test_next_n():
     assert run("_E") == [69]
     assert run(":Hi") == [72, 105]
+
+
+def test_lists():
+    assert run("[1]") == [1]
+    assert run("[1, 2]") == [1, 2]
+    assert run("[1+2]") == [1, 2]  # any delimeter
+    assert run("[[1 2],[3 4]]") == [[1,2],[3,4]]
+    assert run('["Hi" 1]') == [[72,105],1]
