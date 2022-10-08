@@ -64,3 +64,14 @@ def test_nilads():
     assert run("⁵") == 100
     assert run("⁶") == 256
     assert run("⁷") == -2
+
+    assert run("⁸") == 13
+    assert run("⁹") == 11
+    assert run("⁸", 3) == 13
+    assert run("⁹", 3) == 3
+    assert run("⁸", 3, 4) == 3
+    assert run("⁹", 3, 4) == 4
+
+    assert run("∃") == 0
+    assert run("⍬") == []
+    assert run("⊶") == [0, 1]
