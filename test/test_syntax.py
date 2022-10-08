@@ -67,9 +67,9 @@ def test_nilads():
 
 
 def test_nilads_8_9():
-    assert run("⁸") == 13
-    assert run("⁹") == 11
-    assert run("⁸", 3) == 13
+    assert run("⁸") == 11
+    assert run("⁹") == 13
+    assert run("⁸", 3) == 11
     assert run("⁹", 3) == 3
     assert run("⁸", 3, 4) == 3
     assert run("⁹", 3, 4) == 4
