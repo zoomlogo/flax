@@ -68,6 +68,6 @@ def test_alleq():  # E
 
 
 def test_aleq_r():  # Ė
-    assert run("E", [1, 2, 3]) == []
-    assert run("E", [2, 2, 2]) == 2
-    assert run("E", [[1, 2], [1, 2]]) == [1, 2]
+    assert run("Ė", [1, 2, 3]) == []
+    assert run("Ė", [2, 2, 2]) == 2
+    assert run("Ė", [[1, 2], [1, 2]]) == [1, 2]
