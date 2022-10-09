@@ -260,6 +260,7 @@ def group(links, *args):
     res = group_indicies(variadic_chain(links, iterable(x)))
     return res
 
+
 def max_arity(links):
     """max_arity: return the maximum arity of the links"""
     return (

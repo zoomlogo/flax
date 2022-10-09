@@ -374,7 +374,7 @@ quicks = {
                     if w is not None
                     else [variadic_link(links[0], (i,)) for i in iterable(x)]
                 ),
-            )
+            ),
         ],
     ),
     "ρ": attrdict(
@@ -385,10 +385,14 @@ quicks = {
                 call=fix_args(
                     lambda w, x: [
                         variadic_link(links[0], (i, j))
-                        for i, j in zip(permutations(iterable(w)), permutations(iterable(x)))
+                        for i, j in zip(
+                            permutations(iterable(w)), permutations(iterable(x))
+                        )
                     ]
                     if w is not None
-                    else [variadic_link(links[0], (i,)) for i in permutations(iterable(x))]
+                    else [
+                        variadic_link(links[0], (i,)) for i in permutations(iterable(x))
+                    ]
                 ),
             )
         ],
@@ -702,7 +706,11 @@ quicks = {
         qlink=lambda links, *_: [
             attrdict(
                 arity=1,
-                call=lambda x: variadic_link(links[0].call,(transpose(variadic_link(links[0].call,(x,),force_monad=True)),), force_monad=True),
+                call=lambda x: variadic_link(
+                    links[0].call,
+                    (transpose(variadic_link(links[0].call, (x,), force_monad=True)),),
+                    force_monad=True,
+                ),
             )
         ],
     ),
@@ -721,9 +729,14 @@ quicks = {
     "¾": attrdict(
         condition=lambda links: len(links) == 2,
         qlink=lambda links, *_: [
-            attrdict(arity=2, call=lambda w, x: dyadic_link(links[1], monadic_link(links[0], w), monadic_link(links[0], x)))
-        ]
-    )
+            attrdict(
+                arity=2,
+                call=lambda w, x: dyadic_link(
+                    links[1], monadic_link(links[0], w), monadic_link(links[0], x)
+                ),
+            )
+        ],
+    ),
 }
 
 train_separators = {
