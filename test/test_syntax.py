@@ -55,6 +55,9 @@ def test_lists():
     assert run('["Hi" 1]') == [[72, 105], 1]
 
 
+def test_chain_separators():
+    pass # TODO
+
 def test_nilads():
     assert run("⁰") == 10
     assert run("¹") == 16
