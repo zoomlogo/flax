@@ -34,23 +34,27 @@ def test_b2i():  # Ḃ
     assert run("Ḃ", [-1, -1, -1]) == -7
     assert run("Ḃ", [[1, 0, 1, 1], [1, 0, 1]]) == [11, 5]
 
-def test_complement(): # C
+
+def test_complement():  # C
     assert run("C") == 1
     assert run("C", 1) == 0
     assert run("C", 10) == -9
     assert run("C", [10, -10, [4]]) == [-9, 11, [-3]]
 
-def test_randomly_choose(): # Ċ
+
+def test_randomly_choose():  # Ċ
     assert run("Ċ", [1, 2, 3]) in [1, 2, 3]
 
-def test_i2d(): # D
+
+def test_i2d():  # D
     assert run("D") == [0]
     assert run("D", 2) == [2]
     assert run("D", 234) == [2, 3, 4]
     assert run("D", -23) == [-2, -3]
     assert run("D", [-45, 45]) == [[-4, -5], [4, 5]]
 
-def test_d2i(): # Ḋ
+
+def test_d2i():  # Ḋ
     assert run("Ḋ") == 0
     assert run("Ḋ", [1, 2]) == 12
     assert run("Ḋ", [-6, -9]) == -69
