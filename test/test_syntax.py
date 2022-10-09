@@ -56,7 +56,8 @@ def test_lists():
 
 
 def test_chain_separators():
-    pass # TODO
+    pass  # TODO
+
 
 def test_nilads():
     assert run("⁰") == 10
