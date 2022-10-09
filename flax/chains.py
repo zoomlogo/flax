@@ -6,6 +6,7 @@ from flax.common import attrdict, flax_print
 from flax.error import debug, error
 from flax.funcs import (
     depth,
+    group_indicies,
     permutations,
     iterable,
     sliding_window,
@@ -26,6 +27,7 @@ __all__ = [
     "fix_args",
     "fold",
     "fold_fixedpoint",
+    "group",
     "max_arity",
     "monadic_chain",
     "monadic_link",
@@ -247,8 +249,16 @@ def fold(links, *args, right=False, initial=False):
 
 def fold_fixedpoint(links, *args):
     """fold_fixedpoint: run link over arg until a fixed point is reached"""
-    return scanfixedpoint(links, *args)[-1]
+    return scan_fixedpoint(links, *args)[-1]
 
+
+def group(links, *args):
+    """group: sort group according to links"""
+    args = [i for i in args if i is not None]
+    x = iterable(args[-1], digits_=True)
+    # TODO: lens(links) == 2 case
+    res = group_indicies(variadic_chain(links, iterable(x)))
+    return res
 
 def max_arity(links):
     """max_arity: return the maximum arity of the links"""
@@ -410,7 +420,7 @@ def scan_fixedpoint(links, *args):
 def sort(links, *args):
     """sort: sort args according to links"""
     args = [i for i in args if i is not None]
-    x = iterable(args[-1], digits=True)
+    x = iterable(args[-1], digits_=True)
     if len(args) == 2:
         w = args[0]
     else:
@@ -439,7 +449,7 @@ def variadic_chain(chain, args):
         return dyadic_chain(chain, *args)
 
 
-def variadic_link(link, args, force_dyad=False):
+def variadic_link(link, args, force_dyad=False, force_monad=False):
     """call link with args"""
     args = [i for i in args if i is not None]
     if link.arity == -1:
@@ -453,7 +463,10 @@ def variadic_link(link, args, force_dyad=False):
         else:
             return monadic_link(link, args[0])
     elif link.arity == 2:
-        return dyadic_link(link, args[0], args[1])
+        if force_monad:
+            return dyadic_link(link, args[0], args[0])
+        else:
+            return dyadic_link(link, args[0], args[1])
 
 
 def while_loop(link, cond, args, cumulative=False):
