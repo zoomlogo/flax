@@ -59,3 +59,15 @@ def test_d2i():  # Ḋ
     assert run("Ḋ", [1, 2]) == 12
     assert run("Ḋ", [-6, -9]) == -69
     assert run("Ḋ", [[2, 3, 1], [-5, -3]]) == [231, -53]
+
+def test_alleq(): # E
+    assert run("E") == 1
+    assert run("E", [1, 2, 3]) == 0
+    assert run("E", [2, 2, 2]) == 1
+    assert run("E", [[1, 2], [1, 2]]) == 1
+
+def test_aleq_r(): # Ė
+    assert run("E") == 0
+    assert run("E", [1, 2, 3]) == []
+    assert run("E", [2, 2, 2]) == 2
+    assert run("E", [[1, 2], [1, 2]]) == [1, 2]
