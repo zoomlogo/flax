@@ -72,18 +72,21 @@ def test_aleq_r():  # Ė
     assert run("Ė", [2, 2, 2]) == 2
     assert run("Ė", [[1, 2], [1, 2]]) == [1, 2]
 
-def test_flatten(): # F
+
+def test_flatten():  # F
     assert run("F") == [0]
     assert run("F", [1, 2]) == [1, 2]
     assert run("F", [[[[1]]]]) == [1]
     assert run("F", [1, 2, [3, 4, [5], [[6]]], []]) == [1, 2, 3, 4, 5, 6]
 
-def test_falsey_indicies(): # Ḟ
+
+def test_falsey_indicies():  # Ḟ
     assert run("Ḟ") == [0]
     assert run("Ḟ", [1, 2]) == []
     assert run("Ḟ", [1, 0, 2]) == [1]
     assert run("Ḟ", [0, 3, 2, 1, 0, 0]) == [0, 4, 5]
 
-def test_group_indicies(): # G
+
+def test_group_indicies():  # G
     assert run("G", [0]) == [[0]]
     assert run("G", [0, 1, 0, 0, 1]) == [[0, 2, 3], [1, 4]]
