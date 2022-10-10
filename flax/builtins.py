@@ -732,7 +732,7 @@ quicks = {
             attrdict(
                 arity=2,
                 call=lambda w, x: dyadic_link(
-                    links[1], monadic_link(links[0], w), monadic_link(links[0], x)
+                    links[1], variadic_link(links[0], (x, w)), variadic_link(links[0], (w, x))
                 ),
             )
         ],

@@ -462,7 +462,7 @@ def variadic_link(link, args, force_dyad=False, force_monad=False):
         if force_dyad:
             return [args[0], monadic_link(link, args[1])]
         else:
-            return monadic_link(link, args[0])
+            return monadic_link(link, args[-1])
     elif link.arity == 2:
         if force_monad:
             return dyadic_link(link, args[0], args[0])
