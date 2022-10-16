@@ -41,7 +41,7 @@ For example: `+` is a dyadic atom which adds its arguments.
 Quicks are sort of like Vyxal's modifiers.
 Quicks pop links from the left during parse time.
 
-For example: `¨` is the quick which maps a link over its argument.
+For example: `'` is the quick which maps a link over its argument.
 
 ### Links
 Links are atoms, or group of atoms processed by quicks.
@@ -53,48 +53,43 @@ Chains are evaluated from right to left.
 
 Certain rules are followed when chains are processed.
 
-#### Trailing constant chains
-A trailing constant chain (TCC) is a special type of chain that ends with a nilad and is preceded by monads, dyad-nilad pairs, and nilad-dyad pairs.
-Essentially, the nilad must not be paired with a dyad immediately before it.
-You can think of it as a chain that takes no arguments (i.e. is niladic) because it begins with a nilad itself and then precedes it with a chain of monadic-like operations.
-Certain chaining rules depend on this.
+Here are those rules:
+```
+$ -> accumulator
+w/x -> right / left argument of chain
 
-#### Niladic chains
-- If the chain ends with a nilad say `1`, the accumulator (we will call it `λ`) is that nilad.
-`λ = 1`.
-- Otherwise `λ = 0`.
+UNIVERSAL RULES:
+monads are applied normally:
+FGH -> F(G(H($)))
+FHH -> F(H(H($)))
 
-Now the rest of the chain is evaluated monadically.
+dyads take the right (or left) argument of the chain:
+f -> f(w,$)
+g -> g(x,$)
 
-#### Monadic chains
-- If the chain ends with an TCC, `... 1` then `λ = 1` and the rest of the chain is evaluated.
-- Otherwise `λ = x` (`x` is the right argument).
+nilad-dyads take nilads as the right argument of the dyad
+4g -> g(4,$)
 
-Now one by one the atoms are considered from right to left, and are applied to the accumulator `λ` according to this table:
-Code|New λ|Arities
-----|-----|-------
-`F +`|`F(x) + λ`| 1, 2
-`1 +`|`1 + λ`| 0, 2
-`+ 1`|`λ + 1`| 2, 0
-`+`|`x + λ`| 2
-`F`|`F(λ)`| 1
+dyad-nilads take nilads as the left argument of the dyad
+g4 -> g($,4)
 
-#### Dyadic chains
-- If the chain ends with an TCC `... 1` then `λ = 1`  and the rest of the chain is evaluated.
-- If the chain ends with 3 dyads `+ × ÷` then `λ = w ÷ x` (`w` is the left argument) and the rest of the chain is evaluated.
-- Otherwise `λ = x`.
+unparseable nilads are pusedo-stranded when they are next to dyads, otherwise they trigger a hidden dyad component associated with monads, these are preparsed after the lexer:
+0 4 5g -> [0,4,5]g
 
-Now one by one the atoms are considered from right to left, and are applied to the accumulator `λ` according to this table:
-Code|New λ|Arities
-----|-----|-------
-`1 × +`| `1 × (w + λ)`| 0₁, 2, 2 
-`× +`| `(w × x) + λ`| 2, 2
-`1 +`|`1 + λ`| 0, 2
-`+ 1`|`λ + 1`| 2, 0
-`+`|`w + λ`| 2
-`F`|`F(λ)`| 1
+the ending most nilad becomes the accumulator:
+1 -> $ = 1
 
-₁ The rule only applies if the nilad is part of a TCC.
+MONADIC:
+monad-dyads modify the left argument
+Ff -> f(F(x),$)
+
+DYADIC:
+dyad-dyad pairs have the first dyad to be supplied with the arguments, its result gets passed to the left argument of the other dyad
+fg -> g(f(w,x),$)
+
+nilad-dyad-dyad triplet, i can't explain so just look:
+4gh -> g(4,h(w,$)))
+```
 
 ## Datatypes
 There are 2 datatypes:
@@ -111,13 +106,13 @@ There are 2 datatypes:
 Here are the syntatic sugar included with flax.
 Syntax|Description|Example
 ------|-----------|-------
-`'`|Start / End a string|`'Hello!'`
+`"`|Start / End a string|`"Hello!"`
 `012456789`|A number|`12`
-`j`|Defines a complex number. By default it is `0j1`.|`2j`
+`i`|Defines a complex number. By default it is `0i1`.|`2i`
 `.`|Defines a decimal number. By default it is `0.5`|`.2`
-`[]`|Start / End a list|`[1 2 [3 4]]`
-`₊`|Next character's value|`₊f`
-`₋`|Next 2 characters' value|`₋(]`
+`()`|Start / End a list|`(1 2 (3 4))`
+`_`|Next character's value|`_f`
+`:`|Next 2 characters' value|`:()`
 
 ## Chain separators
 Chain separators separate chains within the same line.
@@ -125,6 +120,7 @@ Chain Separator|Description
 ---------------|-----------
 `ø`|Start a niladic chain.
 `µ`|Start a monadic chain.
-`г`|Start a monadic chain which maps over its argument.
+`[`|Start a monadic chain which maps over its argument.
+`]`|Start a monadic chain which filters over its argument.
 `ð`|Start a dyadic chain.
 `ɓ`|Start a dyadic chain with reversed arguments.

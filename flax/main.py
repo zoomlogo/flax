@@ -13,17 +13,17 @@ import flax.builtins
 __all__ = ["main", "flax_run"]
 
 # function for running flax
-def flax_run(code, args):
+def flax_run(code, *args):
     tokens = tokenise(code)
     debug("tokens: " + str(tokens))
     parsed = parse(tokens)
     debug("parsed: " + str(parsed))
     # run
     # niladic chains 11 and 13
-    # monadic ones only 13, dyadic nothing
-    flax.builtins.atoms["₎"].call = lambda: args[-1] if len(args) > 0 else 11
-    flax.builtins.atoms["₍"].call = lambda: args[0] if len(args) > 1 else 13
-    flax.common.flax_print(variadic_chain(parsed[-1] if parsed else "", args))
+    # monadic ones only 11, dyadic nothing
+    flax.builtins.atoms["⁸"].call = lambda: args[0] if len(args) > 1 else 11
+    flax.builtins.atoms["⁹"].call = lambda: args[-1] if len(args) > 0 else 13
+    return variadic_chain(parsed[-1] if parsed else "", args)
 
 
 def main():
@@ -73,7 +73,7 @@ def main():
                 sys.argv = sys.argv[1:]
                 args = [eval(arg) for arg in sys.argv]
                 args = [to_chars(arg) if type(arg) == str else arg for arg in args]
-                flax_run(code, args)
+                flax.common.flax_print(flax_run(code, *args))
         except KeyboardInterrupt:
             error("kbdi", 130)
     else:
@@ -84,6 +84,6 @@ def main():
                 args = [a.strip() for a in input(">>> ").split("|") if a != ""]
                 args = [eval(arg) for arg in args]
                 args = [to_chars(arg) if type(arg) == str else arg for arg in args]
-                flax_run(code, args)
+                flax.common.flax_print(flax_run(code, *args))
         except KeyboardInterrupt:
             error("kbdi", 130)

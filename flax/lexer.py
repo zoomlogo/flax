@@ -3,22 +3,13 @@ import collections
 import enum
 
 from flax.builtins import *
+from flax.common import TOKEN_TYPE
 
 __all__ = ["TOKEN_TYPE", "tokenise"]
 
 
-class TOKEN_TYPE(enum.Enum):
-    NUMBER = 1
-    STRING = 2
-    TRAIN_SEPARATOR = 3
-    ATOM = 4
-    QUICK = 5
-    NEWLINE = 6
-    LIST = 7
-
-
 def tokenise(program):
-    # tokenise: convert program into tokens
+    """tokenise: convert program into tokens"""
     tokens = []
     program = collections.deque(program)
 
@@ -75,6 +66,8 @@ def tokenise(program):
             tokens.append([TOKEN_TYPE.TRAIN_SEPARATOR, head])
         elif head in atoms:
             tokens.append([TOKEN_TYPE.ATOM, head])
+        elif head in transpiled_atoms:
+            tokens.extend(transpiled_atoms[head])
         elif head in quicks:
             tokens.append([TOKEN_TYPE.QUICK, head])
         elif head in DIAGRAPHS and program:

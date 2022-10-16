@@ -4,11 +4,11 @@ import functools
 import json
 import sys
 import math
-import more_itertools
-import operator
-import random as rrandom
+import more_itertools as mit
+import operator as Op
+import random as Random
 
-from flax.common import flax_print, mpc, mpf, inf, mp, attrdict
+from flax.common import *
 from flax.funcs import *
 from flax.chains import *
 
@@ -27,386 +27,293 @@ __all__ = [
     "ZERO",
     "DIGITS",
     "atoms",
+    "transpiled_atoms",
     "quicks",
     "train_separators",
 ]
 
 # constants
-COMMENT = "⍝"
-COMPLEX_DELIMETER = "j"
+COMMENT = "‟"
+COMPLEX_DELIMETER = "i"
 DECIMAL_POINT = "."
-DIAGRAPHS = "_;:ᵟ"
+DIAGRAPHS = "ØÆŒæœΔ"
 LIST_DELIMETER_L = "["
 LIST_DELIMETER_R = "]"
 NEGATIVE_SIGN = "¯"
 NEWLINE = "\n"
 STRING_DELIMETER = '"'
-STRING_NEXT_1 = "₋"
-STRING_NEXT_2 = "₊"
 ZERO = "0"
 DIGITS = ZERO + "123456789" + DECIMAL_POINT + COMPLEX_DELIMETER + NEGATIVE_SIGN
+STRING_NEXT_1 = "_"
+STRING_NEXT_2 = ":"
 
 # dicts
 atoms = {
-    "!": attrdict(arity=1, call=vecc(mp.factorial)),
-    "#": attrdict(arity=1, call=len),
-    "%": attrdict(arity=2, call=vecc(operator.mod)),
-    "&": attrdict(arity=2, call=vecc(operator.and_)),
-    "(": attrdict(arity=1, call=prefixes),
-    ")": attrdict(arity=1, call=suffixes),
-    "*": attrdict(arity=2, call=vecc(operator.pow)),
-    "+": attrdict(arity=2, call=vecc(operator.add)),
-    ",": attrdict(arity=2, call=lambda w, x: iterable(w) + iterable(x)),
-    "-": attrdict(arity=2, call=vecc(operator.sub)),
-    "/": attrdict(arity=2, call=repeat),
-    ":*": attrdict(
-        arity=2, call=vecc(lambda w, x: (mp.matrix(w) ** x).tolist(), lfull=False)
+    "⁰": attrdict(arity=0, call=lambda: 10),
+    "¹": attrdict(arity=0, call=lambda: 16),
+    "²": attrdict(arity=0, call=lambda: 26),
+    "³": attrdict(arity=0, call=lambda: 32),
+    "⁴": attrdict(arity=0, call=lambda: 64),
+    "⁵": attrdict(arity=0, call=lambda: 100),
+    "⁶": attrdict(arity=0, call=lambda: 256),
+    "⁷": attrdict(arity=0, call=lambda: -2),
+    "⁸": attrdict(arity=0, call=lambda: 0),
+    "⁹": attrdict(arity=0, call=lambda: 0),
+    "∃": attrdict(arity=0, call=lambda: 0),
+    "⊶": attrdict(arity=0, call=lambda: [0, 1]),
+    "⍬": attrdict(arity=0, call=lambda: []),
+    "A": attrdict(arity=1, dx=0, call=abs),
+    "Ȧ": attrdict(arity=1, call=lambda x: int(any(iterable(x)))),
+    "B": attrdict(arity=1, dx=0, call=binary),
+    "Ḃ": attrdict(arity=1, dx=1, call=binary_i),
+    "C": attrdict(arity=1, dx=0, call=lambda x: 1 - x),
+    "Ċ": attrdict(arity=1, call=Random.choice),
+    "D": attrdict(arity=1, dx=0, call=digits),
+    "Ḋ": attrdict(arity=1, dx=1, call=digits_i),
+    "E": attrdict(arity=1, call=boolify(mit.all_equal)),
+    "Ė": attrdict(
+        arity=1, call=lambda x: iterable(x)[0] if mit.all_equal(iterable(x)) else []
     ),
-    ":<": attrdict(arity=2, call=vecc(operator.ilshift)),
-    ":>": attrdict(arity=2, call=vecc(operator.irshift)),
-    ":j": attrdict(arity=2, call=vecc(lambda w, x: mpf(w, x))),
-    ":Ȧ": attrdict(arity=2, call=vecc(mp.atan2)),
-    ":•": attrdict(arity=2, call=lambda w, x: (mp.matrix(w) * mp.matrix(x)).tolist()),
-    ";$": attrdict(arity=1, call=lambda x: sublists(permutations(x))),
-    ";1": attrdict(arity=1, call=ones),
-    ";?": attrdict(arity=1, call=vecc(random)),
-    ";A": attrdict(arity=1, call=vecc(mp.acos)),
-    ";B": attrdict(
-        arity=1,
-        call=lambda x: iterable(x, digits=True) + iterable(x, digits=True)[::-1],
-    ),
-    ";C": attrdict(arity=1, call=vecc(mp.cos)),
-    ";D": attrdict(arity=1, call=lambda x: mp.det(x)),
-    ";F": attrdict(arity=1, call=vecc(prime_factors)),
-    ";G": attrdict(
-        arity=1,
-        call=lambda x: ones(iterable(x) + [iterable(e)[::-1] for e in iterable(x)]),
-    ),
-    ";I": attrdict(
-        arity=1, call=vecc(lambda x: [[i == j for i in range(x)] for j in range(x)])
-    ),
-    ";J": attrdict(arity=1, call=vecc(lambda x: [mpc(x).real, mpc(x).imag])),
-    ";L": attrdict(arity=1, call=vecc(mp.ln)),
-    ";M": attrdict(
-        arity=1,
-        call=lambda x: sum(iterable(x, digits=True)) / len(iterable(x, digits=True)),
-    ),
-    ";P": attrdict(arity=1, call=mp.polyroots),
-    ";R": attrdict(arity=1, call=vecc(lambda x: list(range(2, x)))),
-    ";S": attrdict(arity=1, call=vecc(mp.sin)),
-    ";T": attrdict(arity=1, call=vecc(mp.tan)),
-    ";b": attrdict(arity=1, call=to_braille),
-    ";c": attrdict(arity=1, call=vecc(mp.cosh)),
-    ";f": attrdict(arity=1, call=vecc(fibonacci)),
-    ";j": attrdict(
-        arity=1, call=lambda x: json_decode(json.loads("".join(map(chr, flatten(x)))))
-    ),
-    ";l": attrdict(arity=1, call=vecc(lucas)),
-    ";r": attrdict(arity=1, call=vecc(lambda x: list(range(x + 1)))),
-    ";s": attrdict(arity=1, call=vecc(mp.sinh)),
-    ";t": attrdict(arity=1, call=vecc(mp.tanh)),
-    ";°": attrdict(arity=1, call=vecc(mp.radians)),
-    ";²": attrdict(arity=1, call=vecc(lambda x: int(mp.sqrt(x)) == mp.sqrt(x))),
-    ";Ċ": attrdict(arity=1, call=vecc(mp.sec)),
-    ";ċ": attrdict(arity=1, call=vecc(lambda x: 1 / (x + 1) * mp.binomial(2 * x, x))),
-    # ";Ġ": attrdict(arity=1, call=vecc(graph_distance)),
-    ";Ȧ": attrdict(arity=1, call=vecc(mp.atan)),
-    ";Ḃ": attrdict(
-        arity=1,
-        call=lambda x: [
-            iterable(e, digits=True) + iterable(e, digits=True)[::-1]
-            for e in iterable(x)
-        ],
-    ),
-    ";Ḋ": attrdict(arity=1, call=lambda x: diagonals(x, antidiagonals=True)),
-    ";Ḍ": attrdict(arity=1, call=lambda x: diagonals(x)),
-    ";Ṗ": attrdict(arity=1, call=vecc(nprimes)),
-    ";Ṡ": attrdict(arity=1, call=vecc(mp.csc)),
-    ";Ṫ": attrdict(arity=1, call=vecc(mp.cot)),
-    ";Ạ": attrdict(arity=1, call=vecc(mp.asin)),
-    ";√": attrdict(arity=1, call=vecc(lambda x: int(mp.sqrt(x)))),
-    "<": attrdict(arity=2, call=vecc(boolify(operator.lt))),
-    "=": attrdict(arity=2, call=vecc(boolify(operator.eq))),
-    ">": attrdict(arity=2, call=vecc(boolify(operator.gt))),
-    "A": attrdict(arity=1, call=vecc(abs)),
-    "B": attrdict(arity=1, call=vecc(to_bin)),
-    "C": attrdict(arity=1, call=vecc(lambda x: 1 - x)),
-    "D": attrdict(arity=1, call=vecc(to_digits)),
-    "E": attrdict(arity=1, call=more_itertools.all_equal),
     "F": attrdict(arity=1, call=flatten),
+    "Ḟ": attrdict(
+        arity=1, call=lambda x: [i for i, e in enumerate(iterable(x)) if not e]
+    ),
     "G": attrdict(arity=1, call=group_indicies),
-    "H": attrdict(arity=1, call=lambda x: iterable(x).pop(0)),
-    "I": attrdict(
-        arity=1, call=lambda x: list(more_itertools.difference(x, initial=0))
-    ),
-    "J": attrdict(arity=1, call=lambda x: list(range(len(x)))),
-    "K": attrdict(arity=1, call=lambda x: list(itertools.accumulate(iterable(x)))),
-    "L": attrdict(arity=1, call=lambda x: iterable(x).pop()),
-    "M": attrdict(arity=1, call=vecc(lambda x: x * x)),
-    "N": attrdict(arity=1, call=lambda x: iterable(x)[:-1]),
-    "O": attrdict(arity=1, call=lambda x: x),
-    "P": attrdict(arity=1, call=permutations),
-    "Q": attrdict(arity=1, call=vecc(lambda x: x / 2)),
-    "R": attrdict(
+    "Ġ": attrdict(arity=1, call=group_equal),
+    "H": attrdict(arity=1, dx=0, call=lambda x: x / 2),
+    "Ḣ": attrdict(arity=1, dx=0, call=lambda x: 2 * x),
+    "J": attrdict(arity=1, call=lambda x: iota(len(iterable(x)))),
+    "L": attrdict(arity=1, call=lambda x: len(iterable(x))),
+    "M": attrdict(arity=1, dx=0, call=lambda x: x**2),
+    "Ṁ": attrdict(
         arity=1,
-        call=lambda x: [e[::-1] for e in x] if type(x) == list else to_digits(x)[::-1],
+        call=lambda x: [i for i, e in enumerate(iterable(x)) if e == max(iterable(x))],
     ),
-    "S": attrdict(arity=1, call=lambda x: list(sorted(iterable(x)))),
-    "T": attrdict(arity=1, call=lambda x: iterable(x)[1:]),
-    "U": attrdict(arity=1, call=lambda x: list(set(iterable(x, digits=True)))),
-    "V": attrdict(arity=1, call=vecc(mp.isprime)),
+    "N": attrdict(arity=1, dx=0, call=Op.neg),
+    "Ṅ": attrdict(arity=1, dx=0, call=mp.sign),
+    "O": attrdict(arity=1, call=lambda x: x),
+    "Ȯ": attrdict(
+        arity=1, dx=0, call=lambda x: [i for i in range(1, int(x) + 1) if x % i == 0]
+    ),
+    "P": attrdict(arity=1, call=permutations),
+    "Ṗ": attrdict(arity=1, call=shuffle),
+    "Q": attrdict(
+        arity=1,
+        dx=2,
+        call=lambda x: [e if i % 2 == 0 else e[::-1] for i, e in enumerate(x)],
+    ),
+    "R": attrdict(arity=1, call=lambda x: iterable(x, digits_=True)[::-1]),
+    "S": attrdict(arity=1, call=sublists),
+    "Ṫ": attrdict(arity=1, call=lambda x: [i for i, e in enumerate(iterable(x)) if e]),
+    "U": attrdict(arity=1, call=lambda x: list(mit.unique_everseen(x))),
+    "V": attrdict(arity=1, dx=0, call=lambda x: int(mp.isprime(x))),
     "W": attrdict(arity=1, call=where),
     "X": attrdict(
         arity=1,
         call=lambda x: split(
-            iterable(x, digits=True), len(iterable(x, digits=True)) // 2
+            len(iterable(x, digits_=True)) // 2, iterable(x, digits_=True)
         ),
     ),
+    "Ẋ": attrdict(arity=1, call=lambda x: split(2, x)),
     "Y": attrdict(
-        arity=1,
-        call=lambda x: [
-            e for i, e in enumerate(iterable(x, digits=True)) if i % 2 == 0
-        ],
+        arity=1, call=lambda x: [e for i, e in enumerate(iterable(x)) if i % 2 == 0]
     ),
-    "Z": attrdict(arity=1, call=lambda x: list(map(list, zip(*iterable(x))))),
-    "\\": attrdict(arity=1, call=unrepeat),
-    "^": attrdict(arity=2, call=vecc(operator.xor)),
-    "_(": attrdict(arity=0, call=lambda: to_chars("()")),
-    "_+": attrdict(arity=0, call=lambda: [1, -1]),
-    "_-": attrdict(arity=0, call=lambda: [-1, 1]),
-    "_/": attrdict(arity=0, call=lambda: to_chars("/\\")),
-    "_0": attrdict(arity=0, call=lambda: [0, 0]),
-    "_1": attrdict(arity=0, call=lambda: [1, 1]),
-    "_2": attrdict(arity=0, call=lambda: [2, 2]),
-    "_<": attrdict(arity=0, call=lambda: to_chars("<>")),
-    "_A": attrdict(arity=0, call=lambda: to_chars("ABCDEFGHIJKLMNOPQRSTUVWXYZ")),
-    "_D": attrdict(arity=0, call=lambda: [[0, 1], [1, 0], [0, -1], [-1, 0]]),
-    "_H": attrdict(arity=0, call=lambda: to_chars("Hello, World!")),
-    "_P": attrdict(arity=0, call=lambda: mp.phi),
-    "_R": attrdict(
-        arity=0,
-        call=lambda: to_chars(
-            "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
-        ),
-    ),
-    "_S": attrdict(arity=0, call=lambda: to_chars("ඞ")),
-    "_V": attrdict(arity=0, call=lambda: to_chars("AEIOU")),
-    "_Y": attrdict(arity=0, call=lambda: to_chars("AEIOUY")),
-    "_W": attrdict(
-        arity=0,
-        call=lambda: to_chars(
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"
-        ),
-    ),
-    "_[": attrdict(arity=0, call=lambda: to_chars("[]")),
-    "_a": attrdict(arity=0, call=lambda: to_chars("abcdefghijklmnopqrstuvwxyz")),
-    "_d": attrdict(
-        arity=0,
-        call=lambda: [
-            [1, 1],
-            [1, 0],
-            [1, -1],
-            [0, 1],
-            [0, 0],
-            [0, -1],
-            [-1, 1],
-            [-1, 0],
-            [-1, -1],
-        ],
-    ),
-    "_e": attrdict(arity=0, call=lambda: mp.e),
-    "_h": attrdict(arity=0, call=lambda: to_chars("hello world")),
-    "_p": attrdict(arity=0, call=lambda: mp.pi),
-    "_v": attrdict(arity=0, call=lambda: to_chars("aeiou")),
-    "_y": attrdict(arity=0, call=lambda: to_chars("aeiouy")),
-    "_x": attrdict(arity=0, call=lambda: to_chars("0123456789abcdef")),
-    "_{": attrdict(arity=0, call=lambda: to_chars("{}")),
-    "_Ạ": attrdict(
-        arity=0,
-        call=lambda: to_chars("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"),
-    ),
-    "_₀": attrdict(arity=0, call=lambda: 128),
-    "_₁": attrdict(arity=0, call=lambda: 256),
-    "_₂": attrdict(arity=0, call=lambda: 512),
-    "_₃": attrdict(arity=0, call=lambda: 1024),
-    "_₄": attrdict(arity=0, call=lambda: 2048),
-    "_₅": attrdict(arity=0, call=lambda: 4096),
-    "_₆": attrdict(arity=0, call=lambda: 8192),
-    "_₇": attrdict(arity=0, call=lambda: 4294967296),
-    "_∞": attrdict(arity=0, call=lambda: inf),
-    "a": attrdict(arity=2, call=vecc(lambda w, x: w and x)),
-    "b": attrdict(arity=2, call=vecc(to_base)),
-    "c": attrdict(arity=2, call=vecc(mp.binomial)),
-    "d": attrdict(
-        arity=2, call=lambda w, x: [iterable(w) + iterable(e) for e in iterable(x)]
-    ),
-    "f": attrdict(
-        arity=2, call=lambda w, x: [e for e in iterable(x) if e not in iterable(w)]
-    ),
-    "g": attrdict(arity=2, call=vecc(math.gcd)),
-    "h": attrdict(arity=2, call=vecc(lambda w, x: iterable(x)[:w], rfull=False)),
-    "i": attrdict(arity=2, call=vecc(index_into, lfull=False)),
-    "l": attrdict(arity=2, call=vecc(math.lcm)),
-    "m": attrdict(arity=2, call=vecc(lambda w, x: min(w, x))),
-    "n": attrdict(arity=2, call=vecc(operator.floordiv)),
-    "o": attrdict(arity=2, call=split_at),
-    "p": attrdict(arity=2, call=lambda w, x: rrandom.choice([w, x])),
-    "q": attrdict(arity=2, call=lambda w, x: exit(0)),
-    "r": attrdict(arity=2, call=vecc(lambda w, x: list(range(w, x + 1)))),
-    "s": attrdict(arity=2, call=vecc(split, rfull=False)),
-    "t": attrdict(arity=2, call=vecc(lambda w, x: iterable(x)[w:], rfull=False)),
-    "u": attrdict(
-        arity=2, call=lambda w, x: [find(w, e) for e in iterable(x, range_=True)]
-    ),
-    "v": attrdict(arity=2, call=vecc(lambda w, x: w or x)),
-    "w": attrdict(arity=2, call=vecc(sliding_window, rfull=False)),
-    "x": attrdict(arity=2, call=vecc(lambda w, x: max(w, x))),
-    "y": attrdict(arity=2, call=vecc(join, rfull=False)),
-    "z": attrdict(arity=2, call=lambda w, x: list(map(list, zip(w, x)))),
-    "{": attrdict(arity=1, call=vecc(lambda x: x - 1)),
-    "|": attrdict(arity=2, call=vecc(operator.or_)),
-    "}": attrdict(arity=1, call=vecc(lambda x: x + 1)),
-    "~": attrdict(arity=1, call=vecc(operator.not_)),
-    "¬": attrdict(arity=1, call=vecc(lambda x: int(not x))),
-    "±": attrdict(arity=1, call=vecc(lambda x: -1 if x < 0 else (0 if x == 0 else 1))),
-    "Ç": attrdict(arity=1, call=lambda x: split(2, iterable(x, range_=True))),
-    "Ð": attrdict(arity=1, call=vecc(lambda x: 2 * x)),
-    "×": attrdict(arity=2, call=vecc(operator.mul)),
-    "÷": attrdict(arity=2, call=vecc(operator.truediv)),
-    "Ă": attrdict(arity=1, call=lambda x: int(iterable(x) > [] and all(flatten(x)))),
-    "Ċ": attrdict(arity=1, call=lambda x: rrandom.choice(iterable(x, range_=True))),
-    "ċ": attrdict(
-        arity=2, call=vecc(lambda w, x: iterable(x, digits=True).count(w), rfull=False)
-    ),
-    "Ġ": attrdict(arity=1, call=group_equal),
-    "Ń": attrdict(arity=1, call=lambda x: split_at(10, iterable(x))),
-    "Ň": attrdict(arity=1, call=lambda x: join(10, x)),
-    "Ś": attrdict(arity=1, call=lambda x: split_at(32, iterable(x))),
-    "Ŝ": attrdict(arity=1, call=sublists),
-    "Š": attrdict(arity=1, call=lambda x: join(32, x)),
-    "Ż": attrdict(arity=1, call=lambda x: [0] + iterable(x)),
-    "ż": attrdict(
-        arity=2,
-        call=vecc(
-            lambda w, x: list(
-                map(list, itertools.zip_longest(*iterable(x), fillvalue=w))
-            ),
-            rfull=False,
-        ),
-    ),
-    "Ȧ": attrdict(arity=1, call=lambda x: int(any(iterable(x, digits=True)))),
-    "Π": attrdict(
-        arity=1, call=lambda x: functools.reduce(vecc(operator.mul), iterable(x))
-    ),
-    "Σ": attrdict(
-        arity=1, call=lambda x: functools.reduce(vecc(operator.add), iterable(x))
-    ),
-    "φ": attrdict(
-        arity=1,
-        call=lambda x: functools.reduce(
-            lambda w, x: iterable(w) + iterable(x), iterable(x), []
-        ),
-    ),
-    "Ḃ": attrdict(arity=1, call=from_bin),
-    "Ḅ": attrdict(arity=1, call=vecc(lambda x: x % 2)),
-    "Ḋ": attrdict(arity=1, call=from_digits),
-    "Ḍ": attrdict(arity=1, call=vecc(divisors)),
-    "ḍ": attrdict(arity=2, call=vecc(lambda w, x: int(x % w == 0))),
-    "Ḟ": attrdict(arity=1, call=lambda x: [i for i, e in enumerate(x) if not e]),
-    "ḟ": attrdict(
-        arity=2, call=lambda w, x: [e for e in iterable(x) if e in iterable(w)]
-    ),
-    "Ḳ": attrdict(
-        arity=1,
-        call=lambda x: [
-            functools.reduce(vecc(operator.add), iterable(e)) for e in iterable(x)
-        ],
-    ),
-    "ḷ": attrdict(arity=2, call=vecc(find_all, lfull=False)),
-    "Ṅ": attrdict(arity=1, call=vecc(lambda x: -x)),
-    "Ṗ": attrdict(arity=1, call=flax_print),
-    "Ṙ": attrdict(arity=1, call=lambda x: iterable(x, range_=True)[::-1]),
-    "ḃ": attrdict(arity=2, call=vecc(from_base)),
-    "ṙ": attrdict(arity=2, call=vecc(lambda w, x: list(range(w + 1, x)))),
-    "Ṛ": attrdict(arity=1, call=vecc(lambda x: 1 / x)),
-    "Ṡ": attrdict(arity=1, call=lambda x: list(reversed(sorted(iterable(x))))),
-    "Ṫ": attrdict(arity=1, call=lambda x: [i for i, e in enumerate(x) if e]),
-    "ẇ": attrdict(arity=2, call=find_sublist),
     "Ẏ": attrdict(
-        arity=1,
-        call=lambda x: [e for i, e in enumerate(iterable(x, digits=True)) if i % 2],
+        arity=1, call=lambda x: [e for i, e in enumerate(iterable(x)) if i % 2]
     ),
-    "Ẓ": attrdict(
+    "Z": attrdict(arity=1, call=transpose),
+    "Ż": attrdict(arity=1, call=lambda x: [0] + iterable(x)),
+    "!": attrdict(
         arity=1,
-        call=lambda x: list(
-            map(list, itertools.zip_longest(*iterable(x), fillvalue=0))
-        ),
+        dx=0,
+        call=lambda x: -mp.gamma(abs(x) + 1) if x < 0 else mp.gamma(x + 1),
     ),
-    "Ạ": attrdict(arity=1, call=lambda x: int(all(iterable(x, digits=True)))),
-    "ị": attrdict(arity=2, call=vecc(find, lfull=False)),
-    "Ọ": attrdict(
+    "¬": attrdict(arity=1, dx=0, call=boolify(Op.not_)),
+    "√": attrdict(arity=1, dx=0, call=mp.sqrt),
+    "⊂": attrdict(arity=1, call=lambda x: [x]),
+    "⊆": attrdict(
+        arity=1, call=lambda x: [x] if x != iterable(x) or len(x) != 1 else x
+    ),
+    "⊃": attrdict(arity=1, call=lambda x: iterable(x)[0]),  # err
+    "⊇": attrdict(arity=1, call=lambda x: iterable(x)[1:]),
+    "⊐": attrdict(arity=1, call=lambda x: iterable(x)[-1]),  # err
+    "⊒": attrdict(arity=1, call=lambda x: iterable(x)[:-1]),
+    "~": attrdict(arity=1, dx=0, call=Op.inv),
+    "γ": attrdict(arity=1, call=flax_print),
+    "ε": attrdict(arity=1, call=lambda x: list(enumerate(x))),
+    "ι": attrdict(arity=1, call=iota),
+    "κ": attrdict(arity=1, call=iota1),
+    "ξ": attrdict(arity=1, call=lambda x: transpose(x, filler=0)),
+    "χ": attrdict(arity=1, call=lambda x: int(all(iterable(x)))),
+    "ψ": attrdict(arity=1, call=lambda x: int(iterable(x) > [] and all(flatten(x)))),
+    "ϕ": attrdict(arity=1, call=lambda x: sum(map(iterable, iterable(x)), [])),
+    "∵": attrdict(
         arity=1,
-        call=lambda x: [
-            iterable(e)[::-1] if i % 2 == 0 else e for i, e in enumerate(iterable(x))
-        ],
+        call=lambda x: min(iterable(x, digits_=True))
+        if iterable(x, digits_=True)
+        else 0,
     ),
-    "ọ": attrdict(arity=2, call=vecc(order)),
-    "•": attrdict(arity=2, call=lambda w, x: list(map(list, itertools.product(w, x)))),
-    "₀": attrdict(arity=0, call=lambda: sys.argv[0] if len(sys.argv) >= 1 else 100),
-    "₁": attrdict(arity=0, call=lambda: sys.argv[1] if len(sys.argv) >= 2 else [0, 1]),
-    "₂": attrdict(arity=0, call=lambda: sys.argv[2] if len(sys.argv) >= 3 else 10),
-    "₃": attrdict(arity=0, call=lambda: sys.argv[3] if len(sys.argv) >= 4 else 16),
-    "₄": attrdict(arity=0, call=lambda: sys.argv[4] if len(sys.argv) >= 5 else 32),
-    "₅": attrdict(arity=0, call=lambda: sys.argv[5] if len(sys.argv) >= 6 else 64),
-    "₆": attrdict(arity=0, call=lambda: sys.argv[6] if len(sys.argv) >= 7 else 26),
-    "₇": attrdict(arity=0, call=lambda: 0),
-    "₈": attrdict(arity=0, call=lambda: ord(sys.stdin.read(0))),
-    "₉": attrdict(arity=0, call=lambda: to_chars(input())),
-    "₍": attrdict(arity=0, call=lambda: 0),
-    "₎": attrdict(arity=0, call=lambda: 0),
-    "∆": attrdict(arity=1, call=lambda x: max(iterable(x, digits=True))),
-    "∇": attrdict(arity=1, call=lambda x: min(iterable(x, digits=True))),
-    "∊": attrdict(arity=2, call=vecc(lambda w, x: int(w in x), rfull=False)),
-    "√": attrdict(arity=1, call=vecc(mp.sqrt)),
-    "≠": attrdict(arity=2, call=vecc(boolify(operator.ne))),
+    "∴": attrdict(
+        arity=1,
+        call=lambda x: max(iterable(x, digits_=True))
+        if iterable(x, digits_=True)
+        else 0,
+    ),
+    "↑": attrdict(arity=1, call=grade_up),
+    "↓": attrdict(arity=1, call=grade_down),
+    # "∞": attrdict(arity=1, ),
+    "¼": attrdict(arity=1, dx=0, call=lambda x: 1 / x),
+    "½": attrdict(arity=1, dx=0, call=lambda x: x % 2),
+    "⌈": attrdict(arity=1, dx=0, call=mp.ceil),
+    "⌊": attrdict(arity=1, dx=0, call=mp.floor),
+    "→": attrdict(arity=1, dx=0, call=lambda x: x + 1),
+    "←": attrdict(arity=1, dx=0, call=lambda x: x - 1),
+    "∂": attrdict(arity=1, call=lambda x: list(sorted(iterable(x)))),
+    "{": attrdict(arity=1, call=prefixes),
+    "}": attrdict(arity=1, call=suffixes),
+    "○": attrdict(arity=1, call=lambda x: list(map(list, mit.powerset(iterable(x))))),
+    "↶": attrdict(arity=1, call=lambda x: transpose(x)[::-1]),
+    "a": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: abs(w - x)),
+    "ȧ": attrdict(arity=2, call=lambda w, x: Random.choice([w, x])),
+    "b": attrdict(arity=2, dw=0, dx=0, call=base_i),
+    "ḃ": attrdict(arity=2, dw=0, dx=1, call=base),
+    "c": attrdict(arity=2, dw=0, dx=0, call=mp.binomial),
+    "ċ": attrdict(arity=2, dw=0, call=split),
+    "d": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: list(divmod(w, x))),
+    "ḋ": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: int(x % w == 0)),
+    "e": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: list(range(w, x))),
+    # "ė": attrdict(arity=2, ),
+    "f": attrdict(
+        arity=2, call=lambda w, x: [i for i in iterable(x) if i in iterable(w)]
+    ),
+    "ḟ": attrdict(
+        arity=2, call=lambda w, x: [i for i in iterable(x) if i not in iterable(w)]
+    ),
+    "g": attrdict(arity=2, dw=0, dx=0, call=math.gcd),
+    "ġ": attrdict(arity=2, dw=1, dx=1, call=mit.dotproduct),
+    "h": attrdict(arity=2, dw=0, call=lambda w, x: iterable(x)[:w]),
+    "ḣ": attrdict(arity=2, dw=0, dx=0, call=order),
+    "j": attrdict(arity=2, dx=0, call=index_into),
+    "k": attrdict(arity=2, dw=1, call=split_into),
+    "l": attrdict(arity=2, dw=0, dx=0, call=math.lcm),
+    "ŀ": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: mp.log(x, w)),
+    "m": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: min([w, x])),
+    "ṁ": attrdict(arity=2, call=mold),
+    "n": attrdict(
+        arity=2,
+        dw=0,
+        call=lambda w, x: [e for i, e in enumerate(iterable(x)) if i % w == 0],
+    ),
+    "o": attrdict(arity=2, dw=0, call=split_at),
+    "ȯ": attrdict(arity=2, dw=0, call=lambda w, x: iterable(x, digits_=True).count(w)),
+    "ṗ": attrdict(
+        arity=2, dw=0, call=lambda w, x: functools.reduce(cartesian_product, [x] * w)
+    ),
+    "p": attrdict(
+        arity=2, dw=0, dx=0, call=lambda w, x: mp.factorial(w) / mp.factorial(w - x)
+    ),
+    "q": attrdict(arity=2, call=lambda w, x: exit(0)),
+    "r": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: list(range(w, x + 1))),
+    "s": attrdict(arity=2, call=find_sublist),
+    "ṡ": attrdict(
+        arity=2,
+        call=lambda w, x: [index_into(x, i) for i, e in enumerate(iterable(w)) if e],
+    ),
+    "t": attrdict(arity=2, dw=0, call=lambda w, x: iterable(x)[w:]),
+    # "ṫ": attrdict(arity=2, call=),
+    "u": attrdict(
+        arity=2, call=lambda w, x: [find(w, i) for i in iterable(x, range_=True)]
+    ),
+    "v": attrdict(arity=2, dw=1, call=lambda w, x: [[i] + iterable(x) for i in w]),
+    "w": attrdict(arity=2, dw=0, call=sliding_window),
+    "ẇ": attrdict(
+        arity=2,
+        dw=0,
+        call=lambda w, x: list(map(list, mit.distinct_combinations(x, w))),
+    ),
+    "x": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: max([w, x])),
+    "ẋ": attrdict(arity=2, call=lambda w, x: [w, x]),
+    "y": attrdict(arity=2, dw=0, call=join),
+    "z": attrdict(
+        arity=2, call=lambda w, x: list(map(list, zip(iterable(w), iterable(x))))
+    ),
+    "ż": attrdict(arity=2, dw=0, call=lambda w, x: transpose(x, filler=w)),
+    "+": attrdict(arity=2, dw=0, dx=0, call=Op.add),
+    "-": attrdict(arity=2, dw=0, dx=0, call=Op.sub),
+    "±": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: [w + x, w - x]),
+    "×": attrdict(arity=2, dw=0, dx=0, call=Op.mul),
+    "÷": attrdict(arity=2, dw=0, dx=0, call=Op.truediv),
+    "|": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: x % w),
+    "*": attrdict(arity=2, dw=0, dx=0, call=Op.pow),
+    "&": attrdict(arity=2, dw=0, dx=0, call=Op.and_),
+    "%": attrdict(arity=2, dw=0, dx=0, call=Op.or_),
+    "^": attrdict(arity=2, dw=0, dx=0, call=Op.xor),
+    "∧": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: w and x),
+    "∨": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: w or x),
+    ">": attrdict(arity=2, dw=0, dx=0, call=boolify(Op.gt)),
+    "<": attrdict(arity=2, dw=0, dx=0, call=boolify(Op.lt)),
+    "=": attrdict(arity=2, dw=0, dx=0, call=boolify(Op.eq)),
+    "≠": attrdict(arity=2, dw=0, dx=0, call=boolify(Op.ne)),
+    "≤": attrdict(arity=2, dw=0, dx=0, call=boolify(Op.ge)),
+    "≥": attrdict(arity=2, dw=0, dx=0, call=boolify(Op.le)),
     "≡": attrdict(arity=2, call=lambda w, x: int(w == x)),
     "≢": attrdict(arity=2, call=lambda w, x: int(w != x)),
-    "≤": attrdict(arity=2, call=vecc(boolify(operator.le))),
-    "≥": attrdict(arity=2, call=vecc(boolify(operator.ge))),
-    "⊂": attrdict(arity=1, call=lambda x: [x]),
-    "⊆": attrdict(arity=1, call=lambda x: [x] if type(x) != list or len(x) != 1 else x),
-    "⊏": attrdict(
+    "≈": attrdict(
         arity=2,
-        call=vecc(
-            lambda w, x: [e for i, e in enumerate(iterable(x)) if i % w == 0],
-            rfull=False,
-        ),
+        call=lambda w, x: len(w) == len(x)
+        if type(w) == type(x) == list
+        else abs(w - x) <= 1,
     ),
-    "⊢": attrdict(arity=2, call=lambda w, x: x),
+    ",": attrdict(arity=2, call=lambda w, x: iterable(w) + iterable(x)),
+    ";": attrdict(arity=2, call=lambda w, x: iterable(x) + iterable(w)),
+    "∊": attrdict(arity=2, dw=0, call=lambda w, x: w in iterable(x, digits_=True)),
+    "⊏": attrdict(arity=2, dw=0, call=find),
+    "⊑": attrdict(arity=2, dw=0, call=find_all),
+    "∘": attrdict(arity=2, call=cartesian_product),
     "⊣": attrdict(arity=2, call=lambda w, x: w),
-    "⋈": attrdict(arity=2, call=lambda w, x: [w, x]),
-    "⌈": attrdict(arity=1, call=vecc(mp.ceil)),
-    "⌊": attrdict(arity=1, call=vecc(mp.floor)),
-    "⌽": attrdict(
+    "⊢": attrdict(arity=2, call=lambda w, x: x),
+    "#": attrdict(arity=2, dw=1, call=reshape),
+    "δ": attrdict(
         arity=2,
-        call=vecc(
-            lambda w, x: iterable(x, digits=True)[w:] + iterable(x, digits=True)[:w],
-            rfull=False,
-        ),
+        dw=1,
+        dx=1,
+        call=lambda w, x: mp.sqrt(sum(map(lambda i: i * i, map(Op.sub, w, x)))),
     ),
-    "⍋": attrdict(arity=1, call=grade_up),
-    "⍒": attrdict(arity=1, call=grade_down),
-    "⍪": attrdict(arity=2, call=lambda w, x: iterable(x) + iterable(w)),
-    "⍳": attrdict(arity=1, call=iota),
-    "⍴": attrdict(arity=2, call=reshape),
-    "⍸": attrdict(arity=1, call=lambda x: vec(lambda e: 1 + e, iota(x))),
+    "»": attrdict(
+        arity=2,
+        dw=0,
+        call=lambda w, x: iterable(x, digits_=True)[w:] + iterable(x, digits_=True)[:w],
+    ),
+    "«": attrdict(
+        arity=2,
+        dw=0,
+        call=lambda w, x: iterable(x, digits_=True)[-w:]
+        + iterable(x, digits_=True)[:-w],
+    ),
+}
+
+transpiled_atoms = {
+    "I": [],
+    "K": [],
+    "Ŀ": [],
+    "Ṙ": [],
+    "Ṡ": [],
+    "Σ": [],
+    "Π": [],
+    "∩": [],
+    "∪": [],
 }
 
 quicks = {
     "$": quick_chain(1, 2),
+    "¢": quick_chain(2, 2),
+    "£": quick_chain(1, 3),
+    "¥": quick_chain(2, 3),
+    "€": quick_chain(1, 4),
+    "₹": quick_chain(2, 4),
     "'": attrdict(
         condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
+        qlink=lambda links, *_: [
             attrdict(
                 arity=links[0].arity or 1,
                 call=fix_args(
@@ -415,14 +322,100 @@ quicks = {
                         for i, j in zip(iterable(w), iterable(x))
                     ]
                     if w is not None
-                    else [variadic_link(links[0], (i,)) for i in iterable(x)],
+                    else [variadic_link(links[0], (i,)) for i in iterable(x)]
+                ),
+            )
+        ],
+    ),
+    "’": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, *_: [
+            attrdict(
+                arity=2,
+                call=lambda w, x: [
+                    variadic_link(links[0], (i, x)) for i in iterable(w)
+                ],
+            )
+        ],
+    ),
+    "‘": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, *_: [
+            attrdict(
+                arity=2,
+                call=lambda w, x: [
+                    variadic_link(links[0], (w, i)) for i in iterable(x)
+                ],
+            )
+        ],
+    ),
+    "¨": attrdict(
+        condition=lambda links: len(links) == 2,
+        qlink=lambda links, *_: [
+            attrdict(
+                arity=1,
+                call=lambda x: [variadic_chain(links, (i,)) for i in x]
+                if type(x) == list
+                else variadic_chain(links, (x,)),
+            )
+        ],
+    ),
+    "ζ": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, *_: [
+            atoms["ϕ"],
+            attrdict(
+                arity=links[0].arity or 1,
+                call=fix_args(
+                    lambda w, x: [
+                        variadic_link(links[0], (i, j))
+                        for i, j in zip(iterable(w), iterable(x))
+                    ]
+                    if w is not None
+                    else [variadic_link(links[0], (i,)) for i in iterable(x)]
+                ),
+            ),
+        ],
+    ),
+    "ρ": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, *_: [
+            attrdict(
+                arity=links[0].arity or 1,
+                call=fix_args(
+                    lambda w, x: [
+                        variadic_link(links[0], (i, j))
+                        for i, j in zip(
+                            permutations(iterable(w)), permutations(iterable(x))
+                        )
+                    ]
+                    if w is not None
+                    else [
+                        variadic_link(links[0], (i,)) for i in permutations(iterable(x))
+                    ]
+                ),
+            )
+        ],
+    ),
+    "⊸": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, *_: [
+            attrdict(
+                arity=links[0].arity or 1,
+                call=fix_args(
+                    lambda w, x: [
+                        variadic_link(links[0], (i, j))
+                        for i, j in zip(prefixes(iterable(w)), prefixes(iterable(x)))
+                    ]
+                    if w is not None
+                    else [variadic_link(links[0], (i,)) for i in prefixes(iterable(x))]
                 ),
             )
         ],
     ),
     "?": attrdict(
         condition=lambda links: len(links) == 3,
-        qlink=lambda links, outermost_links, i: [
+        qlink=lambda links, *_: [
             attrdict(
                 arity=max(arities(links)),
                 call=fix_args(
@@ -435,76 +428,52 @@ quicks = {
             )
         ],
     ),
-    "`": attrdict(
-        condition=lambda links: links and links[0].arity,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(arity=1, call=lambda x: scan(links, x, right=True))
-        ],
-    ),
-    "¨": attrdict(
+    "ω": attrdict(
         condition=lambda links: len(links) == 2,
-        qlink=lambda links, outermost_links, i: [
+        qlink=lambda links, *_: [
             attrdict(
-                arity=1,
-                call=lambda x: [variadic_chain(links, (e,)) for e in x]
-                if type(x) == list
-                else variadic_chain(links, (x,)),
+                arity=max(arities(links)),
+                call=fix_args(lambda w, x: while_loop(links[0], links[1], (w, x))),
             )
         ],
     ),
-    "°": attrdict(
+    "⍤": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, *_: (
+            [links.pop(0)] if len(links) == 2 and links[0].arity == 0 else []
+        )
+        + [
+            attrdict(
+                arity=max_arity(links),
+                call=fix_args(lambda w, x: ntimes(links, (w, x))),
+            )
+        ],
+    ),
+    "@": attrdict(
         condition=lambda links: len(links) == 2,
-        qlink=lambda links, outermost_links, i: [
+        qlink=lambda links, *_: [
             attrdict(
                 arity=links[0].arity or 1,
                 call=fix_args(lambda w, x: apply_at(links[0], links[1].call(), w, x)),
             )
         ],
     ),
-    "²": attrdict(
-        condition=lambda links: True,
-        qlink=lambda links, outermost_links, i: [
-            create_chain(outermost_links[(i - 1) % len(outermost_links)], 2)
-        ],
-    ),
-    "³": attrdict(
-        condition=lambda links: True,
-        qlink=lambda links, outermost_links, i: [
-            create_chain(outermost_links[(i + 1) % len(outermost_links)], 0)
-        ],
-    ),
-    "´": attrdict(
-        condition=lambda links: links and links[0].arity,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(arity=1, call=lambda x: fold(links, x, right=True))
-        ],
-    ),
-    "¹": attrdict(
-        condition=lambda links: True,
-        qlink=lambda links, outermost_links, i: [
-            create_chain(outermost_links[(i - 1) % len(outermost_links)], 1)
-        ],
-    ),
     "˘": attrdict(
         condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
+        qlink=lambda links, *_: [
             attrdict(
                 arity=1 if links[0].arity == 2 else (2 if links[0].arity == 1 else 0),
                 call=fix_args(
-                    lambda w, x: variadic_link(links[0], (x, x))
+                    lambda _, x: variadic_link(links[0], (x, x))
                     if links[0].arity == 2
                     else variadic_link(links[0], (x,)),
                 ),
             )
         ],
     ),
-    "¢": quick_chain(2, 2),
-    "£": quick_chain(1, 4),
-    "¥": quick_chain(1, 3),
-    "˙": quick_chain(0, 2),
     "˜": attrdict(
         condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
+        qlink=lambda links, *_: [
             attrdict(
                 arity=2 if links[0].arity else 0,
                 call=fix_args(
@@ -515,111 +484,51 @@ quicks = {
             )
         ],
     ),
-    "˝": attrdict(
+    "`": attrdict(
         condition=lambda links: links and links[0].arity,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(
-                arity=2, call=lambda w, x: fold(links, w, x, initial=True, right=True)
-            )
-        ],
-    ),
-    "ˢ": attrdict(
-        condition=lambda links: links and links[0].arity,
-        qlink=lambda links, outermost_links, i: [
+        qlink=lambda links, *_: [
             attrdict(
                 arity=links[0].arity, call=fix_args(lambda w, x: sort(links, w, x))
             )
         ],
     ),
-    "β": attrdict(
-        condition=lambda links: True,
-        qlink=lambda links, outermost_links, i: [create_chain(outermost_links[i])],
-    ),
-    "δ`": attrdict(
+    "η": attrdict(
         condition=lambda links: links and links[0].arity,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(arity=1, call=lambda x: scan(links, x))
-        ],
-    ),
-    "δ´": attrdict(
-        condition=lambda links: links and links[0].arity,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(arity=1, call=lambda x: fold(links, x))
-        ],
-    ),
-    "δ˝": attrdict(
-        condition=lambda links: links and links[0].arity,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(arity=2, call=lambda w, x: fold(links, w, x, initial=True))
-        ],
-    ),
-    "δᵂ": attrdict(
-        condition=lambda links: len(links) == 2,
-        qlink=lambda links, outermost_links, i: [
+        qlink=lambda links, *_: [
             attrdict(
-                arity=max(arities(links)),
-                call=fix_args(
-                    lambda w, x: while_loop(
-                        links[0], links[1], (w, x), cumulative=True
-                    ),
-                ),
+                arity=links[0].arity, call=fix_args(lambda w, x: group(links, w, x))
             )
         ],
     ),
-    "δᵍ": attrdict(
+    "⌉": attrdict(
         condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
+        qlink=lambda links, *_: [
             attrdict(
-                arity=links[0].arity or 1,
-                call=fix_args(lambda w, x: ffilter(links, w, x, permutation=True)),
-            )
-        ],
-    ),
-    "δᶠ": attrdict(
-        condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(
-                arity=links[0].arity or 1,
+                arity=links[0].arity,
                 call=fix_args(
-                    lambda w, x: ffilter(links, w, x, inverse=True, permutation=True)
-                ),
-            )
-        ],
-    ),
-    "δ‶": attrdict(
-        condition=lambda links: links and links[0].arity,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(arity=2, call=lambda w, x: scan(links, w, x, initial=True))
-        ],
-    ),
-    "δⁿ": attrdict(
-        condition=lambda links: links and links[0].arity,
-        qlink=lambda links, outermost_links, i: (
-            [links.pop(0)] if len(links) == 2 and links[0].arity == 0 else []
-        )
-        + [
-            attrdict(
-                arity=max_arity(links),
-                call=fix_args(lambda w, x: ntimes(links, (w, x), cumulative=True)),
-            )
-        ],
-    ),
-    "ᴺ": attrdict(
-        condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(
-                arity=links[0].arity or 1,
-                call=fix_args(
-                    lambda w, x: more_itertools.all_equal(
-                        [variadic_link(links[0], (w, i)) for i in sliding_window(2, x)]
+                    lambda w, x: max(
+                        iterable(x), key=lambda k: variadic_link(links[0], (w, k))
                     )
                 ),
-            ),
+            )
         ],
     ),
-    "ᵀ": attrdict(
+    "⌋": attrdict(
         condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
+        qlink=lambda links, *_: [
+            attrdict(
+                arity=links[0].arity,
+                call=fix_args(
+                    lambda w, x: min(
+                        iterable(x), key=lambda k: variadic_link(links[0], (w, k))
+                    )
+                ),
+            )
+        ],
+    ),
+    "τ": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, *_: [
             attrdict(
                 arity=links[0].arity or 1,
                 call=fix_args(
@@ -634,27 +543,22 @@ quicks = {
             )
         ],
     ),
-    "ᵂ": attrdict(
-        condition=lambda links: len(links) == 2,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(
-                arity=max(arities(links)),
-                call=fix_args(lambda w, x: while_loop(links[0], links[1], (w, x))),
-            )
-        ],
-    ),
-    "ᵍ": attrdict(
+    "α": attrdict(
         condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
+        qlink=lambda links, *_: [
             attrdict(
                 arity=links[0].arity or 1,
-                call=fix_args(lambda w, x: ffilter(links, w, x)),
-            )
+                call=fix_args(
+                    lambda w, x: mit.all_equal(
+                        [variadic_link(links[0], (w, i)) for i in sliding_window(2, x)]
+                    )
+                ),
+            ),
         ],
     ),
-    "ᵔ": attrdict(
+    "υ": attrdict(
         condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
+        qlink=lambda links, *_: [
             attrdict(
                 arity=links[0].arity or 1,
                 call=fix_args(
@@ -665,189 +569,173 @@ quicks = {
             ),
         ],
     ),
-    "ᵖ": attrdict(
+    "⊥": attrdict(
         condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
+        qlink=lambda links, *_: [
             attrdict(
                 arity=links[0].arity or 1,
-                call=fix_args(
-                    lambda w, x: [variadic_chain(links, (w, i)) for i in prefixes(x)],
-                ),
+                call=fix_args(lambda w, x: ffilter(links, w, x)),
             )
         ],
     ),
-    "ᶠ": attrdict(
+    "⊤": attrdict(
         condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
+        qlink=lambda links, *_: [
             attrdict(
                 arity=links[0].arity or 1,
                 call=fix_args(lambda w, x: ffilter(links, w, x, inverse=True)),
             )
         ],
     ),
-    "‘": attrdict(
-        condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(
-                arity=2,
-                call=lambda w, x: [
-                    variadic_link(links[0], (w, e)) for e in iterable(x)
-                ],
-            )
-        ],
-    ),
-    "’": attrdict(
-        condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(
-                arity=2,
-                call=lambda w, x: [
-                    variadic_link(links[0], (e, x)) for e in iterable(w)
-                ],
-            )
-        ],
-    ),
-    "‶": attrdict(
-        condition=lambda links: links and links[0].arity,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(
-                arity=2, call=lambda w, x: scan(links, w, x, initial=True, right=True)
-            )
-        ],
-    ),
-    "⁰": attrdict(
-        condition=lambda links: True,
-        qlink=lambda links, outermost_links, i: [
-            create_chain(outermost_links[(i - 1) % len(outermost_links)], 0)
-        ],
-    ),
-    "⁴": attrdict(
-        condition=lambda links: True,
-        qlink=lambda links, outermost_links, i: [
-            create_chain(outermost_links[(i + 1) % len(outermost_links)], 1)
-        ],
-    ),
-    "⁵": attrdict(
-        condition=lambda links: True,
-        qlink=lambda links, outermost_links, i: [
-            create_chain(outermost_links[(i + 1) % len(outermost_links)], 2)
-        ],
-    ),
-    "⁶": attrdict(
-        condition=lambda links: len(links) == True,
-        qlink=lambda links, outermost_links, i: [
-            create_chain(
-                outermost_links[links[0].call() % len(outermost_links)], links[1].call()
-            )
-        ],
-    ),
-    "⁷": attrdict(
-        condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(
-                arity=links[0].arity,
-                call=fix_args(
-                    lambda w, x: copy_to(atoms["₇"], variadic_link(links[0], w, x)),
-                ),
-            )
-        ],
-    ),
-    "⁺": attrdict(
-        condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(
-                arity=links[0].arity,
-                call=fix_args(
-                    lambda w, x: max(
-                        iterable(x), key=lambda k: variadic_link(links[0], (w, k))
-                    )
-                ),
-            )
-        ],
-    ),
-    "⁻": attrdict(
-        condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(
-                arity=links[0].arity,
-                call=fix_args(
-                    lambda w, x: min(
-                        iterable(x), key=lambda k: variadic_link(links[0], (w, k))
-                    )
-                ),
-            )
-        ],
-    ),
     "⁼": attrdict(
         condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
+        qlink=lambda links, *_: [
             attrdict(
                 arity=links[0].arity,
                 call=fix_args(lambda w, x: int(w == variadic_link(links[0], w, x))),
             )
         ],
     ),
-    "ⁿ": attrdict(
-        condition=lambda links: links and links[0].arity,
-        qlink=lambda links, outermost_links, i: (
-            [links.pop(0)] if len(links) == 2 and links[0].arity == 0 else []
-        )
-        + [
-            attrdict(
-                arity=max_arity(links),
-                call=fix_args(lambda w, x: ntimes(links, (w, x))),
+    "β": attrdict(
+        condition=lambda _: True,
+        qlink=lambda _, outermost_links, i: [create_chain(outermost_links[i])],
+    ),
+    "θ": attrdict(
+        condition=lambda _: True,
+        qlink=lambda _, outermost_links, i: [
+            create_chain(outermost_links[(i + 1) % len(outermost_links)], 0)
+        ],
+    ),
+    "λ": attrdict(
+        condition=lambda _: True,
+        qlink=lambda _, outermost_links, i: [
+            create_chain(outermost_links[(i + 1) % len(outermost_links)], 1)
+        ],
+    ),
+    "ν": attrdict(
+        condition=lambda _: True,
+        qlink=lambda _, outermost_links, i: [
+            create_chain(outermost_links[(i + 1) % len(outermost_links)], 2)
+        ],
+    ),
+    "σ": attrdict(
+        condition=lambda _: True,
+        qlink=lambda _, outermost_links, i: [
+            create_chain(outermost_links[(i - 1) % len(outermost_links)], 0)
+        ],
+    ),
+    "ς": attrdict(
+        condition=lambda _: True,
+        qlink=lambda _, outermost_links, i: [
+            create_chain(outermost_links[(i - 1) % len(outermost_links)], 1)
+        ],
+    ),
+    "π": attrdict(
+        condition=lambda _: True,
+        qlink=lambda _, outermost_links, i: [
+            create_chain(outermost_links[(i - 1) % len(outermost_links)], 2)
+        ],
+    ),
+    "φ": attrdict(
+        condition=lambda links: len(links) == 2,
+        qlink=lambda links, outermost_links, _: [
+            create_chain(
+                outermost_links[links[0].call() % len(outermost_links)], links[1].call()
             )
         ],
     ),
-    "€": quick_chain(2, 4),
-    "₹": quick_chain(2, 3),
-    "↤": attrdict(
+    "/": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, *_: [
+            attrdict(arity=1, call=lambda x: fold(links, x, right=True))
+        ],
+    ),
+    "⌿": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, *_: [
+            attrdict(
+                arity=2, call=lambda w, x: fold(links, w, x, initial=True, right=True)
+            )
+        ],
+    ),
+    "\\": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, *_: [
+            attrdict(arity=1, call=lambda x: scan(links, x, right=True))
+        ],
+    ),
+    "⍀": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, *_: [
+            attrdict(
+                arity=2, call=lambda w, x: scan(links, w, x, initial=True, right=True)
+            )
+        ],
+    ),
+    "´": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, *_: [
+            attrdict(
+                arity=links[0].arity or 1,
+                call=fix_args(lambda w, x: fold_fixedpoint(links, w, x)),
+            )
+        ],
+    ),
+    "˝": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, outermost_links, i: [
+            attrdict(
+                arity=links[0].arity or 1,
+                call=fix_args(lambda w, x: scan_fixedpoint(links, w, x)),
+            )
+        ],
+    ),
+    "∀": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, *_: [
+            attrdict(
+                arity=links[0].arity,
+                call=fix_args(
+                    lambda w, x: copy_to(atoms["∃"], variadic_link(links[0], w, x)),
+                ),
+            )
+        ],
+    ),
+    "∝": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, *_: [
+            attrdict(
+                arity=1,
+                call=lambda x: variadic_link(
+                    links[0].call,
+                    (transpose(variadic_link(links[0].call, (x,), force_monad=True)),),
+                    force_monad=True,
+                ),
+            )
+        ],
+    ),
+    "⟜": attrdict(
         condition=lambda links: links
         and (
             links[-1].arity == 0
             and len(links) == links[-1].call() - 1
             or len(links) == 3
         ),
-        qlink=lambda links, outermost_links, i: [
+        qlink=lambda links, *_: [
             attrdict(arity=2, call=lambda w, x: composed(links, w, x))
         ],
     ),
-    "⌜": attrdict(
-        condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
+    # "˙": attrdict(), TODO: I FORGOR LOL
+    "¾": attrdict(
+        condition=lambda links: len(links) == 2,
+        qlink=lambda links, *_: [
             attrdict(
                 arity=2,
-                call=lambda w, x: [
-                    [variadic_link(links[0], (a, b)) for a in iterable(w, range_=True)]
-                    for b in iterable(x, range_=True)
-                ],
-            )
-        ],
-    ),
-    "⌿": attrdict(
-        condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(
-                arity=links[0].arity or 1,
-                call=fix_args(lambda w, x: foldfixedpoint(links, w, x)),
-            )
-        ],
-    ),
-    "⍀": attrdict(
-        condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(
-                arity=links[0].arity or 1,
-                call=fix_args(lambda w, x: scanfixedpoint(links, w, x)),
-            )
-        ],
-    ),
-    "⍉": attrdict(
-        condition=lambda links: links,
-        qlink=lambda links, outermost_links, i: [
-            attrdict(
-                arity=1,
-                call=lambda x: links[0].call(list(map(list, zip(*links[0].call(x))))),
+                call=lambda w, x: dyadic_link(
+                    links[1],
+                    variadic_link(links[0], (x, w)),
+                    variadic_link(links[0], (w, x)),
+                ),
             )
         ],
     ),
@@ -856,7 +744,8 @@ quicks = {
 train_separators = {
     "ø": (0, True),
     "µ": (1, True),
-    "г": (1, True),
+    "(": (1, True),
+    ")": (1, True),
     "ð": (2, True),
     "ɓ": (2, False),
 }

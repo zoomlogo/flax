@@ -1,10 +1,19 @@
-# chains: holds the functions used by quicks and the chains
+"""chains: holds the functions used by quicks and the chains"""
 import functools
 import itertools
 
 from flax.common import attrdict, flax_print
 from flax.error import debug, error
-from flax.funcs import permutations, iterable, sliding_window, split, flatten, prefixes
+from flax.funcs import (
+    depth,
+    group_indicies,
+    permutations,
+    iterable,
+    sliding_window,
+    split,
+    flatten,
+    prefixes,
+)
 
 __all__ = [
     "apply_at",
@@ -13,17 +22,20 @@ __all__ = [
     "copy_to",
     "create_chain",
     "dyadic_chain",
+    "dyadic_link",
     "ffilter",
     "fix_args",
     "fold",
-    "foldfixedpoint",
+    "fold_fixedpoint",
+    "group",
     "max_arity",
     "monadic_chain",
+    "monadic_link",
     "niladic_chain",
     "ntimes",
     "quick_chain",
     "scan",
-    "scanfixedpoint",
+    "scan_fixedpoint",
     "sort",
     "trailing_nilad",
     "variadic_chain",
@@ -33,8 +45,8 @@ __all__ = [
 
 
 def apply_at(link, indicies, *args):
-    # apply_at: apply link at indicies
-    args = list(filter(None.__ne__, args))
+    """apply_at: apply link at indicies"""
+    args = [i for i in args if i is not None]
     x = iterable(args[-1])
     if len(args) == 2:
         w = args[0]
@@ -49,12 +61,12 @@ def apply_at(link, indicies, *args):
 
 
 def arities(links):
-    # arities: return the arities of the links
+    """arities: return the arities of the links"""
     return [link.arity for link in links]
 
 
 def composed(links, w, x):
-    # composed: compose links on w and pass it and x to a dyad
+    """composed: compose links on w and pass it and x to a dyad"""
     if links[-1].arity == 0:
         dyad = links[-2]
         monads = links[:-2]
@@ -72,13 +84,13 @@ def composed(links, w, x):
 
 
 def copy_to(atom, value):
-    # copy_to: copy value into the atom
+    """copy_to: copy value into the atom"""
     atom.call = lambda: value
     return value
 
 
 def create_chain(chain, arity=-1, isForward=True):
-    # create_chain: make a new chain
+    """create_chain: make a new chain"""
     return attrdict(
         arity=arity,
         chain=chain,
@@ -89,13 +101,13 @@ def create_chain(chain, arity=-1, isForward=True):
 
 
 def dyadic_chain(chain, w, x):
-    # dyadic_chain: evaluate a dyadic chain
+    """dyadic_chain: evaluate a dyadic chain"""
     for link in chain:
         if link.arity < 0:
             link.arity = 2
 
     if chain and arities(chain[-3:]) == [2, 2, 2]:
-        λ = chain[-1].call(w, x)
+        λ = dyadic_link(chain[-1], w, x)
         chain = chain[:-1]
     elif trailing_nilad(chain):
         λ = chain[-1].call()
@@ -110,27 +122,27 @@ def dyadic_chain(chain, w, x):
 
         if arities(chain[-3:]) == [0, 2, 2] and trailing_nilad(chain[:-2]):
             debug("0,2,2: " + str(chain[-3:]))
-            λ = chain[-2].call(chain[-3].call(), chain[-1].call(w, λ))
+            λ = dyadic_link(chain[-2], chain[-3].call(), dyadic_link(chain[-1], w, λ))
             chain = chain[:-3]
         elif arities(chain[-2:]) == [2, 2]:
             debug("2,2: " + str(chain[-2:]))
-            λ = chain[-1].call(chain[-2].call(w, x), λ)
+            λ = dyadic_link(chain[-1], dyadic_link(chain[-2], w, x), λ)
             chain = chain[:-2]
         elif arities(chain[-2:]) == [0, 2]:
             debug("0,2: " + str(chain[-2:]))
-            λ = chain[-1].call(chain[-2].call(), λ)
+            λ = dyadic_link(chain[-1], chain[-2].call(), λ)
             chain = chain[:-2]
         elif arities(chain[-2:]) == [2, 0]:
             debug("2,0: " + str(chain[-2:]))
-            λ = chain[-2].call(λ, chain[-1].call())
+            λ = dyadic_link(chain[-2], λ, chain[-1].call())
             chain = chain[:-2]
         elif chain[-1].arity == 2:
             debug("2: " + str(chain[-1]))
-            λ = chain[-1].call(w, λ)
+            λ = dyadic_link(chain[-1], w, λ)
             chain = chain[:-1]
         elif chain[-1].arity == 1:
             debug("1: " + str(chain[-1]))
-            λ = chain[-1].call(λ)
+            λ = monadic_link(chain[-1], λ)
             chain = chain[:-1]
         else:
             flax_print(λ)
@@ -139,9 +151,33 @@ def dyadic_chain(chain, w, x):
     return λ
 
 
+def dyadic_link(link, w, x, flat_w=False, flat_x=False):
+    """dyadic_link: call a link dyadically with arguments, handling vectorisation"""
+    flat_w = flat_w or not hasattr(link, "dw")
+    flat_x = flat_x or not hasattr(link, "dx")
+
+    dw = flat_w or depth(w)
+    dx = flat_x or depth(x)
+
+    if (flat_w or link.dw == dw) and (flat_x or link.dx == dx):
+        return link.call(w, x)
+    elif not flat_w and link.dw > dw:
+        return dyadic_link(link, [w], x)
+    elif not flat_x and link.dx > dx:
+        return dyadic_link(link, w, [x])
+    elif not flat_x and (flat_w or dw - dx < link.dw - link.dx):
+        return [dyadic_link(link, w, i) for i in x]
+    elif not flat_w and (flat_x or dw - dx > link.dw - link.dx):
+        return [dyadic_link(link, i, x) for i in w]
+    else:
+        return (
+            [dyadic_link(link, i, j) for i, j in zip(w, x)] + w[len(x) :] + x[len(w) :]
+        )
+
+
 def ffilter(links, *args, inverse=False, permutation=False):
-    # ffilter: filter with optional inverse or permuting the argument
-    args = list(filter(None.__ne__, args))
+    """ffilter: filter with optional inverse or permuting the argument"""
+    args = [i for i in args if i is not None]
     x = iterable(args[-1], range_=True)
     if len(args) == 2:
         w = args[0]
@@ -181,8 +217,8 @@ def fix_args(f):
 
 
 def fold(links, *args, right=False, initial=False):
-    # fold: fold over args
-    args = list(filter(None.__ne__, args))
+    """fold: fold over args"""
+    args = [i for i in args if i is not None]
     x = iterable(args[-1])
     if len(args) == 2:
         w = args[0]
@@ -211,13 +247,22 @@ def fold(links, *args, right=False, initial=False):
             ]
 
 
-def foldfixedpoint(links, *args):
-    # foldfixedpoint: run link over arg until a fixed point is reached
-    return scanfixedpoint(links, *args)[-1]
+def fold_fixedpoint(links, *args):
+    """fold_fixedpoint: run link over arg until a fixed point is reached"""
+    return scan_fixedpoint(links, *args)[-1]
+
+
+def group(links, *args):
+    """group: sort group according to links"""
+    args = [i for i in args if i is not None]
+    x = iterable(args[-1], digits_=True)
+    # TODO: lens(links) == 2 case
+    res = group_indicies(variadic_chain(links, iterable(x)))
+    return res
 
 
 def max_arity(links):
-    # max_arity: return the maximum arity of the links
+    """max_arity: return the maximum arity of the links"""
     return (
         max(arities(links))
         if min(arities(links)) > -1
@@ -226,7 +271,7 @@ def max_arity(links):
 
 
 def monadic_chain(chain, x):
-    # monadic_chain: evaluate a monadic chain
+    """monadic_chain: evaluate a monadic chain"""
     init = True
 
     λ = x
@@ -251,19 +296,19 @@ def monadic_chain(chain, x):
 
         if arities(chain[-2:]) == [1, 2]:
             debug("1,2: " + str(chain[-2:]))
-            λ = chain[-1].call(chain[-2].call(x), λ)
+            λ = dyadic_link(chain[-1], monadic_link(chain[-2], x), λ)
             chain = chain[:-2]
         elif arities(chain[-2:]) == [0, 2]:
             debug("0,2: " + str(chain[-2:]))
-            λ = chain[-1].call(chain[-2].call(), λ)
+            λ = dyadic_link(chain[-1], chain[-2].call(), λ)
             chain = chain[:-2]
         elif arities(chain[-2:]) == [2, 0]:
             debug("2,0: " + str(chain[-2:]))
-            λ = chain[-2].call(λ, chain[-1].call())
+            λ = dyadic_link(chain[-2], λ, chain[-1].call())
             chain = chain[:-2]
         elif chain[-1].arity == 2:
             debug("2: " + str(chain[-1]))
-            λ = chain[-1].call(x, λ)
+            λ = dyadic_link(chain[-1], x, λ)
             chain = chain[:-1]
         elif chain[-1].arity == 1:
             debug("1: " + str(chain[-1]))
@@ -272,7 +317,7 @@ def monadic_chain(chain, x):
                 chain = chain[-1].chain
                 init = True
             else:
-                λ = chain[-1].call(λ)
+                λ = monadic_link(chain[-1], λ)
                 chain = chain[:-1]
         else:
             flax_print(λ)
@@ -282,8 +327,20 @@ def monadic_chain(chain, x):
     return λ
 
 
+def monadic_link(link, x, flat=False):
+    """monadic_link: evaluate a link monadically with argument, handling vectorisation"""
+    flat = flat or not hasattr(link, "dx")
+    dx = flat or depth(x)
+    if flat or link.dx == dx:
+        return link.call(x)
+    elif link.dx > dx:
+        return monadic_link(link, [x])
+    else:
+        return [monadic_link(link, i) for i in x]
+
+
 def niladic_chain(chain):
-    # niladic_chain: evaluate a niladic chain
+    """niladic_chain: evaluate a niladic chain"""
     debug("in niladic chain")
     if not chain or chain[-1].arity > 0:
         return monadic_chain(chain, 0)
@@ -291,7 +348,7 @@ def niladic_chain(chain):
 
 
 def ntimes(links, args, cumulative=False):
-    # ntimes: repeat link n times
+    """ntimes: repeat link n times"""
     times = int(links[1].call()) if len(links) == 2 else int(input())
     res, x = args
     if cumulative:
@@ -319,8 +376,8 @@ def quick_chain(arity, min_length):
 
 
 def scan(links, *args, right=False, initial=False):
-    # scan: scan over args
-    args = list(filter(None.__ne__, args))
+    """scan: scan over args"""
+    args = [i for i in args if i is not None]
     x = iterable(args[-1])
     if len(args) == 2:
         w = args[0]
@@ -344,9 +401,9 @@ def scan(links, *args, right=False, initial=False):
         return res
 
 
-def scanfixedpoint(links, *args):
-    # scanfixedpoint: run link over arg until a fixed point is reached
-    args = list(filter(None.__ne__, args))
+def scan_fixedpoint(links, *args):
+    """scan_fixedpoint: run link over arg until a fixed point is reached"""
+    args = [i for i in args if i is not None]
     x = args[-1]
     if len(args) == 2:
         w = args[0]
@@ -362,9 +419,9 @@ def scanfixedpoint(links, *args):
 
 
 def sort(links, *args):
-    # sort: sort args according to links
-    args = list(filter(None.__ne__, args))
-    x = iterable(args[-1], digits=True)
+    """sort: sort args according to links"""
+    args = [i for i in args if i is not None]
+    x = iterable(args[-1], digits_=True)
     if len(args) == 2:
         w = args[0]
     else:
@@ -379,12 +436,12 @@ def sort(links, *args):
 
 
 def trailing_nilad(chain):
-    # trailing_nilad: if the chain is a trailing constant chain
+    """trailing_nilad: if the chain is a trailing constant chain"""
     return chain and arities(chain[::-1]) + [1] < [0, 2] * len(chain)
 
 
 def variadic_chain(chain, args):
-    args = list(filter(None.__ne__, args))
+    args = [i for i in args if i is not None]
     if len(args) == 0:
         return niladic_chain(chain)
     elif len(args) == 1:
@@ -393,9 +450,9 @@ def variadic_chain(chain, args):
         return dyadic_chain(chain, *args)
 
 
-def variadic_link(link, args, force_dyad=False):
-    # call link with args
-    args = list(filter(None.__ne__, args))
+def variadic_link(link, args, force_dyad=False, force_monad=False):
+    """call link with args"""
+    args = [i for i in args if i is not None]
     if link.arity == -1:
         link.arity = len(args)
 
@@ -403,15 +460,18 @@ def variadic_link(link, args, force_dyad=False):
         return link.call()
     elif link.arity == 1:
         if force_dyad:
-            return [args[0], link.call(args[1])]
+            return [args[0], monadic_link(link, args[1])]
         else:
-            return link.call(args[0])
+            return monadic_link(link, args[-1])
     elif link.arity == 2:
-        return link.call(args[0], args[1])
+        if force_monad:
+            return dyadic_link(link, args[0], args[0])
+        else:
+            return dyadic_link(link, args[0], args[1])
 
 
 def while_loop(link, cond, args, cumulative=False):
-    # while_loop: while condition is true apply link
+    """while_loop: while condition is true apply link"""
     res, x = args
     if cumulative:
         c_res = [res]
