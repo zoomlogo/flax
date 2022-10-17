@@ -8,7 +8,7 @@ feel free to suggest element ideas on the SE chatroom.
 NOT IN CODEPAGE
 - ‟ comment
 
-unused (reserved): TİẆṅṙẏΛ
+unused: TİẆṅṙẏΛ
 
 SYNTAX
 - ¯0123456789i. number
