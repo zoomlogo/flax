@@ -293,15 +293,20 @@ atoms = {
 }
 
 transpiled_atoms = {
-    "I": [[TOKEN_TYPE.ATOM, '-'], [TOKEN_TYPE.QUICK, '˜'], [TOKEN_TYPE.QUICK, '/'], [TOKEN_TYPE.QUICK, 'υ']],
-    "K": [[TOKEN_TYPE.ATOM, '-'], [TOKEN_TYPE.QUICK, '\\']],
-    "Ŀ": [[TOKEN_TYPE.ATOM, 'L'], [TOKEN_TYPE.QUICK, "'"]],
-    "Ṙ": [[TOKEN_TYPE.ATOM, 'R'], [TOKEN_TYPE.QUICK, "'"]],
-    "Ṡ": [[TOKEN_TYPE.ATOM, '+'], [TOKEN_TYPE.QUICK, '/'], [TOKEN_TYPE.QUICK, "'"]],
-    "Σ": [[TOKEN_TYPE.ATOM, '+'], [TOKEN_TYPE.QUICK, '/']],
-    "Π": [[TOKEN_TYPE.ATOM, '×'], [TOKEN_TYPE.QUICK, '/']],
-    "∩": [[TOKEN_TYPE.ATOM, 'U'], [TOKEN_TYPE.ATOM, 'f'], [TOKEN_TYPE.QUICK, '¢']],
-    "∪": [[TOKEN_TYPE.ATOM, 'U'], [TOKEN_TYPE.ATOM, ','], [TOKEN_TYPE.QUICK, '¢']],
+    "I": [
+        [TOKEN_TYPE.ATOM, "-"],
+        [TOKEN_TYPE.QUICK, "˜"],
+        [TOKEN_TYPE.QUICK, "/"],
+        [TOKEN_TYPE.QUICK, "υ"],
+    ],
+    "K": [[TOKEN_TYPE.ATOM, "-"], [TOKEN_TYPE.QUICK, "\\"]],
+    "Ŀ": [[TOKEN_TYPE.ATOM, "L"], [TOKEN_TYPE.QUICK, "'"]],
+    "Ṙ": [[TOKEN_TYPE.ATOM, "R"], [TOKEN_TYPE.QUICK, "'"]],
+    "Ṡ": [[TOKEN_TYPE.ATOM, "+"], [TOKEN_TYPE.QUICK, "/"], [TOKEN_TYPE.QUICK, "'"]],
+    "Σ": [[TOKEN_TYPE.ATOM, "+"], [TOKEN_TYPE.QUICK, "/"]],
+    "Π": [[TOKEN_TYPE.ATOM, "×"], [TOKEN_TYPE.QUICK, "/"]],
+    "∩": [[TOKEN_TYPE.ATOM, "U"], [TOKEN_TYPE.ATOM, "f"], [TOKEN_TYPE.QUICK, "¢"]],
+    "∪": [[TOKEN_TYPE.ATOM, "U"], [TOKEN_TYPE.ATOM, ","], [TOKEN_TYPE.QUICK, "¢"]],
 }
 
 quicks = {
