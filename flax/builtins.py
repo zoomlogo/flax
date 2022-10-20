@@ -1,9 +1,8 @@
 # builtins: holds the builtins and some constants for the lexer
-import itertools
 import functools
-import json
-import sys
 import math
+import string
+import re
 import more_itertools as mit
 import operator as Op
 import random as Random
@@ -11,6 +10,7 @@ import random as Random
 from flax.common import *
 from flax.funcs import *
 from flax.chains import *
+from flax.encoding import codepage
 
 __all__ = [
     "COMMENT",
@@ -48,7 +48,7 @@ STRING_NEXT_1 = "_"
 STRING_NEXT_2 = ":"
 
 # dicts
-atoms = {
+atoms = { # single byte atoms
     "⁰": attrdict(arity=0, call=lambda: 10),
     "¹": attrdict(arity=0, call=lambda: 16),
     "²": attrdict(arity=0, call=lambda: 26),
@@ -292,6 +292,65 @@ atoms = {
     ),
 }
 
+atoms |= { # diagraphs
+    "Ø+": attrdict(arity=0, call=lambda: [1, -1]),
+    "Ø-": attrdict(arity=0, call=lambda: [-1, 1]),
+    "Ø⁰": attrdict(arity=0, call=lambda: [1,2,3]),
+    "Ø¹": attrdict(arity=0, call=lambda: [[0,1],[1,0]]),
+    "Ø²": attrdict(arity=0, call=lambda: 2**32),
+    "Ø³": attrdict(arity=0, call=lambda: [1,2]),
+    "Ø⁴": attrdict(arity=0, call=lambda: 2**64),
+    "Ø⁵": attrdict(arity=0, call=lambda: 128),
+    "Ø⁶": attrdict(arity=0, call=lambda: 512),
+    "Ø⁷": attrdict(arity=0, call=lambda: 1024),
+    "Ø⁸": attrdict(arity=0, call=lambda: 2048),
+    "Ø⁹": attrdict(arity=0, call=lambda: 65536),
+    "Ø0": attrdict(arity=0, call=lambda: [0,0]),
+    "Ø1": attrdict(arity=0, call=lambda: [1,1]),
+    "Ø2": attrdict(arity=0, call=lambda: [2,2]),
+    "Ød": attrdict(arity=0, call=lambda: [[0,1],[1,0],[0,-1],[-1,0]]),
+    "Øx": attrdict(arity=0, call=lambda: [[1,1],[1,0],[1,-1],[0,1],[0,0],[0,-1],[-1,1],[-1,0],[-1,-1]]),
+    "Øτ": attrdict(arity=0, call=lambda: 360),
+    "Ø(": attrdict(arity=0, call=lambda: [40,41]),
+    "Ø[": attrdict(arity=0, call=lambda: [91,93]),
+    "Ø/": attrdict(arity=0, call=lambda: [47,92]),
+    "Ø<": attrdict(arity=0, call=lambda: [60,62]),
+    "Ø{": attrdict(arity=0, call=lambda: [123,125]),
+    "ØA": attrdict(arity=0, call=lambda: to_chars(string.ascii_uppercase)),
+    "Øa": attrdict(arity=0, call=lambda: to_chars(string.ascii_lowercase)),
+    "ØB": attrdict(arity=0, call=lambda: to_chars(re.sub("[AEIOU]", "", string.ascii_uppercase))),
+    "Øb": attrdict(arity=0, call=lambda: to_chars(re.sub("[aeiou]", "", string.ascii_lowercase))),
+    "ØV": attrdict(arity=0, call=lambda: to_chars("AEIOU")),
+    "Øv": attrdict(arity=0, call=lambda: to_chars("aeiou")),
+    "ØY": attrdict(arity=0, call=lambda: to_chars("AEIOUY")),
+    "Øy": attrdict(arity=0, call=lambda: to_chars("aeiouy")),
+    "ØD": attrdict(arity=0, call=lambda: to_chars(string.digits)),
+    "ØX": attrdict(arity=0, call=lambda: to_chars(string.hexdigits)),
+    "ØO": attrdict(arity=0, call=lambda: to_chars(string.octdigits)),
+    "Øα": attrdict(arity=0, call=lambda: to_chars(string.ascii_letters)),
+    "ØW": attrdict(arity=0, call=lambda: to_chars(string.digits + string.ascii_letters + "_")),
+    "Øc": attrdict(arity=0, call=lambda: to_chars(codepage)),
+    "Øe": attrdict(arity=0, call=lambda: mp.e),
+    "Øφ": attrdict(arity=0, call=lambda: mp.phi),
+    "Øπ": attrdict(arity=0, call=lambda: mp.pi),
+    "Øδ": attrdict(arity=0, call=lambda: mp.sqrt(2) + 1),
+    "Øγ": attrdict(arity=0, call=lambda: mp.euler),
+    "Ø∞": attrdict(arity=0, call=lambda: inf),
+    "Æ√": attrdict(arity=1, call=lambda x: int(mp.sqrt(x))),
+    "ÆĊ": attrdict(arity=1, call=mp.acos),
+    "ÆṠ": attrdict(arity=1, call=mp.asin),
+    "ÆṪ": attrdict(arity=1, call=mp.atan),
+    "Æċ": attrdict(arity=1, call=mp.asec),
+    "Æṡ": attrdict(arity=1, call=mp.acsc),
+    "Æṫ": attrdict(arity=1, call=mp.acot),
+    "ÆS": attrdict(arity=1, call=mp.sin),
+    "ÆC": attrdict(arity=1, call=mp.cos),
+    "ÆT": attrdict(arity=1, call=mp.tan),
+    "Æs": attrdict(arity=1, call=mp.csc),
+    "Æc": attrdict(arity=1, call=mp.sec),
+    "Æt": attrdict(arity=1, call=mp.cot),
+}
+
 transpiled_atoms = {
     "I": [
         [TOKEN_TYPE.ATOM, "-"],
@@ -309,7 +368,7 @@ transpiled_atoms = {
     "∪": [[TOKEN_TYPE.ATOM, "U"], [TOKEN_TYPE.ATOM, ","], [TOKEN_TYPE.QUICK, "¢"]],
 }
 
-quicks = {
+quicks = { # single byte quicks
     "$": quick_chain(1, 2),
     "¢": quick_chain(2, 2),
     "£": quick_chain(1, 3),
