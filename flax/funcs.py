@@ -132,10 +132,12 @@ def depth(x):
         else:
             return max([depth(i) for i in x]) + 1
 
+
 def diagonal_leading(x):
     """diagonal_leading: the leading diagonal of x"""
     x = iterable(x, range_=True)
     return [iterable(x[i], range_=True)[i] for i in range(len(x))]
+
 
 def diagonal_trailing(x):
     """diagonal_trailing: the trailing diagonal of x"""

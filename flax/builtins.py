@@ -50,7 +50,7 @@ STRING_NEXT_1 = "_"
 STRING_NEXT_2 = ":"
 
 # dicts
-atoms = { # single byte atoms
+atoms = {  # single byte atoms
     "⁰": attrdict(arity=0, call=lambda: 10),
     "¹": attrdict(arity=0, call=lambda: 16),
     "²": attrdict(arity=0, call=lambda: 26),
@@ -182,7 +182,8 @@ atoms = { # single byte atoms
     "c": attrdict(arity=2, dw=0, dx=0, call=mp.binomial),
     "ċ": attrdict(arity=2, dw=0, call=split),
     "d": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: list(divmod(w, x))),
-    "ḋ": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: int(x % w == 0)),    "e": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: list(range(w, x))),
+    "ḋ": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: int(x % w == 0)),
+    "e": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: list(range(w, x))),
     # "ė": attrdict(arity=2, ),
     "f": attrdict(
         arity=2, call=lambda w, x: [i for i in iterable(x) if i in iterable(w)]
@@ -191,7 +192,14 @@ atoms = { # single byte atoms
         arity=2, call=lambda w, x: [i for i in iterable(x) if i not in iterable(w)]
     ),
     "g": attrdict(arity=2, dw=0, dx=0, call=math.gcd),
-    "ġ": attrdict(arity=2, dw=1, dx=1, call=lambda w, x: sum(map(lambda i: i[0]*i[1], zip_longest(w, x, fillvalue=0)))),
+    "ġ": attrdict(
+        arity=2,
+        dw=1,
+        dx=1,
+        call=lambda w, x: sum(
+            map(lambda i: i[0] * i[1], zip_longest(w, x, fillvalue=0))
+        ),
+    ),
     "h": attrdict(arity=2, dw=0, call=lambda w, x: iterable(x)[:w]),
     "ḣ": attrdict(arity=2, dw=0, dx=0, call=order),
     "j": attrdict(arity=2, dx=0, call=index_into),
@@ -293,34 +301,51 @@ atoms = { # single byte atoms
     ),
 }
 
-atoms |= { # diagraphs
+atoms |= {  # diagraphs
     "Ø+": attrdict(arity=0, call=lambda: [1, -1]),
     "Ø-": attrdict(arity=0, call=lambda: [-1, 1]),
-    "Ø⁰": attrdict(arity=0, call=lambda: [1,2,3]),
-    "Ø¹": attrdict(arity=0, call=lambda: [[0,1],[1,0]]),
+    "Ø⁰": attrdict(arity=0, call=lambda: [1, 2, 3]),
+    "Ø¹": attrdict(arity=0, call=lambda: [[0, 1], [1, 0]]),
     "Ø²": attrdict(arity=0, call=lambda: 2**32),
-    "Ø³": attrdict(arity=0, call=lambda: [1,2]),
+    "Ø³": attrdict(arity=0, call=lambda: [1, 2]),
     "Ø⁴": attrdict(arity=0, call=lambda: 2**64),
     "Ø⁵": attrdict(arity=0, call=lambda: 128),
     "Ø⁶": attrdict(arity=0, call=lambda: 512),
     "Ø⁷": attrdict(arity=0, call=lambda: 1024),
     "Ø⁸": attrdict(arity=0, call=lambda: 2048),
     "Ø⁹": attrdict(arity=0, call=lambda: 65536),
-    "Ø0": attrdict(arity=0, call=lambda: [0,0]),
-    "Ø1": attrdict(arity=0, call=lambda: [1,1]),
-    "Ø2": attrdict(arity=0, call=lambda: [2,2]),
-    "Ød": attrdict(arity=0, call=lambda: [[0,1],[1,0],[0,-1],[-1,0]]),
-    "Øx": attrdict(arity=0, call=lambda: [[1,1],[1,0],[1,-1],[0,1],[0,0],[0,-1],[-1,1],[-1,0],[-1,-1]]),
+    "Ø0": attrdict(arity=0, call=lambda: [0, 0]),
+    "Ø1": attrdict(arity=0, call=lambda: [1, 1]),
+    "Ø2": attrdict(arity=0, call=lambda: [2, 2]),
+    "Ød": attrdict(arity=0, call=lambda: [[0, 1], [1, 0], [0, -1], [-1, 0]]),
+    "Øx": attrdict(
+        arity=0,
+        call=lambda: [
+            [1, 1],
+            [1, 0],
+            [1, -1],
+            [0, 1],
+            [0, 0],
+            [0, -1],
+            [-1, 1],
+            [-1, 0],
+            [-1, -1],
+        ],
+    ),
     "Øτ": attrdict(arity=0, call=lambda: 360),
-    "Ø(": attrdict(arity=0, call=lambda: [40,41]),
-    "Ø[": attrdict(arity=0, call=lambda: [91,93]),
-    "Ø/": attrdict(arity=0, call=lambda: [47,92]),
-    "Ø<": attrdict(arity=0, call=lambda: [60,62]),
-    "Ø{": attrdict(arity=0, call=lambda: [123,125]),
+    "Ø(": attrdict(arity=0, call=lambda: [40, 41]),
+    "Ø[": attrdict(arity=0, call=lambda: [91, 93]),
+    "Ø/": attrdict(arity=0, call=lambda: [47, 92]),
+    "Ø<": attrdict(arity=0, call=lambda: [60, 62]),
+    "Ø{": attrdict(arity=0, call=lambda: [123, 125]),
     "ØA": attrdict(arity=0, call=lambda: to_chars(string.ascii_uppercase)),
     "Øa": attrdict(arity=0, call=lambda: to_chars(string.ascii_lowercase)),
-    "ØB": attrdict(arity=0, call=lambda: to_chars(re.sub("[AEIOU]", "", string.ascii_uppercase))),
-    "Øb": attrdict(arity=0, call=lambda: to_chars(re.sub("[aeiou]", "", string.ascii_lowercase))),
+    "ØB": attrdict(
+        arity=0, call=lambda: to_chars(re.sub("[AEIOU]", "", string.ascii_uppercase))
+    ),
+    "Øb": attrdict(
+        arity=0, call=lambda: to_chars(re.sub("[aeiou]", "", string.ascii_lowercase))
+    ),
     "ØV": attrdict(arity=0, call=lambda: to_chars("AEIOU")),
     "Øv": attrdict(arity=0, call=lambda: to_chars("aeiou")),
     "ØY": attrdict(arity=0, call=lambda: to_chars("AEIOUY")),
@@ -329,7 +354,9 @@ atoms |= { # diagraphs
     "ØX": attrdict(arity=0, call=lambda: to_chars(string.hexdigits)),
     "ØO": attrdict(arity=0, call=lambda: to_chars(string.octdigits)),
     "Øα": attrdict(arity=0, call=lambda: to_chars(string.ascii_letters)),
-    "ØW": attrdict(arity=0, call=lambda: to_chars(string.digits + string.ascii_letters + "_")),
+    "ØW": attrdict(
+        arity=0, call=lambda: to_chars(string.digits + string.ascii_letters + "_")
+    ),
     "Øc": attrdict(arity=0, call=lambda: to_chars(codepage)),
     "Øe": attrdict(arity=0, call=lambda: mp.e),
     "Øφ": attrdict(arity=0, call=lambda: mp.phi),
@@ -350,12 +377,14 @@ atoms |= { # diagraphs
     "Æs": attrdict(arity=1, dx=0, call=mp.csc),
     "Æc": attrdict(arity=1, dx=0, call=mp.sec),
     "Æt": attrdict(arity=1, dx=0, call=mp.cot),
-    "Æp": attrdict(arity=1, dx=0, call=lambda x: len([i for i in range(x + 1) if mp.isprime(i)])),
+    "Æp": attrdict(
+        arity=1, dx=0, call=lambda x: len([i for i in range(x + 1) if mp.isprime(i)])
+    ),
     "Æn": attrdict(arity=1, dx=0, call=nprimes),
     "ÆF": attrdict(arity=1, dx=0, call=prime_factors),
     "ÆL": attrdict(arity=1, dx=0, call=mp.ln),
     "ÆĿ": attrdict(arity=1, dx=0, call=mp.exp),
-    "Æŀ": attrdict(arity=1, dx=0, call=lambda x: mp.binomial(2*x, x) / (x + 1)),
+    "Æŀ": attrdict(arity=1, dx=0, call=lambda x: mp.binomial(2 * x, x) / (x + 1)),
     "Æl": attrdict(arity=1, dx=0, call=lucas),
     "Æf": attrdict(arity=1, dx=0, call=fibonacci),
     "Æτ": attrdict(arity=1, dx=2, call=lambda x: sum(diagonal_leading(x))),
@@ -374,7 +403,14 @@ atoms |= { # diagraphs
     "Æṁ": attrdict(arity=1, dx=1, call=statistics.median),
     "Æg": attrdict(arity=1, dx=1, call=statistics.geometric_mean),
     "Æh": attrdict(arity=1, dx=1, call=statistics.harmonic_mean),
-    "æ∘": attrdict(arity=2, dw=1, dx=1, call=lambda w, x: sum(map(lambda i: i[0]*i[1], zip_longest(w, x, fillvalue=1)))),
+    "æ∘": attrdict(
+        arity=2,
+        dw=1,
+        dx=1,
+        call=lambda w, x: sum(
+            map(lambda i: i[0] * i[1], zip_longest(w, x, fillvalue=1))
+        ),
+    ),
 }
 
 transpiled_atoms = {
@@ -394,7 +430,7 @@ transpiled_atoms = {
     "∪": [[TOKEN_TYPE.ATOM, "U"], [TOKEN_TYPE.ATOM, ","], [TOKEN_TYPE.QUICK, "¢"]],
 }
 
-quicks = { # single byte quicks
+quicks = {  # single byte quicks
     "$": quick_chain(1, 2),
     "¢": quick_chain(2, 2),
     "£": quick_chain(1, 3),
