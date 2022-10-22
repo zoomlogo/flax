@@ -330,6 +330,8 @@ MATHY MONADIC DIAGRAPHS Æ
 - Æσ standard deviation
 - Æm mean
 - Æṁ median
+- Æg geometric mean
+- Æh harmonic mean
 
 MATHY DYADIC DIAGRPAHS æ
 - æ∘ dot product padding 1
@@ -341,6 +343,7 @@ MATHY DYADIC DIAGRPAHS æ
 - æ« bit shift left
 - æ» bit shift right
 - ær round
+- æl linear regression
 
 OTHER MONADIC DIAGRAPHS Œ
 - ŒḂ bounce over each

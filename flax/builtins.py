@@ -3,9 +3,11 @@ import functools
 import math
 import string
 import re
+import statistics
 import more_itertools as mit
 import operator as Op
 import random as Random
+from itertools import zip_longest
 
 from flax.common import *
 from flax.funcs import *
@@ -180,8 +182,7 @@ atoms = { # single byte atoms
     "c": attrdict(arity=2, dw=0, dx=0, call=mp.binomial),
     "ċ": attrdict(arity=2, dw=0, call=split),
     "d": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: list(divmod(w, x))),
-    "ḋ": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: int(x % w == 0)),
-    "e": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: list(range(w, x))),
+    "ḋ": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: int(x % w == 0)),    "e": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: list(range(w, x))),
     # "ė": attrdict(arity=2, ),
     "f": attrdict(
         arity=2, call=lambda w, x: [i for i in iterable(x) if i in iterable(w)]
@@ -190,7 +191,7 @@ atoms = { # single byte atoms
         arity=2, call=lambda w, x: [i for i in iterable(x) if i not in iterable(w)]
     ),
     "g": attrdict(arity=2, dw=0, dx=0, call=math.gcd),
-    "ġ": attrdict(arity=2, dw=1, dx=1, call=mit.dotproduct),
+    "ġ": attrdict(arity=2, dw=1, dx=1, call=lambda w, x: sum(map(lambda i: i[0]*i[1], zip_longest(w, x, fillvalue=0)))),
     "h": attrdict(arity=2, dw=0, call=lambda w, x: iterable(x)[:w]),
     "ḣ": attrdict(arity=2, dw=0, dx=0, call=order),
     "j": attrdict(arity=2, dx=0, call=index_into),
@@ -336,19 +337,44 @@ atoms |= { # diagraphs
     "Øδ": attrdict(arity=0, call=lambda: mp.sqrt(2) + 1),
     "Øγ": attrdict(arity=0, call=lambda: mp.euler),
     "Ø∞": attrdict(arity=0, call=lambda: inf),
-    "Æ√": attrdict(arity=1, call=lambda x: int(mp.sqrt(x))),
-    "ÆĊ": attrdict(arity=1, call=mp.acos),
-    "ÆṠ": attrdict(arity=1, call=mp.asin),
-    "ÆṪ": attrdict(arity=1, call=mp.atan),
-    "Æċ": attrdict(arity=1, call=mp.asec),
-    "Æṡ": attrdict(arity=1, call=mp.acsc),
-    "Æṫ": attrdict(arity=1, call=mp.acot),
-    "ÆS": attrdict(arity=1, call=mp.sin),
-    "ÆC": attrdict(arity=1, call=mp.cos),
-    "ÆT": attrdict(arity=1, call=mp.tan),
-    "Æs": attrdict(arity=1, call=mp.csc),
-    "Æc": attrdict(arity=1, call=mp.sec),
-    "Æt": attrdict(arity=1, call=mp.cot),
+    "Æ√": attrdict(arity=1, dx=0, call=lambda x: int(mp.sqrt(x))),
+    "ÆĊ": attrdict(arity=1, dx=0, call=mp.acos),
+    "ÆṠ": attrdict(arity=1, dx=0, call=mp.asin),
+    "ÆṪ": attrdict(arity=1, dx=0, call=mp.atan),
+    "Æċ": attrdict(arity=1, dx=0, call=mp.asec),
+    "Æṡ": attrdict(arity=1, dx=0, call=mp.acsc),
+    "Æṫ": attrdict(arity=1, dx=0, call=mp.acot),
+    "ÆS": attrdict(arity=1, dx=0, call=mp.sin),
+    "ÆC": attrdict(arity=1, dx=0, call=mp.cos),
+    "ÆT": attrdict(arity=1, dx=0, call=mp.tan),
+    "Æs": attrdict(arity=1, dx=0, call=mp.csc),
+    "Æc": attrdict(arity=1, dx=0, call=mp.sec),
+    "Æt": attrdict(arity=1, dx=0, call=mp.cot),
+    "Æp": attrdict(arity=1, dx=0, call=lambda x: len([i for i in range(x + 1) if mp.isprime(i)])),
+    "Æn": attrdict(arity=1, dx=0, call=nprimes),
+    "ÆF": attrdict(arity=1, dx=0, call=prime_factors),
+    "ÆL": attrdict(arity=1, dx=0, call=mp.ln),
+    "ÆĿ": attrdict(arity=1, dx=0, call=mp.exp),
+    "Æŀ": attrdict(arity=1, dx=0, call=lambda x: mp.binomial(2*x, x) / (x + 1)),
+    "Æl": attrdict(arity=1, dx=0, call=lucas),
+    "Æf": attrdict(arity=1, dx=0, call=fibonacci),
+    "Æτ": attrdict(arity=1, dx=2, call=lambda x: sum(diagonal_leading(x))),
+    "Æ²": attrdict(arity=1, dx=0, call=lambda x: int(int(mp.sqrt(x)) == mp.sqrt(x))),
+    "ÆA": attrdict(arity=1, dx=2, call=lambda x: diagonals(x, antidiagonals=True)),
+    "ÆȦ": attrdict(arity=1, dx=2, call=diagonals),
+    # "ÆD": attrdict(arity=1, dx=2, call=),
+    "ÆR": attrdict(arity=1, dx=1, call=mp.polyroots),
+    "Æd": attrdict(arity=1, dx=0, call=mp.degrees),
+    "Æḋ": attrdict(arity=1, dx=0, call=mp.radians),
+    "Æ\\": attrdict(arity=1, dx=2, call=diagonal_leading),
+    "Æ/": attrdict(arity=1, dx=2, call=diagonal_trailing),
+    "Æj": attrdict(arity=1, dx=0, call=mp.conj),
+    "Æσ": attrdict(arity=1, dx=1, call=statistics.pstdev),
+    "Æm": attrdict(arity=1, dx=1, call=statistics.mean),
+    "Æṁ": attrdict(arity=1, dx=1, call=statistics.median),
+    "Æg": attrdict(arity=1, dx=1, call=statistics.geometric_mean),
+    "Æh": attrdict(arity=1, dx=1, call=statistics.harmonic_mean),
+    "æ∘": attrdict(arity=2, dw=1, dx=1, call=lambda w, x: sum(map(lambda i: i[0]*i[1], zip_longest(w, x, fillvalue=1)))),
 }
 
 transpiled_atoms = {
