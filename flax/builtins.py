@@ -148,7 +148,7 @@ atoms = {  # single byte atoms
     "ξ": attrdict(arity=1, call=lambda x: transpose(x, filler=0)),
     "χ": attrdict(arity=1, call=lambda x: int(all(iterable(x)))),
     "ψ": attrdict(arity=1, call=lambda x: int(iterable(x) > [] and all(flatten(x)))),
-    "ϕ": attrdict(arity=1, call=lambda x: sum(map(iterable, iterable(x)), [])),
+    "ϕ": attrdict(arity=1, call=lambda x: list(mit.flatten(x))),
     "∵": attrdict(
         arity=1,
         call=lambda x: min(iterable(x, digits_=True))
