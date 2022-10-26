@@ -367,7 +367,6 @@ OTHER MONADIC DIAGRAPHS Œ
 - ŒṖ apl style print
 - Œb print a boolean matrix as braille
 - ŒJ json decode
-- Œj json encode
 
 OTHER DYADIC DIAGRAPHS œ
 - œ∩ multiset intersection

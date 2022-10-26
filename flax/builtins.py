@@ -420,6 +420,14 @@ atoms |= {  # diagraphs
     "æ»": attrdict(arity=2, dw=0, dx=0, call=Op.rshift),
     "ær": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: round(x, w)),
     "æl": attrdict(arity=2, dw=1, dx=1, call=lambda w, x: list(statistics.linear_regression(w, x))),
+    "ŒB": attrdict(arity=1, call=lambda x: iterable(x) + iterable(x)[::-1]),
+    "ŒE": attrdict(arity=1, call=enumerate_md),
+    "ŒG": attrdict(arity=1, call=lambda x: group_indicies(x, md=True)),
+    "ŒM": attrdict(arity=1, call=maximal_indicies_md),
+    "ŒṪ": attrdict(arity=1, call=lambda x: [i for i, e in enumerate_md(x) if e]),
+    "Œ1": attrdict(arity=1, call=ones),
+    "Œb": attrdict(arity=1, call=to_braille),
+    "ŒJ": attrdict(arity=1, call=json_decode),
 }
 
 transpiled_atoms = {
@@ -437,6 +445,7 @@ transpiled_atoms = {
     "Π": [[TOKEN_TYPE.ATOM, "×"], [TOKEN_TYPE.QUICK, "/"]],
     "∩": [[TOKEN_TYPE.ATOM, "U"], [TOKEN_TYPE.ATOM, "f"], [TOKEN_TYPE.QUICK, "¢"]],
     "∪": [[TOKEN_TYPE.ATOM, "U"], [TOKEN_TYPE.ATOM, ","], [TOKEN_TYPE.QUICK, "¢"]],
+    "ŒḂ": [[TOKEN_TYPE.ATOM, "ŒB"], [TOKEN_TYPE.QUICK, "'"]],
 }
 
 quicks = {  # single byte quicks
