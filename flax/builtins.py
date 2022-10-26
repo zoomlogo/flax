@@ -411,7 +411,9 @@ atoms |= {  # diagraphs
             map(lambda i: i[0] * i[1], zip_longest(w, x, fillvalue=1))
         ),
     ),
-    "æ×": attrdict(arity=2, dw=2, dx=2, call=lambda w, x: (mp.matrix(w) @ mp.matrix(x)).tolist()),
+    "æ×": attrdict(
+        arity=2, dw=2, dx=2, call=lambda w, x: (mp.matrix(w) @ mp.matrix(x)).tolist()
+    ),
     "æ*": attrdict(arity=2, dw=2, dx=0, call=lambda w, x: (mp.matrix(w) ** x).tolist()),
     "æṫ": attrdict(arity=2, dw=0, dx=0, call=mp.atan2),
     # "æc": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: w * -x),
@@ -419,7 +421,9 @@ atoms |= {  # diagraphs
     "æ«": attrdict(arity=2, dw=0, dx=0, call=Op.lshift),
     "æ»": attrdict(arity=2, dw=0, dx=0, call=Op.rshift),
     "ær": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: round(x, w)),
-    "æl": attrdict(arity=2, dw=1, dx=1, call=lambda w, x: list(statistics.linear_regression(w, x))),
+    "æl": attrdict(
+        arity=2, dw=1, dx=1, call=lambda w, x: list(statistics.linear_regression(w, x))
+    ),
     "ŒB": attrdict(arity=1, call=lambda x: iterable(x) + iterable(x)[::-1]),
     "ŒE": attrdict(arity=1, call=enumerate_md),
     "ŒG": attrdict(arity=1, call=lambda x: group_indicies(x, md=True)),
