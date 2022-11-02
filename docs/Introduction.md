@@ -20,7 +20,7 @@ Flag|Description
 `C`|Prints as characters instead of numbers.
 `d`|Debug flag.
 `f`|Read and run a program from a file.
-`p`|Higher precision for floats (100 digits).
+`p`|Higher precision for floats (specified by the next argument).
 `P`|Disable pretty printing as grids.
 `e`|encode as sbcs
 `D`|decode from sbcs
