@@ -246,7 +246,7 @@ QUICKS
 - ∀ set register
 - ∝ apply, then transpose, apply again
 - ⟜ n-compose
-- ˙ fork
+- ˙ unvectorise
 - ¾ apply monads to both dyadic arguments (x (mdQ) y = mx d my)
 
 NILADIC DIAGRAPHS Ø
@@ -361,8 +361,6 @@ OTHER MONADIC DIAGRAPHS Œ
 - Œ$ swap case
 - ŒU upper case
 - ŒL lower case
-- ŒT title case
-- ŒC capitalise
 - ŒD depth
 - ŒṖ apl style print
 - Œb print a boolean matrix as braille

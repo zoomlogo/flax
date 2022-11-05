@@ -425,13 +425,31 @@ atoms |= {  # diagraphs
         arity=2, dw=1, dx=1, call=lambda w, x: list(statistics.linear_regression(w, x))
     ),
     "ŒB": attrdict(arity=1, call=lambda x: iterable(x) + iterable(x)[::-1]),
+    "ŒP": attrdict(arity=1, dx=1, call=lambda x: x == x[::-1]),
+    "ŒG": attrdict(arity=1, dx=1, call=get_req),
     "ŒE": attrdict(arity=1, call=enumerate_md),
     "ŒG": attrdict(arity=1, call=lambda x: group_indicies(x, md=True)),
     "ŒM": attrdict(arity=1, call=maximal_indicies_md),
     "ŒṪ": attrdict(arity=1, call=lambda x: [i for i, e in enumerate_md(x) if e]),
     "Œ1": attrdict(arity=1, call=ones),
+    "Œp": attrdict(arity=1, call=lambda x: list(map(list, mit.distinct_combinations(x, 2)))),
+    # "Œe": attrdict(arity=1, call=),
+    # "Œd": attrdict(arity=1, call=),
+    "Œ$": attrdict(arity=1, dx=0, call=lambda x: x ^ 32 if chr(x) in string.ascii_letters else x),
+    "ŒU": attrdict(arity=1, dx=0, call=lambda x: x ^ 32 if chr(x) in string.ascii_lowercase else x),
+    "ŒL": attrdict(arity=1, dx=0, call=lambda x: x ^ 32 if chr(x) in string.ascii_uppercase else x),
+    "ŒD": attrdict(arity=1, call=depth),
+    # "ŒṖ": attrdict(arity=1, call=),
     "Œb": attrdict(arity=1, call=to_braille),
     "ŒJ": attrdict(arity=1, call=json_decode),
+    "œi": attrdict(arity=2, call=index_into_md),
+    # "œs": attrdict(arity=2, call=),
+    # "œŀ": attrdict(arity=2, call=),
+    # "œl": attrdict(arity=2, call=),
+    # "œt": attrdict(arity=2, call=),
+    # "œo": attrdict(arity=2, call=),
+    # "œm": attrdict(arity=2, call=),
+    # "œr": attrdict(arity=2, call=),
 }
 
 transpiled_atoms = {
@@ -450,6 +468,9 @@ transpiled_atoms = {
     "∩": [[TOKEN_TYPE.ATOM, "U"], [TOKEN_TYPE.ATOM, "f"], [TOKEN_TYPE.QUICK, "¢"]],
     "∪": [[TOKEN_TYPE.ATOM, "U"], [TOKEN_TYPE.ATOM, ","], [TOKEN_TYPE.QUICK, "¢"]],
     "ŒḂ": [[TOKEN_TYPE.ATOM, "ŒB"], [TOKEN_TYPE.QUICK, "'"]],
+    "œ∩": [[TOKEN_TYPE.ATOM, "∂"], [TOKEN_TYPE.ATOM, "f"], [TOKEN_TYPE.QUICK, "¢"]],
+    "œ-": [[TOKEN_TYPE.ATOM, "∂"], [TOKEN_TYPE.ATOM, "ḟ"], [TOKEN_TYPE.QUICK, "¢"]],
+    "œ∪": [[TOKEN_TYPE.ATOM, "∂"], [TOKEN_TYPE.ATOM, ","], [TOKEN_TYPE.QUICK, "¢"]],
 }
 
 quicks = {  # single byte quicks
@@ -873,7 +894,12 @@ quicks = {  # single byte quicks
             attrdict(arity=2, call=lambda w, x: composed(links, w, x))
         ],
     ),
-    # "˙": attrdict(), TODO: I FORGOR LOL
+    "˙": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, *_: [
+            attrdict(arity=links[0].arity, call=fix_args(lambda w, x: variadic_link(links[0], (w, x), flat=True))),
+        ],
+    ),
     "¾": attrdict(
         condition=lambda links: len(links) == 2,
         qlink=lambda links, *_: [
@@ -884,6 +910,76 @@ quicks = {  # single byte quicks
                     variadic_link(links[0], (x, w)),
                     variadic_link(links[0], (w, x)),
                 ),
+            )
+        ],
+    ),
+}
+
+quicks |= { # quicky diagraphs
+    "Δ/": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, *_: [
+            attrdict(arity=1, call=lambda x: fold(links, x))
+        ],
+    ),
+    "Δ⌿": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, *_: [
+            attrdict(
+                arity=2, call=lambda w, x: fold(links, w, x, initial=True)
+            )
+        ],
+    ),
+    "Δ\\": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, *_: [
+            attrdict(arity=1, call=lambda x: scan(links, x))
+        ],
+    ),
+    "Δ⍀": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, *_: [
+            attrdict(
+                arity=2, call=lambda w, x: scan(links, w, x, initial=True)
+            )
+        ],
+    ),
+    "Δω": attrdict(
+        condition=lambda links: len(links) == 2,
+        qlink=lambda links, *_: [
+            attrdict(
+                arity=max(arities(links)),
+                call=fix_args(lambda w, x: while_loop(links[0], links[1], (w, x), cumulative=True)),
+            )
+        ],
+    ),
+    "Δ⍤": attrdict(
+        condition=lambda links: links and links[0].arity,
+        qlink=lambda links, *_: (
+            [links.pop(0)] if len(links) == 2 and links[0].arity == 0 else []
+        )
+        + [
+            attrdict(
+                arity=max_arity(links),
+                call=fix_args(lambda w, x: ntimes(links, (w, x), cumulative=True)),
+            )
+        ],
+    ),
+    "Δe": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, *_: [
+            attrdict(
+                arity=links[0].arity or 1,
+                call=fix_args(lambda w, x: apply_at(links[0], list(range(2, len(x) + 2, 2), w, x)),
+            )
+        ],
+    ),
+    "Δo": attrdict(
+        condition=lambda links: links,
+        qlink=lambda links, *_: [
+            attrdict(
+                arity=links[0].arity or 1,
+                call=fix_args(lambda w, x: apply_at(links[0], list(range(1, len(x) + 1, 2), w, x)),
             )
         ],
     ),

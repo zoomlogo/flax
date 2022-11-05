@@ -3,6 +3,7 @@ import functools
 import itertools
 import more_itertools
 import copy
+import re
 from random import randrange
 
 from flax.common import mp, mpc, inf, mpf
@@ -27,11 +28,13 @@ __all__ = [
     "find_all",
     "find_sublist",
     "flatten",
+    "get_req",
     "grade_down",
     "grade_up",
     "group_equal",
     "group_indicies",
     "index_into",
+    "index_into_md",
     "iota",
     "iota1",
     "iterable",
@@ -232,6 +235,17 @@ def flatten(x):
     return list(more_itertools.collapse(x))
 
 
+def get_req(x):
+    """get_req: GET request for url x"""
+    url = "".join(map(chr, x))
+    url = (re.match(r"[A-Za-z][A-Za-z0-9+.-]*://", url) == None and "http://" or "") + url
+    response = urllib_request.request.urlopen(url).read()
+    try:
+        return to_chars(response.decode('utf-8'))
+    except:
+        return to_chars(response.decode('latin-1'))
+
+
 def grade_down(x):
     """grade_down: grade x in descending order"""
     x = iterable(x, digits_=True)
@@ -284,6 +298,14 @@ def index_into(w, x):
         return index_into(index_into(w, x.real), x.imag)
     else:
         return [index_into(w, mp.floor(x)), index_into(w, mp.ceil(x))]
+
+
+def index_into_md(w, x):
+    """index_into_md: index into w multidimensionally with x"""
+    res = w
+    for i in x:
+        res = index_into(i, res)
+    return res
 
 
 def iota(x):

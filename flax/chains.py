@@ -151,10 +151,13 @@ def dyadic_chain(chain, w, x):
     return λ
 
 
-def dyadic_link(link, w, x, flat_w=False, flat_x=False):
+def dyadic_link(link, w, x, flat=False):
     """dyadic_link: call a link dyadically with arguments, handling vectorisation"""
-    flat_w = flat_w or not hasattr(link, "dw")
-    flat_x = flat_x or not hasattr(link, "dx")
+    if flat:
+        return link.call(w, x)
+
+    flat_w = not hasattr(link, "dw")
+    flat_x = not hasattr(link, "dx")
 
     dw = flat_w or depth(w)
     dx = flat_x or depth(x)
@@ -450,7 +453,7 @@ def variadic_chain(chain, args):
         return dyadic_chain(chain, *args)
 
 
-def variadic_link(link, args, force_dyad=False, force_monad=False):
+def variadic_link(link, args, force_dyad=False, force_monad=False, flat=False):
     """call link with args"""
     args = [i for i in args if i is not None]
     if link.arity == -1:
@@ -460,14 +463,14 @@ def variadic_link(link, args, force_dyad=False, force_monad=False):
         return link.call()
     elif link.arity == 1:
         if force_dyad:
-            return [args[0], monadic_link(link, args[1])]
+            return [args[0], monadic_link(link, args[1], flat=flat)]
         else:
-            return monadic_link(link, args[-1])
+            return monadic_link(link, args[-1], flat=flat)
     elif link.arity == 2:
         if force_monad:
-            return dyadic_link(link, args[0], args[0])
+            return dyadic_link(link, args[0], args[0], flat=flat)
         else:
-            return dyadic_link(link, args[0], args[1])
+            return dyadic_link(link, args[0], args[1], flat=flat)
 
 
 def while_loop(link, cond, args, cumulative=False):
