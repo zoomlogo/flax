@@ -1,4 +1,4 @@
-name: Generate TXT, JSON, and CSV
+name: Generate .txt, .json and .csv
 
 on: [push]
 
@@ -17,10 +17,8 @@ jobs:
         npm install
     - name: Generate
       run: |
-        node docs/yaml-to-csv.js
-        node docs/yaml-to-json.js
-        node docs/yaml-to-txt.js
+        node docs/yaml-to.js
     - name: Commit
       uses: stefanzweifel/git-auto-commit-action@v4.12.0
       with:
-        commit_message: Generate CSV, JSON, and TXT
+        commit_message: Generate .csv, .json and .txt
