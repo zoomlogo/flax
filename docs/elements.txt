@@ -1,5 +1,5 @@
 ELEMENT TYPE   DESCRIPTION
 ‟       Syntax Comment
 "       Syntax String syntax. Actually a list of ints.
-_       Syntax Next character"'"s value as integer.
-:       Syntax Next characters"'" value as integer.
+_       Syntax Next character's value as integer.
+:       Syntax Next characters' value as integer.
