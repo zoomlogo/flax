@@ -8,8 +8,8 @@
   
 - element: _
   type: Syntax
-  description: Next character"'"s value as integer.
+  description: Next character's value as integer.
   
 - element: ":"
   type: Syntax
-  description: Next characters"'" value as integer.
+  description: Next characters' value as integer.
