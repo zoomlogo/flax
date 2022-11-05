@@ -238,12 +238,14 @@ def flatten(x):
 def get_req(x):
     """get_req: GET request for url x"""
     url = "".join(map(chr, x))
-    url = (re.match(r"[A-Za-z][A-Za-z0-9+.-]*://", url) == None and "http://" or "") + url
+    url = (
+        re.match(r"[A-Za-z][A-Za-z0-9+.-]*://", url) == None and "http://" or ""
+    ) + url
     response = urllib_request.request.urlopen(url).read()
     try:
-        return to_chars(response.decode('utf-8'))
+        return to_chars(response.decode("utf-8"))
     except:
-        return to_chars(response.decode('latin-1'))
+        return to_chars(response.decode("latin-1"))
 
 
 def grade_down(x):
