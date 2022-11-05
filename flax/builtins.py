@@ -970,7 +970,7 @@ quicks |= { # quicky diagraphs
         qlink=lambda links, *_: [
             attrdict(
                 arity=links[0].arity or 1,
-                call=fix_args(lambda w, x: apply_at(links[0], list(range(2, len(x) + 2, 2), w, x)),
+                call=fix_args(lambda w, x: apply_at(links[0], list(range(2, len(x) + 2, 2), w, x))),
             )
         ],
     ),
@@ -979,7 +979,7 @@ quicks |= { # quicky diagraphs
         qlink=lambda links, *_: [
             attrdict(
                 arity=links[0].arity or 1,
-                call=fix_args(lambda w, x: apply_at(links[0], list(range(1, len(x) + 1, 2), w, x)),
+                call=fix_args(lambda w, x: apply_at(links[0], list(range(1, len(x) + 1, 2), w, x))),
             )
         ],
     ),
