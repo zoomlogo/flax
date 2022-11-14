@@ -13,3 +13,247 @@
 - element: ":"
   type: Syntax
   description: Next characters' value as integer.
+
+- element: ø
+  type: Chain Separator
+  description: Start a new niladic chain.
+
+- element: µ
+  type: Chain Separator
+  description: Start a new monadic chain.
+
+- element: ð
+  type: Chain Separator
+  description: Start a new dyadic chain.
+
+- element: ɓ
+  type: Chain Separator
+  description: Start a new dyadic chain with reversed arguments.
+
+- element: (
+  type: Chain Separator
+  description: Start a new monadic chain which maps over the previous one.
+
+- element: )
+  type: Chain Separator
+  description: Start a new monadic chain which filters over the previous one.
+
+- element: ⁰
+  type: Nilad
+  description: 10
+
+- element: ¹
+  type: Nilad
+  description: 16
+
+- element: ²
+  type: Nilad
+  description: 26
+
+- element: ³
+  type: Nilad
+  description: 32
+
+- element: ⁴
+  type: Nilad
+  description: 64
+
+- element: ⁵
+  type: Nilad
+  description: 100
+
+- element: ⁷
+  type: Nilad
+  description: 256
+
+- element: ⁸
+  type: Nilad
+  description: Left arguement of chain.
+
+- element: ⁹
+  type: Nilad
+  description: Right argument of chain.
+
+- element: ∃
+  type: Nilad
+  description: Get register.
+
+- element: ⍬
+  type: Nilad
+  description: "Empty list, []."
+
+- element: A
+  type: Monad
+  description: Abs.
+
+- element: Ȧ
+  type: Monad
+  description: Any.
+
+- element: B
+  type: Monad
+  description: Integer → Binary.
+
+- element: Ḃ
+  type: Monad
+  description: Binary → Integer.
+
+- element: C
+  type: Monad
+  description: Complement.
+
+- element: Ċ
+  type: Monad
+  description: Randomly choose an element.
+
+- element: D
+  type: Monad
+  description: Integer → Digits.
+
+- element: Ḋ
+  type: Monad
+  description: Digits → Integer.
+
+- element: E
+  type: Monad
+  description: All equal.
+
+- element: Ė
+  type: Monad
+  description: If all equal then return the element.
+
+- element: F
+  type: Monad
+  description: Flatten.
+
+- element: Ḟ
+  type: Monad
+  description: Indicies of falsely elements.
+
+- element: G
+  type: Monad
+  description: Group indicies by their corresponding values.
+
+- element: Ġ
+  type: Monad
+  description: Group adjacent equal elements.
+
+- element: H
+  type: Monad
+  description: Half.
+
+- element: Ḣ
+  type: Monad
+  description: Double.
+
+- element: I
+  type: Monad
+  description: Forward differences / Increments.
+
+- element: J
+  type: Monad
+  description: Range of length.
+
+- element: K
+  type: Monad
+  description: Cumulative sum.
+
+- element: L
+  type: Monad
+  description: Length
+
+- element: Ŀ
+  type: Monad
+  description: Length of each.
+
+- element: M
+  type: Monad
+  description: Square.
+
+- element: Ṁ
+  type: Monad
+  description: Maximal indicies.
+
+- element: N
+  type: Monad
+  description: Negate.
+
+- element: Ṅ
+  type: Monad
+  description: Sign.
+
+- element: O
+  type: Monad
+  description: Identity / Return the element.
+
+- element: Ȯ
+  type: Monad
+  description: Factors / Divisors.
+
+- element: P
+  type: Monad
+  description: Permutations.
+
+- element: Ṗ
+  type: Monad
+  description: Shuffle.
+
+- element: Q
+  type: Monad
+  description: Reverse every other element.
+
+- element: R
+  type: Monad
+  description: Reverse.
+
+- element: Ṙ
+  type: Monad
+  description: Reverse of each.
+
+- element: S
+  type: Monad
+  description: Sublists (without empty list).
+
+- element: Ṡ
+  type: Monad
+  description: Sum over each.
+
+- element: Ṫ
+  type: Monad
+  description: Indicies of truthy elements.
+
+- element: U
+  type: Monad
+  description: Unique elements.
+
+- element: V
+  type: Monad
+  description: Is prime?
+
+- element: W
+  type: Monad
+  description: Where / Copies of sequential indicies of elements.
+
+- element: X
+  type: Monad
+  description: Split into two chunks.
+
+- element: Ẋ
+  type: Monad
+  description: Chunks of length two.
+
+- element: Y
+  type: Monad
+  description: Elements at even indicies.
+
+- element: Ẏ
+  type: Monad
+  description: elements at odd indicies.
+
+- element: Z
+  type: Monad
+  description: Transpose.
+
+- element: Ż
+  type: Monad
+  description: Prepend a zero.
