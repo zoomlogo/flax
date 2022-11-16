@@ -257,3 +257,316 @@
 - element: Ż
   type: Monad
   description: Prepend a zero.
+
+- element: "!"
+  type: Monad
+  description: Factorial / Gamma function shifted.
+
+- element: ¬
+  type: Monad
+  description: Logical not.
+
+- element: √
+  type: Monad
+  description: Square root.
+
+- element: Σ
+  type: Monad
+  description: Sum.
+
+- element: Π
+  type: Monad
+  description: Product.
+
+- element: ⊂
+  type: Monad
+  description: Enclose / Wrap.
+
+- element: ⊆
+  type: Monad
+  description: Enclose if not enclosed already.
+
+- element: ⊃
+  type: Monad
+  description: Head.
+
+- element: ⊇
+  type: Monad
+  description: Tail.
+
+- element: ⊐
+  type: Monad
+  description: Last.
+
+- element: ⊒
+  type: Monad
+  description: Neck.
+
+- element: "~"
+  type: Monad
+  description: Bitwise not.
+
+- element: γ
+  type: Monad
+  description: Print.
+
+- element: ε
+  type: Monad
+  description: Enumerate.
+
+- element: ι
+  type: Monad
+  description: Range.
+
+- element: κ
+  type: Monad
+  description: Range from one.
+
+- element: ξ
+  type: Monad
+  description: Padded zip (with zero).
+
+- element: χ
+  type: Monad
+  description: All.
+
+- element: ψ
+  type: Monad
+  description: Any and all.
+
+- element: ϕ
+  type: Monad
+  description: Flatten one level.
+
+- element: ∵
+  type: Monad
+  description: Minimum.
+
+- element: ∴
+  type: Monad
+  description: Maximum.
+
+- element: ↑
+  type: Monad
+  description: Grade up.
+
+- element: ↓
+  type: Monad
+  description: Grade down.
+
+- element: ∞
+  type: Monad
+  description: To infinite list. [TODO]
+
+- element: ¼
+  type: Monad
+  description: Reciprocal.
+
+- element: ½
+  type: Monad
+  description: Bit.
+
+- element: ⌈
+  type: Monad
+  description: Ceil.
+
+- element: ⌊
+  type: Monad
+  description: Floor.
+
+- element: →
+  type: Monad
+  description: Increment.
+
+- element: ←
+  type: Monad
+  description: Decrement.
+
+- element: ∂
+  type: Monad
+  description: Sort.
+
+- element: {
+  type: Monad
+  description: Prefixes.
+
+- element: }
+  type: Monad
+  description: Suffixes.
+
+- element: ○
+  type: Monad
+  description: Powerset.
+
+- element: ↶
+  type: Monad
+  description: Rotate matrix by ninety degrees.
+
+- element: a
+  type: Dyad
+  description: Absolute difference.
+
+- element: ȧ
+  type: Dyad
+  description: Pick one of the arguments randomly.
+
+- element: b
+  type: Dyad
+  description: Integer → Base.
+
+- element: ḃ
+  type: Dyad
+  description: Base → Integer.
+
+- element: c
+  type: Dyad
+  description: nCr.
+
+- element: ċ
+  type: Dyad
+  description: Split into chunks.
+
+- element: d
+  type: Dyad
+  description: Divmod.
+
+- element: ḋ
+  type: Dyad
+  description: Is divisible?
+
+- element: e
+  type: Dyad
+  description: Exclusive range.
+
+- element: ė
+  type: Dyad
+  description: Base decompression.
+
+- element: f
+  type: Dyad
+  description: Remove elements of one that are not in the other.
+
+- element: ḟ
+  type: Dyad
+  description: Remove elements of one that are in the other.
+
+- element: g
+  type: Dyad
+  description: GCD.
+
+- element: ġ
+  type: Dyad
+  description: Padded dot product (with zero).
+
+- element: h
+  type: Dyad
+  description: Head.
+
+- element: ḣ
+  type: Dyad
+  description: How much times is one divisible by the other.
+
+- element: j
+  type: Dyad
+  description: Index into.
+
+- element: k
+  type: Dyad
+  description: Split into.
+
+- element: l
+  type: Dyad
+  description: LCM.
+
+- element: ŀ
+  type: Dyad
+  description: Logarithm.
+
+- element: m
+  type: Dyad
+  description: Minimum.
+
+- element: ṁ
+  type: Dyad
+  description: Mold.
+
+- element: n
+  type: Dyad
+  description: Every nth element.
+
+- element: o
+  type: Dyad
+  description: Split at occurences.
+
+- element: ȯ
+  type: Dyad
+  description: Count occurence.
+
+- element: p
+  type: Dyad
+  description: nPr.
+
+- element: ṗ
+  type: Dyad
+  description: Cartesian power.
+
+- element: q
+  type: Dyad
+  description: Quit.
+
+- element: r
+  type: Dyad
+  description: Inclusive range.
+
+- element: s
+  type: Dyad
+  description: Find sublist.
+
+- element: ṡ
+  type: Dyad
+  description: Select elements from one with indicies that are truthy elements in the other.
+
+- element: t
+  type: Dyad
+  description: Tail.
+
+- element: ṫ
+  type: Dyad
+  description: Trim all elements of one from the other.
+
+- element: u
+  type: Dyad
+  description: Find for each element.
+
+- element: v
+  type: Dyad
+  description: Join each of one to another.
+
+- element: w
+  type: Dyad
+  description: Windows.
+
+- element: ẇ
+  type: Dyad
+  description: Combinations without replacement.
+
+- element: x
+  type: Dyad
+  description: Maximum.
+
+- element: ẋ
+  type: Dyad
+  description: Pair.
+
+- element: y
+  type: Dyad
+  description: Join.
+
+- element: z
+  type: Dyad
+  description: Zip.
+
+- element: ż
+  type: Dyad
+  description: Transpose with filler.
+
