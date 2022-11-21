@@ -19,7 +19,7 @@ getJSON(
     tooltip.classList.add("tooltip"); //idk why but this works
     tr.appendChild(tooltip);
 
-    for (let key of ["element", "description", "arity-type"]) {
+    for (let key of ["element", "description", "type"]) {
       let td = document.createElement("td");
       td.innerText = element[key];
       tr.appendChild(td);
