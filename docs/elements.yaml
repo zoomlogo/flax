@@ -570,3 +570,707 @@
   type: Dyad
   description: Transpose with filler.
 
+- element: $
+  type: Quick
+  description: Two links as monad.
+
+- element: ¢
+  type: Quick
+  description: Two links as dyad.
+
+- element: £
+  type: Quick
+  description: Three links as monad.
+
+- element: ¥
+  type: Quick
+  description: Three links as dyad.
+
+- element: €
+  type: Quick
+  description: Four links as monad.
+
+- element: ₹
+  type: Quick
+  description: Four links as dyad.
+
+- element: "'"
+  type: Quick
+  description: Map; zipwith.
+
+- element: ’
+  type: Quick
+  description: Each left.
+
+- element: ‘
+  type: Quick
+  description: Each right.
+
+- element: ¨
+  type: Quick
+  description: Quick map.
+
+- element: ζ
+  type: Quick
+  description: Flat map.
+
+- element: ρ
+  type: Quick
+  description: Map over permutations.
+
+- element: ⊸
+  type: Quick
+  description: Map over prefixes.
+
+- element: ?
+  type: Quick
+  description: Ternary if.
+
+- element: ω
+  type: Quick
+  description: While.
+
+- element: ⍤
+  type: Quick
+  description: Repeat.
+
+- element: @
+  type: Quick
+  description: Apply at.
+
+- element: ˘
+  type: Quick
+  description: Self arguments; monad as dyad using right argument.
+
+- element: ˜
+  type: Quick
+  description: Swap arguments; monad as dyad using left argument.
+
+- element: `
+  type: Quick
+  description: Sort by.
+
+- element: η
+  type: Quick
+  description: Group by.
+
+- element: ⌉
+  type: Quick
+  description: Max by.
+
+- element: ⌋
+  type: Quick
+  description: Min by.
+
+- element: τ
+  type: Quick
+  description: Truthy indicies after applying.
+
+- element: α
+  type: Quick
+  description: All neighbours.
+
+- element: υ
+  type: Quick
+  description: Apply to neighbours.
+
+- element: ⊥
+  type: Quick
+  description: Filter keep.
+
+- element: ⊤
+  type: Quick
+  description: Filter drop.
+
+- element: ⁼
+  type: Quick
+  description: Is equal after applying.
+
+- element: β
+  type: Quick
+  description: Call this link with same arity.
+
+- element: θ
+  type: Quick
+  description: Call next chain as nilad.
+
+- element: λ
+  type: Quick
+  description: Call next chain as monad.
+
+- element: ν
+  type: Quick
+  description: Call next chain as dyad.
+
+- element: σ
+  type: Quick
+  description: Call previous chain as nilad.
+
+- element: ς
+  type: Quick
+  description: Call previous chain as monad.
+
+- element: π
+  type: Quick
+  description: Call previous chain as dyad.
+
+- element: φ
+  type: Quick
+  description: Call chain at, as.
+
+- element: /
+  type: Quick
+  description: Foldr1.
+
+- element: ⌿
+  type: Quick
+  description: Foldr.
+
+- element: \
+  type: Quick
+  description: Scanr1.
+
+- element: ⍀
+  type: Quick
+  description: Scanr.
+
+- element: ´
+  type: Quick
+  description: Fold fixedpoint.
+
+- element: ˝
+  type: Quick
+  description: Scan fixedpoint.
+
+- element: ∀
+  type: Quick
+  description: Set register.
+
+- element: ∝
+  type: Quick
+  description: Apply, then transpose, apply again.
+
+- element: ⟜
+  type: Quick
+  description: N-compose.
+
+- element: ˙
+  type: Quick
+  description: Unvectorise.
+
+- element: ¾
+  type: Quick
+  description: Apply monads to both dyadic arguments (x (mdQ) y = mx d my).
+
+- element: Ø+
+  type: Niladic Diagraphs
+  description: Signs; [1,-1]
+
+- element: Ø-
+  type: Niladic Diagraphs
+  description: Signs; [-1,1]
+
+- element: Ø⁰
+  type: Niladic Diagraphs
+  description: [1,2,3]
+
+- element: Ø¹
+  type: Niladic Diagraphs
+  description: [[0,1],[1,0]]
+
+- element: Ø²
+  type: Niladic Diagraphs
+  description: 2³²
+
+- element: Ø³
+  type: Niladic Diagraphs
+  description: [1,2]
+
+- element: Ø⁴
+  type: Niladic Diagraphs
+  description: 2⁶⁴
+
+- element: Ø⁵
+  type: Niladic Diagraphs
+  description: 128
+
+- element: Ø⁶
+  type: Niladic Diagraphs
+  description: 512
+
+- element: Ø⁷
+  type: Niladic Diagraphs
+  description: 1024
+
+- element: Ø⁸
+  type: Niladic Diagraphs
+  description: 2048
+
+- element: Ø⁹
+  type: Niladic Diagraphs
+  description: 65536
+
+- element: Ø0
+  type: Niladic Diagraphs
+  description: Zeros; [0,0]
+
+- element: Ø1
+  type: Niladic Diagraphs
+  description: Ones; [1,1]
+
+- element: Ø2
+  type: Niladic Diagraphs
+  description: Twos; [2,2]
+
+- element: Ød
+  type: Niladic Diagraphs
+  description: Directions; [[0,1],[1,0],[0,-1],[-1,0]]
+
+- element: Øx
+  type: Niladic Diagraphs
+  description: Directions; [[1,1],[1,0],[1,-1],[0,1],[0,0],[0,-1],[-1,1],[-1,0],[-1,-1]]
+
+- element: Øτ
+  type: Niladic Diagraphs
+  description: 360
+
+- element: Ø(
+  type: Niladic Diagraphs
+  description: Parenthesis; [40,41]
+
+- element: Ø[
+  type: Niladic Diagraphs
+  description: Square brackets; [91,93]
+
+- element: Ø/
+  type: Niladic Diagraphs
+  description: Slashes; [47,92]
+
+- element: Ø<
+  type: Niladic Diagraphs
+  description: Angle brackets; [60,62]
+
+- element: Ø{
+  type: Niladic Diagraphs
+  description: Curly brackets; [123,125]
+
+- element: ØA
+  type: Niladic Diagraphs
+  description: Capital letters
+
+- element: Øa
+  type: Niladic Diagraphs
+  description: Small letters.
+
+- element: ØB
+  type: Niladic Diagraphs
+  description: Capital consonants.
+
+- element: Øb
+  type: Niladic Diagraphs
+  description: Small consonants.
+
+- element: ØV
+  type: Niladic Diagraphs
+  description: Capital vowels.
+
+- element: Øv
+  type: Niladic Diagraphs
+  description: Small vowels.
+
+- element: ØY
+  type: Niladic Diagraphs
+  description: Capital y-vowels.
+
+- element: Øy
+  type: Niladic Diagraphs
+  description: Small y-vowels.
+
+- element: ØD
+  type: Niladic Diagraphs
+  description: Digits.
+
+- element: ØX
+  type: Niladic Diagraphs
+  description: Hex digits.
+
+- element: ØO
+  type: Niladic Diagraphs
+  description: Octal digits.
+
+- element: Øα
+  type: Niladic Diagraphs
+  description: Alphabet.
+
+- element: ØW
+  type: Niladic Diagraphs
+  description: Word.
+
+- element: Øc
+  type: Niladic Diagraphs
+  description: Codepage.
+
+- element: Øe
+  type: Niladic Diagraphs
+  description: Euler's number.
+
+- element: Øφ
+  type: Niladic Diagraphs
+  description: Phi (golden ratio).
+
+- element: Øπ
+  type: Niladic Diagraphs
+  description: Pi.
+
+- element: Øδ
+  type: Niladic Diagraphs
+  description: Silver ratio.
+
+- element: Øγ
+  type: Niladic Diagraphs
+  description: Euler's constant.
+
+- element: Ø∞
+  type: Niladic Diagraphs
+  description: Infinity.
+
+- element: Æ√
+  type: Mathy Monadic Diagraphs
+  description: Integer square root.
+
+- element: ÆĊ
+  type: Mathy Monadic Diagraphs
+  description: Arccosine.
+
+- element: ÆṠ
+  type: Mathy Monadic Diagraphs
+  description: Arcsine.
+
+- element: ÆṪ
+  type: Mathy Monadic Diagraphs
+  description: Arctangent.
+
+- element: Æċ
+  type: Mathy Monadic Diagraphs
+  description: Arcsecant.
+
+- element: Æṡ
+  type: Mathy Monadic Diagraphs
+  description: Arccosecant.
+
+- element: Æṫ
+  type: Mathy Monadic Diagraphs
+  description: Arccotangent.
+
+- element: ÆS
+  type: Mathy Monadic Diagraphs
+  description: Sine.
+
+- element: ÆC
+  type: Mathy Monadic Diagraphs
+  description: Cosine.
+
+- element: ÆT
+  type: Mathy Monadic Diagraphs
+  description: Tangent.
+
+- element: Æs
+  type: Mathy Monadic Diagraphs
+  description: Cosecant.
+
+- element: Æc
+  type: Mathy Monadic Diagraphs
+  description: Secant.
+
+- element: Æt
+  type: Mathy Monadic Diagraphs
+  description: Cotangent.
+
+- element: Æp
+  type: Mathy Monadic Diagraphs
+  description: Count primes.
+
+- element: Æn
+  type: Mathy Monadic Diagraphs
+  description: N primes.
+
+- element: ÆF
+  type: Mathy Monadic Diagraphs
+  description: Prime factors.
+
+- element: ÆL
+  type: Mathy Monadic Diagraphs
+  description: Natural logarithm.
+
+- element: ÆĿ
+  type: Mathy Monadic Diagraphs
+  description: Exp.
+
+- element: Æŀ
+  type: Mathy Monadic Diagraphs
+  description: Nth catalan number.
+
+- element: Æl
+  type: Mathy Monadic Diagraphs
+  description: Nth lucas number.
+
+- element: Æf
+  type: Mathy Monadic Diagraphs
+  description: Nth fibonacci number.
+
+- element: Æτ
+  type: Mathy Monadic Diagraphs
+  description: Trace.
+
+- element: Æ²
+  type: Mathy Monadic Diagraphs
+  description: Is square.
+
+- element: ÆA
+  type: Mathy Monadic Diagraphs
+  description: Antidiagonals.
+
+- element: ÆȦ
+  type: Mathy Monadic Diagraphs
+  description: Diagonals.
+
+- element: ÆD
+  type: Mathy Monadic Diagraphs
+  description: Determinant.
+
+- element: ÆR
+  type: Mathy Monadic Diagraphs
+  description: Polyroots.
+
+- element: Æd
+  type: Mathy Monadic Diagraphs
+  description: Radians → degrees.
+
+- element: Æḋ
+  type: Mathy Monadic Diagraphs
+  description: Degrees → radians.
+
+- element: Æ\
+  type: Mathy Monadic Diagraphs
+  description: Leading diagonal.
+
+- element: Æ/
+  type: Mathy Monadic Diagraphs
+  description: Trailing diagonal.
+
+- element: Æj
+  type: Mathy Monadic Diagraphs
+  description: Conjugate.
+
+- element: Æσ
+  type: Mathy Monadic Diagraphs
+  description: Standard deviation.
+
+- element: Æm
+  type: Mathy Monadic Diagraphs
+  description: Mean.
+
+- element: Æṁ
+  type: Mathy Monadic Diagraphs
+  description: Median.
+
+- element: Æg
+  type: Mathy Monadic Diagraphs
+  description: Geometric mean.
+
+- element: Æh
+  type: Mathy Monadic Diagraphs
+  description: Harmonic mean.
+
+- element: æ∘
+  type: Mathy Dyadic Diagraphs
+  description: Dot product padding 1.
+
+- element: æ×
+  type: Mathy Dyadic Diagraphs
+  description: Matrix multiplication.
+
+- element: æ*
+  type: Mathy Dyadic Diagraphs
+  description: Matrix power.
+
+- element: æṫ
+  type: Mathy Dyadic Diagraphs
+  description: Arctangent2.
+
+- element: æc
+  type: Mathy Dyadic Diagraphs
+  description: Convolution.
+
+- element: æi
+  type: Mathy Dyadic Diagraphs
+  description: To complex number.
+
+- element: æ«
+  type: Mathy Dyadic Diagraphs
+  description: Bit shift left.
+
+- element: æ»
+  type: Mathy Dyadic Diagraphs
+  description: Bit shift right.
+
+- element: ær
+  type: Mathy Dyadic Diagraphs
+  description: Round.
+
+- element: æl
+  type: Mathy Dyadic Diagraphs
+  description: Linear regression.
+
+- element: ŒḂ
+  type: Other Monadic Diagraphs
+  description: Bounce over each.
+
+- element: ŒB
+  type: Other Monadic Diagraphs
+  description: Bounce.
+
+- element: ŒP
+  type: Other Monadic Diagraphs
+  description: Is palindrome.
+
+- element: ŒĠ
+  type: Other Monadic Diagraphs
+  description: GET request.
+
+- element: ŒE
+  type: Other Monadic Diagraphs
+  description: Multidimensional enumerate.
+
+- element: ŒG
+  type: Other Monadic Diagraphs
+  description: Multidimensional group.
+
+- element: ŒM
+  type: Other Monadic Diagraphs
+  description: Multidimensional maximal indicies.
+
+- element: ŒṪ
+  type: Other Monadic Diagraphs
+  description: Multidimensional truthy.
+
+- element: Œ1
+  type: Other Monadic Diagraphs
+  description: Make a booleans matrix with ones at specified locations.
+
+- element: Œp
+  type: Other Monadic Diagraphs
+  description: Unordered pairs.
+
+- element: Œe
+  type: Other Monadic Diagraphs
+  description: Run length encode.
+
+- element: Œd
+  type: Other Monadic Diagraphs
+  description: Run length decode.
+
+- element: Œ$
+  type: Other Monadic Diagraphs
+  description: Swap case.
+
+- element: ŒU
+  type: Other Monadic Diagraphs
+  description: Upper case.
+
+- element: ŒL
+  type: Other Monadic Diagraphs
+  description: Lower case.
+
+- element: ŒD
+  type: Other Monadic Diagraphs
+  description: Depth.
+
+- element: ŒṖ
+  type: Other Monadic Diagraphs
+  description: Apl style print.
+
+- element: Œb
+  type: Other Monadic Diagraphs
+  description: Print a boolean matrix as braille.
+
+- element: ŒJ
+  type: Other Monadic Diagraphs
+  description: Json decode.
+
+- element: œ∩
+  type: Other Dyadic Diagraphs
+  description: Multiset intersection.
+
+- element: œ-
+  type: Other Dyadic Diagraphs
+  description: Multiset difference.
+
+- element: œ∪
+  type: Other Dyadic Diagraphs
+  description: Multiset union.
+
+- element: œi
+  type: Other Dyadic Diagraphs
+  description: Mutlidimensional index into.
+
+- element: œs
+  type: Other Dyadic Diagraphs
+  description: Multidimensional sublist index of.
+
+- element: œŀ
+  type: Other Dyadic Diagraphs
+  description: Trim from right.
+
+- element: œl
+  type: Other Dyadic Diagraphs
+  description: Trim from left.
+
+- element: œt
+  type: Other Dyadic Diagraphs
+  description: Split before truthy indices.
+
+- element: œo
+  type: Other Dyadic Diagraphs
+  description: Split at first occurence.
+
+- element: œm
+  type: Other Dyadic Diagraphs
+  description: Map: inputs → outputs; w consists of [inputs,outputs], x is to be converted.
+
+- element: œr
+  type: Other Dyadic Diagraphs
+  description: Ring translate.
+
+- element: Δ/
+  type: Quick Diagraphs
+  description: Foldl1.
+
+- element: Δ⌿
+  type: Quick Diagraphs
+  description: Foldl.
+
+- element: Δ\
+  type: Quick Diagraphs
+  description: Scanl1.
+
+- element: Δ⍀
+  type: Quick Diagraphs
+  description: Scanl.
+
+- element: Δω
+  type: Quick Diagraphs
+  description: Cumulative while.
+
+- element: Δ⍤
+  type: Quick Diagraphs
+  description: Cumulative repeat.
+
+- element: Δe
+  type: Quick Diagraphs
+  description: Apply at even indicies.
+
+- element: Δo
+  type: Quick Diagraphs
+  description: Apply at odd indicies.
+
