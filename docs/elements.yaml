@@ -386,11 +386,11 @@
   type: Monad
   description: Sort.
 
-- element: {
+- element: "{"
   type: Monad
   description: Prefixes.
 
-- element: }
+- element: "}"
   type: Monad
   description: Suffixes.
 
