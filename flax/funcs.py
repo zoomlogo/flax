@@ -5,6 +5,7 @@ import more_itertools
 import copy
 import re
 from random import randrange
+import operator as ops
 
 from flax.common import mp, mpc, inf, mpf
 
@@ -15,6 +16,7 @@ __all__ = [
     "binary_i",
     "boolify",
     "cartesian_product",
+    "convolve",
     "depth",
     "diagonal_leading",
     "diagonal_trailing",
@@ -124,6 +126,17 @@ def cartesian_product(*args):
     """cartesian_product: find the cartesian product"""
     return list(map(list, itertools.product(*args)))
 
+def convolve(w, x):
+    """convolve: find the convolution of w and x"""
+    conv = []
+    i = 0
+    j = 1
+    for _ in range(len(w) + len(x) - 1):
+        conv.append(sum(map(ops.mul, w[i:j], x[i:j][::-1])))
+        if j >= min(len(w), len(x)):
+            i += 1
+        j += 1
+    return conv
 
 def depth(x):
     """depth: how deeply x is nested"""

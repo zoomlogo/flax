@@ -5,7 +5,7 @@ import string
 import re
 import statistics
 import more_itertools as mit
-import operator as Op
+import operator as ops
 import random as Random
 from itertools import zip_longest
 
@@ -91,7 +91,7 @@ atoms = {  # single byte atoms
         arity=1,
         call=lambda x: [i for i, e in enumerate(iterable(x)) if e == max(iterable(x))],
     ),
-    "N": attrdict(arity=1, dx=0, call=Op.neg),
+    "N": attrdict(arity=1, dx=0, call=ops.neg),
     "Ṅ": attrdict(arity=1, dx=0, call=mp.sign),
     "O": attrdict(arity=1, call=lambda x: x),
     "Ȯ": attrdict(
@@ -130,7 +130,7 @@ atoms = {  # single byte atoms
         dx=0,
         call=lambda x: -mp.gamma(abs(x) + 1) if x < 0 else mp.gamma(x + 1),
     ),
-    "¬": attrdict(arity=1, dx=0, call=boolify(Op.not_)),
+    "¬": attrdict(arity=1, dx=0, call=boolify(ops.not_)),
     "√": attrdict(arity=1, dx=0, call=mp.sqrt),
     "⊂": attrdict(arity=1, call=lambda x: [x]),
     "⊆": attrdict(
@@ -140,7 +140,7 @@ atoms = {  # single byte atoms
     "⊇": attrdict(arity=1, call=lambda x: iterable(x)[1:]),
     "⊐": attrdict(arity=1, call=lambda x: iterable(x)[-1]),  # err
     "⊒": attrdict(arity=1, call=lambda x: iterable(x)[:-1]),
-    "~": attrdict(arity=1, dx=0, call=Op.inv),
+    "~": attrdict(arity=1, dx=0, call=ops.inv),
     "γ": attrdict(arity=1, call=flax_print),
     "ε": attrdict(arity=1, call=lambda x: list(enumerate(x))),
     "ι": attrdict(arity=1, call=iota),
@@ -247,24 +247,24 @@ atoms = {  # single byte atoms
         arity=2, call=lambda w, x: list(map(list, zip(iterable(w), iterable(x))))
     ),
     "ż": attrdict(arity=2, dw=0, call=lambda w, x: transpose(x, filler=w)),
-    "+": attrdict(arity=2, dw=0, dx=0, call=Op.add),
-    "-": attrdict(arity=2, dw=0, dx=0, call=Op.sub),
+    "+": attrdict(arity=2, dw=0, dx=0, call=ops.add),
+    "-": attrdict(arity=2, dw=0, dx=0, call=ops.sub),
     "±": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: [w + x, w - x]),
-    "×": attrdict(arity=2, dw=0, dx=0, call=Op.mul),
-    "÷": attrdict(arity=2, dw=0, dx=0, call=Op.truediv),
+    "×": attrdict(arity=2, dw=0, dx=0, call=ops.mul),
+    "÷": attrdict(arity=2, dw=0, dx=0, call=ops.truediv),
     "|": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: x % w),
-    "*": attrdict(arity=2, dw=0, dx=0, call=Op.pow),
-    "&": attrdict(arity=2, dw=0, dx=0, call=Op.and_),
-    "%": attrdict(arity=2, dw=0, dx=0, call=Op.or_),
-    "^": attrdict(arity=2, dw=0, dx=0, call=Op.xor),
+    "*": attrdict(arity=2, dw=0, dx=0, call=ops.pow),
+    "&": attrdict(arity=2, dw=0, dx=0, call=ops.and_),
+    "%": attrdict(arity=2, dw=0, dx=0, call=ops.or_),
+    "^": attrdict(arity=2, dw=0, dx=0, call=ops.xor),
     "∧": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: w and x),
     "∨": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: w or x),
-    ">": attrdict(arity=2, dw=0, dx=0, call=boolify(Op.gt)),
-    "<": attrdict(arity=2, dw=0, dx=0, call=boolify(Op.lt)),
-    "=": attrdict(arity=2, dw=0, dx=0, call=boolify(Op.eq)),
-    "≠": attrdict(arity=2, dw=0, dx=0, call=boolify(Op.ne)),
-    "≤": attrdict(arity=2, dw=0, dx=0, call=boolify(Op.ge)),
-    "≥": attrdict(arity=2, dw=0, dx=0, call=boolify(Op.le)),
+    ">": attrdict(arity=2, dw=0, dx=0, call=boolify(ops.gt)),
+    "<": attrdict(arity=2, dw=0, dx=0, call=boolify(ops.lt)),
+    "=": attrdict(arity=2, dw=0, dx=0, call=boolify(ops.eq)),
+    "≠": attrdict(arity=2, dw=0, dx=0, call=boolify(ops.ne)),
+    "≤": attrdict(arity=2, dw=0, dx=0, call=boolify(ops.ge)),
+    "≥": attrdict(arity=2, dw=0, dx=0, call=boolify(ops.le)),
     "≡": attrdict(arity=2, call=lambda w, x: int(w == x)),
     "≢": attrdict(arity=2, call=lambda w, x: int(w != x)),
     "≈": attrdict(
@@ -286,7 +286,7 @@ atoms = {  # single byte atoms
         arity=2,
         dw=1,
         dx=1,
-        call=lambda w, x: mp.sqrt(sum(map(lambda i: i * i, map(Op.sub, w, x)))),
+        call=lambda w, x: mp.sqrt(sum(map(lambda i: i * i, map(ops.sub, w, x)))),
     ),
     "»": attrdict(
         arity=2,
@@ -416,10 +416,10 @@ atoms |= {  # diagraphs
     ),
     "æ*": attrdict(arity=2, dw=2, dx=0, call=lambda w, x: (mp.matrix(w) ** x).tolist()),
     "æṫ": attrdict(arity=2, dw=0, dx=0, call=mp.atan2),
-    # "æc": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: w * -x),
+    "æc": attrdict(arity=2, dw=1, dx=1, call=convolve),
     "æi": attrdict(arity=2, dw=0, dx=0, call=mpc),
-    "æ«": attrdict(arity=2, dw=0, dx=0, call=Op.lshift),
-    "æ»": attrdict(arity=2, dw=0, dx=0, call=Op.rshift),
+    "æ«": attrdict(arity=2, dw=0, dx=0, call=ops.lshift),
+    "æ»": attrdict(arity=2, dw=0, dx=0, call=ops.rshift),
     "ær": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: round(x, w)),
     "æl": attrdict(
         arity=2, dw=1, dx=1, call=lambda w, x: list(statistics.linear_regression(w, x))
