@@ -126,6 +126,7 @@ def cartesian_product(*args):
     """cartesian_product: find the cartesian product"""
     return list(map(list, itertools.product(*args)))
 
+
 def convolve(w, x):
     """convolve: find the convolution of w and x"""
     conv = []
@@ -137,6 +138,7 @@ def convolve(w, x):
             i += 1
         j += 1
     return conv
+
 
 def depth(x):
     """depth: how deeply x is nested"""
