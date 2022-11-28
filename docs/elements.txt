@@ -1,66 +1,320 @@
-ELEMENT TYPE            DESCRIPTION
-‟       Syntax          Comment
-"       Syntax          String syntax. Actually a list of ints.
-_       Syntax          Next character's value as integer.
-:       Syntax          Next characters' value as integer.
-ø       Chain Separator Start a new niladic chain.
-µ       Chain Separator Start a new monadic chain.
-ð       Chain Separator Start a new dyadic chain.
-ɓ       Chain Separator Start a new dyadic chain with reversed arguments.
-(       Chain Separator Start a new monadic chain which maps over the previous one.
-)       Chain Separator Start a new monadic chain which filters over the previous one.
-⁰       Nilad           10
-¹       Nilad           16
-²       Nilad           26
-³       Nilad           32
-⁴       Nilad           64
-⁵       Nilad           100
-⁷       Nilad           256
-⁸       Nilad           Left arguement of chain.
-⁹       Nilad           Right argument of chain.
-∃       Nilad           Get register.
-⍬       Nilad           Empty list, [].
-A       Monad           Abs.
-Ȧ       Monad           Any.
-B       Monad           Integer → Binary.
-Ḃ       Monad           Binary → Integer.
-C       Monad           Complement.
-Ċ       Monad           Randomly choose an element.
-D       Monad           Integer → Digits.
-Ḋ       Monad           Digits → Integer.
-E       Monad           All equal.
-Ė       Monad           If all equal then return the element.
-F       Monad           Flatten.
-Ḟ       Monad           Indicies of falsely elements.
-G       Monad           Group indicies by their corresponding values.
-Ġ       Monad           Group adjacent equal elements.
-H       Monad           Half.
-Ḣ       Monad           Double.
-I       Monad           Forward differences / Increments.
-J       Monad           Range of length.
-K       Monad           Cumulative sum.
-L       Monad           Length
-Ŀ       Monad           Length of each.
-M       Monad           Square.
-Ṁ       Monad           Maximal indicies.
-N       Monad           Negate.
-Ṅ       Monad           Sign.
-O       Monad           Identity / Return the element.
-Ȯ       Monad           Factors / Divisors.
-P       Monad           Permutations.
-Ṗ       Monad           Shuffle.
-Q       Monad           Reverse every other element.
-R       Monad           Reverse.
-Ṙ       Monad           Reverse of each.
-S       Monad           Sublists (without empty list).
-Ṡ       Monad           Sum over each.
-Ṫ       Monad           Indicies of truthy elements.
-U       Monad           Unique elements.
-V       Monad           Is prime?
-W       Monad           Where / Copies of sequential indicies of elements.
-X       Monad           Split into two chunks.
-Ẋ       Monad           Chunks of length two.
-Y       Monad           Elements at even indicies.
-Ẏ       Monad           elements at odd indicies.
-Z       Monad           Transpose.
-Ż       Monad           Prepend a zero.
+ELEMENT TYPE                    DESCRIPTION
+‟       Syntax                  Comment
+"       Syntax                  String syntax. Actually a list of ints.
+_       Syntax                  Next character's value as integer.
+:       Syntax                  Next characters' value as integer.
+ø       Chain Separator         Start a new niladic chain.
+µ       Chain Separator         Start a new monadic chain.
+ð       Chain Separator         Start a new dyadic chain.
+ɓ       Chain Separator         Start a new dyadic chain with reversed arguments.
+(       Chain Separator         Start a new monadic chain which maps over the previous one.
+)       Chain Separator         Start a new monadic chain which filters over the previous one.
+⁰       Nilad                   10
+¹       Nilad                   16
+²       Nilad                   26
+³       Nilad                   32
+⁴       Nilad                   64
+⁵       Nilad                   100
+⁷       Nilad                   256
+⁸       Nilad                   Left arguement of chain.
+⁹       Nilad                   Right argument of chain.
+∃       Nilad                   Get register.
+⍬       Nilad                   Empty list, [].
+A       Monad                   Abs.
+Ȧ       Monad                   Any.
+B       Monad                   Integer → Binary.
+Ḃ       Monad                   Binary → Integer.
+C       Monad                   Complement.
+Ċ       Monad                   Randomly choose an element.
+D       Monad                   Integer → Digits.
+Ḋ       Monad                   Digits → Integer.
+E       Monad                   All equal.
+Ė       Monad                   If all equal then return the element.
+F       Monad                   Flatten.
+Ḟ       Monad                   Indicies of falsely elements.
+G       Monad                   Group indicies by their corresponding values.
+Ġ       Monad                   Group adjacent equal elements.
+H       Monad                   Half.
+Ḣ       Monad                   Double.
+I       Monad                   Forward differences / Increments.
+J       Monad                   Range of length.
+K       Monad                   Cumulative sum.
+L       Monad                   Length
+Ŀ       Monad                   Length of each.
+M       Monad                   Square.
+Ṁ       Monad                   Maximal indicies.
+N       Monad                   Negate.
+Ṅ       Monad                   Sign.
+O       Monad                   Identity / Return the element.
+Ȯ       Monad                   Factors / Divisors.
+P       Monad                   Permutations.
+Ṗ       Monad                   Shuffle.
+Q       Monad                   Reverse every other element.
+R       Monad                   Reverse.
+Ṙ       Monad                   Reverse of each.
+S       Monad                   Sublists (without empty list).
+Ṡ       Monad                   Sum over each.
+Ṫ       Monad                   Indicies of truthy elements.
+U       Monad                   Unique elements.
+V       Monad                   Is prime?
+W       Monad                   Where / Copies of sequential indicies of elements.
+X       Monad                   Split into two chunks.
+Ẋ       Monad                   Chunks of length two.
+Y       Monad                   Elements at even indicies.
+Ẏ       Monad                   elements at odd indicies.
+Z       Monad                   Transpose.
+Ż       Monad                   Prepend a zero.
+!       Monad                   Factorial / Gamma function shifted.
+¬       Monad                   Logical not.
+√       Monad                   Square root.
+Σ       Monad                   Sum.
+Π       Monad                   Product.
+⊂       Monad                   Enclose / Wrap.
+⊆       Monad                   Enclose if not enclosed already.
+⊃       Monad                   Head.
+⊇       Monad                   Tail.
+⊐       Monad                   Last.
+⊒       Monad                   Neck.
+~       Monad                   Bitwise not.
+γ       Monad                   Print.
+ε       Monad                   Enumerate.
+ι       Monad                   Range.
+κ       Monad                   Range from one.
+ξ       Monad                   Padded zip (with zero).
+χ       Monad                   All.
+ψ       Monad                   Any and all.
+ϕ       Monad                   Flatten one level.
+∵       Monad                   Minimum.
+∴       Monad                   Maximum.
+↑       Monad                   Grade up.
+↓       Monad                   Grade down.
+∞       Monad                   To infinite list. [TODO]
+¼       Monad                   Reciprocal.
+½       Monad                   Bit.
+⌈       Monad                   Ceil.
+⌊       Monad                   Floor.
+→       Monad                   Increment.
+←       Monad                   Decrement.
+∂       Monad                   Sort.
+{       Monad                   Prefixes.
+}       Monad                   Suffixes.
+○       Monad                   Powerset.
+↶       Monad                   Rotate matrix by ninety degrees.
+a       Dyad                    Absolute difference.
+ȧ       Dyad                    Pick one of the arguments randomly.
+b       Dyad                    Integer → Base.
+ḃ       Dyad                    Base → Integer.
+c       Dyad                    nCr.
+ċ       Dyad                    Split into chunks.
+d       Dyad                    Divmod.
+ḋ       Dyad                    Is divisible?
+e       Dyad                    Exclusive range.
+ė       Dyad                    Base decompression.
+f       Dyad                    Remove elements of one that are not in the other.
+ḟ       Dyad                    Remove elements of one that are in the other.
+g       Dyad                    GCD.
+ġ       Dyad                    Padded dot product (with zero).
+h       Dyad                    Head.
+ḣ       Dyad                    How much times is one divisible by the other.
+j       Dyad                    Index into.
+k       Dyad                    Split into.
+l       Dyad                    LCM.
+ŀ       Dyad                    Logarithm.
+m       Dyad                    Minimum.
+ṁ       Dyad                    Mold.
+n       Dyad                    Every nth element.
+o       Dyad                    Split at occurences.
+ȯ       Dyad                    Count occurence.
+p       Dyad                    nPr.
+ṗ       Dyad                    Cartesian power.
+q       Dyad                    Quit.
+r       Dyad                    Inclusive range.
+s       Dyad                    Find sublist.
+ṡ       Dyad                    Select elements from one with indicies that are truthy elements in the other.
+t       Dyad                    Tail.
+ṫ       Dyad                    Trim all elements of one from the other.
+u       Dyad                    Find for each element.
+v       Dyad                    Join each of one to another.
+w       Dyad                    Windows.
+ẇ       Dyad                    Combinations without replacement.
+x       Dyad                    Maximum.
+ẋ       Dyad                    Pair.
+y       Dyad                    Join.
+z       Dyad                    Zip.
+ż       Dyad                    Transpose with filler.
+$       Quick                   Two links as monad.
+¢       Quick                   Two links as dyad.
+£       Quick                   Three links as monad.
+¥       Quick                   Three links as dyad.
+€       Quick                   Four links as monad.
+₹       Quick                   Four links as dyad.
+'       Quick                   Map; zipwith.
+’       Quick                   Each left.
+‘       Quick                   Each right.
+¨       Quick                   Quick map.
+ζ       Quick                   Flat map.
+ρ       Quick                   Map over permutations.
+⊸       Quick                   Map over prefixes.
+?       Quick                   Ternary if.
+ω       Quick                   While.
+⍤       Quick                   Repeat.
+@       Quick                   Apply at.
+˘       Quick                   Self arguments; monad as dyad using right argument.
+˜       Quick                   Swap arguments; monad as dyad using left argument.
+`       Quick                   Sort by.
+η       Quick                   Group by.
+⌉       Quick                   Max by.
+⌋       Quick                   Min by.
+τ       Quick                   Truthy indicies after applying.
+α       Quick                   All neighbours.
+υ       Quick                   Apply to neighbours.
+⊥       Quick                   Filter keep.
+⊤       Quick                   Filter drop.
+⁼       Quick                   Is equal after applying.
+β       Quick                   Call this link with same arity.
+θ       Quick                   Call next chain as nilad.
+λ       Quick                   Call next chain as monad.
+ν       Quick                   Call next chain as dyad.
+σ       Quick                   Call previous chain as nilad.
+ς       Quick                   Call previous chain as monad.
+π       Quick                   Call previous chain as dyad.
+φ       Quick                   Call chain at, as.
+/       Quick                   Foldr1.
+⌿       Quick                   Foldr.
+\       Quick                   Scanr1.
+⍀       Quick                   Scanr.
+´       Quick                   Fold fixedpoint.
+˝       Quick                   Scan fixedpoint.
+∀       Quick                   Set register.
+∝       Quick                   Apply, then transpose, apply again.
+⟜       Quick                   N-compose.
+˙       Quick                   Unvectorise.
+¾       Quick                   Apply monads to both dyadic arguments (x (mdQ) y = mx d my).
+Ø+      Niladic Diagraphs       Signs; [1,-1]
+Ø-      Niladic Diagraphs       Signs; [-1,1]
+Ø⁰      Niladic Diagraphs       1,2,3
+Ø¹      Niladic Diagraphs       0,1,1,0
+Ø²      Niladic Diagraphs       2³²
+Ø³      Niladic Diagraphs       1,2
+Ø⁴      Niladic Diagraphs       2⁶⁴
+Ø⁵      Niladic Diagraphs       128
+Ø⁶      Niladic Diagraphs       512
+Ø⁷      Niladic Diagraphs       1024
+Ø⁸      Niladic Diagraphs       2048
+Ø⁹      Niladic Diagraphs       65536
+Ø0      Niladic Diagraphs       Zeros; [0,0]
+Ø1      Niladic Diagraphs       Ones; [1,1]
+Ø2      Niladic Diagraphs       Twos; [2,2]
+Ød      Niladic Diagraphs       Directions; [[0,1],[1,0],[0,-1],[-1,0]]
+Øx      Niladic Diagraphs       Directions; [[1,1],[1,0],[1,-1],[0,1],[0,0],[0,-1],[-1,1],[-1,0],[-1,-1]]
+Øτ      Niladic Diagraphs       360
+Ø(      Niladic Diagraphs       Parenthesis; [40,41]
+Ø[      Niladic Diagraphs       Square brackets; [91,93]
+Ø/      Niladic Diagraphs       Slashes; [47,92]
+Ø<      Niladic Diagraphs       Angle brackets; [60,62]
+Ø{      Niladic Diagraphs       Curly brackets; [123,125]
+ØA      Niladic Diagraphs       Capital letters
+Øa      Niladic Diagraphs       Small letters.
+ØB      Niladic Diagraphs       Capital consonants.
+Øb      Niladic Diagraphs       Small consonants.
+ØV      Niladic Diagraphs       Capital vowels.
+Øv      Niladic Diagraphs       Small vowels.
+ØY      Niladic Diagraphs       Capital y-vowels.
+Øy      Niladic Diagraphs       Small y-vowels.
+ØD      Niladic Diagraphs       Digits.
+ØX      Niladic Diagraphs       Hex digits.
+ØO      Niladic Diagraphs       Octal digits.
+Øα      Niladic Diagraphs       Alphabet.
+ØW      Niladic Diagraphs       Word.
+Øc      Niladic Diagraphs       Codepage.
+Øe      Niladic Diagraphs       Euler's number.
+Øφ      Niladic Diagraphs       Phi (golden ratio).
+Øπ      Niladic Diagraphs       Pi.
+Øδ      Niladic Diagraphs       Silver ratio.
+Øγ      Niladic Diagraphs       Euler's constant.
+Ø∞      Niladic Diagraphs       Infinity.
+Æ√      Mathy Monadic Diagraphs Integer square root.
+ÆĊ      Mathy Monadic Diagraphs Arccosine.
+ÆṠ      Mathy Monadic Diagraphs Arcsine.
+ÆṪ      Mathy Monadic Diagraphs Arctangent.
+Æċ      Mathy Monadic Diagraphs Arcsecant.
+Æṡ      Mathy Monadic Diagraphs Arccosecant.
+Æṫ      Mathy Monadic Diagraphs Arccotangent.
+ÆS      Mathy Monadic Diagraphs Sine.
+ÆC      Mathy Monadic Diagraphs Cosine.
+ÆT      Mathy Monadic Diagraphs Tangent.
+Æs      Mathy Monadic Diagraphs Cosecant.
+Æc      Mathy Monadic Diagraphs Secant.
+Æt      Mathy Monadic Diagraphs Cotangent.
+Æp      Mathy Monadic Diagraphs Count primes.
+Æn      Mathy Monadic Diagraphs N primes.
+ÆF      Mathy Monadic Diagraphs Prime factors.
+ÆL      Mathy Monadic Diagraphs Natural logarithm.
+ÆĿ      Mathy Monadic Diagraphs Exp.
+Æŀ      Mathy Monadic Diagraphs Nth catalan number.
+Æl      Mathy Monadic Diagraphs Nth lucas number.
+Æf      Mathy Monadic Diagraphs Nth fibonacci number.
+Æτ      Mathy Monadic Diagraphs Trace.
+Æ²      Mathy Monadic Diagraphs Is square.
+ÆA      Mathy Monadic Diagraphs Antidiagonals.
+ÆȦ      Mathy Monadic Diagraphs Diagonals.
+ÆD      Mathy Monadic Diagraphs Determinant.
+ÆR      Mathy Monadic Diagraphs Polyroots.
+Æd      Mathy Monadic Diagraphs Radians → degrees.
+Æḋ      Mathy Monadic Diagraphs Degrees → radians.
+Æ\      Mathy Monadic Diagraphs Leading diagonal.
+Æ/      Mathy Monadic Diagraphs Trailing diagonal.
+Æj      Mathy Monadic Diagraphs Conjugate.
+Æσ      Mathy Monadic Diagraphs Standard deviation.
+Æm      Mathy Monadic Diagraphs Mean.
+Æṁ      Mathy Monadic Diagraphs Median.
+Æg      Mathy Monadic Diagraphs Geometric mean.
+Æh      Mathy Monadic Diagraphs Harmonic mean.
+æ∘      Mathy Dyadic Diagraphs  Dot product padding 1.
+æ×      Mathy Dyadic Diagraphs  Matrix multiplication.
+æ*      Mathy Dyadic Diagraphs  Matrix power.
+æṫ      Mathy Dyadic Diagraphs  Arctangent2.
+æc      Mathy Dyadic Diagraphs  Convolution.
+æi      Mathy Dyadic Diagraphs  To complex number.
+æ«      Mathy Dyadic Diagraphs  Bit shift left.
+æ»      Mathy Dyadic Diagraphs  Bit shift right.
+ær      Mathy Dyadic Diagraphs  Round.
+æl      Mathy Dyadic Diagraphs  Linear regression.
+ŒḂ      Other Monadic Diagraphs Bounce over each.
+ŒB      Other Monadic Diagraphs Bounce.
+ŒP      Other Monadic Diagraphs Is palindrome.
+ŒĠ      Other Monadic Diagraphs GET request.
+ŒE      Other Monadic Diagraphs Multidimensional enumerate.
+ŒG      Other Monadic Diagraphs Multidimensional group.
+ŒM      Other Monadic Diagraphs Multidimensional maximal indicies.
+ŒṪ      Other Monadic Diagraphs Multidimensional truthy.
+Œ1      Other Monadic Diagraphs Make a booleans matrix with ones at specified locations.
+Œp      Other Monadic Diagraphs Unordered pairs.
+Œe      Other Monadic Diagraphs Run length encode.
+Œd      Other Monadic Diagraphs Run length decode.
+Œ$      Other Monadic Diagraphs Swap case.
+ŒU      Other Monadic Diagraphs Upper case.
+ŒL      Other Monadic Diagraphs Lower case.
+ŒD      Other Monadic Diagraphs Depth.
+ŒṖ      Other Monadic Diagraphs Apl style print.
+Œb      Other Monadic Diagraphs Print a boolean matrix as braille.
+ŒJ      Other Monadic Diagraphs Json decode.
+œ∩      Other Dyadic Diagraphs  Multiset intersection.
+œ-      Other Dyadic Diagraphs  Multiset difference.
+œ∪      Other Dyadic Diagraphs  Multiset union.
+œi      Other Dyadic Diagraphs  Mutlidimensional index into.
+œs      Other Dyadic Diagraphs  Multidimensional sublist index of.
+œŀ      Other Dyadic Diagraphs  Trim from right.
+œl      Other Dyadic Diagraphs  Trim from left.
+œt      Other Dyadic Diagraphs  Split before truthy indices.
+œo      Other Dyadic Diagraphs  Split at first occurence.
+œm      Other Dyadic Diagraphs  Map; inputs → outputs; w consists of [inputs,outputs], x is to be converted.
+œr      Other Dyadic Diagraphs  Ring translate.
+Δ/      Quick Diagraphs         Foldl1.
+Δ⌿      Quick Diagraphs         Foldl.
+Δ\      Quick Diagraphs         Scanl1.
+Δ⍀      Quick Diagraphs         Scanl.
+Δω      Quick Diagraphs         Cumulative while.
+Δ⍤      Quick Diagraphs         Cumulative repeat.
+Δe      Quick Diagraphs         Apply at even indicies.
+Δo      Quick Diagraphs         Apply at odd indicies.
