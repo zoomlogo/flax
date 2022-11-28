@@ -35,15 +35,15 @@ th, td {
   border: none;
 }
 
-td:nth-child(1) {
+td:nth-child(2) {
   width: 4vw;
 }
 
-td:nth-child(2) {
+td:nth-child(3) {
   width: 90vw;
 }
 
-td:nth-child(3) {
+td:nth-child(4) {
   width: 6vw;
 }
 
