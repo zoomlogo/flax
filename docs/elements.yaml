@@ -634,7 +634,7 @@
   type: Quick
   description: Repeat.
 
-- element: @
+- element: "@"
   type: Quick
   description: Apply at.
 
@@ -646,7 +646,7 @@
   type: Quick
   description: Swap arguments; monad as dyad using left argument.
 
-- element: `
+- element: "`"
   type: Quick
   description: Sort by.
 
@@ -1236,7 +1236,7 @@
 
 - element: œm
   type: Other Dyadic Diagraphs
-  description: Map: inputs → outputs; w consists of [inputs,outputs], x is to be converted.
+  description: Map; inputs → outputs; w consists of [inputs,outputs], x is to be converted.
 
 - element: œr
   type: Other Dyadic Diagraphs
@@ -1273,4 +1273,3 @@
 - element: Δo
   type: Quick Diagraphs
   description: Apply at odd indicies.
-
