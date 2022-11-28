@@ -14,9 +14,10 @@ getJSON(
   elements.forEach((element) => {
     let tr = document.createElement("tr");
 
+    // tooltip
     let tooltip = document.createElement("span");
     tooltip.innerHTML = "Copied!";
-    tooltip.classList.add("tooltip"); //idk why but this works
+    tooltip.classList.add("tooltip");
     tr.appendChild(tooltip);
 
     for (let key of ["element", "description", "type"]) {
