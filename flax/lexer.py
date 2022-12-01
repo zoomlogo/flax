@@ -8,6 +8,7 @@ from flax.common import TOKEN_TYPE
 
 __all__ = ["TOKEN_TYPE", "tokenise"]
 
+
 def tokenise(program):
     """tokenise: convert program into tokens"""
     tokens = []
