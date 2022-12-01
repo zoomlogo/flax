@@ -1,6 +1,7 @@
 __pycache__/
 flax.egg-info/
 *.flx
+*.dat
 dist/
 
 **/node_modules

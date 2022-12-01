@@ -238,7 +238,7 @@ def fold(links, *args, right=False, initial=False):
         if initial:
             return functools.reduce(call, x, w)
         else:
-            return functools.reduce(call, x)
+            return functools.reduce(call, x, 0)
     else:
         if initial:
             return [
@@ -246,7 +246,7 @@ def fold(links, *args, right=False, initial=False):
             ]
         else:
             return [
-                functools.reduce(call, z) for z in sliding_window(links[1].call(), x)
+                functools.reduce(call, z, 0) for z in sliding_window(links[1].call(), x)
             ]
 
 

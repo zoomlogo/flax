@@ -1,16 +1,17 @@
 # lexer: holds the flax lexer
 import collections
 import enum
+import re
 
 from flax.builtins import *
 from flax.common import TOKEN_TYPE
 
 __all__ = ["TOKEN_TYPE", "tokenise"]
 
-
 def tokenise(program):
     """tokenise: convert program into tokens"""
     tokens = []
+    program = re.sub(COMMENT + ".+", "", program, flags=re.M)
     program = collections.deque(program)
 
     while program:
@@ -56,10 +57,6 @@ def tokenise(program):
                 ):
                     contextual_token_value += program.popleft()
                 tokens.append([TOKEN_TYPE.NUMBER, contextual_token_value])
-        elif head == COMMENT:
-            # just ignore comments
-            while program and program.popleft() != NEWLINE:
-                pass
         elif head == NEWLINE:
             tokens.append([TOKEN_TYPE.NEWLINE, NEWLINE])
         elif head in train_separators:
