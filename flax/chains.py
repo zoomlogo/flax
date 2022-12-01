@@ -388,8 +388,6 @@ def scan(links, *args, right=False, initial=False):
     else:
         w = None
 
-    call = lambda w, x: variadic_link(links[0], (w, x), force_dyad=True)
-
     if len(links) == 1:
         res = itertools.accumulate(x, lambda w, x: iterable(w) + iterable(x))
         return [fold(links, i, w, right=right, initial=initial) for i in res]
