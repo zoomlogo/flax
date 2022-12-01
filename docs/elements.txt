@@ -1,6 +1,6 @@
 ELEMENT TYPE                    DESCRIPTION
 ‟       Syntax                  Comment
-"       Syntax                  String syntax. Actually a list of ints.
+"       Syntax                  String syntax. (Internally represented as a list of integers).
 _       Syntax                  Next character's value as integer.
 :       Syntax                  Next characters' value as integer.
 ø       Chain Separator         Start a new niladic chain.

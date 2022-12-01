@@ -7,7 +7,7 @@
   {
     "element": "\"",
     "type": "Syntax",
-    "description": "String syntax. Actually a list of ints."
+    "description": "String syntax. (Internally represented as a list of integers)."
   },
   {
     "element": "_",
