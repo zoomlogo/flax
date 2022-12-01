@@ -254,7 +254,7 @@ def get_req(x):
     """get_req: GET request for url x"""
     url = "".join(map(chr, x))
     url = (
-        re.match(r"[A-Za-z][A-Za-z0-9+.-]*://", url) == None and "http://" or ""
+        re.match(r"[A-Za-z][A-Za-z0-9+.-]*://", url) is None and "http://" or ""
     ) + url
     response = urllib_request.request.urlopen(url).read()
     try:
