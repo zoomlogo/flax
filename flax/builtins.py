@@ -428,7 +428,7 @@ atoms |= {  # diagraphs
     ),
     "ŒB": attrdict(arity=1, call=lambda x: iterable(x) + iterable(x)[::-1]),
     "ŒP": attrdict(arity=1, dx=1, call=lambda x: x == x[::-1]),
-    "ŒG": attrdict(arity=1, dx=1, call=get_req),
+    "ŒĠ": attrdict(arity=1, dx=1, call=get_req),
     "ŒE": attrdict(arity=1, call=enumerate_md),
     "ŒG": attrdict(arity=1, call=lambda x: group_indicies(x, md=True)),
     "ŒM": attrdict(arity=1, call=maximal_indicies_md),
