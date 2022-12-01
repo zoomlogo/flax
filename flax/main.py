@@ -4,7 +4,7 @@ import sys
 from flax.chains import variadic_chain
 from flax.encoding import *
 from flax.error import error, debug
-from flax.funcs import to_chars
+from flax.funcs import chars
 from flax.lexer import tokenise
 from flax.parser import parse
 import flax.common
@@ -72,7 +72,7 @@ def main():
             else:
                 sys.argv = sys.argv[1:]
                 args = [eval(arg) for arg in sys.argv]
-                args = [to_chars(arg) if type(arg) == str else arg for arg in args]
+                args = [chars(arg) if type(arg) == str else arg for arg in args]
                 flax.common.flax_print(flax_run(code, *args))
         except KeyboardInterrupt:
             error("kbdi", 130)
@@ -83,7 +83,7 @@ def main():
                 code = input("      ")
                 args = [a.strip() for a in input(">>> ").split("|") if a != ""]
                 args = [eval(arg) for arg in args]
-                args = [to_chars(arg) if type(arg) == str else arg for arg in args]
+                args = [chars(arg) if type(arg) == str else arg for arg in args]
                 flax.common.flax_print(flax_run(code, *args))
         except KeyboardInterrupt:
             error("kbdi", 130)

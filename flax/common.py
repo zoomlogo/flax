@@ -4,6 +4,7 @@ import enum
 from mpmath import mp
 
 __all__ = [
+    "_flax_print_flatten",
     "attrdict",
     "flax_indent",
     "flax_print",
@@ -89,6 +90,8 @@ def _flax_print_flatten(x):
             return "".join([chr(int(i)) for i in x])
     except TypeError:
         return chr(int(x))
+    except IndexError:
+        return ""
 
 
 def flax_print(x):

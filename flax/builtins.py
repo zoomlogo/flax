@@ -34,6 +34,8 @@ __all__ = [
     "train_separators",
 ]
 
+chars_i = _flax_print_flatten
+
 # constants
 COMMENT = "‟"
 COMPLEX_DELIMETER = "i"
@@ -338,26 +340,26 @@ atoms |= {  # diagraphs
     "Ø/": attrdict(arity=0, call=lambda: [47, 92]),
     "Ø<": attrdict(arity=0, call=lambda: [60, 62]),
     "Ø{": attrdict(arity=0, call=lambda: [123, 125]),
-    "ØA": attrdict(arity=0, call=lambda: to_chars(string.ascii_uppercase)),
-    "Øa": attrdict(arity=0, call=lambda: to_chars(string.ascii_lowercase)),
+    "ØA": attrdict(arity=0, call=lambda: chars(string.ascii_uppercase)),
+    "Øa": attrdict(arity=0, call=lambda: chars(string.ascii_lowercase)),
     "ØB": attrdict(
-        arity=0, call=lambda: to_chars(re.sub("[AEIOU]", "", string.ascii_uppercase))
+        arity=0, call=lambda: chars(re.sub("[AEIOU]", "", string.ascii_uppercase))
     ),
     "Øb": attrdict(
-        arity=0, call=lambda: to_chars(re.sub("[aeiou]", "", string.ascii_lowercase))
+        arity=0, call=lambda: chars(re.sub("[aeiou]", "", string.ascii_lowercase))
     ),
-    "ØV": attrdict(arity=0, call=lambda: to_chars("AEIOU")),
-    "Øv": attrdict(arity=0, call=lambda: to_chars("aeiou")),
-    "ØY": attrdict(arity=0, call=lambda: to_chars("AEIOUY")),
-    "Øy": attrdict(arity=0, call=lambda: to_chars("aeiouy")),
-    "ØD": attrdict(arity=0, call=lambda: to_chars(string.digits)),
-    "ØX": attrdict(arity=0, call=lambda: to_chars(string.hexdigits)),
-    "ØO": attrdict(arity=0, call=lambda: to_chars(string.octdigits)),
-    "Øα": attrdict(arity=0, call=lambda: to_chars(string.ascii_letters)),
+    "ØV": attrdict(arity=0, call=lambda: chars("AEIOU")),
+    "Øv": attrdict(arity=0, call=lambda: chars("aeiou")),
+    "ØY": attrdict(arity=0, call=lambda: chars("AEIOUY")),
+    "Øy": attrdict(arity=0, call=lambda: chars("aeiouy")),
+    "ØD": attrdict(arity=0, call=lambda: chars(string.digits)),
+    "ØX": attrdict(arity=0, call=lambda: chars(string.hexdigits)),
+    "ØO": attrdict(arity=0, call=lambda: chars(string.octdigits)),
+    "Øα": attrdict(arity=0, call=lambda: chars(string.ascii_letters)),
     "ØW": attrdict(
-        arity=0, call=lambda: to_chars(string.digits + string.ascii_letters + "_")
+        arity=0, call=lambda: chars(string.digits + string.ascii_letters + "_")
     ),
-    "Øc": attrdict(arity=0, call=lambda: to_chars(codepage)),
+    "Øc": attrdict(arity=0, call=lambda: chars(codepage)),
     "Øe": attrdict(arity=0, call=lambda: mp.e),
     "Øφ": attrdict(arity=0, call=lambda: mp.phi),
     "Øπ": attrdict(arity=0, call=lambda: mp.pi),
@@ -450,6 +452,8 @@ atoms |= {  # diagraphs
     # "ŒṖ": attrdict(arity=1, call=),
     "Œb": attrdict(arity=1, call=to_braille),
     "ŒJ": attrdict(arity=1, call=json_decode),
+    "ŒF": attrdict(arity=1, dx=1, call=lambda x: chars(open(chars_i(x), encoding="utf-8").read())),
+    "œF": attrdict(arity=2, dx=1, call=lambda w, x: open(chars_i(x), "w+", encoding="utf-8").write(chars_i(w))),
     "œi": attrdict(arity=2, call=index_into_md),
     # "œs": attrdict(arity=2, call=),
     # "œŀ": attrdict(arity=2, call=),

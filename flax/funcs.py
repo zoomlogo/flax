@@ -66,7 +66,7 @@ __all__ = [
     "sublists",
     "suffixes",
     "to_braille",
-    "to_chars",
+    "chars",
     "transpose",
     "unrepeat",
     "where",
@@ -258,9 +258,9 @@ def get_req(x):
     ) + url
     response = urllib_request.request.urlopen(url).read()
     try:
-        return to_chars(response.decode("utf-8"))
+        return chars(response.decode("utf-8"))
     except:
-        return to_chars(response.decode("latin-1"))
+        return chars(response.decode("latin-1"))
 
 
 def grade_down(x):
@@ -628,8 +628,8 @@ def to_braille(x):
     return join(10, res)
 
 
-def to_chars(x):
-    """to_chars: convert x to list of ints"""
+def chars(x):
+    """chars: convert x to list of ints"""
     return [ord(a) for a in x]
 
 
