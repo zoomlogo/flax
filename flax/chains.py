@@ -259,7 +259,7 @@ def group(links, *args):
     """group: sort group according to links"""
     args = [i for i in args if i is not None]
     x = iterable(args[-1], digits_=True)
-    gx = list(map(lambda i: variadic_chain(links, (i, )), x))
+    gx = list(map(lambda i: variadic_chain(links, (i,)), x))
     # TODO: lens(links) == 2 case
     res = group_indicies(gx)
     return res
