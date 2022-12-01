@@ -7,7 +7,7 @@
   {
     "element": "\"",
     "type": "Syntax",
-    "description": "String syntax. Actually a list of ints."
+    "description": "String syntax. (Internally represented as a list of integers)."
   },
   {
     "element": "_",
@@ -1516,6 +1516,11 @@
     "description": "Json decode."
   },
   {
+    "element": "ŒF",
+    "type": "Other Monadic Diagraphs",
+    "description": "Read a file."
+  },
+  {
     "element": "œ∩",
     "type": "Other Dyadic Diagraphs",
     "description": "Multiset intersection."
@@ -1569,6 +1574,11 @@
     "element": "œr",
     "type": "Other Dyadic Diagraphs",
     "description": "Ring translate."
+  },
+  {
+    "element": "œF",
+    "type": "Other Dyadic Diagraphs",
+    "description": "Write to file."
   },
   {
     "element": "Δ/",
