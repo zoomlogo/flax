@@ -37,7 +37,7 @@ __all__ = [
 chars_i = _flax_print_flatten
 
 # constants
-COMMENT = "‟"
+COMMENT = "⊳"
 COMPLEX_DELIMETER = "i"
 DECIMAL_POINT = "."
 DIAGRAPHS = "ØÆŒæœΔ"
