@@ -1,0 +1,6 @@
+#!sh
+# quick & dirty
+poetry install
+poetry build
+pip install dist/*.whl --force-reinstall
+rm -rf dist
