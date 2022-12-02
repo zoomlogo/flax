@@ -1,5 +1,5 @@
 "element","type","description"
-"‟","Syntax","Comment"
+"⊳","Syntax","Comment"
 """","Syntax","String syntax. (Internally represented as a list of integers)."
 "_","Syntax","Next character's value as integer."
 ":","Syntax","Next characters' value as integer."
