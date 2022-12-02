@@ -22,13 +22,13 @@ Here is a list of flags, used while running flax.
 
 Flag|Description
 ----|-----------
-`C`|Prints as characters instead of numbers.
-`d`|Debug flag.
+`c`|Prints as characters instead of numbers.
+`g`|Debug flag.
 `f`|Read and run a program from a file.
 `p`|Higher precision for floats (specified by the next argument).
 `P`|Disable pretty printing as grids.
 `e`|encode as sbcs
-`D`|decode from sbcs
+`d`|decode from sbcs
 
 ## Terminology
 

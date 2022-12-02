@@ -35,11 +35,11 @@ def main():
     # handle flags
     if sys.argv:
         flags = sys.argv[0]
-        if "d" in flags:
+        if "g" in flags:
             flax.common.DEBUG = True
         if "f" in flags:
             read_from_file = True
-        if "C" in flags:
+        if "c" in flags:
             flax.common.PRINT_CHARS = True
         if "p" in flags:
             sys.argv = sys.argv[1:]
@@ -49,7 +49,7 @@ def main():
         if "e" in flags:
             read_from_file = True
             should_encode = True
-        if "D" in flags:
+        if "d" in flags:
             read_from_file = True
             should_decode = True
             should_encode = False
