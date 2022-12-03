@@ -14,6 +14,7 @@ __all__ = ["main", "flax_run"]
 
 # function for running flax
 def flax_run(code, *args):
+    debug("cwd: " + __import__("os").getcwd())
     tokens = tokenise(code)
     debug("tokens: " + str(tokens))
     parsed = parse(tokens)
