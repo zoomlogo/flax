@@ -466,7 +466,7 @@ atoms |= {  # diagraphs
     # "œl": attrdict(arity=2, call=),
     # "œt": attrdict(arity=2, call=),
     # "œo": attrdict(arity=2, call=),
-    # "œm": attrdict(arity=2, call=),
+    "œm": attrdict(arity=2, call=mapval),
     # "œr": attrdict(arity=2, call=),
 }
 

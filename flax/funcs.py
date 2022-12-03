@@ -43,6 +43,7 @@ __all__ = [
     "join",
     "json_decode",
     "lucas",
+    "mapval",
     "maximal_indicies",
     "maximal_indicies_md",
     "mold",
@@ -391,6 +392,17 @@ def lucas(x):
     else:
         return lucas(x - 1) + lucas(x - 2)
 
+
+def mapval(w, x):
+    """mapval: map values from x specified by w"""
+    ins = w[0]
+    outs = w[1]
+
+    res = []
+    for i in iterable(x, range_=True):
+        res.append(outs[ins.index(i)])
+
+    return res
 
 def maximal_indicies(x):
     """maximal_indicies: indicies of elements with the maximal value"""
