@@ -404,6 +404,7 @@ def mapval(w, x):
 
     return res
 
+
 def maximal_indicies(x):
     """maximal_indicies: indicies of elements with the maximal value"""
     return [i for i, e in enumerate(x) if e == max(x)]
