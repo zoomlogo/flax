@@ -218,6 +218,10 @@
   type: Monad
   description: Sum over each.
 
+- element: T
+  type: Monad
+  description: Raise two to the power of.
+
 - element: Ṫ
   type: Monad
   description: Indicies of truthy elements.
