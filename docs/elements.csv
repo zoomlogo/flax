@@ -54,6 +54,7 @@
 "Ṙ","Monad","Reverse of each."
 "S","Monad","Sublists (without empty list)."
 "Ṡ","Monad","Sum over each."
+"T","Monad","Raise two to the power of."
 "Ṫ","Monad","Indicies of truthy elements."
 "U","Monad","Unique elements."
 "V","Monad","Is prime?"
