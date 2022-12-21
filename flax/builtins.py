@@ -14,6 +14,8 @@ from flax.funcs import *
 from flax.chains import *
 from flax.encoding import codepage
 
+# unused characters: İẆṅṙẏΛ
+
 __all__ = [
     "COMMENT",
     "COMPLEX_DELIMETER",
@@ -108,6 +110,7 @@ atoms = {  # single byte atoms
     ),
     "R": attrdict(arity=1, call=lambda x: iterable(x, digits_=True)[::-1]),
     "S": attrdict(arity=1, call=sublists),
+    "T": attrdict(arity=1, dx=0, call=lambda x: 2**x),
     "Ṫ": attrdict(arity=1, call=lambda x: [i for i, e in enumerate(iterable(x)) if e]),
     "U": attrdict(arity=1, call=lambda x: list(mit.unique_everseen(x))),
     "V": attrdict(arity=1, dx=0, call=lambda x: int(mp.isprime(x))),
