@@ -598,7 +598,7 @@
   type: Dyad
   description: Modulus.
 
-- element: *
+- element: '*'
   type: Dyad
   description: Exponentiation.
 
