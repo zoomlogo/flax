@@ -606,7 +606,7 @@
   type: Dyad
   description: Bitwise and.
 
-- element: %
+- element: '%'
   type: Dyad
   description: Bitwise or.
 
