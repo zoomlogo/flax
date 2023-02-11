@@ -602,7 +602,7 @@
   type: Dyad
   description: Exponentiation.
 
-- element: &
+- element: '&'
   type: Dyad
   description: Bitwise and.
 
