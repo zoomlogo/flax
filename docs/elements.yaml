@@ -574,6 +574,138 @@
   type: Dyad
   description: Transpose with filler.
 
+- element: +
+  type: Dyad
+  description: Addition.
+
+- element: -
+  type: Dyad
+  description: Subtraction.
+
+- element: ±
+  type: Dyad
+  description: Plus-minus.
+
+- element: ×
+  type: Dyad
+  description: Multiplication.
+
+- element: ÷
+  type: Dyad
+  description: Division.
+
+- element: |
+  type: Dyad
+  description: Modulus.
+
+- element: *
+  type: Dyad
+  description: Exponentiation.
+
+- element: &
+  type: Dyad
+  description: Bitwise and.
+
+- element: %
+  type: Dyad
+  description: Bitwise or.
+
+- element: ^
+  type: Dyad
+  description: Bitwise xor.
+
+- element: ∧
+  type: Dyad
+  description: And.
+
+- element: ∨
+  type: Dyad
+  description: Or.
+
+- element: >
+  type: Dyad
+  description: Greater than.
+
+- element: <
+  type: Dyad
+  description: Lesser than.
+
+- element: =
+  type: Dyad
+  description: Equal to.
+
+- element: ≠
+  type: Dyad
+  description: Not equal to.
+
+- element: ≤
+  type: Dyad
+  description: Lesser than or equal to.
+
+- element: ≥
+  type: Dyad
+  description: Greater than or equal to.
+
+- element: ≡
+  type: Dyad
+  description: Match.
+
+- element: ≢
+  type: Dyad
+  description: Not match.
+
+- element: ≈
+  type: Dyad
+  description: Similar?
+
+- element: ','
+  type: Dyad
+  description: Concat.
+
+- element: ;
+  type: Dyad
+  description: Reverse concat.
+
+- element: ∊
+  type: Dyad
+  description: In?
+
+- element: ⊏
+  type: Dyad
+  description: Find.
+
+- element: ⊑
+  type: Dyad
+  description: Find all.
+
+- element: ∘
+  type: Dyad
+  description: Cartesian product.
+
+- element: ⊣
+  type: Dyad
+  description: Left argument.
+
+- element: ⊢
+  type: Dyad
+  description: Right argument.
+
+- element: '#'
+  type: Dyad
+  description: Reshape.
+
+- element: δ
+  type: Dyad
+  description: Distance.
+
+- element: »
+  type: Dyad
+  description: Rotate right.
+
+- element: «
+  type: Dyad
+  description: Rotate left.
+
 - element: $
   type: Quick
   description: Two links as monad.
@@ -1232,7 +1364,6 @@
 
 - element: œl
   type: Other Dyadic Diagraphs
-  description: Trim from left.
 
 - element: œt
   type: Other Dyadic Diagraphs
