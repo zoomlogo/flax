@@ -24,6 +24,7 @@ __all__ = [
     "digits",
     "digits_i",
     "enumerate_md",
+    "ensure_square",
     "fibonacci",
     "find",
     "find_md",
@@ -204,6 +205,13 @@ def enumerate_md(x, upper_level=[]):
             yield [upper_level + [i], e]
         else:
             yield from enumerate_md(e, upper_level + [i])
+
+
+def ensure_square(x):
+    """ensure_square: make sure x is a square matrix"""
+    x = iterable(x)
+    l = max([len(iterable(i)) for i in x] + [len(x)])
+    return reshape(l, [reshape(l, i) for i in x])
 
 
 @functools.cache

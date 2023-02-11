@@ -396,7 +396,7 @@ atoms |= {  # diagraphs
     "Æ²": attrdict(arity=1, dx=0, call=lambda x: int(int(mp.sqrt(x)) == mp.sqrt(x))),
     "ÆA": attrdict(arity=1, dx=2, call=lambda x: diagonals(x, antidiagonals=True)),
     "ÆȦ": attrdict(arity=1, dx=2, call=diagonals),
-    # "ÆD": attrdict(arity=1, dx=2, call=),
+    "ÆD": attrdict(arity=1, dx=2, call=lambda x: mp.det(mp.matrix(ensure_square(x)))),
     "ÆR": attrdict(arity=1, dx=1, call=mp.polyroots),
     "Æd": attrdict(arity=1, dx=0, call=mp.degrees),
     "Æḋ": attrdict(arity=1, dx=0, call=mp.radians),
