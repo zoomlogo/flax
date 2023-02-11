@@ -24,6 +24,7 @@ DISABLE_GRID = False
 mp.dps = 20  # 20 by default, set to anything via flag
 mp.pretty = True
 
+
 # attrdict
 class attrdict(dict):
     def __init__(self, *args, **kwargs):
@@ -46,6 +47,7 @@ class TOKEN_TYPE(enum.Enum):
 mpf = mp.mpf
 mpc = mp.mpc
 inf = mp.inf
+
 
 # flax functions
 def flax_indent(x):
