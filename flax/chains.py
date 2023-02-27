@@ -389,13 +389,13 @@ def scan(links, *args, right=False, initial=False):
         w = None
 
     if len(links) == 1:
-        res = itertools.accumulate(x, lambda w, x: iterable(w) + iterable(x))
+        res = itertools.accumulate(x, lambda w, x: [w] + [x])
         return [fold(links, i, w, right=right, initial=initial) for i in res]
     else:
         # TODO: fix this part
         res = sliding_window(links[1].call(), x)
         res = [
-            itertools.accumulate(i, lambda w, x: iterable(w) + iterable(x)) for i in res
+            itertools.accumulate(i, lambda w, x: [w] + [x]) for i in res
         ]
         res = [
             [fold(links, j, w, right=right, initial=initial) for j in i] for i in res
