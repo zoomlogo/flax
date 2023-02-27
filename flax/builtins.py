@@ -278,8 +278,8 @@ atoms = {  # single byte atoms
         if type(w) == type(x) == list
         else abs(w - x) <= 1,
     ),
-    ",": attrdict(arity=2, call=lambda w, x: iterable(w) + iterable(x)),
-    ";": attrdict(arity=2, call=lambda w, x: iterable(x) + iterable(w)),
+    ",": attrdict(arity=2, call=lambda w, x: [w] + [x]),
+    ";": attrdict(arity=2, call=lambda w, x: [x] + [w]),
     "∊": attrdict(arity=2, dw=0, call=lambda w, x: w in iterable(x, digits_=True)),
     "⊏": attrdict(arity=2, dw=0, call=find),
     "⊑": attrdict(arity=2, dw=0, call=find_all),
