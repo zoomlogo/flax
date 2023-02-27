@@ -361,7 +361,7 @@ def iterable(x, digits_=False, range_=False, copy_=False):
     if type(x) != list:
         if range_:
             return list(range(int(x)))
-        elif digits:
+        elif digits_:
             return digits(x)
         else:
             return [x]
