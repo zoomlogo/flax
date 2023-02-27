@@ -394,7 +394,9 @@ def scan(links, *args, right=False, initial=False):
     else:
         # TODO: fix this part
         res = sliding_window(links[1].call(), x)
-        res = [itertools.accumulate(i, lambda w, x: [w] + [x]) for i in res]
+        res = [
+            itertools.accumulate(i, lambda w, x: [w] + [x]) for i in res
+        ]
         res = [
             [fold(links, j, w, right=right, initial=initial) for j in i] for i in res
         ]
