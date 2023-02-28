@@ -897,8 +897,8 @@ quicks = {  # single byte quicks
             attrdict(
                 arity=1,
                 call=lambda x: variadic_link(
-                    links[0].call,
-                    (transpose(variadic_link(links[0].call, (x,), force_monad=True)),),
+                    links[0],
+                    (transpose(variadic_link(links[0], (x,), force_monad=True)),),
                     force_monad=True,
                 ),
             )
