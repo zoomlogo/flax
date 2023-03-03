@@ -3,6 +3,7 @@ import enum
 from mpmath import mp
 
 __all__ = [
+    "ilist",
     "_flax_print_flatten",
     "attrdict",
     "flax_indent",
@@ -30,6 +31,9 @@ class attrdict(dict):
     def __init__(self, *args, **kwargs):
         dict.__init__(self, *args, **kwargs)
         self.__dict__ = self
+
+# TODO: ilist
+class ilist: ...
 
 
 # lexer

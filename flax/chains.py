@@ -11,6 +11,7 @@ from flax.funcs import (
     iterable,
     sliding_window,
     split,
+    type2str,
     flatten,
     prefixes,
 )
@@ -163,7 +164,20 @@ def dyadic_link(link, w, x, flat=False):
     dx = flat_x or depth(x)
 
     if (flat_w or link.dw == dw) and (flat_x or link.dx == dx):
-        return link.call(w, x)
+        if hasattr(link, "call"):
+            return link.call(w, x)
+        else:
+            overloads = link.overloads
+            tw, tx = type2str(w), type2str(x)
+            call = overloads.get((tw, tx))
+            if call==None:
+                call = overloads.get(("any", tx))
+            if call==None:
+                call = overloads.get((tw, "any"))
+            if call==None:
+                call = overloads.get(("any", "any"))
+            if call==None: raise ValueError
+            return call(x)
     elif not flat_w and link.dw > dw:
         return dyadic_link(link, [w], x)
     elif not flat_x and link.dx > dx:
@@ -336,7 +350,15 @@ def monadic_link(link, x, flat=False):
     flat = flat or not hasattr(link, "dx")
     dx = flat or depth(x)
     if flat or link.dx == dx:
-        return link.call(x)
+        if hasattr(link, "call"):
+            return link.call(x)
+        else:
+            overloads = link.overloads
+            call = overloads.get(type2str(x))
+            if call==None:
+                call = overloads.get("any")
+            if call==None: raise ValueError
+            return call(x)
     elif link.dx > dx:
         return monadic_link(link, [x])
     else:
