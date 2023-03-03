@@ -648,13 +648,19 @@ def to_braille(x):
             b += 1
     return join(10, res)
 
+
 def type2str(x):
     """type2str: [helper] converts a type to string for dict keying"""
-    t=type(x)
-    if t==str:return"str"
-    elif t==list:return"lst"
-    elif t==ilist:return"ils"
-    else:return"num"
+    t = type(x)
+    if t == str:
+        return "str"
+    elif t == list:
+        return "lst"
+    elif t == ilist:
+        return "ils"
+    else:
+        return "num"
+
 
 def chars(x):
     """chars: convert x to list of ints"""

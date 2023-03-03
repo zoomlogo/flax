@@ -170,13 +170,14 @@ def dyadic_link(link, w, x, flat=False):
             overloads = link.overloads
             tw, tx = type2str(w), type2str(x)
             call = overloads.get((tw, tx))
-            if call==None:
+            if call == None:
                 call = overloads.get(("any", tx))
-            if call==None:
+            if call == None:
                 call = overloads.get((tw, "any"))
-            if call==None:
+            if call == None:
                 call = overloads.get(("any", "any"))
-            if call==None: raise ValueError
+            if call == None:
+                raise ValueError
             return call(x)
     elif not flat_w and link.dw > dw:
         return dyadic_link(link, [w], x)
@@ -355,9 +356,10 @@ def monadic_link(link, x, flat=False):
         else:
             overloads = link.overloads
             call = overloads.get(type2str(x))
-            if call==None:
+            if call == None:
                 call = overloads.get("any")
-            if call==None: raise ValueError
+            if call == None:
+                raise ValueError
             return call(x)
     elif link.dx > dx:
         return monadic_link(link, [x])

@@ -32,8 +32,10 @@ class attrdict(dict):
         dict.__init__(self, *args, **kwargs)
         self.__dict__ = self
 
+
 # TODO: ilist
-class ilist: ...
+class ilist:
+    ...
 
 
 # lexer
