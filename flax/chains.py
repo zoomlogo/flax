@@ -169,13 +169,13 @@ def dyadic_link(link, w, x, flat=False):
         else:
             overloads = link.overloads
             tw, tx = type2str(w), type2str(x)
-            call = overloads.get((tw, tx))
+            call = overloads.get(tw+"-"+tx)
             if call == None:
-                call = overloads.get(("any", tx))
+                call = overloads.get("any-"+tx)
             if call == None:
-                call = overloads.get((tw, "any"))
+                call = overloads.get(tw+"-any")
             if call == None:
-                call = overloads.get(("any", "any"))
+                call = overloads.get("any-any")
             if call == None:
                 raise ValueError
             return call(x)
