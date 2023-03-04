@@ -141,6 +141,7 @@ w       Dyad                    Windows.
 x       Dyad                    Maximum.
 ẋ       Dyad                    Pair.
 y       Dyad                    Join.
+ẏ       Dyad                    Interleave.
 z       Dyad                    Zip.
 ż       Dyad                    Transpose with filler.
 +       Dyad                    Addition.

@@ -710,6 +710,11 @@
     "description": "Join."
   },
   {
+    "element": "ẏ",
+    "type": "Dyad",
+    "description": "Interleave."
+  },
+  {
     "element": "z",
     "type": "Dyad",
     "description": "Zip."
