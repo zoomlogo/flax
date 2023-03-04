@@ -426,7 +426,8 @@ def scan(links, *args, right=False, initial=False):
             itertools.accumulate(i, lambda w, x: iterable(w) + iterable(x)) for i in res
         ]
         res = [
-            [fold([links[0]], j, w, right=right, initial=initial) for j in i] for i in res
+            [fold([links[0]], j, w, right=right, initial=initial) for j in i]
+            for i in res
         ]
         return res
 

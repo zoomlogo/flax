@@ -409,9 +409,7 @@ atoms |= {  # diagraphs
     # "ŒṖ": attrdict(arity=1, call=),
     "Œb": attrdict(arity=1, call=to_braille),
     "ŒJ": attrdict(arity=1, call=json_decode),
-    "ŒF": attrdict(
-        arity=1, dx=1, call=lambda x: open(str(x), encoding="utf-8").read()
-    ),
+    "ŒF": attrdict(arity=1, dx=1, call=lambda x: open(str(x), encoding="utf-8").read()),
     "œF": attrdict(
         arity=2,
         dx=1,
