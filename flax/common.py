@@ -4,7 +4,6 @@ from mpmath import mp
 
 __all__ = [
     "ilist",
-    "_flax_print_flatten",
     "attrdict",
     "flax_indent",
     "flax_print",
@@ -18,7 +17,6 @@ __all__ = [
 
 # Flags:
 DEBUG = False
-PRINT_CHARS = False
 DISABLE_GRID = False
 
 # Set mp context defaults
@@ -78,7 +76,9 @@ def flax_indent(x):
 def flax_string(x):
     """flax_string: convert x into flax representation"""
     if type(x) != list:
-        if type(x) == mpc:
+        if type(x) == str:
+            return '"' + x + '"'
+        elif type(x) == mpc:
             return "i".join([flax_string(x.real), flax_string(x.imag)])
         elif type(x) == int or (x != inf and int(x) == x):
             return str(int(x)).replace("-", "¯").replace("inf", "∞")
@@ -88,23 +88,10 @@ def flax_string(x):
         return "[" + ", ".join(flax_string(e) for e in x) + "]"
 
 
-def _flax_print_flatten(x):
-    """_flax_print_flatten: flatten x and join by newlines"""
-    try:
-        if type(x[0]) == list:
-            return "\n".join([_flax_print_flatten(i) for i in x])
-        else:
-            return "".join([chr(int(i)) for i in x])
-    except TypeError:
-        return chr(int(x))
-    except IndexError:
-        return ""
-
-
 def flax_print(x):
     """flax_print: print x using formatting"""
-    if PRINT_CHARS:
-        print(end=_flax_print_flatten(x))
+    if type(x) == str:
+        print(x)
     else:
         s = flax_string(x)
         print(s if DISABLE_GRID else flax_indent(s))

@@ -14,8 +14,6 @@ from flax.funcs import *
 from flax.chains import *
 from flax.encoding import codepage
 
-chars_i = _flax_print_flatten
-
 atoms = {  # single byte atoms
     "⁰": attrdict(arity=0, call=lambda: 10),
     "¹": attrdict(arity=0, call=lambda: 16),
@@ -412,12 +410,12 @@ atoms |= {  # diagraphs
     "Œb": attrdict(arity=1, call=to_braille),
     "ŒJ": attrdict(arity=1, call=json_decode),
     "ŒF": attrdict(
-        arity=1, dx=1, call=lambda x: open(chars_i(x), encoding="utf-8").read()
+        arity=1, dx=1, call=lambda x: open(str(x), encoding="utf-8").read()
     ),
     "œF": attrdict(
         arity=2,
         dx=1,
-        call=lambda w, x: open(chars_i(x), "w+", encoding="utf-8").write(chars_i(w)),
+        call=lambda w, x: open(str(x), "w+", encoding="utf-8").write(str(w)),
     ),
     "œi": attrdict(arity=2, call=index_into_md),
     # "œs": attrdict(arity=2, call=),

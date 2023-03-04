@@ -22,7 +22,6 @@ Here is a list of flags, used while running flax.
 
 Flag|Description
 ----|-----------
-`c`|Prints as characters instead of numbers.
 `g`|Debug flag.
 `f`|Read and run a program from a file.
 `p`|Higher precision for floats (specified by the next argument).
@@ -97,14 +96,14 @@ nilad-dyad-dyad triplet, i can't explain so just look:
 ```
 
 ## Datatypes
-There are 2 datatypes:
+There are 4 datatypes:
 - Lists
 - Scalars
   - Integers
   - Floats
   - Complex numbers
-
-**NOTE:** A string is just a list of integers.
+- Strings
+- Infinite Lists
 
 ## Syntax
 
@@ -115,7 +114,7 @@ Syntax|Description|Example
 `012456789`|A number|`12`
 `i`|Defines a complex number. By default it is `0i1`.|`2i`
 `.`|Defines a decimal number. By default it is `0.5`|`.2`
-`()`|Start / End a list|`(1 2 (3 4))`
+`[]`|Start / End a list|`[1 2 [3 4]]`
 `_`|Next character's value|`_f`
 `:`|Next 2 characters' value|`:()`
 
@@ -125,7 +124,7 @@ Chain Separator|Description
 ---------------|-----------
 `ø`|Start a niladic chain.
 `µ`|Start a monadic chain.
-`[`|Start a monadic chain which maps over its argument.
-`]`|Start a monadic chain which filters over its argument.
+`(`|Start a monadic chain which maps over its argument.
+`)`|Start a monadic chain which filters over its argument.
 `ð`|Start a dyadic chain.
 `ɓ`|Start a dyadic chain with reversed arguments.

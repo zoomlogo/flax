@@ -40,8 +40,6 @@ def main():
             flax.common.DEBUG = True
         if "f" in flags:
             read_from_file = True
-        if "c" in flags:
-            flax.common.PRINT_CHARS = True
         if "p" in flags:
             sys.argv = sys.argv[1:]
             flax.common.mp.dps = int(sys.argv[0])
