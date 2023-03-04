@@ -307,12 +307,8 @@ atoms |= {  # diagraphs
     "Ø{": attrdict(arity=0, call=lambda: [123, 125]),
     "ØA": attrdict(arity=0, call=lambda: string.ascii_uppercase),
     "Øa": attrdict(arity=0, call=lambda: string.ascii_lowercase),
-    "ØB": attrdict(
-        arity=0, call=lambda: re.sub("[AEIOU]", "", string.ascii_uppercase)
-    ),
-    "Øb": attrdict(
-        arity=0, call=lambda: re.sub("[aeiou]", "", string.ascii_lowercase)
-    ),
+    "ØB": attrdict(arity=0, call=lambda: re.sub("[AEIOU]", "", string.ascii_uppercase)),
+    "Øb": attrdict(arity=0, call=lambda: re.sub("[aeiou]", "", string.ascii_lowercase)),
     "ØV": attrdict(arity=0, call=lambda: "AEIOU"),
     "Øv": attrdict(arity=0, call=lambda: "aeiou"),
     "ØY": attrdict(arity=0, call=lambda: "AEIOUY"),
@@ -321,9 +317,7 @@ atoms |= {  # diagraphs
     "ØX": attrdict(arity=0, call=lambda: string.hexdigits),
     "ØO": attrdict(arity=0, call=lambda: string.octdigits),
     "Øα": attrdict(arity=0, call=lambda: string.ascii_letters),
-    "ØW": attrdict(
-        arity=0, call=lambda: string.digits + string.ascii_letters + "_"
-    ),
+    "ØW": attrdict(arity=0, call=lambda: string.digits + string.ascii_letters + "_"),
     "Øc": attrdict(arity=0, call=lambda: codepage),
     "Øe": attrdict(arity=0, call=lambda: mp.e),
     "Øφ": attrdict(arity=0, call=lambda: mp.phi),
