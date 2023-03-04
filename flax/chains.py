@@ -253,16 +253,21 @@ def fold(links, *args, right=False, initial=False):
         if initial:
             return functools.reduce(call, x, w)
         else:
-            return functools.reduce(call, x, 0)
+            if len(x) <= 1:
+                return x
+            else:
+                return functools.reduce(call, x[1:], x[0])
     else:
         if initial:
-            return [
+            res = [
                 functools.reduce(call, z, w) for z in sliding_window(links[1].call(), x)
             ]
         else:
-            return [
-                functools.reduce(call, z, 0) for z in sliding_window(links[1].call(), x)
+            res = [
+                z if len(z) <= 1 else functools.reduce(call, z[1:], z[0])
+                for z in sliding_window(links[1].call(), x)
             ]
+        return res[::-1] if right else res
 
 
 def fold_fixedpoint(links, *args):
@@ -413,16 +418,15 @@ def scan(links, *args, right=False, initial=False):
         w = None
 
     if len(links) == 1:
-        res = itertools.accumulate(x, lambda w, x: iterable(w) + iterable(x))
-        return [fold(links, i, w, right=right, initial=initial) for i in res]
+        intermediate = itertools.accumulate(x, lambda w, x: iterable(w) + iterable(x))
+        return [fold(links, i, w, right=right, initial=initial) for i in intermediate]
     else:
-        # TODO: fix this part
         res = sliding_window(links[1].call(), x)
         res = [
             itertools.accumulate(i, lambda w, x: iterable(w) + iterable(x)) for i in res
         ]
         res = [
-            [fold(links, j, w, right=right, initial=initial) for j in i] for i in res
+            [fold([links[0]], j, w, right=right, initial=initial) for j in i] for i in res
         ]
         return res
 
