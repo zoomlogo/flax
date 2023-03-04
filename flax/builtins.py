@@ -1,7 +1,7 @@
 # builtins: holds the builtins and some constants for the lexer
 from flax.common import *
 
-# unused characters: İẆṅṙẏΛ
+# unused characters: İẆṅṙΛ
 __all__ = [
     "COMMENT",
     "COMPLEX_DELIMETER",
@@ -51,6 +51,7 @@ transpiled_atoms = {
     "Ṡ": [[TOKEN_TYPE.ATOM, "+"], [TOKEN_TYPE.QUICK, "/"], [TOKEN_TYPE.QUICK, "'"]],
     "Σ": [[TOKEN_TYPE.ATOM, "+"], [TOKEN_TYPE.QUICK, "/"]],
     "Π": [[TOKEN_TYPE.ATOM, "×"], [TOKEN_TYPE.QUICK, "/"]],
+    "ẏ": [[TOKEN_TYPE.ATOM, "ϕ"], [TOKEN_TYPE.ATOM, "z"], [TOKEN_TYPE.QUICK, "¢"]],
     "∩": [[TOKEN_TYPE.ATOM, "U"], [TOKEN_TYPE.ATOM, "f"], [TOKEN_TYPE.QUICK, "¢"]],
     "∪": [[TOKEN_TYPE.ATOM, "U"], [TOKEN_TYPE.ATOM, ","], [TOKEN_TYPE.QUICK, "¢"]],
     "ŒḂ": [[TOKEN_TYPE.ATOM, "ŒB"], [TOKEN_TYPE.QUICK, "'"]],
