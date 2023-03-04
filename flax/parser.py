@@ -21,7 +21,7 @@ def arrayify(arr_list):
 
 
 def escapes(x):
-    """escapes: convert x to a list of numbers and parse escape sequences"""
+    """escapes: parse escape sequences"""
     x = x.replace("\\\\", "\\")
     x = x.replace("\\n", "\n")
     x = x.replace('\\"', '"')
@@ -32,7 +32,7 @@ def escapes(x):
     x = x.replace("\\r", "\r")
     x = x.replace("\\b", "\b")
     x = x.replace("\\f", "\f")
-    return [ord(i) for i in x]
+    return x
 
 
 def numberify(x):

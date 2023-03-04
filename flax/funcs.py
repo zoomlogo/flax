@@ -68,7 +68,6 @@ __all__ = [
     "sublists",
     "suffixes",
     "to_braille",
-    "chars",
     "transpose",
     "unrepeat",
     "where",
@@ -267,9 +266,9 @@ def get_req(x):
     ) + url
     response = urllib_request.request.urlopen(url).read()
     try:
-        return chars(response.decode("utf-8"))
+        return response.decode("utf-8")
     except:
-        return chars(response.decode("latin-1"))
+        return response.decode("latin-1")
 
 
 def grade_down(x):
@@ -359,12 +358,15 @@ def iota1(x):
 def iterable(x, digits_=False, range_=False, copy_=False):
     """iterable: make sure x is a list"""
     if type(x) != list:
-        if range_:
-            return list(range(int(x)))
-        elif digits_:
-            return digits(x)
+        if type(x) == str:
+            return list(x)
         else:
-            return [x]
+            if range_:
+                return list(range(int(x)))
+            elif digits_:
+                return digits(x)
+            else:
+                return [x]
     else:
         return copy.deepcopy(x) if copy_ else x
 
@@ -381,13 +383,13 @@ def json_decode(x):
     if type(x) == list or type(x) == tuple:
         return [json_decode(i) for i in x]
     elif type(x) == str:
-        return [ord(i) for i in x]
+        return x
     elif type(x) == dict:
         return [json_decode(i) for i in x.items()]
-    elif x is None:
-        return inf
     elif type(x) == bool:
         return int(x)
+    elif x is None:
+        return inf
     else:
         return mpf(x)
 
@@ -660,11 +662,6 @@ def type2str(x):
         return "ils"
     else:
         return "num"
-
-
-def chars(x):
-    """chars: convert x to list of ints"""
-    return [ord(a) for a in x]
 
 
 def transpose(x, filler=None):
