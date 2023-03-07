@@ -143,15 +143,13 @@ def convolve(w, x):
 
 def depth(x):
     """depth: how deeply x is nested"""
-    if type(x) == str:
-        return 0 if len(str) < 2 else 1
-    elif type(x) == list:
+    if type(x) != list:
+        return 0
+    else:
         if not x:
             return 1
         else:
             return max([depth(i) for i in x]) + 1
-    else:
-        return 0
 
 
 def diagonal_leading(x):
