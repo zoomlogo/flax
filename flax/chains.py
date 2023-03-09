@@ -253,7 +253,9 @@ def fold(links, *args, right=False, initial=False):
         if initial:
             return functools.reduce(call, x, w)
         else:
-            if len(x) <= 1:
+            if len(x) == 1:
+                return x[0]
+            elif len(x) == 0:
                 return x
             else:
                 return functools.reduce(call, x[1:], x[0])
