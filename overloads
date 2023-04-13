@@ -1,0 +1,47 @@
+[WIP] overloads to add (mostly from Vyxal):
+MONADS:
+A: str → remove whitespace
+Ȧ: str → is uppercase
+B: str → string → binary of each codepoints
+Ḃ: str → to base 10
+C: str → split at commas
+Ċ: str → randomly select a character
+   ils → 
+D: str → split into characters
+Ḋ: lst → catanate to string
+Ḟ: str →
+H: str → to lowercase 
+Ḣ: str → to uppercase
+K: str → 
+Ŀ: str →
+M: str → format a string as a square (why vyxal?)
+Ṁ: str →
+N: str → swap case
+Ṅ: str → return 0: lowercase or 1: uppercase or -1: not valid
+Ȯ: str → append first element
+S: str → substrings
+Ṡ: str →
+T: str → eval (?)
+Ṫ: str →
+V: str → 0: all letters lowercase, 1: all letters uppercase, -1: mixed case
+W: str →
+Z: str →
+   ils →
+Ż: str → prepend the last character
+!: str →
+√: str → palindromise
+Σ: str →
+Π: str →
+ι: str → is character a letter for each
+κ: str → is character a digit for each
+χ: str → is character a vowel for each
+ψ: str → is character a vowel + y for each
+ϕ: str → 
+∵: str → min character
+∴: str → max character
+¼: str → eval as flax (?)
+½: str → second half of
+⌈: str → split on space
+⌊: str → split on newlines
+
+DYADS:
