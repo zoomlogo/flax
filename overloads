@@ -45,3 +45,24 @@ Z: str →
 ⌊: str → split on newlines
 
 DYADS:
+a: num, str → repeat str as a list
+   str, str → regex match
+b:
+ḃ:
+c: num, str →
+   str, str → overwrite start of one with another
+ċ:
+d:
+ḋ: str, str → join by space
+e:
+ė:
+g: str, str → longest common suffix
+ġ:
+ḣ:
+l: str, str → longest common prefix
+m:
+p:  num, str → nPr(num, len(str))
+    str, str → nPr(len(str), len(str))
+ṗ:
+r:
+x:
