@@ -582,7 +582,7 @@
   type: Dyad
   description: Addition.
 
-- element: -
+- element: "-"
   type: Dyad
   description: Subtraction.
 
@@ -598,7 +598,7 @@
   type: Dyad
   description: Division.
 
-- element: |
+- element: '|'
   type: Dyad
   description: Modulus.
 
@@ -626,7 +626,7 @@
   type: Dyad
   description: Or.
 
-- element: >
+- element: '>'
   type: Dyad
   description: Greater than.
 
