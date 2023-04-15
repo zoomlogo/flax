@@ -730,9 +730,7 @@
     "description": "Addition."
   },
   {
-    "element": [
-      null
-    ],
+    "element": "-",
     "type": "Dyad",
     "description": "Subtraction."
   },
@@ -752,7 +750,7 @@
     "description": "Division."
   },
   {
-    "element": "",
+    "element": "|",
     "type": "Dyad",
     "description": "Modulus."
   },
@@ -787,7 +785,7 @@
     "description": "Or."
   },
   {
-    "element": "",
+    "element": ">",
     "type": "Dyad",
     "description": "Greater than."
   },

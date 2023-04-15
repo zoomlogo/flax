@@ -145,18 +145,18 @@ y       Dyad                    Join.
 z       Dyad                    Zip.
 ż       Dyad                    Transpose with filler.
 +       Dyad                    Addition.
-        Dyad                    Subtraction.
+-       Dyad                    Subtraction.
 ±       Dyad                    Plus-minus.
 ×       Dyad                    Multiplication.
 ÷       Dyad                    Division.
-        Dyad                    Modulus.
+|       Dyad                    Modulus.
 *       Dyad                    Exponentiation.
 &       Dyad                    Bitwise and.
 %       Dyad                    Bitwise or.
 ^       Dyad                    Bitwise xor.
 ∧       Dyad                    And.
 ∨       Dyad                    Or.
-        Dyad                    Greater than.
+>       Dyad                    Greater than.
 <       Dyad                    Lesser than.
 =       Dyad                    Equal to.
 ≠       Dyad                    Not equal to.
