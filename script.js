@@ -67,8 +67,9 @@ const filter_search = () => {
   for (let i = 0; i < rows.length; i++) {
     let row = rows[i];
     let d = row.getElementsByTagName("td")[1];
+    let e = row.getElementsByTagName("td")[0];
     if (d) {
-      let value = (d.textContent || d.innerText).toLowerCase();
+      let value = (d.textContent || d.innerText).toLowerCase() + (e.textContent || e.innerText);
       if (value.includes(filter)) {
         row.hidden = false;
       } else {
