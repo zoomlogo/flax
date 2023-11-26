@@ -4,7 +4,7 @@ flax (all lowercase, YES ALL LOWERCASE LETTERS) is a tacit language designed for
 ## Documentation
 - [Introduction](./docs/Introduction.md)
 - [Explained Examples](./docs/examples.md)
-- [element search](https://pygamer0.github.io/flax) [(txt version)](./docs/elements.txt)
+- [element search](https://zoomlogo.github.io/flax) [(txt version)](./docs/elements.txt)
 - [Differences from Jelly](./docs/diff-jelly.txt)
 
 ## Chat
