@@ -97,6 +97,7 @@ def base_decomp(w, x):
     x = str(bin(abs(x)))[2:]
     return [int(i) for i in split(w, x)]
 
+
 def base_i(w, x):
     """base_i: convert x into base w"""
     if x == 0:
@@ -598,8 +599,8 @@ def rld(x):
     """rld: run length decode x"""
     res = []
     for i in x:
-
-        if len(i) != 2: break
+        if len(i) != 2:
+            break
 
         for j in i[1]:
             res.append(i[0])
