@@ -2,11 +2,10 @@ Differences from Jelly¹:
 - Evaluation is right to left like APL/BQN/J/K.
 - Index origin is 0.
 - Different codepage.
-- flax has comments unlike Jelly.
-- No string / character datatype.
+- flax has comments unlike Jelly (very important :P).
 
 Similarities with Jelly¹:
 - Many builtins are same.
-- Chaining rules are the same (except reversed).
+- Chaining rules are the same (except reversed to account for RTL evaluation).
 
 ¹ Link: https://github.com/DennisMitchell/jellylanguage
