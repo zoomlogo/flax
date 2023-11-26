@@ -11,6 +11,7 @@ from flax.common import mp, mpc, inf, mpf
 
 __all__ = [
     "base",
+    "base_decomp",
     "base_i",
     "binary",
     "binary_i",
@@ -60,6 +61,8 @@ __all__ = [
     "random",
     "repeat",
     "reshape",
+    "rld",
+    "rle",
     "shuffle",
     "sliding_window",
     "split",
@@ -69,6 +72,7 @@ __all__ = [
     "suffixes",
     "to_braille",
     "transpose",
+    "trim",
     "unrepeat",
     "where",
 ]
@@ -85,6 +89,13 @@ def base(w, x):
         i += 1
     return num * sign
 
+
+def base_decomp(w, x):
+    """base_decomp: base decompression with base w"""
+    # tf how do i implement this
+    res = ""
+    x = str(bin(abs(x)))[2:]
+    return [int(i) for i in split(w, x)]
 
 def base_i(w, x):
     """base_i: convert x into base w"""
@@ -583,6 +594,26 @@ def reshape(w, x):
         return reshaped[::-1] if w[0] < 0 else reshaped
 
 
+def rld(x):
+    """rld: run length decode x"""
+    res = []
+    for i in x:
+
+        if len(i) != 2: break
+
+        for j in i[1]:
+            res.append(i[0])
+    return res
+
+
+def rle(x):
+    """rle: run length encode x"""
+    res = []
+    for i in group_equal(x):
+        res.append([i[0] if len(i) >= 1 else None, len(i)])
+    return res
+
+
 def shuffle(x):
     """shuffle: return a random permutation of x"""
     x = iterable(x, copy_=True, digits_=True)
@@ -672,6 +703,12 @@ def transpose(x, filler=None):
             itertools.zip_longest(*map(iterable, x), fillvalue=filler),
         )
     )
+
+
+def trim(w, x):
+    """trim: trim all elements of w from x"""
+    # TODO
+    raise NotImplementedError
 
 
 def unrepeat(x):

@@ -149,7 +149,7 @@ atoms = {  # single byte atoms
     "d": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: list(divmod(w, x))),
     "ḋ": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: int(x % w == 0)),
     "e": attrdict(arity=2, dw=0, dx=0, call=lambda w, x: list(range(w, x))),
-    # "ė": attrdict(arity=2, ),
+    "ė": attrdict(arity=2, dw=0, dx=0, call=base_decomp),
     "f": attrdict(
         arity=2, call=lambda w, x: [i for i in iterable(x) if i in iterable(w)]
     ),
@@ -394,8 +394,8 @@ atoms |= {  # diagraphs
     "Œp": attrdict(
         arity=1, call=lambda x: list(map(list, mit.distinct_combinations(x, 2)))
     ),
-    # "Œe": attrdict(arity=1, call=),
-    # "Œd": attrdict(arity=1, call=),
+    "Œe": attrdict(arity=1, dx=1, call=rle),
+    "Œd": attrdict(arity=1, dx=2, call=rld),
     "Œ$": attrdict(
         arity=1, dx=0, call=lambda x: x ^ 32 if chr(x) in string.ascii_letters else x
     ),
