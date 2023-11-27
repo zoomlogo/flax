@@ -9,29 +9,52 @@ C: str → split at commas
    ils → 
 D: str → split into characters
 Ḋ: lst → catanate to string
+E: no change
+Ė: no change
+F: no change?
 Ḟ: str →
+G: no change
+Ġ: no change
 H: str → to lowercase 
 Ḣ: str → to uppercase
-K: str → 
-Ŀ: str →
-M: str → format a string as a square (why vyxal?)
+I: str →
+J: no change
+K: str →
+L: no change
+Ŀ: no change?
+M: str →
 Ṁ: str →
 N: str → swap case
-Ṅ: str → return 0: lowercase or 1: uppercase or -1: not valid
+Ṅ: str → return lowercase → 0 / uppercase → 1 / not valid → -1
+O: no change
 Ȯ: str → append first element
 S: str → substrings
 Ṡ: str →
-T: str → eval (?)
+T: str → eval?
 Ṫ: str →
 V: str → 0: all letters lowercase, 1: all letters uppercase, -1: mixed case
 W: str →
+X: no change
+Ẋ: no change
+Y: no change
+Ẏ: no change
 Z: str →
    ils →
 Ż: str → prepend the last character
 !: str →
+¬: 
 √: str → palindromise
 Σ: str →
 Π: str →
+⊂: no change
+⊆: no change
+⊃: no change
+⊇: no change
+⊐: no change
+⊒: no change
+~: 
+γ: no change
+ε: no change
 ι: str → is character a letter for each
 κ: str → is character a digit for each
 χ: str → is character a vowel for each
@@ -39,14 +62,26 @@ Z: str →
 ϕ: str → 
 ∵: str → min character
 ∴: str → max character
+↑: 
+↓: 
+∞: str → no change
+   ils → 
 ¼: str → eval as flax (?)
 ½: str → second half of
 ⌈: str → split on space
 ⌊: str → split on newlines
+→: str → increment ascii codepoints
+←: str → decrement ascii codepoints
+∂: no change
+{: no change
+}: no change
+○: no change?
+↶: what
 
 DYADS:
 a: num, str → repeat str as a list
    str, str → regex match
+ȧ: no change
 b:
 ḃ:
 c: num, str →
@@ -56,13 +91,70 @@ d:
 ḋ: str, str → join by space
 e:
 ė:
+f:
+ḟ:
 g: str, str → longest common suffix
 ġ:
+h:
 ḣ:
+j:
+k:
 l: str, str → longest common prefix
+ŀ:
 m:
+ṁ:
+n:
+o:
+ȯ:
 p:  num, str → nPr(num, len(str))
     str, str → nPr(len(str), len(str))
 ṗ:
+q: no change
 r:
+s:
+ṡ:
+t:
+ṫ:
+u:
+v:
+w:
+ẇ:
 x:
+ẋ:
+y:
+ẏ:
+z:
+ż:
++:
+-:
+±:
+×:
+÷:
+|:
+*:
+&:
+%:
+^:
+∧:
+∨:
+>:
+<:
+=:
+≠:
+≤:
+≥:
+≡:
+≢:
+≈:
+,:
+;:
+∊:
+⊏:
+⊑:
+∘:
+⊣: no change
+⊢: no change
+#:
+δ:
+»:
+«:

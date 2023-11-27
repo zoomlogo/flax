@@ -92,7 +92,6 @@ def base(w, x):
 
 def base_decomp(w, x):
     """base_decomp: base decompression with base w"""
-    # tf how do i implement this
     res = ""
     x = str(bin(abs(x)))[2:]
     return [int(i) for i in split(w, x)]
