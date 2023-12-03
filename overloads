@@ -6,66 +6,63 @@ B: str → string → binary of each codepoints
 Ḃ: str → to base 10
 C: str → split at commas
 Ċ: str → randomly select a character
-   ils → 
 D: str → split into characters
 Ḋ: lst → catanate to string
 E: no change
 Ė: no change
 F: no change?
-Ḟ: str →
+Ḟ:
 G: no change
 Ġ: no change
 H: str → to lowercase 
 Ḣ: str → to uppercase
-I: str →
+I:
 J: no change
-K: str →
+K:
 L: no change
 Ŀ: no change?
-M: str →
-Ṁ: str →
+M:
+Ṁ:
 N: str → swap case
 Ṅ: str → return lowercase → 0 / uppercase → 1 / not valid → -1
 O: no change
 Ȯ: str → append first element
 S: str → substrings
-Ṡ: str →
+Ṡ:
 T: str → eval?
-Ṫ: str →
+Ṫ:
 V: str → 0: all letters lowercase, 1: all letters uppercase, -1: mixed case
-W: str →
+W:
 X: no change
 Ẋ: no change
 Y: no change
 Ẏ: no change
-Z: str →
-   ils →
+Z:
 Ż: str → prepend the last character
-!: str →
+!:
 ¬: 
 √: str → palindromise
-Σ: str →
-Π: str →
+Σ:
+Π:
 ⊂: no change
 ⊆: no change
 ⊃: no change
 ⊇: no change
 ⊐: no change
 ⊒: no change
-~: 
+~:
 γ: no change
 ε: no change
 ι: str → is character a letter for each
 κ: str → is character a digit for each
 χ: str → is character a vowel for each
 ψ: str → is character a vowel + y for each
-ϕ: str → 
+ϕ:
 ∵: str → min character
 ∴: str → max character
-↑: 
-↓: 
+↑:
+↓:
 ∞: str → no change
-   ils → 
 ¼: str → eval as flax (?)
 ½: str → second half of
 ⌈: str → split on space
@@ -76,7 +73,7 @@ Z: str →
 {: no change
 }: no change
 ○: no change?
-↶: what
+↶:
 
 DYADS:
 a: num, str → repeat str as a list
