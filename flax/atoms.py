@@ -181,7 +181,7 @@ atoms = {  # single byte atoms
     "o": attrdict(arity=2, dw=0, call=split_at),
     "ȯ": attrdict(arity=2, dw=0, call=lambda w, x: iterable(x, digits_=True).count(w)),
     "ṗ": attrdict(
-        arity=2, dw=0, call=lambda w, x: functools.reduce(cartesian_product, [x] * w)
+        arity=2, dw=0, call=lambda w, x: cartesian_product(*([x] * w))
     ),
     "p": attrdict(
         arity=2, dw=0, dx=0, call=lambda w, x: mp.factorial(w) / mp.factorial(w - x)

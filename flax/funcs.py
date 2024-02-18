@@ -136,7 +136,7 @@ def boolify(f):
 
 def cartesian_product(*args):
     """cartesian_product: find the cartesian product"""
-    return list(map(list, itertools.product(*args)))
+    return list(map(list, itertools.product(*[iterable(i, range_=True) for i in args])))
 
 
 def convolve(w, x):
