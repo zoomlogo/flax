@@ -1,4 +1,5 @@
 """chains: holds the functions used by quicks and the chains"""
+
 import functools
 import itertools
 
@@ -214,9 +215,11 @@ def ffilter(links, *args, inverse=False, permutation=False):
     else:
         return list(
             filter(
-                lambda a: not variadic_link(links[0], (a, w))
-                if inverse
-                else variadic_link(links[0], (a, w)),
+                lambda a: (
+                    not variadic_link(links[0], (a, w))
+                    if inverse
+                    else variadic_link(links[0], (a, w))
+                ),
                 x,
             )
         )

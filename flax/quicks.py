@@ -18,12 +18,14 @@ quicks = {  # single byte quicks
             attrdict(
                 arity=links[0].arity or 1,
                 call=fix_args(
-                    lambda w, x: [
-                        variadic_link(links[0], (i, j))
-                        for i, j in zip(iterable(w), iterable(x))
-                    ]
-                    if w is not None
-                    else [variadic_link(links[0], (i,)) for i in iterable(x)]
+                    lambda w, x: (
+                        [
+                            variadic_link(links[0], (i, j))
+                            for i, j in zip(iterable(w), iterable(x))
+                        ]
+                        if w is not None
+                        else [variadic_link(links[0], (i,)) for i in iterable(x)]
+                    )
                 ),
             )
         ],
@@ -55,9 +57,11 @@ quicks = {  # single byte quicks
         qlink=lambda links, *_: [
             attrdict(
                 arity=1,
-                call=lambda x: [variadic_chain(links, (i,)) for i in x]
-                if type(x) == list
-                else variadic_chain(links, (x,)),
+                call=lambda x: (
+                    [variadic_chain(links, (i,)) for i in x]
+                    if type(x) == list
+                    else variadic_chain(links, (x,))
+                ),
             )
         ],
     ),
@@ -68,12 +72,14 @@ quicks = {  # single byte quicks
             attrdict(
                 arity=links[0].arity or 1,
                 call=fix_args(
-                    lambda w, x: [
-                        variadic_link(links[0], (i, j))
-                        for i, j in zip(iterable(w), iterable(x))
-                    ]
-                    if w is not None
-                    else [variadic_link(links[0], (i,)) for i in iterable(x)]
+                    lambda w, x: (
+                        [
+                            variadic_link(links[0], (i, j))
+                            for i, j in zip(iterable(w), iterable(x))
+                        ]
+                        if w is not None
+                        else [variadic_link(links[0], (i,)) for i in iterable(x)]
+                    )
                 ),
             ),
         ],
@@ -84,16 +90,19 @@ quicks = {  # single byte quicks
             attrdict(
                 arity=links[0].arity or 1,
                 call=fix_args(
-                    lambda w, x: [
-                        variadic_link(links[0], (i, j))
-                        for i, j in zip(
-                            permutations(iterable(w)), permutations(iterable(x))
-                        )
-                    ]
-                    if w is not None
-                    else [
-                        variadic_link(links[0], (i,)) for i in permutations(iterable(x))
-                    ]
+                    lambda w, x: (
+                        [
+                            variadic_link(links[0], (i, j))
+                            for i, j in zip(
+                                permutations(iterable(w)), permutations(iterable(x))
+                            )
+                        ]
+                        if w is not None
+                        else [
+                            variadic_link(links[0], (i,))
+                            for i in permutations(iterable(x))
+                        ]
+                    )
                 ),
             )
         ],
@@ -104,12 +113,18 @@ quicks = {  # single byte quicks
             attrdict(
                 arity=links[0].arity or 1,
                 call=fix_args(
-                    lambda w, x: [
-                        variadic_link(links[0], (i, j))
-                        for i, j in zip(prefixes(iterable(w)), prefixes(iterable(x)))
-                    ]
-                    if w is not None
-                    else [variadic_link(links[0], (i,)) for i in prefixes(iterable(x))]
+                    lambda w, x: (
+                        [
+                            variadic_link(links[0], (i, j))
+                            for i, j in zip(
+                                prefixes(iterable(w)), prefixes(iterable(x))
+                            )
+                        ]
+                        if w is not None
+                        else [
+                            variadic_link(links[0], (i,)) for i in prefixes(iterable(x))
+                        ]
+                    )
                 ),
             )
         ],
@@ -165,9 +180,11 @@ quicks = {  # single byte quicks
             attrdict(
                 arity=1 if links[0].arity == 2 else (2 if links[0].arity == 1 else 0),
                 call=fix_args(
-                    lambda _, x: variadic_link(links[0], (x, x))
-                    if links[0].arity == 2
-                    else variadic_link(links[0], (x,)),
+                    lambda _, x: (
+                        variadic_link(links[0], (x, x))
+                        if links[0].arity == 2
+                        else variadic_link(links[0], (x,))
+                    ),
                 ),
             )
         ],
@@ -178,9 +195,11 @@ quicks = {  # single byte quicks
             attrdict(
                 arity=2 if links[0].arity else 0,
                 call=fix_args(
-                    lambda w, x: variadic_link(links[0], (x, w))
-                    if links[0].arity != 1
-                    else links[0].call(w),
+                    lambda w, x: (
+                        variadic_link(links[0], (x, w))
+                        if links[0].arity != 1
+                        else links[0].call(w)
+                    ),
                 ),
             )
         ],

@@ -116,15 +116,15 @@ atoms = {  # single byte atoms
     "ϕ": attrdict(arity=1, call=lambda x: list(mit.flatten(x))),
     "∵": attrdict(
         arity=1,
-        call=lambda x: min(iterable(x, digits_=True))
-        if iterable(x, digits_=True)
-        else 0,
+        call=lambda x: (
+            min(iterable(x, digits_=True)) if iterable(x, digits_=True) else 0
+        ),
     ),
     "∴": attrdict(
         arity=1,
-        call=lambda x: max(iterable(x, digits_=True))
-        if iterable(x, digits_=True)
-        else 0,
+        call=lambda x: (
+            max(iterable(x, digits_=True)) if iterable(x, digits_=True) else 0
+        ),
     ),
     "↑": attrdict(arity=1, call=grade_up),
     "↓": attrdict(arity=1, call=grade_down),
@@ -180,9 +180,7 @@ atoms = {  # single byte atoms
     ),
     "o": attrdict(arity=2, dw=0, call=split_at),
     "ȯ": attrdict(arity=2, dw=0, call=lambda w, x: iterable(x, digits_=True).count(w)),
-    "ṗ": attrdict(
-        arity=2, dw=0, call=lambda w, x: cartesian_product(*([x] * w))
-    ),
+    "ṗ": attrdict(arity=2, dw=0, call=lambda w, x: cartesian_product(*([x] * w))),
     "p": attrdict(
         arity=2, dw=0, dx=0, call=lambda w, x: mp.factorial(w) / mp.factorial(w - x)
     ),
@@ -234,9 +232,9 @@ atoms = {  # single byte atoms
     "≢": attrdict(arity=2, call=lambda w, x: int(w != x)),
     "≈": attrdict(
         arity=2,
-        call=lambda w, x: len(w) == len(x)
-        if type(w) == type(x) == list
-        else abs(w - x) <= 1,
+        call=lambda w, x: (
+            len(w) == len(x) if type(w) == type(x) == list else abs(w - x) <= 1
+        ),
     ),
     ",": attrdict(arity=2, call=lambda w, x: iterable(w) + iterable(x)),
     ";": attrdict(arity=2, call=lambda w, x: iterable(x) + iterable(w)),

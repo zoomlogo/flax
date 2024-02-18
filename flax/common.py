@@ -32,8 +32,7 @@ class attrdict(dict):
 
 
 # TODO: ilist
-class ilist:
-    ...
+class ilist: ...
 
 
 # lexer

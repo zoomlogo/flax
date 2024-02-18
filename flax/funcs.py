@@ -1,4 +1,5 @@
 """funcs: holds the functions used by atoms"""
+
 import functools
 import itertools
 import more_itertools
