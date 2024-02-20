@@ -698,6 +698,7 @@ def type2str(x):
     else:
         return "num"
 
+
 def type2strn(x):
     """type2strn: [helper] converts a number type to string"""
     t = type2str(x)
