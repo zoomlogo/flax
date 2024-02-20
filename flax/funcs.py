@@ -115,23 +115,16 @@ def base_i(w, x):
 
 def binary(x):
     """binary: converts x to binary"""
-    return [-i if x < 0 else i for i in map(int, bin(x)[3 if x < 0 else 2 :])]
+    return base_i(2, x)
 
 
 def binary_i(x):
     """binary_i: convert x from binary"""
-    x = iterable(x, digits_=True)
-    sign = -1 if sum(x) < 0 else 1
-    num = 0
-    i = 0
-    for b in x[::-1]:
-        num += abs(b) * 2**i
-        i += 1
-    return num * sign
+    return base(2, x)
 
 
 def boolify(f):
-    """boolify: wrapper around boolean functions to only return 1/0"""
+    """boolify: [helper] wrapper around boolean functions to only return 1/0"""
     return lambda *args: int(f(*args))
 
 
@@ -202,14 +195,16 @@ def digits(x):
 
 def digits_i(x):
     """digits_i: convert x from digits"""
-    x = iterable(x, range_=True)
-    sign = -1 if sum(x) < 0 else 1
-    num = 0
-    i = 0
-    for b in x[::-1]:
-        num += abs(b) * 10**i
-        i += 1
-    return num * sign
+    if type2strn(x[0]) == "mpc":
+        return mpc(digits_i([i.real for i in x]), digits_i([i.imag for i in x]))
+    else:
+        sign = -1 if sum(x) < 0 else 1
+        num = 0
+        i = 0
+        for b in x[::-1]:
+            num += abs(b) * 10**i
+            i += 1
+        return num * sign
 
 
 def enumerate_md(x, upper_level=[]):
