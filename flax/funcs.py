@@ -192,9 +192,12 @@ def diagonals(x, antidiagonals=False):
 
 def digits(x):
     """digits: turn x into a list of digits"""
-    return [
-        -int(i) if x < 0 else int(i) for i in str(x)[1 if x < 0 else 0 :] if i != "."
-    ]
+    if type2strn(x) == "mpc":
+        return [mpc(i[0], i[1]) for i in transpose([digits(x.real)[::-1], digits(x.imag)[::-1]], filler=0)[::-1]][:-1]
+    else:
+        return [
+            -int(i) if x < 0 else int(i) for i in str(x)[1 if x < 0 else 0 :] if i != "."
+        ]
 
 
 def digits_i(x):
