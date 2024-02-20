@@ -8,7 +8,7 @@ import re
 from random import randrange
 import operator as ops
 
-from flax.common import mp, mpc, inf, mpf
+from flax.common import mp, mpc, ilist, inf, mpf
 
 __all__ = [
     "base",
@@ -155,7 +155,7 @@ def convolve(w, x):
 
 def depth(x):
     """depth: how deeply x is nested"""
-    if type(x) != list:
+    if type2str(x) != "lst":
         return 0
     else:
         if not x:
@@ -212,7 +212,7 @@ def digits_i(x):
 def enumerate_md(x, upper_level=[]):
     """enumerate_md: enumerate multidimensionally"""
     for i, e in enumerate(x):
-        if type(e) != list:
+        if type2str(e) != "lst":
             yield [upper_level + [i], e]
         else:
             yield from enumerate_md(e, upper_level + [i])
@@ -328,10 +328,10 @@ def group_indicies(x, md=False):
 def index_into(w, x):
     """index_into: index into w with x"""
     w = iterable(w, digits_=True)
-    x = int(x) if type(x) != mpc and type(x) != list and int(x) == x else x
-    if type(x) == int:
+    x = int(x) if type2strn(x) == "int" else x
+    if type2strn(x) == "int":
         return w[x % len(w)]
-    elif type(x) == mpc:
+    elif type2strn(x) == "mpc":
         return index_into(index_into(w, x.real), x.imag)
     else:
         return [index_into(w, mp.floor(x)), index_into(w, mp.ceil(x))]
@@ -347,18 +347,20 @@ def index_into_md(w, x):
 
 def iota(x):
     """iota: APL's ⍳ and BQN's ↕"""
-    if type(x) != list:
+    if type2strn(x) in ["int", "dec"]:
         return list(range(int(x)))
-
-    res = cartesian_product(*(list(range(int(a))) for a in x))
-    for e in x:
-        res = split(int(e), res)
-    return res[0]
+    elif type2strn(x) == "mpc":
+        return [[mpc(j[0], j[1]) for j in i] for i in iota([x.real, x.imag])]
+    else:
+        res = cartesian_product(*(iota(a) for a in x))
+        for e in x:
+            res = split(int(abs(e)) if type2strn(e) == "mpc" else int(e), res)
+        return res[0]
 
 
 def iota1(x):
     """iota1: iota but 1 based"""
-    if type(x) != list:
+    if type2strn(x) in ["int", "dec"]:
         return [i + 1 for i in range(int(x))]
 
     res = cartesian_product(*([i + 1 for i in range(int(a))] for a in x))
@@ -369,12 +371,12 @@ def iota1(x):
 
 def iterable(x, digits_=False, range_=False, copy_=False):
     """iterable: make sure x is a list"""
-    if type(x) != list:
-        if type(x) == str:
+    if type2str(x) != "lst":
+        if type2str(x) == "str":
             return list(x)
         else:
             if range_:
-                return list(range(int(x)))
+                return iota(x)
             elif digits_:
                 return digits(x)
             else:
@@ -392,13 +394,14 @@ def join(w, x):
 
 def json_decode(x):
     """json_decode: convert jsoned x to flax arrays"""
-    if type(x) == list or type(x) == tuple:
+    t = type(x)
+    if t == list or t == tuple:
         return [json_decode(i) for i in x]
-    elif type(x) == str:
+    elif t == str:
         return x
-    elif type(x) == dict:
+    elif t == dict:
         return [json_decode(i) for i in x.items()]
-    elif type(x) == bool:
+    elif t == bool:
         return int(x)
     elif x is None:
         return inf
@@ -439,7 +442,7 @@ def maximal_indicies_md(x, m=None, upper_level=[]):
         m = max(flatten(x) or [0])
     res = []
     for i, e in enumerate(x):
-        if type(e) != list:
+        if type2str(e) != "lst":
             if e == m:
                 res.append(upper_level + [i])
             else:
@@ -450,7 +453,7 @@ def maximal_indicies_md(x, m=None, upper_level=[]):
 def mold(w, x):
     """mold: mold x to the shape w"""
     for i in range(len(w)):
-        if type(w[i]) == list:
+        if type2str(w[i]) == "lst":
             mold(x, w[i])
         else:
             item = x.pop(0)
@@ -695,6 +698,19 @@ def type2str(x):
     else:
         return "num"
 
+def type2strn(x):
+    """type2strn: [helper] converts a number type to string"""
+    t = type2str(x)
+    if t == "num":
+        if type(x) == mpc:
+            return "mpc"
+        elif int(x) == x:
+            return "int"
+        else:
+            return "dec"
+    else:
+        return t
+
 
 def transpose(x, filler=None):
     """transpose: transpose x"""
@@ -720,7 +736,7 @@ def unrepeat(x):
 def where(x, upper_level=[]):
     """where: ngn/k's &:"""
     x = iterable(x)
-    if type(x[0]) != list:
+    if type2str(x[0]) != "lst":
         return flatten([(upper_level + [i]) * e for i, e in enumerate(x)])
     else:
         return [where(e, upper_level + [i]) for i, e in enumerate(x)]
