@@ -356,7 +356,7 @@ def iota(x):
         return [[mpc(j[0], j[1]) for j in i] for i in iota([x.real, x.imag])]
     else:
         res = cartesian_product(*(iota(i) for i in x))
-        for i in x:
+        for i in x[::-1]:
             res = split(int(abs(i)) if type2strn(i) != "lst" else len(i), res)
         return res[0]
 
@@ -369,7 +369,7 @@ def iota1(x):
         return [[mpc(j[0], j[1]) for j in i] for i in iota1([x.real, x.imag])]
     else:
         res = cartesian_product(*(iota1(i) for i in x))
-        for i in x:
+        for i in x[::-1]:
             res = split(int(abs(i)) if type2strn(i) != "lst" else len(i), res)
         return res[0]
 
