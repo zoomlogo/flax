@@ -1,5 +1,3 @@
-# test syntax things and chain separators
-# and niladic atoms
 import os, sys
 from mpmath import *
 
