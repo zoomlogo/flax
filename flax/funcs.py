@@ -94,8 +94,8 @@ def base(w, x):
 def base_decomp(w, x):
     """base_decomp: base decompression with base w"""
     res = ""
-    x = str(bin(abs(x)))[2:]
-    return [int(i) for i in split(w, x)]
+    x = bin(abs(x))[2:]
+    return [[int(j) for j in i] for i in split(w, x)]
 
 
 def base_i(w, x):
@@ -148,7 +148,9 @@ def convolve(w, x):
 
 def depth(x):
     """depth: how deeply x is nested"""
-    if type2str(x) != "lst":
+    if type2str(x) == "str":
+        return 1
+    elif type2str(x) != "lst":
         return 0
     else:
         if not x:
