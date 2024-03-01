@@ -2,7 +2,7 @@
 name = "flax"
 version = "1.1.0"
 description = "flax tacit language"
-authors = ["PyGamer0"]
+authors = ["zoomlogo"]
 license = "MIT"
 
 [tool.poetry.scripts]
