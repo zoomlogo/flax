@@ -25,6 +25,7 @@ def test_numbers():
 def test_string():
     assert run('"Hello, World!"') == "Hello, World!"
 
+
 def test_next_string():
     assert run("_E") == "E"
     assert run(":Hi") == "Hi"
