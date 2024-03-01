@@ -25,26 +25,11 @@ def test_numbers():
 
 
 def test_string():
-    assert run('"Hello, World!"') == [
-        72,
-        101,
-        108,
-        108,
-        111,
-        44,
-        32,
-        87,
-        111,
-        114,
-        108,
-        100,
-        33,
-    ]
+    assert run('"Hello, World!"') == "Hello, World!"
 
-
-def test_next_n():
-    assert run("_E") == [69]
-    assert run(":Hi") == [72, 105]
+def test_next_string():
+    assert run("_E") == "E"
+    assert run(":Hi") == "Hi"
 
 
 def test_lists():
@@ -52,14 +37,14 @@ def test_lists():
     assert run("[1, 2]") == [1, 2]
     assert run("[1+2]") == [1, 2]  # any delimeter
     assert run("[[1 2],[3 4]]") == [[1, 2], [3, 4]]
-    assert run('["Hi" 1]') == [[72, 105], 1]
+    assert run('["Hi" 1]') == ["Hi", 1]
 
 
 def test_chain_separators():
     pass  # TODO
 
 
-def test_nilads():
+def test_nilads_0_to_7():
     assert run("⁰") == 10
     assert run("¹") == 16
     assert run("²") == 26
@@ -79,7 +64,7 @@ def test_nilads_8_9():
     assert run("⁹", 3, 4) == 4
 
 
-def test_nilads_o():
+def test_nilads_other():
     assert run("∃") == 0
     assert run("⍬") == []
     assert run("⊶") == [0, 1]
