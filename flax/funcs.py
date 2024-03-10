@@ -724,12 +724,7 @@ def type2strn(x):
 
 def transpose(x, filler=None):
     """transpose: transpose x"""
-    return list(
-        map(
-            lambda x: list(filter(None.__ne__, x)),
-            itertools.zip_longest(*map(iterable, x), fillvalue=filler),
-        )
-    )
+    return [[j for j in i if j is not None] for i in itertools.zip_longest(*[iterable(i) for i in x], fillvalue=filler)]
 
 
 def trim(w, x):
