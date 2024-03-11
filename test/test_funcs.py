@@ -99,9 +99,20 @@ def test_digits_i():
     assert digits_i([mpc(1, 4), mpc(2, 5), mpc(3, 6)]) == mpc(123, 456)
 
 
-"test_enumerate_md"
-"test_ensure_square"
-"test_fibonacci"
+def test_enumerate_md():
+    assert list(enumerate_md([])) == []
+    assert list(enumerate_md([1,2,3,4,5])) == [[[0], 1], [[1], 2], [[2], 3], [[3], 4], [[4], 5]]
+    assert list(enumerate_md([1,2,3,[4,5]])) == [[[0], 1], [[1], 2], [[2], 3], [[3, 0], 4], [[3, 1], 5]]
+
+def test_ensure_square():
+    assert ensure_square([]) == []
+    assert ensure_square(1) == [[1]]
+    assert ensure_square([1,2]) == [[1,1],[2,2]]
+    assert ensure_square([1,2,[3,4],[5,6,7]]) == [[1, 1, 1, 1], [2, 2, 2, 2], [3, 4, 3, 4], [5, 6, 7, 5]]
+
+def test_fibonacci():
+    assert [fibonacci(i) for i in range(50)] == [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946, 17711, 28657, 46368, 75025, 121393, 196418, 317811, 514229, 832040, 1346269, 2178309, 3524578, 5702887, 9227465, 14930352, 24157817, 39088169, 63245986, 102334155, 165580141, 267914296, 433494437, 701408733, 1134903170, 1836311903, 2971215073, 4807526976, 7778742049]
+
 "test_find"
 "test_find_md"
 "test_find_all"
