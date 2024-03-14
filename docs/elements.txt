@@ -315,6 +315,7 @@ $       Quick                   Two links as monad.
 æ»      Mathy Dyadic Diagraphs  Bit shift right.
 ær      Mathy Dyadic Diagraphs  Round.
 æl      Mathy Dyadic Diagraphs  Linear regression.
+æẇ      Mathy Dyadic Diagraphs  Combinations with replacement.
 ŒḂ      Other Monadic Diagraphs Bounce over each.
 ŒB      Other Monadic Diagraphs Bounce.
 ŒP      Other Monadic Diagraphs Is palindrome.
