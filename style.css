@@ -1,11 +1,12 @@
 /* note: these colors are from defined.nvim */
+/* https://github.com/zoomlogo/defined.nvim */
 @font-face {
-  font-family: 'icfs';
+  font-family: 'sevka';
   font-display: swap;
   font-weight: 400;
   font-stretch: normal;
   font-style: normal;
-  src: url('icfs-regular.woff2') format('woff2');
+  src: url('sevka-regularupright.woff2') format('woff2');
 }
 
 #header {
@@ -17,12 +18,12 @@
 body {
   color: #eeeeff;
   background-color: #222226;
-  font-family: icfs,monospace;
+  font-family: sevka,monospace;
   font-size: 20px;
 }
 
 table {
-  font-family: icfs,monospace;
+  font-family: sevka,monospace;
   font-size: 16px;
   margin-top: 10px;
   border: none;
@@ -75,7 +76,7 @@ a, a:hover, a:visited, a:active {
   color: #eeeeff;
   margin-left: 2px;
   background-color: #444448;
-  font-family: icfs,monospace;
+  font-family: sevka,monospace;
   font-size: 16px;
 }
 
