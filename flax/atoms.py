@@ -7,6 +7,7 @@ import statistics
 import more_itertools as mit
 import operator as ops
 import random as Random
+import itertools as it
 from itertools import zip_longest
 
 from flax.common import *
@@ -383,6 +384,10 @@ atoms |= {  # diagraphs
     "æl": attrdict(
         arity=2, dw=1, dx=1, call=lambda w, x: list(statistics.linear_regression(w, x))
     ),
+    "æẇ": attrdict(
+        arity=2,
+        dw=0,
+        call=lambda w,x:list(map(list, it.combinations_with_replacement(x, w)))),
     "ŒB": attrdict(arity=1, call=lambda x: iterable(x) + iterable(x)[::-1]),
     "ŒP": attrdict(arity=1, dx=1, call=lambda x: x == x[::-1]),
     "ŒĠ": attrdict(arity=1, dx=1, call=get_req),
