@@ -1,6 +1,7 @@
 """funcs: holds the functions used by atoms"""
 
 import functools
+import urllib.request
 import itertools
 import more_itertools
 import copy
@@ -279,11 +280,10 @@ def flatten(x):
 
 def get_req(x):
     """get_req: GET request for url x"""
-    url = "".join(map(chr, x))
     url = (
-        re.match(r"[A-Za-z][A-Za-z0-9+.-]*://", url) is None and "http://" or ""
-    ) + url
-    response = urllib_request.request.urlopen(url).read()
+        re.match(r"[A-Za-z][A-Za-z0-9+.-]*://", x) is None and "http://" or ""
+    ) + x
+    response = urllib.request.urlopen(url).read()
     try:
         return response.decode("utf-8")
     except:
@@ -294,7 +294,7 @@ def grade_down(x):
     """grade_down: grade x in descending order"""
     x = iterable(x, digits_=True)
     grades = []
-    for i in reversed(sorted(x)):
+    for i in more_itertools.unique_everseen(reversed(sorted(x))):
         grades.append(find_all(i, x))
     return flatten(grades)
 
@@ -303,7 +303,7 @@ def grade_up(x):
     """grade_up: grade x in ascending order"""
     x = iterable(x, digits_=True)
     grades = []
-    for i in sorted(x):
+    for i in more_itertools.unique_everseen(sorted(x)):
         grades.append(find_all(i, x))
     return flatten(grades)
 
