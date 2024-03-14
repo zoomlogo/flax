@@ -217,29 +217,56 @@ def test_flatten():
 def test_get_req():
     assert "google" in get_req("google.com")
 
+
 def test_grade_down():
     assert grade_down([]) == []
-    assert grade_down([2, 3, 1]) == [1,0,2]
-    assert grade_down([7,0,9,3,8,0,9,5,4,1]) == [2,6,4,0,7,8,3,9,1,5]
-    assert grade_down(grade_down([7,0,9,3,8,0,9,5,4,1])) == [7,5,4,1,9,2,6,0,8,3]
+    assert grade_down([2, 3, 1]) == [1, 0, 2]
+    assert grade_down([7, 0, 9, 3, 8, 0, 9, 5, 4, 1]) == [2, 6, 4, 0, 7, 8, 3, 9, 1, 5]
+    assert grade_down(grade_down([7, 0, 9, 3, 8, 0, 9, 5, 4, 1])) == [
+        7,
+        5,
+        4,
+        1,
+        9,
+        2,
+        6,
+        0,
+        8,
+        3,
+    ]
+
 
 def test_grade_up():
     assert grade_up([]) == []
-    assert grade_up([2, 3, 1]) == [2,0,1]
-    assert grade_up([7,0,9,3,8,0,9,5,4,1]) == [1,5,9,3,8,7,0,4,2,6]
-    assert grade_up(grade_up([7,0,9,3,8,0,9,5,4,1])) == [6,0,8,3,7,1,9,5,4,2]
+    assert grade_up([2, 3, 1]) == [2, 0, 1]
+    assert grade_up([7, 0, 9, 3, 8, 0, 9, 5, 4, 1]) == [1, 5, 9, 3, 8, 7, 0, 4, 2, 6]
+    assert grade_up(grade_up([7, 0, 9, 3, 8, 0, 9, 5, 4, 1])) == [
+        6,
+        0,
+        8,
+        3,
+        7,
+        1,
+        9,
+        5,
+        4,
+        2,
+    ]
+
 
 def test_group_equal():
     assert group_equal([]) == []
     assert group_equal([1, 2, 3]) == [[1], [2], [3]]
     assert group_equal([2, 3, 1]) == [[2], [3], [1]]
-    assert group_equal([1, 2, 2, 3, 4, 4, 3]) == [[1],[2,2],[3],[4,4],[3]]
+    assert group_equal([1, 2, 2, 3, 4, 4, 3]) == [[1], [2, 2], [3], [4, 4], [3]]
+
 
 def test_group_indicies():
     assert group_indicies([]) == []
     assert group_indicies([1, 2, 3]) == [[0], [1], [2]]
     assert group_indicies([3, 2, 1]) == [[2], [1], [0]]
-    assert group_indicies([1, 2, 2, 3, 4, 4, 3]) == [[0],[1,2],[3,6],[4,5]]
+    assert group_indicies([1, 2, 2, 3, 4, 4, 3]) == [[0], [1, 2], [3, 6], [4, 5]]
+
 
 "test_index_into"
 "test_index_into_md"

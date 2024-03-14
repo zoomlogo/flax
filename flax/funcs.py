@@ -280,9 +280,7 @@ def flatten(x):
 
 def get_req(x):
     """get_req: GET request for url x"""
-    url = (
-        re.match(r"[A-Za-z][A-Za-z0-9+.-]*://", x) is None and "http://" or ""
-    ) + x
+    url = (re.match(r"[A-Za-z][A-Za-z0-9+.-]*://", x) is None and "http://" or "") + x
     response = urllib.request.urlopen(url).read()
     try:
         return response.decode("utf-8")
