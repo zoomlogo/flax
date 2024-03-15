@@ -333,6 +333,7 @@ def group_indicies(x, md=False):
 def index_into(w, x):
     """index_into: index into w with x"""
     w = iterable(w, digits_=True)
+    if len(w) == 0: return []
     x = int(x) if type2strn(x) == "int" else x
     if type2strn(x) == "int":
         return w[x % len(w)]
@@ -346,7 +347,7 @@ def index_into_md(w, x):
     """index_into_md: index into w multidimensionally with x"""
     res = w
     for i in x:
-        res = index_into(i, res)
+        res = index_into(res, i)
     return res
 
 
