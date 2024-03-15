@@ -333,7 +333,8 @@ def group_indicies(x, md=False):
 def index_into(w, x):
     """index_into: index into w with x"""
     w = iterable(w, digits_=True)
-    if len(w) == 0: return []
+    if len(w) == 0:
+        return []
     x = int(x) if type2strn(x) == "int" else x
     if type2strn(x) == "int":
         return w[x % len(w)]

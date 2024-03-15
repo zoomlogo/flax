@@ -272,42 +272,59 @@ def test_index_into():
     assert index_into([], 0) == []
     assert index_into([1, 2, [3, 4]], 0) == 1
     assert index_into([1, 2, [3, 4]], 1) == 2
-    assert index_into([1, 2, [3, 4]], 2) == [3,4]
+    assert index_into([1, 2, [3, 4]], 2) == [3, 4]
     assert index_into([1, 2, [3, 4]], 3) == 1
-    assert index_into([1, 2, [3, 4]], 0.5) == [1,2]
+    assert index_into([1, 2, [3, 4]], 0.5) == [1, 2]
     assert index_into([1, 2, [3, 4]], mpc(2, 1)) == 4
 
+
 def test_index_into_md():
-    assert index_into_md([[1,2,[3,4]],[2]], [0,2,1]) == 4
+    assert index_into_md([[1, 2, [3, 4]], [2]], [0, 2, 1]) == 4
+
 
 def test_iota():
-    assert iota(5) == [0,1,2,3,4]
-    assert iota([5]) == [[0],[1],[2],[3],[4]]
-    assert iota([2,3]) == [[[0, 0], [0, 1], [0, 2]], [[1, 0], [1, 1], [1, 2]]]
-    assert iota(2.3) == [0,1]
-    assert iota(mpc(2,3)) == [[(0.0 + 0.0j), (0.0 + 1.0j), (0.0 + 2.0j)], [(1.0 + 0.0j), (1.0 + 1.0j), (1.0 + 2.0j)]]
+    assert iota(5) == [0, 1, 2, 3, 4]
+    assert iota([5]) == [[0], [1], [2], [3], [4]]
+    assert iota([2, 3]) == [[[0, 0], [0, 1], [0, 2]], [[1, 0], [1, 1], [1, 2]]]
+    assert iota(2.3) == [0, 1]
+    assert iota(mpc(2, 3)) == [
+        [(0.0 + 0.0j), (0.0 + 1.0j), (0.0 + 2.0j)],
+        [(1.0 + 0.0j), (1.0 + 1.0j), (1.0 + 2.0j)],
+    ]
+
 
 def test_iota1():
-    assert iota1(5) == [1,2,3,4,5]
-    assert iota1([5]) == [[1],[2],[3],[4],[5]]
-    assert iota1([2,3]) == [[[1, 1], [1, 2], [1, 3]], [[2, 1], [2, 2], [2, 3]]]
-    assert iota1(2.3) == [1,2]
-    assert iota1(mpc(2,3)) == [[(1.0 + 1.0j), (1.0 + 2.0j), (1.0 + 3.0j)], [(2.0 + 1.0j), (2.0 + 2.0j), (2.0 + 3.0j)]]
+    assert iota1(5) == [1, 2, 3, 4, 5]
+    assert iota1([5]) == [[1], [2], [3], [4], [5]]
+    assert iota1([2, 3]) == [[[1, 1], [1, 2], [1, 3]], [[2, 1], [2, 2], [2, 3]]]
+    assert iota1(2.3) == [1, 2]
+    assert iota1(mpc(2, 3)) == [
+        [(1.0 + 1.0j), (1.0 + 2.0j), (1.0 + 3.0j)],
+        [(2.0 + 1.0j), (2.0 + 2.0j), (2.0 + 3.0j)],
+    ]
+
 
 def test_iterable():
     assert iterable([]) == []
-    assert iterable([1,2]) == [1,2]
+    assert iterable([1, 2]) == [1, 2]
     assert iterable(1) == [1]
-    assert iterable("abc") == ["a","b","c"]
-    assert iterable(3,range_=True) == [0,1,2]
-    assert iterable(31415,digits_=True) == [3,1,4,1,5]
+    assert iterable("abc") == ["a", "b", "c"]
+    assert iterable(3, range_=True) == [0, 1, 2]
+    assert iterable(31415, digits_=True) == [3, 1, 4, 1, 5]
+
 
 def test_join():
     assert join(3, iota(3)) == [0, 3, 1, 3, 2, 3]
-    assert join([3,4],iota(5)) == [0, 3, 1, 4, 2, 3, 3, 4, 4, 3]
+    assert join([3, 4], iota(5)) == [0, 3, 1, 4, 2, 3, 3, 4, 4, 3]
+
 
 def test_json_decode():
-    assert json_decode({"a":1,"b":"hello","x":True}) == [["a",1],["b","hello"],["x",1]]
+    assert json_decode({"a": 1, "b": "hello", "x": True}) == [
+        ["a", 1],
+        ["b", "hello"],
+        ["x", 1],
+    ]
+
 
 "test_lucas"
 "test_mapval"
