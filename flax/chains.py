@@ -178,7 +178,7 @@ def dyadic_link(link, w, x, flat=False):
             if call == None:
                 call = overloads.get("any-any")
             if call == None:
-                raise ValueError
+                error("call: overload not defined")
             return call(x)
     elif not flat_w and link.dw > dw:
         return dyadic_link(link, [w], x)
@@ -369,7 +369,7 @@ def monadic_link(link, x, flat=False):
             if call == None:
                 call = overloads.get("any")
             if call == None:
-                raise ValueError
+                error("call: overload not defined")
             return call(x)
     elif link.dx > dx:
         return monadic_link(link, [x])

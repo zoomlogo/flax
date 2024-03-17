@@ -2,7 +2,7 @@
 name = "flax"
 version = "1.1.0"
 description = "flax tacit language"
-authors = ["PyGamer0"]
+authors = ["zoomlogo"]
 license = "MIT"
 
 [tool.poetry.scripts]
@@ -12,6 +12,7 @@ flax = "flax.main:main"
 python = ">=3.9"
 mpmath = "*"
 more_itertools = "*"
+colorama = "*"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"

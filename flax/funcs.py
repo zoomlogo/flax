@@ -1,6 +1,7 @@
 """funcs: holds the functions used by atoms"""
 
 import functools
+import urllib.request
 import itertools
 import more_itertools
 import copy
@@ -94,8 +95,8 @@ def base(w, x):
 def base_decomp(w, x):
     """base_decomp: base decompression with base w"""
     res = ""
-    x = str(bin(abs(x)))[2:]
-    return [int(i) for i in split(w, x)]
+    x = bin(abs(x))[2:]
+    return [[int(j) for j in i] for i in split(w, x)]
 
 
 def base_i(w, x):
@@ -148,7 +149,9 @@ def convolve(w, x):
 
 def depth(x):
     """depth: how deeply x is nested"""
-    if type2str(x) != "lst":
+    if type2str(x) == "str":
+        return 1
+    elif type2str(x) != "lst":
         return 0
     else:
         if not x:
@@ -277,11 +280,8 @@ def flatten(x):
 
 def get_req(x):
     """get_req: GET request for url x"""
-    url = "".join(map(chr, x))
-    url = (
-        re.match(r"[A-Za-z][A-Za-z0-9+.-]*://", url) is None and "http://" or ""
-    ) + url
-    response = urllib_request.request.urlopen(url).read()
+    url = (re.match(r"[A-Za-z][A-Za-z0-9+.-]*://", x) is None and "http://" or "") + x
+    response = urllib.request.urlopen(url).read()
     try:
         return response.decode("utf-8")
     except:
@@ -292,7 +292,7 @@ def grade_down(x):
     """grade_down: grade x in descending order"""
     x = iterable(x, digits_=True)
     grades = []
-    for i in reversed(sorted(x)):
+    for i in more_itertools.unique_everseen(reversed(sorted(x))):
         grades.append(find_all(i, x))
     return flatten(grades)
 
@@ -301,7 +301,7 @@ def grade_up(x):
     """grade_up: grade x in ascending order"""
     x = iterable(x, digits_=True)
     grades = []
-    for i in sorted(x):
+    for i in more_itertools.unique_everseen(sorted(x)):
         grades.append(find_all(i, x))
     return flatten(grades)
 
@@ -333,6 +333,8 @@ def group_indicies(x, md=False):
 def index_into(w, x):
     """index_into: index into w with x"""
     w = iterable(w, digits_=True)
+    if len(w) == 0:
+        return []
     x = int(x) if type2strn(x) == "int" else x
     if type2strn(x) == "int":
         return w[x % len(w)]
@@ -346,7 +348,7 @@ def index_into_md(w, x):
     """index_into_md: index into w multidimensionally with x"""
     res = w
     for i in x:
-        res = index_into(i, res)
+        res = index_into(res, i)
     return res
 
 
@@ -722,12 +724,10 @@ def type2strn(x):
 
 def transpose(x, filler=None):
     """transpose: transpose x"""
-    return list(
-        map(
-            lambda x: list(filter(None.__ne__, x)),
-            itertools.zip_longest(*map(iterable, x), fillvalue=filler),
-        )
-    )
+    return [
+        [j for j in i if j is not None]
+        for i in itertools.zip_longest(*[iterable(i) for i in x], fillvalue=filler)
+    ]
 
 
 def trim(w, x):

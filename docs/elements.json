@@ -1596,6 +1596,11 @@
     "description": "Linear regression."
   },
   {
+    "element": "æẇ",
+    "type": "Mathy Dyadic Diagraphs",
+    "description": "Combinations with replacement."
+  },
+  {
     "element": "ŒḂ",
     "type": "Other Monadic Diagraphs",
     "description": "Bounce over each."

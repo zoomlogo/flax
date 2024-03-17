@@ -118,7 +118,7 @@ def parse(tokens):
                         if stack == [] and chains == []:
                             if token[1] in "ⁿ":
                                 break
-                            error(f'not enough links to pop for "{token[1]}"')
+                            error(f'syn: not enough links for "{token[1]}"')
                         popped.insert(0, (stack or chains).pop())
                     stack += quicks[token[1]].qlink(popped, trains, index)
             chains.append(create_chain(stack, arity, is_forward))
