@@ -12,6 +12,7 @@ flax = "flax.main:main"
 python = ">=3.9"
 mpmath = "*"
 more_itertools = "*"
+colorama = "*"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"

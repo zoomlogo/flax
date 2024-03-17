@@ -3,6 +3,7 @@ import collections
 import re
 
 from flax.builtins import *
+from flax.error import error
 from flax.common import TOKEN_TYPE
 
 __all__ = ["TOKEN_TYPE", "tokenise"]
@@ -74,7 +75,7 @@ def tokenise(program):
             elif digraph in quicks:
                 tokens.append([TOKEN_TYPE.QUICK, digraph])
             else:
-                raise NameError("Digraph not defined.")
+                error(f'syn: non-existent diagraph "{diagraph}"')
         elif head == LIST_DELIMETER_L:
             contents = ""
             k = 1
