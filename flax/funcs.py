@@ -422,7 +422,7 @@ def json_decode(x):
 def lucas(x):
     """lucas: nth lucas number"""
     if x < 2:
-        return x + 1
+        return 2 if x == 0 else 1
     else:
         return lucas(x - 1) + lucas(x - 2)
 
@@ -434,7 +434,7 @@ def mapval(w, x):
 
     res = []
     for i in iterable(x, range_=True):
-        res.append(outs[ins.index(i)])
+        res.append(outs[find(i, ins)])
 
     return res
 
