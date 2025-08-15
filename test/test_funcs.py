@@ -340,6 +340,7 @@ def test_maximal_indicies():
 
 def test_maximal_indicies_md():
     # TODO bugfix
+    ...
 
 "test_mold"
 "test_multiset_difference"
@@ -367,4 +368,9 @@ def test_maximal_indicies_md():
 "test_transpose"
 "test_trim"
 "test_unrepeat"
-"test_where"
+
+def test_where():
+    assert where(0) == []
+    assert where(1) == [0]
+    assert where([1,2,3,4,5]) == [0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4]
+    assert where([[1,2],[3,4]]) == [[0, 0], [0, 1], [0, 1], [1, 0], [1, 0], [1, 0], [1, 1], [1, 1], [1, 1], [1, 1]]

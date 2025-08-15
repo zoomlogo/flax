@@ -43,6 +43,7 @@ __all__ = [
     "index_into_md",
     "iota",
     "iota1",
+    "is_flat",
     "iterable",
     "join",
     "json_decode",
@@ -376,6 +377,10 @@ def iota1(x):
         for i in x[::-1]:
             res = split(int(abs(i)) if type2strn(i) != "lst" else len(i), res)
         return res[0]
+
+def is_flat(x):
+    """is_flat: checks whether x is a flat array or not"""
+    return x == flatten(x)
 
 
 def iterable(x, digits_=False, range_=False, copy_=False):
@@ -741,10 +746,13 @@ def unrepeat(x):
     return list(map(len, group_equal(x)))
 
 
-def where(x, upper_level=[]):
+def where(x):
     """where: ngn/k's &:"""
     x = iterable(x)
-    if type2str(x[0]) != "lst":
-        return flatten([(upper_level + [i]) * e for i, e in enumerate(x)])
+    if is_flat(x):
+        return flatten([[i] * e for i, e in enumerate(x)])
     else:
-        return [where(e, upper_level + [i]) for i, e in enumerate(x)]
+        res = []
+        for i, e in enumerate_md(x):
+            res.extend([i] * e)
+        return res
