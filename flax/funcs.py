@@ -378,6 +378,7 @@ def iota1(x):
             res = split(int(abs(i)) if type2strn(i) != "lst" else len(i), res)
         return res[0]
 
+
 def is_flat(x):
     """is_flat: checks whether x is a flat array or not"""
     return x == flatten(x)
