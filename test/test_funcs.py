@@ -339,8 +339,9 @@ def test_maximal_indicies():
     assert maximal_indicies([1, 2, 3, 3, 2, 1]) == [2, 3]
 
 def test_maximal_indicies_md():
-    # TODO bugfix
-    ...
+    assert maximal_indicies_md([]) == []
+    assert maximal_indicies_md([1, 2, 3]) == [[2]]
+    assert maximal_indicies_md([1, 2, 3, [3]]) == [[2], [3, 0]]
 
 "test_mold"
 "test_multiset_difference"

@@ -459,8 +459,8 @@ def maximal_indicies_md(x, m=None, upper_level=[]):
         if type2str(e) != "lst":
             if e == m:
                 res.append(upper_level + [i])
-            else:
-                res.extend(maximal_indicies_md(e, m, upper_level + [i]))
+        else:
+            res.extend(maximal_indicies_md(e, m, upper_level + [i]))
     return res
 
 
