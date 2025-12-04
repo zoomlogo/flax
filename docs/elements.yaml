@@ -5,11 +5,11 @@
 - element: '"'
   type: Syntax
   description: String syntax. (Internally represented as a list of integers).
-  
+
 - element: _
   type: Syntax
   description: Next character's value as integer.
-  
+
 - element: ":"
   type: Syntax
   description: Next characters' value as integer.
@@ -634,7 +634,7 @@
   type: Dyad
   description: Lesser than.
 
-- element: =
+- element: '='
   type: Dyad
   description: Equal to.
 
