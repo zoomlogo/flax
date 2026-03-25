@@ -398,8 +398,19 @@ def test_maximal_indicies_md():
     assert maximal_indicies_md([1, 2, 3, [3]]) == [[2], [3, 0]]
 
 
-"test_mold"
-"test_multiset_difference"
+def test_mold():
+    assert mold([], []) == []
+    assert mold([2], []) == []
+    assert mold([2], [1]) == [1]
+    assert mold([2, 1], [1]) == [1, 1]
+    assert mold([2, 3, 1], [1, [2]]) == [1, 2, 1]
+    assert mold([2, [3, 1]], [1, [2]]) == [1, [2, 1]]
+    assert mold([2, [3, 1], [[[1]]]], [1, [2], [[3]]]) == [1, [2, 3], [[[1]]]]
+
+def test_multiset_difference():
+    assert multiset_difference([], []) == []
+    assert multiset_difference([], []) == []
+
 "test_multiset_intersection"
 "test_multiset_union"
 "test_nprimes"

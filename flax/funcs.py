@@ -467,6 +467,10 @@ def maximal_indicies_md(x, m=None, upper_level=[]):
 
 def mold(w, x):
     """mold: mold x to the shape w"""
+    if w == [] or x == []: return []
+
+    x = flatten(x)
+
     for i in range(len(w)):
         if type2str(w[i]) == "lst":
             mold(x, w[i])
@@ -479,11 +483,11 @@ def mold(w, x):
 
 def multiset_difference(w, x):
     """multiset_difference: multiset difference"""
-    res = iterable(w)[::-1]
+    res = iterable(w)
     for i in iterable(x):
         if i in res:
             res.remove(i)
-    return res[::-1]
+    return res
 
 
 def multiset_intersection(w, x):
