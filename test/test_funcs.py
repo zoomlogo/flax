@@ -407,9 +407,11 @@ def test_mold():
     assert mold([2, [3, 1]], [1, [2]]) == [1, [2, 1]]
     assert mold([2, [3, 1], [[[1]]]], [1, [2], [[3]]]) == [1, [2, 3], [[[1]]]]
 
+
 def test_multiset_difference():
     assert multiset_difference([], []) == []
     assert multiset_difference([], []) == []
+
 
 "test_multiset_intersection"
 "test_multiset_union"

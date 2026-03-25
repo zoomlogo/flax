@@ -467,7 +467,8 @@ def maximal_indicies_md(x, m=None, upper_level=[]):
 
 def mold(w, x):
     """mold: mold x to the shape w"""
-    if w == [] or x == []: return []
+    if w == [] or x == []:
+        return []
 
     x = flatten(x)
 
