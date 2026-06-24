@@ -1,4 +1,5 @@
-import os, sys
+import os
+import sys
 from mpmath import *
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."

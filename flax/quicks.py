@@ -156,14 +156,14 @@ quicks = {  # single byte quicks
     "⍤": attrdict(
         condition=lambda links: links and links[0].arity,
         qlink=lambda links, *_: (
-            [links.pop(0)] if len(links) == 2 and links[0].arity == 0 else []
-        )
-        + [
-            attrdict(
-                arity=max_arity(links),
-                call=fix_args(lambda w, x: ntimes(links, (w, x))),
-            )
-        ],
+            ([links.pop(0)] if len(links) == 2 and links[0].arity == 0 else [])
+            + [
+                attrdict(
+                    arity=max_arity(links),
+                    call=fix_args(lambda w, x: ntimes(links, (w, x))),
+                )
+            ]
+        ),
     ),
     "@": attrdict(
         condition=lambda links: len(links) == 2,
@@ -435,11 +435,13 @@ quicks = {  # single byte quicks
         ],
     ),
     "⟜": attrdict(
-        condition=lambda links: links
-        and (
-            links[-1].arity == 0
-            and len(links) == links[-1].call() - 1
-            or len(links) == 3
+        condition=lambda links: (
+            links
+            and (
+                links[-1].arity == 0
+                and len(links) == links[-1].call() - 1
+                or len(links) == 3
+            )
         ),
         qlink=lambda links, *_: [
             attrdict(arity=2, call=lambda w, x: composed(links, w, x))
@@ -504,14 +506,14 @@ quicks |= {  # quicky diagraphs
     "Δ⍤": attrdict(
         condition=lambda links: links and links[0].arity,
         qlink=lambda links, *_: (
-            [links.pop(0)] if len(links) == 2 and links[0].arity == 0 else []
-        )
-        + [
-            attrdict(
-                arity=max_arity(links),
-                call=fix_args(lambda w, x: ntimes(links, (w, x), cumulative=True)),
-            )
-        ],
+            ([links.pop(0)] if len(links) == 2 and links[0].arity == 0 else [])
+            + [
+                attrdict(
+                    arity=max_arity(links),
+                    call=fix_args(lambda w, x: ntimes(links, (w, x), cumulative=True)),
+                )
+            ]
+        ),
     ),
     "Δe": attrdict(
         condition=lambda links: links,

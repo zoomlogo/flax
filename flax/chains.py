@@ -402,9 +402,9 @@ def ntimes(links, args, cumulative=False):
 
 def quick_chain(arity, min_length):
     return attrdict(
-        condition=lambda links: len(links)
-        - sum([trailing_nilad(x) for x in prefixes(links)])
-        >= min_length,
+        condition=lambda links: (
+            len(links) - sum([trailing_nilad(x) for x in prefixes(links)]) >= min_length
+        ),
         qlink=lambda links, outermost_links, i: [
             attrdict(
                 arity=arity, call=lambda w=None, x=None: variadic_chain(links, (w, x))

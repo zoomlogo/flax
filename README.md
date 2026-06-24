@@ -1,6 +1,13 @@
 # flax
 flax (all lowercase, YES ALL LOWERCASE LETTERS) is a tacit language designed for code golfing.
 
+## Installation
+To install `flax`, first clone this repository and ensure you have `uv`
+and install using:
+```bash
+uv tool install .
+```
+
 ## Documentation
 - [Introduction](./docs/Introduction.md)
 - [Explained Examples](./docs/examples.md)

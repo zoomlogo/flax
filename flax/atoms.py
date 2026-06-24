@@ -1,5 +1,4 @@
 # atoms: holds the atoms
-import functools
 import math
 import string
 import re
@@ -260,8 +259,9 @@ atoms = {  # single byte atoms
     "«": attrdict(
         arity=2,
         dw=0,
-        call=lambda w, x: iterable(x, digits_=True)[-w:]
-        + iterable(x, digits_=True)[:-w],
+        call=lambda w, x: (
+            iterable(x, digits_=True)[-w:] + iterable(x, digits_=True)[:-w]
+        ),
     ),
 }
 
