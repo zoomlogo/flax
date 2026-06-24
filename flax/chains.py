@@ -248,9 +248,11 @@ def fold(links, *args, right=False, initial=False):
 
     if right:
         x = x[::-1]
+
         def call(w, x):
             return variadic_link(links[0], (x, w), force_dyad=True)
     else:
+
         def call(w, x):
             return variadic_link(links[0], (w, x), force_dyad=True)
 
