@@ -95,7 +95,6 @@ def base(w, x):
 
 def base_decomp(w, x):
     """base_decomp: base decompression with base w"""
-    res = ""
     x = bin(abs(x))[2:]
     return [[int(j) for j in i] for i in split(w, x)]
 
@@ -230,8 +229,8 @@ def enumerate_md(x, upper_level=[]):
 def ensure_square(x):
     """ensure_square: make sure x is a square matrix"""
     x = iterable(x)
-    l = max([len(iterable(i)) for i in x] + [len(x)])
-    return reshape(l, [reshape(l, i) for i in x])
+    lis = max([len(iterable(i)) for i in x] + [len(x)])
+    return reshape(lis, [reshape(lis, i) for i in x])
 
 
 @functools.cache
@@ -285,7 +284,7 @@ def get_req(x):
     response = urllib.request.urlopen(url).read()
     try:
         return response.decode("utf-8")
-    except:
+    except UnicodeDecodeError:
         return response.decode("latin-1")
 
 
@@ -410,13 +409,13 @@ def join(w, x):
 def json_decode(x):
     """json_decode: convert jsoned x to flax arrays"""
     t = type(x)
-    if t == list or t == tuple:
+    if t is list or t is tuple:
         return [json_decode(i) for i in x]
-    elif t == str:
+    elif t is str:
         return x
-    elif t == dict:
+    elif t is dict:
         return [json_decode(i) for i in x.items()]
-    elif t == bool:
+    elif t is bool:
         return int(x)
     elif x is None:
         return inf
@@ -709,11 +708,11 @@ def to_braille(x):
 def type2str(x):
     """type2str: [helper] converts a type to string for dict keying"""
     t = type(x)
-    if t == str:
+    if t is str:
         return "str"
-    elif t == list:
+    elif t is list:
         return "lst"
-    elif t == ilist:
+    elif t is ilist:
         return "ils"
     else:
         return "num"
@@ -723,7 +722,7 @@ def type2strn(x):
     """type2strn: [helper] converts a number type to string"""
     t = type2str(x)
     if t == "num":
-        if type(x) == mpc:
+        if type(x) is mpc:
             return "mpc"
         elif int(x) == x:
             return "int"

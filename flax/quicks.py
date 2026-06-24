@@ -59,7 +59,7 @@ quicks = {  # single byte quicks
                 arity=1,
                 call=lambda x: (
                     [variadic_chain(links, (i,)) for i in x]
-                    if type(x) == list
+                    if type(x) is list
                     else variadic_chain(links, (x,))
                 ),
             )

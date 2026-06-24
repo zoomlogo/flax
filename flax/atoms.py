@@ -233,7 +233,7 @@ atoms = {  # single byte atoms
     "≈": attrdict(
         arity=2,
         call=lambda w, x: (
-            len(w) == len(x) if type(w) == type(x) == list else abs(w - x) <= 1
+            len(w) == len(x) if type(w) is list and type(x) is list else abs(w - x) <= 1
         ),
     ),
     ",": attrdict(arity=2, call=lambda w, x: iterable(w) + iterable(x)),
@@ -281,7 +281,7 @@ atoms |= {  # diagraphs
     "Ø0": attrdict(arity=0, call=lambda: [0, 0]),
     "Ø1": attrdict(arity=0, call=lambda: [1, 1]),
     "Ø2": attrdict(arity=0, call=lambda: [2, 2]),
-    "ØO": attrdict(arity=0, call=lambda: [0, 1]),
+    "ØQ": attrdict(arity=0, call=lambda: [0, 1]),
     "ØZ": attrdict(arity=0, call=lambda: [1, 0]),
     "Ød": attrdict(arity=0, call=lambda: [[0, 1], [1, 0], [0, -1], [-1, 0]]),
     "Øx": attrdict(

@@ -171,13 +171,13 @@ def dyadic_link(link, w, x, flat=False):
             overloads = link.overloads
             tw, tx = type2str(w), type2str(x)
             call = overloads.get(tw + "-" + tx)
-            if call == None:
+            if call is None:
                 call = overloads.get("any-" + tx)
-            if call == None:
+            if call is None:
                 call = overloads.get(tw + "-any")
-            if call == None:
+            if call is None:
                 call = overloads.get("any-any")
-            if call == None:
+            if call is None:
                 error("call: overload not defined")
             return call(x)
     elif not flat_w and link.dw > dw:
@@ -248,9 +248,11 @@ def fold(links, *args, right=False, initial=False):
 
     if right:
         x = x[::-1]
-        call = lambda w, x: variadic_link(links[0], (x, w), force_dyad=True)
+        def call(w, x):
+            return variadic_link(links[0], (x, w), force_dyad=True)
     else:
-        call = lambda w, x: variadic_link(links[0], (w, x), force_dyad=True)
+        def call(w, x):
+            return variadic_link(links[0], (w, x), force_dyad=True)
 
     if len(links) == 1:
         if initial:
@@ -366,9 +368,9 @@ def monadic_link(link, x, flat=False):
         else:
             overloads = link.overloads
             call = overloads.get(type2str(x))
-            if call == None:
+            if call is None:
                 call = overloads.get("any")
-            if call == None:
+            if call is None:
                 error("call: overload not defined")
             return call(x)
     elif link.dx > dx:
