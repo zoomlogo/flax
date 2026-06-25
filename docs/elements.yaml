@@ -1372,6 +1372,7 @@
 
 - element: œl
   type: Other Dyadic Diagraphs
+  description: Trim from left.
 
 - element: œt
   type: Other Dyadic Diagraphs
