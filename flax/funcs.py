@@ -582,7 +582,7 @@ def prime_factors(x):
         prime = next(p)
         times = order(prime, x)
         res.append([prime] * times)
-        x //= prime ** times
+        x //= prime**times
     return flatten(res)
 
 
@@ -723,7 +723,7 @@ def to_braille(x):
         for j in i:
             res[-1][b // 2] |= j << (6429374 >> a % 4 * 6 + b % 2 * 3 & 7)
             b += 1
-    return ''.join(chr(i) for i in join(10, res))
+    return "".join(chr(i) for i in join(10, res))
 
 
 def type2str(x):
@@ -777,6 +777,7 @@ def trim_left(w, x):
 
     return x[s:]
 
+
 def trim_right(w, x):
     """trim: trim all elements of w from x on the right side"""
     w = iterable(w)
@@ -787,6 +788,7 @@ def trim_right(w, x):
         e -= 1
 
     return x[:e]
+
 
 def unrepeat(x):
     """unrepeat: find the repeating pattern in x"""
