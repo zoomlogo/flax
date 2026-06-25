@@ -655,6 +655,18 @@ def test_trim():
     assert trim([], [1, 2, 3]) == [1, 2, 3]
     assert trim([1], []) == []
 
+def test_trim_left():
+    assert trim_left([0], [0, 0, 1, 2, 3, 0]) == [1, 2, 3, 0]
+    assert trim_left(['x'], ['x', 'a', 'b']) == ['a', 'b']
+    assert trim_left([1], [2, 3, 4]) == [2, 3, 4]
+    assert trim_left([1, 2], [1, 2, 1, 2]) == []
+
+def test_trim_right():
+    assert trim_right([0], [0, 0, 1, 2, 3, 0, 0]) == [0, 0, 1, 2, 3]
+    assert trim_right(['z'], ['a', 'b', 'z']) == ['a', 'b']
+    assert trim_right([1], [1, 2, 3]) == [1, 2, 3]
+    assert trim_right([1, 2], [1, 2, 1, 2]) == []
+
 
 def test_unrepeat():
     assert unrepeat([1, 2, 1, 2, 1, 2]) == [1, 2]

@@ -76,6 +76,8 @@ __all__ = [
     "to_braille",
     "transpose",
     "trim",
+    "trim_left",
+    "trim_right",
     "unrepeat",
     "where",
 ]
@@ -761,6 +763,11 @@ def transpose(x, filler=None):
 
 def trim(w, x):
     """trim: trim all elements of w from x"""
+    return trim_right(w, trim_left(w, x))
+
+
+def trim_left(w, x):
+    """trim: trim all elements of w from x on the left side"""
     w = iterable(w)
     x = iterable(x, digits_=True)
 
@@ -768,12 +775,18 @@ def trim(w, x):
     while s < len(x) and x[s] in w:
         s += 1
 
+    return x[s:]
+
+def trim_right(w, x):
+    """trim: trim all elements of w from x on the right side"""
+    w = iterable(w)
+    x = iterable(x, digits_=True)
+
     e = len(x)
-    while e > s and x[e - 1] in w:
+    while e > 0 and x[e - 1] in w:
         e -= 1
 
-    return x[s:e]
-
+    return x[:e]
 
 def unrepeat(x):
     """unrepeat: find the repeating pattern in x"""
