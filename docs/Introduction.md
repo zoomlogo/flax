@@ -3,14 +3,14 @@
 ## Installation
 Make sure you have Python 3.9 or above.
 <!-- ```sh -->
-<!-- git clone https://github.com/PyGamer0/flax -->
+<!-- git clone https://github.com/zoomlogo/flax -->
 <!-- pip install poetry -->
 <!-- cd flax -->
 <!-- poetry install -->
 <!-- poetry run python -m flax <flags, etc> -->
 <!-- ``` -->
 ```sh
-git clone https://github.com/PyGamer0/flax
+git clone https://github.com/zoomlogo/flax
 pip install poetry
 cd flax
 ./install

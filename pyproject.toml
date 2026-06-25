@@ -1,25 +1,32 @@
-[tool.poetry]
+[project]
 name = "flax"
 version = "1.1.0"
 description = "flax tacit language"
-authors = ["PyGamer0"]
-license = "MIT"
+authors = [ { name = "zoomlogo" } ]
+license = { text = "MIT" }
+requires-python = ">=3.12"
+dependencies = [
+    "mpmath",
+    "more-itertools",
+    "colorama",
+]
 
-[tool.poetry.scripts]
+[project.scripts]
 flax = "flax.main:main"
 
-[tool.poetry.dependencies]
-python = ">=3.9"
-mpmath = "*"
-more_itertools = "*"
-
-[tool.poetry.dev-dependencies]
-pytest = "*"
-black = "*"
+[dependency-groups]
+dev = [
+    "pytest",
+    "ruff",
+    "pyyaml>=6.0.3",
+]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.black]
+[tool.ruff]
 line-length = 88
+
+[tool.ruff.lint]
+ignore = ["F405", "F403"]

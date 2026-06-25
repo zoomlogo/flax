@@ -1,6 +1,7 @@
 """funcs: holds the functions used by atoms"""
 
 import functools
+import urllib.request
 import itertools
 import more_itertools
 import copy
@@ -8,7 +9,7 @@ import re
 from random import randrange
 import operator as ops
 
-from flax.common import mp, mpc, inf, mpf
+from flax.common import mp, mpc, ilist, inf, mpf
 
 __all__ = [
     "base",
@@ -42,6 +43,7 @@ __all__ = [
     "index_into_md",
     "iota",
     "iota1",
+    "is_flat",
     "iterable",
     "join",
     "json_decode",
@@ -74,6 +76,8 @@ __all__ = [
     "to_braille",
     "transpose",
     "trim",
+    "trim_left",
+    "trim_right",
     "unrepeat",
     "where",
 ]
@@ -93,9 +97,8 @@ def base(w, x):
 
 def base_decomp(w, x):
     """base_decomp: base decompression with base w"""
-    res = ""
-    x = str(bin(abs(x)))[2:]
-    return [int(i) for i in split(w, x)]
+    x = bin(abs(x))[2:]
+    return [[int(j) for j in i] for i in split(w, x)]
 
 
 def base_i(w, x):
@@ -115,23 +118,16 @@ def base_i(w, x):
 
 def binary(x):
     """binary: converts x to binary"""
-    return [-i if x < 0 else i for i in map(int, bin(x)[3 if x < 0 else 2 :])]
+    return base_i(2, x)
 
 
 def binary_i(x):
     """binary_i: convert x from binary"""
-    x = iterable(x, digits_=True)
-    sign = -1 if sum(x) < 0 else 1
-    num = 0
-    i = 0
-    for b in x[::-1]:
-        num += abs(b) * 2**i
-        i += 1
-    return num * sign
+    return base(2, x)
 
 
 def boolify(f):
-    """boolify: wrapper around boolean functions to only return 1/0"""
+    """boolify: [helper] wrapper around boolean functions to only return 1/0"""
     return lambda *args: int(f(*args))
 
 
@@ -155,7 +151,9 @@ def convolve(w, x):
 
 def depth(x):
     """depth: how deeply x is nested"""
-    if type(x) != list:
+    if type2str(x) == "str":
+        return 1
+    elif type2str(x) != "lst":
         return 0
     else:
         if not x:
@@ -192,27 +190,39 @@ def diagonals(x, antidiagonals=False):
 
 def digits(x):
     """digits: turn x into a list of digits"""
-    return [
-        -int(i) if x < 0 else int(i) for i in str(x)[1 if x < 0 else 0 :] if i != "."
-    ]
+    if type2strn(x) == "mpc":
+        return [
+            mpc(i[0], i[1])
+            for i in transpose([digits(x.real)[::-1], digits(x.imag)[::-1]], filler=0)[
+                ::-1
+            ]
+        ][:-1]
+    else:
+        return [
+            -int(i) if x < 0 else int(i)
+            for i in str(x)[1 if x < 0 else 0 :]
+            if i != "."
+        ]
 
 
 def digits_i(x):
     """digits_i: convert x from digits"""
-    x = iterable(x, range_=True)
-    sign = -1 if sum(x) < 0 else 1
-    num = 0
-    i = 0
-    for b in x[::-1]:
-        num += abs(b) * 10**i
-        i += 1
-    return num * sign
+    if type2strn(x[0]) == "mpc":
+        return mpc(digits_i([i.real for i in x]), digits_i([i.imag for i in x]))
+    else:
+        sign = -1 if sum(x) < 0 else 1
+        num = 0
+        i = 0
+        for b in x[::-1]:
+            num += abs(b) * 10**i
+            i += 1
+        return num * sign
 
 
 def enumerate_md(x, upper_level=[]):
     """enumerate_md: enumerate multidimensionally"""
     for i, e in enumerate(x):
-        if type(e) != list:
+        if type2str(e) != "lst":
             yield [upper_level + [i], e]
         else:
             yield from enumerate_md(e, upper_level + [i])
@@ -221,8 +231,8 @@ def enumerate_md(x, upper_level=[]):
 def ensure_square(x):
     """ensure_square: make sure x is a square matrix"""
     x = iterable(x)
-    l = max([len(iterable(i)) for i in x] + [len(x)])
-    return reshape(l, [reshape(l, i) for i in x])
+    n = max([len(iterable(i)) for i in x] + [len(x)])
+    return reshape([n, n], [reshape(n, iterable(i)) for i in x])
 
 
 @functools.cache
@@ -272,14 +282,11 @@ def flatten(x):
 
 def get_req(x):
     """get_req: GET request for url x"""
-    url = "".join(map(chr, x))
-    url = (
-        re.match(r"[A-Za-z][A-Za-z0-9+.-]*://", url) is None and "http://" or ""
-    ) + url
-    response = urllib_request.request.urlopen(url).read()
+    url = (re.match(r"[A-Za-z][A-Za-z0-9+.-]*://", x) is None and "http://" or "") + x
+    response = urllib.request.urlopen(url).read()
     try:
         return response.decode("utf-8")
-    except:
+    except UnicodeDecodeError:
         return response.decode("latin-1")
 
 
@@ -287,7 +294,7 @@ def grade_down(x):
     """grade_down: grade x in descending order"""
     x = iterable(x, digits_=True)
     grades = []
-    for i in reversed(sorted(x)):
+    for i in more_itertools.unique_everseen(reversed(sorted(x))):
         grades.append(find_all(i, x))
     return flatten(grades)
 
@@ -296,7 +303,7 @@ def grade_up(x):
     """grade_up: grade x in ascending order"""
     x = iterable(x, digits_=True)
     grades = []
-    for i in sorted(x):
+    for i in more_itertools.unique_everseen(sorted(x)):
         grades.append(find_all(i, x))
     return flatten(grades)
 
@@ -328,10 +335,12 @@ def group_indicies(x, md=False):
 def index_into(w, x):
     """index_into: index into w with x"""
     w = iterable(w, digits_=True)
-    x = int(x) if type(x) != mpc and type(x) != list and int(x) == x else x
-    if type(x) == int:
+    if len(w) == 0:
+        return []
+    x = int(x) if type2strn(x) == "int" else x
+    if type2strn(x) == "int":
         return w[x % len(w)]
-    elif type(x) == mpc:
+    elif type2strn(x) == "mpc":
         return index_into(index_into(w, x.real), x.imag)
     else:
         return [index_into(w, mp.floor(x)), index_into(w, mp.ceil(x))]
@@ -341,40 +350,49 @@ def index_into_md(w, x):
     """index_into_md: index into w multidimensionally with x"""
     res = w
     for i in x:
-        res = index_into(i, res)
+        res = index_into(res, i)
     return res
 
 
 def iota(x):
     """iota: APL's ⍳ and BQN's ↕"""
-    if type(x) != list:
+    if type2strn(x) in ["int", "dec"]:
         return list(range(int(x)))
-
-    res = cartesian_product(*(list(range(int(a))) for a in x))
-    for e in x:
-        res = split(int(e), res)
-    return res[0]
+    elif type2strn(x) == "mpc":
+        return [[mpc(j[0], j[1]) for j in i] for i in iota([x.real, x.imag])]
+    else:
+        res = cartesian_product(*(iota(i) for i in x))
+        for i in x[::-1]:
+            res = split(int(abs(i)) if type2strn(i) != "lst" else len(i), res)
+        return res[0]
 
 
 def iota1(x):
     """iota1: iota but 1 based"""
-    if type(x) != list:
-        return [i + 1 for i in range(int(x))]
+    if type2strn(x) in ["int", "dec"]:
+        return list(range(1, int(x) + 1))
+    elif type2strn(x) == "mpc":
+        return [[mpc(j[0], j[1]) for j in i] for i in iota1([x.real, x.imag])]
+    else:
+        res = cartesian_product(*(iota1(i) for i in x))
+        for i in x[::-1]:
+            res = split(int(abs(i)) if type2strn(i) != "lst" else len(i), res)
+        return res[0]
 
-    res = cartesian_product(*([i + 1 for i in range(int(a))] for a in x))
-    for e in x:
-        res = split(int(e), res)
-    return res[0]
+
+def is_flat(x):
+    """is_flat: checks whether x is a flat array or not"""
+    return x == flatten(x)
 
 
 def iterable(x, digits_=False, range_=False, copy_=False):
     """iterable: make sure x is a list"""
-    if type(x) != list:
-        if type(x) == str:
+    if type2str(x) != "lst":
+        if type2str(x) == "str":
             return list(x)
         else:
             if range_:
-                return list(range(int(x)))
+                return iota(x)
             elif digits_:
                 return digits(x)
             else:
@@ -392,13 +410,14 @@ def join(w, x):
 
 def json_decode(x):
     """json_decode: convert jsoned x to flax arrays"""
-    if type(x) == list or type(x) == tuple:
+    t = type(x)
+    if t is list or t is tuple:
         return [json_decode(i) for i in x]
-    elif type(x) == str:
+    elif t is str:
         return x
-    elif type(x) == dict:
+    elif t is dict:
         return [json_decode(i) for i in x.items()]
-    elif type(x) == bool:
+    elif t is bool:
         return int(x)
     elif x is None:
         return inf
@@ -410,7 +429,7 @@ def json_decode(x):
 def lucas(x):
     """lucas: nth lucas number"""
     if x < 2:
-        return x + 1
+        return 2 if x == 0 else 1
     else:
         return lucas(x - 1) + lucas(x - 2)
 
@@ -422,7 +441,7 @@ def mapval(w, x):
 
     res = []
     for i in iterable(x, range_=True):
-        res.append(outs[ins.index(i)])
+        res.append(outs[find(i, ins)])
 
     return res
 
@@ -439,33 +458,46 @@ def maximal_indicies_md(x, m=None, upper_level=[]):
         m = max(flatten(x) or [0])
     res = []
     for i, e in enumerate(x):
-        if type(e) != list:
+        if type2str(e) != "lst":
             if e == m:
                 res.append(upper_level + [i])
-            else:
-                res.extend(maximal_indicies_md(e, m, upper_level + [i]))
+        else:
+            res.extend(maximal_indicies_md(e, m, upper_level + [i]))
     return res
 
 
 def mold(w, x):
     """mold: mold x to the shape w"""
-    for i in range(len(w)):
-        if type(w[i]) == list:
-            mold(x, w[i])
-        else:
-            item = x.pop(0)
-            w[i] = item
-            x.append(item)
-    return w
+    if w == [] or x == []:
+        return []
+
+    x = flatten(x)
+    x_iter = iter(x)
+
+    def fill(w):
+        nonlocal x_iter
+        res = []
+        for i in w:
+            if type2str(i) == "lst":
+                res.append(fill(i))
+            else:
+                try:
+                    res.append(next(x_iter))
+                except StopIteration:
+                    x_iter = iter(x)
+                    res.append(next(x_iter))
+        return res
+
+    return fill(w)
 
 
 def multiset_difference(w, x):
     """multiset_difference: multiset difference"""
-    res = iterable(w)[::-1]
+    res = iterable(w)
     for i in iterable(x):
         if i in res:
             res.remove(i)
-    return res[::-1]
+    return res
 
 
 def multiset_intersection(w, x):
@@ -488,7 +520,7 @@ def nprimes(x):
     """nprimes: return x primes"""
     res = []
     i = 2
-    while len(res) != x:
+    while len(res) < x:
         if mp.isprime(i):
             res.append(i)
         i += 1
@@ -498,7 +530,7 @@ def nprimes(x):
 def ones(x, shape=None, upper_level=[]):
     """ones: matrix with ones at x"""
     if not shape:
-        shape = [max(zipped) for zipped in zip(*x)]
+        shape = [max(zipped) + 1 for zipped in zip(*x)]
     upper_len = len(upper_level)
     if upper_len < len(shape) - 1:
         return [
@@ -541,20 +573,22 @@ def prefixes(x):
 
 def prime_factors(x):
     """prime_factors: calculate prime factors of x"""
+    if x < 2:
+        return []
+
     p = primes()
     res = []
     while x != 1:
         prime = next(p)
         times = order(prime, x)
         res.append([prime] * times)
-        for _ in range(times):
-            x = x / prime
+        x //= prime**times
     return flatten(res)
 
 
 def primes():
     """primes: an infinite list of primes"""
-    i = 0
+    i = 2
     while True:
         if mp.isprime(i):
             yield i
@@ -573,26 +607,35 @@ def repeat(w, x):
     )
     res = []
     for a, b in zipped:
-        res.extend(a for _ in range(b))
+        res.extend(b for _ in range(a))
     return res
 
 
 def reshape(w, x):
     """reshape: reshape x according to the shape w"""
     w = iterable(w)
-    x = iterable(x)
+    x = flatten(iterable(x))
 
-    if len(w) == 1:
-        reshaped = []
-        x = x[::-1] if w[0] < 0 else x
-        for _ in range(abs(w[0])):
-            reshaped.append(x[0])
-            x.append(x.pop(0))
-        return reshaped[::-1] if w[0] < 0 else reshaped
-    else:
-        x = x[::-1] if w[0] < 0 else x
-        reshaped = [reshape(w[1:], x) for _ in range(abs(w[0]))]
-        return reshaped[::-1] if w[0] < 0 else reshaped
+    x_iter = iter(x)
+
+    def build(w):
+        nonlocal x_iter
+        if len(w) == 1:
+            dim = w[0]
+            res = []
+            for _ in range(abs(dim)):
+                try:
+                    res.append(next(x_iter))
+                except StopIteration:
+                    x_iter = iter(x)
+                    res.append(next(x_iter))
+            return res[::-1] if dim < 0 else res
+        else:
+            dim = w[0]
+            res = [build(w[1:]) for _ in range(abs(dim))]
+            return res[::-1] if dim < 0 else res
+
+    return build(w)
 
 
 def rld(x):
@@ -600,9 +643,9 @@ def rld(x):
     res = []
     for i in x:
         if len(i) != 2:
-            break
+            continue
 
-        for j in i[1]:
+        for _ in range(i[1]):
             res.append(i[0])
     return res
 
@@ -630,15 +673,15 @@ def sliding_window(w, x):
     w = int(w)
     if w < 0:
         return list(
-            map(lambda e: list(reversed(e)), list(more_itertools.sliding_window(x, -w)))
+            map(lambda e: list(reversed(e)), more_itertools.sliding_window(x, -w))
         )
     else:
-        return list(map(list, list(more_itertools.sliding_window(x, w))))
+        return list(map(list, more_itertools.sliding_window(x, w)))
 
 
 def split(w, x):
     """split: split x into chunks of w"""
-    return list(more_itertools.chunked(iterable(x), w))
+    return list(more_itertools.chunked(iterable(x), int(w)))
 
 
 def split_at(w, x):
@@ -670,7 +713,7 @@ def suffixes(x):
 
 
 def to_braille(x):
-    """to_braille: compress boolean matrix x to braille"""
+    """to_braille: compress boolean matrix x to braille string"""
     res = []
     a = 0
     for i in x:
@@ -680,47 +723,95 @@ def to_braille(x):
         for j in i:
             res[-1][b // 2] |= j << (6429374 >> a % 4 * 6 + b % 2 * 3 & 7)
             b += 1
-    return join(10, res)
+    return "".join(chr(i) for i in join(10, res))
 
 
 def type2str(x):
     """type2str: [helper] converts a type to string for dict keying"""
     t = type(x)
-    if t == str:
+    if t is str:
         return "str"
-    elif t == list:
+    elif t is list:
         return "lst"
-    elif t == ilist:
+    elif t is ilist:
         return "ils"
     else:
         return "num"
 
 
+def type2strn(x):
+    """type2strn: [helper] converts a number type to string"""
+    t = type2str(x)
+    if t == "num":
+        if type(x) is mpc:
+            return "mpc"
+        elif int(x) == x:
+            return "int"
+        else:
+            return "dec"
+    else:
+        return t
+
+
 def transpose(x, filler=None):
     """transpose: transpose x"""
-    return list(
-        map(
-            lambda x: list(filter(None.__ne__, x)),
-            itertools.zip_longest(*map(iterable, x), fillvalue=filler),
-        )
-    )
+    return [
+        [j for j in i if j is not None]
+        for i in itertools.zip_longest(*[iterable(i) for i in x], fillvalue=filler)
+    ]
 
 
 def trim(w, x):
     """trim: trim all elements of w from x"""
-    # TODO
-    raise NotImplementedError
+    return trim_right(w, trim_left(w, x))
+
+
+def trim_left(w, x):
+    """trim: trim all elements of w from x on the left side"""
+    w = iterable(w)
+    x = iterable(x, digits_=True)
+
+    s = 0
+    while s < len(x) and x[s] in w:
+        s += 1
+
+    return x[s:]
+
+
+def trim_right(w, x):
+    """trim: trim all elements of w from x on the right side"""
+    w = iterable(w)
+    x = iterable(x, digits_=True)
+
+    e = len(x)
+    while e > 0 and x[e - 1] in w:
+        e -= 1
+
+    return x[:e]
 
 
 def unrepeat(x):
-    """unrepeat: find the pattern in x"""
-    return list(map(len, group_equal(x)))
+    """unrepeat: find the repeating pattern in x"""
+    x = iterable(x)
+    n = len(x)
+    if n == 0:
+        return []
+
+    for i in range(1, n + 1):
+        if n % i == 0:
+            pat = x[:i]
+            if pat * (n // i) == x:
+                return pat
+    return x
 
 
-def where(x, upper_level=[]):
+def where(x):
     """where: ngn/k's &:"""
     x = iterable(x)
-    if type(x[0]) != list:
-        return flatten([(upper_level + [i]) * e for i, e in enumerate(x)])
+    if is_flat(x):
+        return flatten([[i] * e for i, e in enumerate(x)])
     else:
-        return [where(e, upper_level + [i]) for i, e in enumerate(x)]
+        res = []
+        for i, e in enumerate_md(x):
+            res.extend([i] * e)
+        return res

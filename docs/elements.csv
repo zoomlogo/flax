@@ -315,6 +315,7 @@
 "æ»","Mathy Dyadic Diagraphs","Bit shift right."
 "ær","Mathy Dyadic Diagraphs","Round."
 "æl","Mathy Dyadic Diagraphs","Linear regression."
+"æẇ","Mathy Dyadic Diagraphs","Combinations with replacement."
 "ŒḂ","Other Monadic Diagraphs","Bounce over each."
 "ŒB","Other Monadic Diagraphs","Bounce."
 "ŒP","Other Monadic Diagraphs","Is palindrome."
@@ -341,7 +342,7 @@
 "œi","Other Dyadic Diagraphs","Mutlidimensional index into."
 "œs","Other Dyadic Diagraphs","Multidimensional sublist index of."
 "œŀ","Other Dyadic Diagraphs","Trim from right."
-"œl","Other Dyadic Diagraphs",
+"œl","Other Dyadic Diagraphs","Trim from left."
 "œt","Other Dyadic Diagraphs","Split before truthy indices."
 "œo","Other Dyadic Diagraphs","Split at first occurence."
 "œm","Other Dyadic Diagraphs","Map; inputs → outputs; w consists of [inputs,outputs], x is to be converted."
