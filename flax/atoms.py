@@ -1,5 +1,4 @@
 # atoms: holds the atoms
-import functools
 import math
 import string
 import re
@@ -7,6 +6,7 @@ import statistics
 import more_itertools as mit
 import operator as ops
 import random as Random
+import itertools as it
 from itertools import zip_longest
 
 from flax.common import *
@@ -192,7 +192,7 @@ atoms = {  # single byte atoms
         call=lambda w, x: [index_into(x, i) for i, e in enumerate(iterable(w)) if e],
     ),
     "t": attrdict(arity=2, dw=0, call=lambda w, x: iterable(x)[w:]),
-    # "ṫ": attrdict(arity=2, call=),
+    "ṫ": attrdict(arity=2, call=trim),
     "u": attrdict(
         arity=2, call=lambda w, x: [find(w, i) for i in iterable(x, range_=True)]
     ),
@@ -233,7 +233,7 @@ atoms = {  # single byte atoms
     "≈": attrdict(
         arity=2,
         call=lambda w, x: (
-            len(w) == len(x) if type(w) == type(x) == list else abs(w - x) <= 1
+            len(w) == len(x) if type(w) is list and type(x) is list else abs(w - x) <= 1
         ),
     ),
     ",": attrdict(arity=2, call=lambda w, x: iterable(w) + iterable(x)),
@@ -259,8 +259,9 @@ atoms = {  # single byte atoms
     "«": attrdict(
         arity=2,
         dw=0,
-        call=lambda w, x: iterable(x, digits_=True)[-w:]
-        + iterable(x, digits_=True)[:-w],
+        call=lambda w, x: (
+            iterable(x, digits_=True)[-w:] + iterable(x, digits_=True)[:-w]
+        ),
     ),
 }
 
@@ -280,7 +281,7 @@ atoms |= {  # diagraphs
     "Ø0": attrdict(arity=0, call=lambda: [0, 0]),
     "Ø1": attrdict(arity=0, call=lambda: [1, 1]),
     "Ø2": attrdict(arity=0, call=lambda: [2, 2]),
-    "ØO": attrdict(arity=0, call=lambda: [0, 1]),
+    "ØQ": attrdict(arity=0, call=lambda: [0, 1]),
     "ØZ": attrdict(arity=0, call=lambda: [1, 0]),
     "Ød": attrdict(arity=0, call=lambda: [[0, 1], [1, 0], [0, -1], [-1, 0]]),
     "Øx": attrdict(
@@ -383,10 +384,15 @@ atoms |= {  # diagraphs
     "æl": attrdict(
         arity=2, dw=1, dx=1, call=lambda w, x: list(statistics.linear_regression(w, x))
     ),
+    "æẇ": attrdict(
+        arity=2,
+        dw=0,
+        call=lambda w, x: list(map(list, it.combinations_with_replacement(x, w))),
+    ),
     "ŒB": attrdict(arity=1, call=lambda x: iterable(x) + iterable(x)[::-1]),
     "ŒP": attrdict(arity=1, dx=1, call=lambda x: x == x[::-1]),
     "ŒĠ": attrdict(arity=1, dx=1, call=get_req),
-    "ŒE": attrdict(arity=1, call=enumerate_md),
+    "ŒE": attrdict(arity=1, call=lambda x: list(enumerate_md(x))),
     "ŒG": attrdict(arity=1, call=lambda x: group_indicies(x, md=True)),
     "ŒM": attrdict(arity=1, call=maximal_indicies_md),
     "ŒṪ": attrdict(arity=1, call=lambda x: [i for i, e in enumerate_md(x) if e]),
@@ -417,8 +423,8 @@ atoms |= {  # diagraphs
     ),
     "œi": attrdict(arity=2, call=index_into_md),
     # "œs": attrdict(arity=2, call=),
-    # "œŀ": attrdict(arity=2, call=),
-    # "œl": attrdict(arity=2, call=),
+    "œl": attrdict(arity=2, call=trim_left),
+    "œŀ": attrdict(arity=2, call=trim_right),
     # "œt": attrdict(arity=2, call=),
     # "œo": attrdict(arity=2, call=),
     "œm": attrdict(arity=2, call=mapval),

@@ -74,12 +74,12 @@ def flax_indent(x):
 
 def flax_string(x):
     """flax_string: convert x into flax representation"""
-    if type(x) != list:
-        if type(x) == str:
+    if type(x) is not list:
+        if type(x) is str:
             return '"' + x + '"'
-        elif type(x) == mpc:
+        elif type(x) is mpc:
             return "i".join([flax_string(x.real), flax_string(x.imag)])
-        elif type(x) == int or (x != inf and int(x) == x):
+        elif type(x) is int or (x != inf and int(x) == x):
             return str(int(x)).replace("-", "¯").replace("inf", "∞")
         else:
             return str(x).replace("-", "¯").replace("inf", "∞")
@@ -89,7 +89,7 @@ def flax_string(x):
 
 def flax_print(x):
     """flax_print: print x using formatting"""
-    if type(x) == str:
+    if type(x) is str:
         print(x)
     else:
         s = flax_string(x)

@@ -1,6 +1,6 @@
 # encoding.py: stores stuff related to encoding of flax
 
-__all__ = ["encode", "decode"]
+__all__ = ["codepage", "encode", "decode"]
 
 codepage = "⁰¹²³⁴⁵⁶⁷⁸⁹¶±«»≡≢"
 codepage += "øµðɓ‘’¢£¥€₹⌿≥≠≤⍀"
