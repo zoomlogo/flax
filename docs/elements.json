@@ -1732,7 +1732,8 @@
   },
   {
     "element": "œl",
-    "type": "Other Dyadic Diagraphs"
+    "type": "Other Dyadic Diagraphs",
+    "description": "Trim from left."
   },
   {
     "element": "œt",
