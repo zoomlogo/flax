@@ -229,8 +229,8 @@ def enumerate_md(x, upper_level=[]):
 def ensure_square(x):
     """ensure_square: make sure x is a square matrix"""
     x = iterable(x)
-    lis = max([len(iterable(i)) for i in x] + [len(x)])
-    return reshape(lis, [reshape(lis, i) for i in x])
+    n = max([len(iterable(i)) for i in x] + [len(x)])
+    return reshape([n, n], [reshape(n, iterable(i)) for i in x])
 
 
 @functools.cache
@@ -470,15 +470,23 @@ def mold(w, x):
         return []
 
     x = flatten(x)
+    x_iter = iter(x)
 
-    for i in range(len(w)):
-        if type2str(w[i]) == "lst":
-            mold(x, w[i])
-        else:
-            item = x.pop(0)
-            w[i] = item
-            x.append(item)
-    return w
+    def fill(w):
+        nonlocal x_iter
+        res = []
+        for i in w:
+            if type2str(i) == "lst":
+                res.append(fill(i))
+            else:
+                try:
+                    res.append(next(x_iter))
+                except StopIteration:
+                    x_iter = iter(x)
+                    res.append(next(x_iter))
+        return res
+
+    return fill(w)
 
 
 def multiset_difference(w, x):
@@ -510,7 +518,7 @@ def nprimes(x):
     """nprimes: return x primes"""
     res = []
     i = 2
-    while len(res) != x:
+    while len(res) < x:
         if mp.isprime(i):
             res.append(i)
         i += 1
@@ -520,7 +528,7 @@ def nprimes(x):
 def ones(x, shape=None, upper_level=[]):
     """ones: matrix with ones at x"""
     if not shape:
-        shape = [max(zipped) for zipped in zip(*x)]
+        shape = [max(zipped) + 1 for zipped in zip(*x)]
     upper_len = len(upper_level)
     if upper_len < len(shape) - 1:
         return [
@@ -563,20 +571,22 @@ def prefixes(x):
 
 def prime_factors(x):
     """prime_factors: calculate prime factors of x"""
+    if x < 2:
+        return []
+
     p = primes()
     res = []
     while x != 1:
         prime = next(p)
         times = order(prime, x)
         res.append([prime] * times)
-        for _ in range(times):
-            x = x / prime
+        x //= prime ** times
     return flatten(res)
 
 
 def primes():
     """primes: an infinite list of primes"""
-    i = 0
+    i = 2
     while True:
         if mp.isprime(i):
             yield i
@@ -595,26 +605,35 @@ def repeat(w, x):
     )
     res = []
     for a, b in zipped:
-        res.extend(a for _ in range(b))
+        res.extend(b for _ in range(a))
     return res
 
 
 def reshape(w, x):
     """reshape: reshape x according to the shape w"""
     w = iterable(w)
-    x = iterable(x)
+    x = flatten(iterable(x))
 
-    if len(w) == 1:
-        reshaped = []
-        x = x[::-1] if w[0] < 0 else x
-        for _ in range(abs(w[0])):
-            reshaped.append(x[0])
-            x.append(x.pop(0))
-        return reshaped[::-1] if w[0] < 0 else reshaped
-    else:
-        x = x[::-1] if w[0] < 0 else x
-        reshaped = [reshape(w[1:], x) for _ in range(abs(w[0]))]
-        return reshaped[::-1] if w[0] < 0 else reshaped
+    x_iter = iter(x)
+
+    def build(w):
+        nonlocal x_iter
+        if len(w) == 1:
+            dim = w[0]
+            res = []
+            for _ in range(abs(dim)):
+                try:
+                    res.append(next(x_iter))
+                except StopIteration:
+                    x_iter = iter(x)
+                    res.append(next(x_iter))
+            return res[::-1] if dim < 0 else res
+        else:
+            dim = w[0]
+            res = [build(w[1:]) for _ in range(abs(dim))]
+            return res[::-1] if dim < 0 else res
+
+    return build(w)
 
 
 def rld(x):
@@ -622,9 +641,9 @@ def rld(x):
     res = []
     for i in x:
         if len(i) != 2:
-            break
+            continue
 
-        for j in i[1]:
+        for _ in range(i[1]):
             res.append(i[0])
     return res
 
@@ -652,15 +671,15 @@ def sliding_window(w, x):
     w = int(w)
     if w < 0:
         return list(
-            map(lambda e: list(reversed(e)), list(more_itertools.sliding_window(x, -w)))
+            map(lambda e: list(reversed(e)), more_itertools.sliding_window(x, -w))
         )
     else:
-        return list(map(list, list(more_itertools.sliding_window(x, w))))
+        return list(map(list, more_itertools.sliding_window(x, w)))
 
 
 def split(w, x):
     """split: split x into chunks of w"""
-    return list(more_itertools.chunked(iterable(x), w))
+    return list(more_itertools.chunked(iterable(x), int(w)))
 
 
 def split_at(w, x):
@@ -692,7 +711,7 @@ def suffixes(x):
 
 
 def to_braille(x):
-    """to_braille: compress boolean matrix x to braille"""
+    """to_braille: compress boolean matrix x to braille string"""
     res = []
     a = 0
     for i in x:
@@ -702,7 +721,7 @@ def to_braille(x):
         for j in i:
             res[-1][b // 2] |= j << (6429374 >> a % 4 * 6 + b % 2 * 3 & 7)
             b += 1
-    return join(10, res)
+    return ''.join(chr(i) for i in join(10, res))
 
 
 def type2str(x):
@@ -742,13 +761,33 @@ def transpose(x, filler=None):
 
 def trim(w, x):
     """trim: trim all elements of w from x"""
-    # TODO
-    raise NotImplementedError
+    w = iterable(w)
+    x = iterable(x, digits_=True)
+
+    s = 0
+    while s < len(x) and x[s] in w:
+        s += 1
+
+    e = len(x)
+    while e > s and x[e - 1] in w:
+        e -= 1
+
+    return x[s:e]
 
 
 def unrepeat(x):
-    """unrepeat: find the pattern in x"""
-    return list(map(len, group_equal(x)))
+    """unrepeat: find the repeating pattern in x"""
+    x = iterable(x)
+    n = len(x)
+    if n == 0:
+        return []
+
+    for i in range(1, n + 1):
+        if n % i == 0:
+            pat = x[:i]
+            if pat * (n // i) == x:
+                return pat
+    return x
 
 
 def where(x):

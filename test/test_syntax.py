@@ -3,7 +3,7 @@ from mpmath import *
 from flax.main import flax_run as run
 
 
-def test_numbers_egde_cases():
+def test_numbers_edge_cases():
     assert run("¯") == -1
     assert run(".") == 0.5
     assert run("i") == mpc("0", "1")

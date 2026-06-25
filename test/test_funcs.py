@@ -406,33 +406,262 @@ def test_mold():
 
 def test_multiset_difference():
     assert multiset_difference([], []) == []
-    assert multiset_difference([], []) == []
+    assert multiset_difference([1, 2, 3], []) == [1, 2, 3]
+    assert multiset_difference([], [1, 2, 3]) == []
+    assert multiset_difference([1, 2, 3], [2]) == [1, 3]
+    assert multiset_difference([1, 2, 3], [4, 5]) == [1, 2, 3]
+    assert multiset_difference([1, 1, 2, 3], [1]) == [1, 2, 3]
+    assert multiset_difference([1, 1, 2, 3], [1, 1]) == [2, 3]
+    assert multiset_difference([1, 2, 3], [1, 1, 1]) == [2, 3]
+    assert multiset_difference([1, 2, 2, 3], [1, 2, 2, 3]) == []
+    assert multiset_difference([3, 1, 2, 1], [1]) == [3, 2, 1]
 
 
-"test_multiset_intersection"
-"test_multiset_union"
-"test_nprimes"
-"test_ones"
-"test_order"
-"test_permutations"
-"test_prefixes"
-"test_prime_factors"
-"test_random"
-"test_repeat"
-"test_reshape"
-"test_rld"
-"test_rle"
-"test_shuffle"
-"test_sliding_window"
-"test_split"
-"test_split_at"
-"test_split_into"
-"test_sublists"
-"test_suffixes"
-"test_to_braille"
-"test_transpose"
-"test_trim"
-"test_unrepeat"
+def test_multiset_intersection():
+    assert multiset_intersection([], []) == []
+    assert multiset_intersection([1, 2, 3], []) == []
+    assert multiset_intersection([], [1, 2, 3]) == []
+    assert multiset_intersection([1, 2, 3], [4, 5, 6]) == []
+    assert multiset_intersection([1, 2, 3], [2, 3, 4]) == [2, 3]
+    assert multiset_intersection([1, 1, 1, 2], [1, 1, 3]) == [1, 1]
+    assert multiset_intersection([1, 2, 2], [2, 2, 2, 2]) == [2, 2]
+    assert multiset_intersection([1, 2, 2, 3], [1, 2, 2, 3]) == [1, 2, 2, 3]
+    assert multiset_intersection([3, 1, 2, 1], [1, 1, 3]) == [3, 1, 1]
+
+def test_multiset_union():
+    assert multiset_union([], []) == []
+    assert multiset_union([1, 2], []) == [1, 2]
+    assert multiset_union([], [3, 4]) == [3, 4]
+    assert multiset_union([1, 2], [3, 4]) == [1, 2, 3, 4]
+    assert multiset_union([1, 1, 2], [1, 3]) == [1, 1, 2, 3]
+    assert multiset_union([1, 2], [1, 1, 1, 3]) == [1, 2, 1, 1, 3]
+    assert multiset_union([2, 2], [2, 2]) == [2, 2]
+
+def test_nprimes():
+    assert nprimes(0) == []
+    assert nprimes(1) == [2]
+    assert nprimes(2) == [2, 3]
+    assert nprimes(3) == [2, 3, 5]
+    assert nprimes(5) == [2, 3, 5, 7, 11]
+    assert nprimes(10) == [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
+    assert len(nprimes(50)) == 50
+
+def test_ones():
+    assert ones([[0], [2]], shape=[3]) == [1, 0, 1]
+    coords_2d = [[0, 1], [1, 2]]
+    expected_2d = [
+        [0, 1, 0],  # row 0
+        [0, 0, 1]   # row 1
+    ]
+    assert ones(coords_2d, shape=[2, 3]) == expected_2d
+    coords_3d = [[0, 0, 0], [1, 1, 1]]
+    expected_3d = [
+        [[1, 0], [0, 0]],
+        [[0, 0], [0, 1]]
+    ]
+    assert ones(coords_3d, shape=[2, 2, 2]) == expected_3d
+    coords_auto = [[0, 1], [1, 2]]
+    expected_auto = [
+        [0, 1, 0],
+        [0, 0, 1]
+    ]
+    assert ones(coords_auto) == expected_auto
+
+def test_order():
+    assert order(2, 8) == 3
+    assert order(3, 9) == 2
+    assert order(5, 100) == 2
+    assert order(3, 10) == 0
+    assert order(0, 5) == 0
+    assert order(2, 0) == inf
+    assert order(0, 0) == inf
+    assert order(1, 5) == inf
+    assert order(-1, 5) == inf
+    assert order(2, -8) == 3
+    assert order(-2, 8) == 3
+    assert order(-3, -27) == 3
+
+def test_permutations():
+    assert permutations([]) == [[]]
+    assert permutations([1]) == [[1]]
+    expected_3 = [
+        [1, 2, 3], [1, 3, 2],
+        [2, 1, 3], [2, 3, 1],
+        [3, 1, 2], [3, 2, 1]
+    ]
+    assert sorted(permutations([1, 2, 3])) == sorted(expected_3)
+    expected_str = [['a', 'b'], ['b', 'a']]
+    assert sorted(permutations("ab")) == sorted(expected_str)
+    expected_dupes = [
+        [1, 1, 2], [1, 2, 1],
+        [1, 1, 2], [1, 2, 1],
+        [2, 1, 1], [2, 1, 1]
+    ]
+    assert sorted(permutations([1, 1, 2])) == sorted(expected_dupes)
+
+def test_prefixes():
+    assert prefixes([]) == []
+    assert prefixes([1]) == [[1]]
+    assert prefixes([1, 2, 3]) == [[1], [1, 2], [1, 2, 3]]
+    assert prefixes("abc") == [['a'], ['a', 'b'], ['a', 'b', 'c']]
+
+def test_prime_factors():
+    assert prime_factors(0) == []
+    assert prime_factors(1) == []
+    assert prime_factors(2) == [2]
+    assert prime_factors(13) == [13]
+    assert prime_factors(6) == [2, 3]
+    assert prime_factors(30) == [2, 3, 5]
+    assert prime_factors(8) == [2, 2, 2]
+    assert prime_factors(12) == [2, 2, 3]
+    assert prime_factors(100) == [2, 2, 5, 5]
+
+def test_random():
+    assert random(0) == []
+    assert len(random(5)) == 5
+    assert len(random(100)) == 100
+    result = random(50)
+    for value in result:
+        assert 0.0 <= float(value) < 1.0
+    large_sample = random(1000)
+    assert len(set(large_sample)) == 1000
+
+def test_repeat():
+    assert repeat([2, 3], ['a', 'b']) == ['a', 'a', 'b', 'b', 'b']
+    assert repeat([2], ['a', 'b']) == ['a', 'a', 'b']
+    assert repeat([2, 3], ['a']) == ['a', 'a', 1, 1, 1]
+    assert repeat([0, 2], ['a', 'b']) == ['b', 'b']
+
+def test_reshape():
+    assert reshape(5, 1) == [1, 1, 1, 1, 1]
+    assert reshape(5, [1, 2, 3]) == [1, 2, 3, 1, 2]
+    assert reshape([3], [1, 2, 3]) == [1, 2, 3]
+    assert reshape([-3], [1, 2, 3]) == [3, 2, 1]
+    assert reshape([2, 3], [1, 2, 3, 4, 5, 6]) == [
+        [1, 2, 3],
+        [4, 5, 6]
+    ]
+    assert reshape([-2, 3], [1, 2, 3, 4, 5, 6]) == [
+        [4, 5, 6],
+        [1, 2, 3]
+    ]
+    assert reshape([2, -3], [1, 2, 3, 4, 5, 6]) == [
+        [3, 2, 1],
+        [6, 5, 4]
+    ]
+    assert reshape([2, 2], [1, 2]) == [
+        [1, 2],
+        [1, 2]
+    ]
+
+def test_rld():
+    assert rld([['a', 3], ['b', 2], ['a', 1]]) == ['a', 'a', 'a', 'b', 'b', 'a']
+    assert rld([[5, 4]]) == [5, 5, 5, 5]
+    assert rld([]) == []
+
+def test_rle():
+    assert rle(['a', 'a', 'a', 'b', 'b', 'a']) == [['a', 3], ['b', 2], ['a', 1]]
+    assert rle([5, 5, 5, 5]) == [[5, 4]]
+    assert rle([]) == []
+
+def test_shuffle():
+    assert shuffle([]) == []
+    assert shuffle([42]) == [42]
+    original = [1, 2, 3, 4, 5]
+    shuffled = shuffle(original)
+    assert len(shuffled) == len(original)
+    assert sorted(shuffled) == sorted(original)
+    assert original == [1, 2, 3, 4, 5]
+
+def test_sliding_window():
+    assert sliding_window(2, [1, 2, 3, 4]) == [[1, 2], [2, 3], [3, 4]]
+    assert sliding_window(1, [1, 2, 3]) == [[1], [2], [3]]
+    assert sliding_window(-2, [1, 2, 3, 4]) == [[2, 1], [3, 2], [4, 3]]
+    assert sliding_window(3, [1, 2, 3]) == [[1, 2, 3]]
+    assert sliding_window(5, [1, 2, 3]) == []
+
+def test_split():
+    assert split(2, [1, 2, 3, 4, 5]) == [[1, 2], [3, 4], [5]]
+    assert split(3, "abcdef") == [['a', 'b', 'c'], ['d', 'e', 'f']]
+
+def test_split_at():
+    assert split_at(0, [1, 2, 0, 3, 4, 0, 5]) == [[1, 2], [3, 4], [5]]
+    assert split_at(9, [1, 2, 3]) == [[1, 2, 3]]
+    assert split_at('-', ['-', 'a', 'b', '-']) == [[], ['a', 'b'], []]
+
+def test_split_into():
+    assert split_into([1, 2, 3], [1, 2, 3, 4, 5, 6, 7]) == [[1], [2, 3], [4, 5, 6]]
+    assert split_into([2, 4], [1, 2, 3]) == [[1, 2], [3]]
+
+def test_sublists():
+    assert sublists([]) == []
+    assert sorted(sublists([1])) == [[1]]
+    result_2 = sublists([1, 2])
+    assert len(result_2) == 3
+    assert [1] in result_2
+    assert [2] in result_2
+    assert [1, 2] in result_2
+    assert len(sublists([1, 2, 3])) == 6
+
+def test_suffixes():
+    assert suffixes([]) == []
+    assert suffixes([1]) == [[1]]
+    assert suffixes([1, 2, 3]) == [
+        [3],
+        [2, 3],
+        [1, 2, 3]
+    ]
+    assert suffixes("abc") == [
+        ['c'],
+        ['b', 'c'],
+        ['a', 'b', 'c']
+    ]
+
+def test_to_braille():
+    blank_matrix = [[0, 0], [0, 0], [0, 0], [0, 0]]
+    assert to_braille(blank_matrix) == chr(10240) + '\n'
+    full_block = [
+        [1, 1],
+        [1, 1],
+        [1, 1],
+        [1, 1]
+    ]
+    assert to_braille(full_block) == '⣿\n'
+    top_left = [
+        [1, 0],
+        [0, 0],
+        [0, 0],
+        [0, 0]
+    ]
+    assert to_braille(top_left) == '⠁\n'
+
+
+def test_transpose():
+    assert transpose([[1, 2], [3, 4]]) == [[1, 3], [2, 4]]
+    assert transpose([[1, 2], [3]]) == [[1, 3], [2]]
+    matrix = [[1, 2, 3], [4], [5, 6]]
+    assert transpose(matrix) == [
+        [1, 4, 5],
+        [2, 6],
+        [3]
+    ]
+
+
+def test_trim():
+    assert trim([0], [0, 0, 1, 2, 3, 0]) == [1, 2, 3]
+    assert trim(['x', 'y'], ['x', 'y', 'a', 'b', 'y', 'x']) == ['a', 'b']
+    assert trim([9], [1, 2, 3]) == [1, 2, 3]
+    assert trim([1, 2], [1, 2, 1, 2, 2, 1]) == []
+    assert trim([], [1, 2, 3]) == [1, 2, 3]
+    assert trim([1], []) == []
+
+
+def test_unrepeat():
+    assert unrepeat([1, 2, 1, 2, 1, 2]) == [1, 2]
+    assert unrepeat([1, 2, 3, 4]) == [1, 2, 3, 4]
+    assert unrepeat([5, 5, 5, 5]) == [5]
+    assert unrepeat("abcabc") == ['a', 'b', 'c']
+    assert unrepeat([]) == []
 
 
 def test_where():

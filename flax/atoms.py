@@ -192,7 +192,7 @@ atoms = {  # single byte atoms
         call=lambda w, x: [index_into(x, i) for i, e in enumerate(iterable(w)) if e],
     ),
     "t": attrdict(arity=2, dw=0, call=lambda w, x: iterable(x)[w:]),
-    # "ṫ": attrdict(arity=2, call=),
+    "ṫ": attrdict(arity=2, dw=1, dx=1, call=trim),
     "u": attrdict(
         arity=2, call=lambda w, x: [find(w, i) for i in iterable(x, range_=True)]
     ),
